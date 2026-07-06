@@ -1,0 +1,205 @@
+/* ============================================================================
+   THE EPIDEMIOLOGIST'S WORKSHEET  ·  ews.css  ·  v1.0 (locked 6 Jul 2026)
+   Dr. Abhishek Panda — Community Medicine, GMCH Sundargarh
+   ----------------------------------------------------------------------------
+   One stylesheet = the whole brand: design tokens, the graph-paper substrate,
+   base typography, and every component. Drop it into any HTML project:
+
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+     <link rel="stylesheet" href="ews.css">
+
+   Then add the substrate once, just inside <body>:
+     <div class="grid-bg" aria-hidden="true"></div>
+     <div class="grain" aria-hidden="true"></div>
+   ============================================================================ */
+
+/* ---------------------------------------------------------------- TOKENS --- */
+:root{
+  /* surfaces & ink */
+  --paper:#F4F5F1;
+  --paper-2:#ECEEE7;
+  --card:#FAFBF7;
+  --ink:#15201B;
+  --ink-soft:#4B5A52;
+  --ink-faint:#7B877E;
+  --line:#D7DCD1;
+  --line-soft:#E4E7DD;
+
+  /* brand */
+  --primary:#0C5E4E;
+  --primary-deep:#08493C;
+  --accent:#BE651F;
+  --accent-tint:#F0E2D2;
+
+  /* functional signals */
+  --ok:#0C5E4E;
+  --warn:#BE651F;
+  --danger:#A23B2B;
+  --info:#3D6E7A;
+
+  /* type */
+  --font-display:"Fraunces",Georgia,"Times New Roman",serif;
+  --font-body:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",monospace;
+
+  /* measure, radius, rhythm */
+  --maxw:1120px;
+  --gutter:clamp(20px,5vw,56px);
+  --r:14px;
+  --r-sm:9px;
+  --nav-h:72px;
+  --shadow:0 1px 2px rgba(21,32,27,.04), 0 10px 30px -18px rgba(21,32,27,.28);
+}
+
+/* ------------------------------------------------------------ BASE / RESET - */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 18px);-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:clamp(15.5px,0.5vw + 14.5px,17px);
+  line-height:1.62;
+  font-weight:400;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+a{color:inherit;text-underline-offset:3px}
+img{max-width:100%;display:block}
+
+/* --------------------------------------------------------- SUBSTRATE ------- */
+.grid-bg{
+  position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background-image:
+    linear-gradient(to right, var(--line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+  background-size:34px 34px;
+  opacity:.32;
+  -webkit-mask-image:radial-gradient(120% 90% at 70% 0%, #000 30%, transparent 78%);
+          mask-image:radial-gradient(120% 90% at 70% 0%, #000 30%, transparent 78%);
+}
+.grain{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  background:radial-gradient(160% 120% at 80% -10%, rgba(12,94,78,.06), transparent 45%);
+}
+
+/* --------------------------------------------------------- LAYOUT ---------- */
+.wrap{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gutter)}
+.block{padding-block:clamp(56px,8vw,104px)}
+.block + .block{border-top:1px solid var(--line-soft)}
+
+/* --------------------------------------------------------- TYPE ------------ */
+h1{font-family:var(--font-display);font-weight:500;font-size:clamp(2.6rem,6.4vw,4.4rem);letter-spacing:-.032em;line-height:1.0;margin:0 0 18px}
+h1 em{font-style:italic;color:var(--primary)}
+h2{font-family:var(--font-display);font-weight:500;font-size:clamp(1.9rem,3.4vw,2.7rem);letter-spacing:-.02em;line-height:1.06;margin:0}
+h2 .n{font-family:var(--font-mono);font-weight:500;font-size:.5em;letter-spacing:0;color:var(--primary);vertical-align:.28em;margin-right:.5em}
+h3{font-family:var(--font-display);font-weight:500;font-size:1.26rem;letter-spacing:-.01em;line-height:1.25;margin:0 0 6px}
+p{margin:0 0 14px;max-width:70ch}
+.lede{font-size:clamp(1.05rem,1.4vw,1.18rem);color:var(--ink-soft);max-width:62ch;margin:0 0 4px}
+.small{font-size:.9rem;color:var(--ink-soft)}
+.mono{font-family:var(--font-mono)}
+.hr{height:1px;background:var(--line);border:0;margin:0}
+
+/* eyebrow: ruled uppercase mono label — opens every section */
+.eyebrow{
+  display:flex;align-items:center;gap:12px;
+  font-family:var(--font-mono);font-size:.72rem;font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--primary);
+  margin:0 0 26px;
+}
+.eyebrow::before{content:"";width:26px;height:1.5px;background:var(--primary);opacity:.6;flex:none}
+.eyebrow .muted{color:var(--ink-faint)}
+
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:24px;flex-wrap:wrap;margin-bottom:clamp(26px,4vw,44px)}
+.sec-link{font-family:var(--font-mono);font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;color:var(--primary);font-weight:600;text-decoration:none}
+.sec-link:hover{text-decoration:underline}
+
+/* --------------------------------------------------------- BUTTONS --------- */
+.btn{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-family:var(--font-body);font-weight:600;font-size:.92rem;padding:11px 20px;border-radius:100px;border:1px solid transparent;cursor:pointer;transition:transform .12s ease, background .15s, box-shadow .15s, border-color .15s;line-height:1}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--primary);color:var(--paper)}
+.btn.primary:hover{background:var(--primary-deep);box-shadow:var(--shadow)}
+.btn.ghost{background:transparent;color:var(--primary);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--primary);background:rgba(12,94,78,.04)}
+.btn.accent{background:var(--accent);color:#fff}
+.btn.accent:hover{filter:brightness(.94)}
+.btn .arw{transition:transform .18s}
+.btn:hover .arw{transform:translateX(3px)}
+.btn-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+
+/* --------------------------------------------------------- PILLS ----------- */
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:100px;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+.pill.teal{background:rgba(12,94,78,.1);color:var(--primary)}
+.pill.amber{background:var(--accent-tint);color:var(--accent)}
+.pill.ink{background:var(--paper-2);color:var(--ink-soft)}
+.pill-row{display:flex;gap:9px;flex-wrap:wrap}
+
+/* --------------------------------------------------------- CARDS ----------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.card{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:var(--r);background:var(--paper);padding:20px;text-decoration:none;transition:transform .14s ease, box-shadow .18s, border-color .18s}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.card h3{margin:11px 0 6px}
+.card p{color:var(--ink-soft);font-size:.9rem;margin:0 0 16px}
+.card .go{margin-top:auto;font-family:var(--font-mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--primary);font-weight:600;display:inline-flex;align-items:center;gap:7px}
+.card .go .arw{transition:transform .18s}
+.card:hover .go .arw{transform:translateX(3px)}
+
+/* --------------------------------------------------------- LIST ROWS ------- */
+.rows{border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.row{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:16px 18px;text-decoration:none;border-bottom:1px solid var(--line-soft);transition:background .14s}
+.row:last-child{border-bottom:0}
+.row:hover{background:var(--paper-2)}
+.row .pk{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint);white-space:nowrap}
+.row .ti{font-weight:500;letter-spacing:-.01em}
+.row .arw{color:var(--primary)}
+
+/* --------------------------------------------------------- CALLOUT --------- */
+.callout{display:flex;gap:14px;border:1px solid var(--line);border-left:3px solid var(--primary);border-radius:var(--r-sm);background:var(--paper);padding:16px 18px}
+.callout.warn{border-left-color:var(--accent)}
+.callout.danger{border-left-color:var(--danger)}
+.callout .mk{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--primary);white-space:nowrap;padding-top:2px}
+.callout.warn .mk{color:var(--accent)}
+.callout.danger .mk{color:var(--danger)}
+.callout p{margin:0;font-size:.92rem;color:var(--ink-soft)}
+
+/* --------------------------------------------------------- FORM FIELDS ----- */
+.field{max-width:340px}
+.field label{display:block;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:7px}
+.field input,.field select,.field textarea{width:100%;padding:11px 14px;border-radius:var(--r-sm);border:1.5px solid var(--line);background:var(--card);font-family:var(--font-body);font-size:.95rem;color:var(--ink);outline:none;transition:border-color .15s, box-shadow .15s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(12,94,78,.12)}
+
+/* --------------------------------------------------------- DATA CHIP ------- */
+.datachip{display:inline-flex;align-items:baseline;gap:8px;font-family:var(--font-mono);font-size:.82rem;padding:7px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--paper)}
+.datachip .lb{font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+.datachip .vl{color:var(--primary);font-weight:600}
+
+/* --------------------------------------------------------- TABLE ----------- */
+/* wrap a <table> in <div class="table"> for the framed, rounded look */
+.table{border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.table table{width:100%;border-collapse:collapse;font-size:.92rem}
+.table thead th{text-align:left;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);font-weight:500;padding:13px 18px;background:var(--paper-2);border-bottom:1px solid var(--line)}
+.table tbody td{padding:12px 18px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+.table tbody tr:last-child td{border-bottom:0}
+
+/* --------------------------------------------------------- MOTION ---------- */
+/* add the data-reveal attribute + the tiny observer in ews-theme.js / starter */
+[data-reveal]{opacity:0;transform:translateY(14px);transition:opacity .7s ease, transform .7s ease}
+[data-reveal].in{opacity:1;transform:none}
+
+/* --------------------------------------------------------- A11Y ------------ */
+:focus-visible{outline:2.5px solid var(--primary);outline-offset:3px;border-radius:3px}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important;scroll-behavior:auto !important}
+  [data-reveal]{opacity:1;transform:none}
+}
+
+/* --------------------------------------------------------- RESPONSIVE ------ */
+@media (max-width:720px){
+  .row{grid-template-columns:1fr auto}
+  .row .pk{grid-column:1 / -1}
+}
