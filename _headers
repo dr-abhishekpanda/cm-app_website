@@ -1,0 +1,5 @@
+# Cloudflare Pages response headers.
+# IMNCI Case Assistant: browsers re-check these files on every visit, so an update reaches users
+# on their next online visit (the app keeps its own offline copy through imnci/sw.js).
+/imnci/*
+  Cache-Control: no-cache
