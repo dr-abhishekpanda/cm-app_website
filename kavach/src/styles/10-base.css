@@ -1,0 +1,72 @@
+/* ------------------------------------------------------------ base -------- */
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--top-h) + 12px)}
+body{
+  margin:0;min-height:100svh;
+  background:var(--paper);color:var(--ink);
+  font-family:var(--font-body);font-size:16px;line-height:1.55;font-weight:400;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-x:hidden;-webkit-tap-highlight-color:transparent;
+}
+body.large-text{font-size:18px}
+:lang(or){font-family:var(--font-odia)}
+:lang(or) body,html:lang(or) body{line-height:1.7}
+a{color:var(--primary);text-underline-offset:3px}
+img,svg{display:block}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+[hidden]{display:none !important}
+.ic{width:22px;height:22px;flex:none}
+.ic.sm{width:18px;height:18px}
+.ic.lg{width:28px;height:28px}
+.mark{width:34px;height:34px}
+
+/* substrate (EWS signature) */
+.grid-bg{
+  position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background-image:linear-gradient(to right,var(--line) 1px,transparent 1px),linear-gradient(to bottom,var(--line) 1px,transparent 1px);
+  background-size:34px 34px;opacity:.32;
+  -webkit-mask-image:radial-gradient(120% 90% at 70% 0%,#000 30%,transparent 78%);
+          mask-image:radial-gradient(120% 90% at 70% 0%,#000 30%,transparent 78%);
+}
+.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  background:radial-gradient(160% 120% at 80% -10%,rgba(12,94,78,.06),transparent 45%)}
+
+/* type */
+h1,h2,h3,h4{margin:0;font-weight:500;color:var(--ink)}
+h1{font-family:var(--font-display);font-size:clamp(1.7rem,6.4vw,2.3rem);letter-spacing:-.025em;line-height:1.08}
+h1 em,h2 em{font-style:italic;color:var(--primary)}
+h2{font-family:var(--font-display);font-size:1.32rem;letter-spacing:-.015em;line-height:1.15}
+h3{font-family:var(--font-display);font-size:1.08rem;letter-spacing:-.01em;line-height:1.25}
+h4{font-family:var(--font-body);font-size:.95rem;font-weight:600}
+:lang(or) h1,:lang(or) h2,:lang(or) h3{font-family:var(--font-odia-display);letter-spacing:0;line-height:1.35}
+:lang(or) h1{font-size:clamp(1.5rem,5.6vw,2rem)}
+:lang(or) h2{font-size:1.22rem}
+:lang(or) h3{font-size:1.04rem}
+p{margin:0 0 10px}
+.lede{color:var(--ink-soft);font-size:1.02rem}
+.small{font-size:.88rem;color:var(--ink-soft)}
+.faint{color:var(--ink-faint)}
+.mono,.num{font-family:var(--font-mono);font-feature-settings:"tnum" 1}
+.tc{text-align:center}
+.nowrap{white-space:nowrap}
+.sr{position:absolute !important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+hr,.hr{height:1px;background:var(--line);border:0;margin:14px 0}
+
+/* EWS ruled mono eyebrow — Odia drops the uppercase/mono tell (no glyphs) */
+.eyebrow{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:.7rem;font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--primary);margin:0 0 10px}
+.eyebrow::before{content:"";width:22px;height:1.5px;background:var(--primary);opacity:.6;flex:none}
+:lang(or) .eyebrow{font-family:var(--font-odia);letter-spacing:.02em;font-size:.8rem;font-weight:600;text-transform:none}
+
+/* focus + motion */
+:focus-visible{outline:2.5px solid var(--primary);outline-offset:2px;border-radius:4px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--primary);color:var(--paper);padding:8px 14px;border-radius:8px;z-index:200}
+.skip:focus{left:8px}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important;scroll-behavior:auto !important}}
+
+/* boot splash */
+.boot{min-height:60svh;display:grid;place-items:center;align-content:center;gap:12px}
+.boot-mark{width:64px;height:64px;animation:breathe 1.6s ease-in-out infinite}
+.boot-t{font-family:var(--font-odia-display);color:var(--ink-soft);margin:0}
+@keyframes breathe{50%{transform:scale(.94);opacity:.8}}

@@ -1,0 +1,38 @@
+/* ------------------------------------------------------------ onboarding -- */
+.ob-hero{text-align:center;padding:10px 0 18px}
+.ob-mark{width:76px;height:76px;margin:0 auto 10px}
+.ob-or{font-family:var(--font-odia-display) !important;font-weight:600;font-size:clamp(1.9rem,7vw,2.4rem);letter-spacing:0 !important;line-height:1.25 !important}
+.ob-en{font-family:"Fraunces",Georgia,serif;font-style:italic;color:var(--primary);font-size:1.12rem;margin:2px 0 10px}
+.ob-hero .lede{max-width:34ch;margin:0 auto}
+.ob-langs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.ob-lang{display:flex;flex-direction:column;align-items:center;gap:2px;padding:16px 10px;border-radius:var(--r);border:1.5px solid var(--line);background:var(--card)}
+.ob-lang b{font-size:1.2rem;font-weight:600}
+.ob-lang small{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+.ob-lang.on{border-color:var(--primary);background:var(--ok-tint);color:var(--primary);box-shadow:var(--primary-ring)}
+.ob-mode{position:relative;display:block}
+.ob-mode input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.ob-mode-in{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;padding:14px;border-radius:var(--r);border:1.5px solid var(--line);background:var(--card)}
+.ob-mode-in .lead{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:var(--ok-tint);color:var(--primary)}
+.ob-mode-in b{display:block;font-weight:600;font-size:1.02rem}
+.ob-mode-in small{display:block;color:var(--ink-soft);font-size:.86rem;line-height:1.4;margin-top:2px}
+.ob-mode input:checked+.ob-mode-in{border-color:var(--primary);box-shadow:var(--primary-ring)}
+.ob-mode input:focus-visible+.ob-mode-in{box-shadow:var(--primary-ring)}
+.ob .callout{margin-bottom:2px}
+
+/* ------------------------------------------------------------ home -------- */
+.hero{padding:6px 0 18px}
+.hero h1{margin-bottom:6px}
+.hero .lede{max-width:40ch}
+.cardrow{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
+.cardrow .who{min-width:0}
+.cardrow .who b{display:block;font-weight:600;font-size:1.04rem;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cardrow .who .pills{margin-top:5px}
+.cardrow .nx{font-size:.8rem;color:var(--ink-soft);margin-top:6px;display:flex;gap:6px;align-items:center}
+.cardrow .nx .ic{width:15px;height:15px;color:var(--accent)}
+.cards-list{display:grid;gap:10px}
+.danger-tile{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:14px;border-radius:var(--r);
+  background:var(--danger);color:#fff;text-decoration:none;box-shadow:var(--shadow)}
+.danger-tile .ic{width:28px;height:28px}
+.danger-tile b{display:block;font-size:1.05rem}
+.danger-tile small{display:block;opacity:.88;font-size:.84rem}
+.sample-badge{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--info);border:1px solid var(--info);border-radius:6px;padding:1px 5px;margin-left:6px;vertical-align:2px}

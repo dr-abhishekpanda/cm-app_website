@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" data-build="{{BUILD}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maa 'o' Shishu Kavach · ମା' ଓ ଶିଶୁ କବଚ</title>
+<meta name="description" content="Maa 'o' Shishu Kavach — a digital Mother and Child Protection (MCP) Card in Odia and English for mothers, families and health workers. Works offline; data stays on the phone. #CM-APP by Dr. Abhishek Panda, Community Medicine, GMCH Sundargarh.">
+<meta name="author" content="Dr. Abhishek Panda">
+<meta name="theme-color" content="#0C5E4E">
+<meta name="color-scheme" content="light">
+<meta name="application-name" content="Kavach">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Kavach">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<meta property="og:title" content="Maa 'o' Shishu Kavach · ମା' ଓ ଶିଶୁ କବଚ">
+<meta property="og:description" content="A digital Mother and Child Protection Card in Odia and English. Offline, private, free. #CM-APP">
+<meta property="og:type" content="website">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+Oriya:wght@400;500;600;700&family=Noto+Serif+Oriya:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/*{{CSS}}*/
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+<!--{{ICONS}}-->
+</svg>
+<div class="grid-bg" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<a class="skip" href="#view">Skip to content</a>
+
+<header class="topbar" id="topbar">
+  <div class="topbar-in">
+    <button class="tb-btn" id="tb-back" data-act="back" aria-label="Back" hidden><svg class="ic"><use href="#i-back"/></svg></button>
+    <a class="tb-mark" id="tb-mark" href="#/" aria-label="Home"><svg class="mark"><use href="#i-kavach"/></svg></a>
+    <div class="tb-title" id="tb-title"><b>Maa 'o' Shishu Kavach</b></div>
+    <button class="tb-lang" id="tb-lang" data-act="toggleLang" aria-label="Change language">ଓଡ଼ିଆ</button>
+    <a class="tb-btn tb-sos" id="tb-sos" href="#/help" aria-label="Emergency numbers"><svg class="ic"><use href="#i-phone"/></svg></a>
+  </div>
+</header>
+
+<main id="view" class="view" tabindex="-1">
+  <noscript><div class="wrap"><p>This app needs JavaScript. Please open it in Chrome or another modern browser.</p><p>ଏହି ଆପ୍ ପାଇଁ JavaScript ଆବଶ୍ୟକ। Chrome ବ୍ରାଉଜରରେ ଖୋଲନ୍ତୁ।</p></div></noscript>
+  <div class="boot"><svg class="mark boot-mark"><use href="#i-kavach"/></svg><p class="boot-t">ମା' ଓ ଶିଶୁ କବଚ</p></div>
+</main>
+
+<nav class="tabbar" id="tabbar" aria-label="Main">
+  <a href="#/" data-tab="home"><svg class="ic"><use href="#i-home"/></svg><span data-i18n="nav.home">Home</span></a>
+  <a href="#/due" data-tab="due"><svg class="ic"><use href="#i-bell"/></svg><span data-i18n="nav.due">Due</span></a>
+  <a href="#/learn" data-tab="learn"><svg class="ic"><use href="#i-book"/></svg><span data-i18n="nav.learn">Learn</span></a>
+  <a href="#/tools" data-tab="tools"><svg class="ic"><use href="#i-tools"/></svg><span data-i18n="nav.tools">Tools</span></a>
+  <a href="#/more" data-tab="more"><svg class="ic"><use href="#i-menu"/></svg><span data-i18n="nav.more">More</span></a>
+</nav>
+
+<div id="sheet-root"></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+/*{{JS}}*/
+</script>
+</body>
+</html>

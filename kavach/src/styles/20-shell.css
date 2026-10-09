@@ -1,0 +1,50 @@
+/* ------------------------------------------------------------ app shell --- */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:50;height:var(--top-h);
+  background:color-mix(in srgb,var(--paper) 88%,transparent);
+  -webkit-backdrop-filter:saturate(140%) blur(10px);backdrop-filter:saturate(140%) blur(10px);
+  border-bottom:1px solid var(--line)}
+.topbar-in{max-width:var(--maxw);margin:0 auto;height:100%;display:flex;align-items:center;gap:6px;padding:0 8px 0 10px}
+.tb-btn{width:42px;height:42px;display:grid;place-items:center;border:0;background:transparent;border-radius:12px;color:var(--ink);flex:none;text-decoration:none}
+.tb-btn:hover{background:var(--paper-2)}
+.tb-mark{display:grid;place-items:center;width:42px;height:42px;flex:none}
+.tb-mark .mark{width:32px;height:32px}
+.tb-title{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;line-height:1.15}
+.tb-title b{font-family:var(--font-display);font-weight:600;font-size:1.02rem;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-title small{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+:lang(or) .tb-title b{font-family:var(--font-odia-display);font-size:1rem;letter-spacing:0}
+:lang(or) .tb-title small{font-family:var(--font-odia);letter-spacing:0;text-transform:none;font-size:.72rem}
+.tb-lang{height:34px;padding:0 12px;border-radius:100px;border:1px solid var(--line);background:var(--card);
+  font-family:var(--font-odia);font-weight:600;font-size:.86rem;color:var(--primary);flex:none}
+.tb-lang:hover{border-color:var(--primary)}
+.tb-sos{color:var(--danger)}
+
+.view{display:block;padding:calc(var(--top-h) + 14px) 0 calc(var(--tab-h) + var(--safe-b) + 28px);outline:none;min-height:100svh}
+.wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter)}
+
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:50;height:calc(var(--tab-h) + var(--safe-b));padding-bottom:var(--safe-b);
+  display:grid;grid-template-columns:repeat(5,1fr);
+  background:color-mix(in srgb,var(--card) 94%,transparent);
+  -webkit-backdrop-filter:saturate(140%) blur(10px);backdrop-filter:saturate(140%) blur(10px);
+  box-shadow:var(--shadow-up)}
+.tabbar a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:var(--ink-faint);
+  font-size:.7rem;font-weight:600;letter-spacing:.01em;position:relative;padding-top:2px}
+:lang(or) .tabbar a{font-size:.74rem;font-weight:600}
+.tabbar a .ic{width:23px;height:23px}
+.tabbar a.on{color:var(--primary)}
+.tabbar a.on::before{content:"";position:absolute;top:0;left:28%;right:28%;height:2.5px;border-radius:0 0 3px 3px;background:var(--primary)}
+.tabbar .badge{position:absolute;top:7px;left:calc(50% + 6px);min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--danger);color:#fff;
+  font-family:var(--font-mono);font-size:.62rem;display:grid;place-items:center;line-height:1}
+
+@media (min-width:900px){
+  :root{--maxw:820px}
+}
+
+/* page header inside the view */
+.phead{margin:4px 0 16px}
+.phead .eyebrow{margin-bottom:8px}
+.phead p{margin-top:6px}
+.crumbs{display:flex;gap:6px;align-items:center;font-size:.8rem;color:var(--ink-faint);margin-bottom:8px;flex-wrap:wrap}
+.crumbs a{color:var(--ink-soft);text-decoration:none}
+.crumbs a:hover{color:var(--primary)}
+body.no-tabs .tabbar{display:none}
+body.no-tabs .view{padding-bottom:calc(28px + var(--safe-b))}

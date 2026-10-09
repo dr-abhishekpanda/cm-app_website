@@ -1,0 +1,52 @@
+/* ============================================================================
+   Tokens — The Epidemiologist's Worksheet (EWS v1.0, locked 6 Jul 2026)
+   Brand values copied from brand/ews.css. App-only additions are marked
+   "app:" and are derived washes of brand/functional colours, not new hues.
+   ============================================================================ */
+:root{
+  /* surfaces & ink */
+  --paper:#F4F5F1;
+  --paper-2:#ECEEE7;
+  --card:#FAFBF7;
+  --ink:#15201B;
+  --ink-soft:#4B5A52;
+  --ink-faint:#7B877E;
+  --line:#D7DCD1;
+  --line-soft:#E4E7DD;
+
+  /* brand */
+  --primary:#0C5E4E;
+  --primary-deep:#08493C;
+  --accent:#BE651F;
+  --accent-tint:#F0E2D2;
+
+  /* functional signals */
+  --ok:#0C5E4E;
+  --warn:#BE651F;
+  --danger:#A23B2B;
+  --info:#3D6E7A;
+
+  /* app: washes of the signals above (same hues, low alpha) */
+  --ok-tint:rgba(12,94,78,.10);
+  --danger-tint:rgba(162,59,43,.10);
+  --info-tint:rgba(61,110,122,.11);
+  --primary-ring:0 0 0 3px rgba(12,94,78,.14);
+
+  /* type — Odia falls through to Noto Sans/Serif Oriya (system font on Android) */
+  --font-display:"Fraunces","Noto Serif Oriya","Noto Sans Oriya",Georgia,"Times New Roman",serif;
+  --font-body:"IBM Plex Sans","Noto Sans Oriya","Kalinga","Oriya Sangam MN",system-ui,-apple-system,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",monospace;
+  --font-odia:"Noto Sans Oriya","Kalinga","Oriya Sangam MN","Noto Sans",system-ui,sans-serif;
+  --font-odia-display:"Noto Serif Oriya","Noto Sans Oriya","Kalinga",serif;
+
+  /* measure, radius, rhythm */
+  --maxw:760px;
+  --gutter:16px;
+  --r:14px;
+  --r-sm:9px;
+  --top-h:56px;
+  --tab-h:62px;
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --shadow:0 1px 2px rgba(21,32,27,.04), 0 10px 30px -18px rgba(21,32,27,.28);
+  --shadow-up:0 -1px 0 var(--line), 0 -10px 30px -22px rgba(21,32,27,.25);
+}
