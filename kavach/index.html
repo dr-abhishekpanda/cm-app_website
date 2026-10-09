@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="f9755906e9">
+<html lang="en" data-build="44ef9ee986">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -381,6 +381,8 @@ fieldset.fgroup>legend+*{clear:both}
 .yn input:checked+span{background:var(--ink-soft);color:#fff}
 .yn input[value="1"]:checked+span{background:var(--danger);color:#fff}
 .yn input[value="0"]:checked+span{background:var(--primary);color:#fff}
+.yn.pos input[value="1"]:checked+span{background:var(--primary)}
+.yn.pos input[value="0"]:checked+span{background:var(--danger)}
 .yn input:focus-visible+span{box-shadow:inset 0 0 0 3px rgba(12,94,78,.35)}
 .ynrow.auto .yn{opacity:.85}
 
@@ -576,6 +578,15 @@ details.acc .acc-b{padding:0 14px 14px}
 .tk.m1{border-color:var(--ink-faint)}
 .tk[disabled]{opacity:.35}
 
+/* family planning + misc */
+details.acc.fp>summary{gap:10px}
+details.acc.fp>summary .pill{margin-left:auto}
+details.acc.fp>summary::after{margin-left:8px}
+details.acc.fp.on{border-color:var(--primary)}
+.photo-prev{width:96px;height:96px;object-fit:cover;border-radius:14px;border:1px solid var(--line);margin-top:6px}
+.cardhead .who h1{font-size:clamp(1.5rem,6vw,2rem)}
+.cardrow .who .small{display:block}
+
 </style>
 </head>
 <body>
@@ -698,8 +709,8 @@ details.acc .acc-b{padding:0 14px 14px}
    escapes interpolated values unless they are K.raw()/nested K.h results.
    ============================================================================ */
 const K = window.K = window.K || {};
-K.build = 'f9755906e9';
-K.builtAt = '2026-10-09T12:14:21.687Z';
+K.build = '44ef9ee986';
+K.builtAt = '2026-10-09T12:24:28.243Z';
 
 class Raw { constructor(s){ this.s = s; } toString(){ return this.s; } }
 K.Raw = Raw;
@@ -1170,7 +1181,7 @@ K.ui = {
   yn(o) {
     const v = o.value == null ? '' : String(o.value);
     return h`<div class="ynrow ${o.auto ? 'auto' : ''}"><div class="q">${o.code ? h`<span class="code">${o.code}</span>` : ''}${o.q}${o.sub ? h`<small>${o.sub}</small>` : ''}</div>
-      <div class="yn" role="radiogroup" aria-label="${o.q}"><label><input type="radio" name="${o.name}" value="1" ${v === '1' ? K.raw('checked') : ''} ${o.live ? K.raw(`data-live="${K.esc(o.live)}"`) : ''}><span>${o.yes || K.t('yes')}</span></label><label><input type="radio" name="${o.name}" value="0" ${v === '0' ? K.raw('checked') : ''} ${o.live ? K.raw(`data-live="${K.esc(o.live)}"`) : ''}><span>${o.no || K.t('no')}</span></label></div></div>`;
+      <div class="yn ${o.pos ? 'pos' : ''}" role="radiogroup" aria-label="${o.q}"><label><input type="radio" name="${o.name}" value="1" ${v === '1' ? K.raw('checked') : ''} ${o.live ? K.raw(`data-live="${K.esc(o.live)}"`) : ''}><span>${o.yes || K.t('yes')}</span></label><label><input type="radio" name="${o.name}" value="0" ${v === '0' ? K.raw('checked') : ''} ${o.live ? K.raw(`data-live="${K.esc(o.live)}"`) : ''}><span>${o.no || K.t('no')}</span></label></div></div>`;
   },
   sw: (o) => h`<label class="switch"><span class="sw-t"><b>${o.title}</b>${o.sub ? h`<small>${o.sub}</small>` : ''}</span><input type="checkbox" name="${o.name}" ${o.checked ? K.raw('checked') : ''} ${o.live ? K.raw(`data-live="${K.esc(o.live)}"`) : ''}><span class="tr" aria-hidden="true"></span></label>`,
   seg: (items, active) => h`<div class="seg" role="tablist">${items.map(it => it.href ? h`<a href="${it.href}" class="${it.k === active ? 'on' : ''}" role="tab" aria-selected="${it.k === active}">${it.l}</a>` : h`<button type="button" class="${it.k === active ? 'on' : ''}" data-act="${it.act}" data-arg="${it.k}" role="tab" aria-selected="${it.k === active}">${it.l}</button>`)}</div>`,
@@ -1900,7 +1911,9 @@ K.route('/card/:id', ({ id }) => {
     trail: phone ? h`<a class="icon-btn" href="tel:${K.card.tel(phone)}" aria-label="${K.t('btn.call')}">${K.ui.icon('phone')}</a>` : '' }) : '';
   const contactsHtml = [contact('c.asha', ct.asha, ct.ashaPhone), contact('c.anm', ct.anm, ct.anmPhone), contact('c.aww', ct.aww, ct.awwPhone),
     ct.deliveryPoint || ct.deliveryPhone ? contact('c.dp', ct.deliveryPoint, ct.deliveryPhone) : '', ct.mamataDivas ? K.ui.li({ icon: 'calendar', title: ct.mamataDivas, meta: K.t('c.mamataDivas') }) : ''].filter(x => x && String(x));
-  const pastPregs = (c.pregnancies || []).filter(x => x !== p).sort(K.by(x => (x.delivery && x.delivery.date) || x.createdAt, -1));
+  const last = K.card.lastDelivered(c); const recentDay = last ? K.d.diff(last.delivery.date, K.d.today()) : 999;
+  const recent = !p && last && recentDay <= 60 ? last : null;
+  const pastPregs = (c.pregnancies || []).filter(x => x !== p && x !== recent).sort(K.by(x => (x.delivery && x.delivery.date) || x.createdAt, -1));
   return {
     title: m.name || K.t('app.name'), sub: K.t('app.tag'), back: '/', tab: 'home',
     html: h`<div class="wrap">
@@ -1910,8 +1923,9 @@ K.route('/card/:id', ({ id }) => {
       ${c.sample ? K.ui.callout('info', '', K.t('sample.note'), 'sparkle') : ''}
       ${due.length ? h`<section class="sec">${K.ui.secH(K.t('card.next'))}<div class="list">${due.map(it => K.ui.li({ href: it.href, icon: it.icon || 'bell', tone: it.status === 'overdue' ? 'red' : it.status === 'due' ? 'amber' : 'ink',
           title: K.L(it.title), meta: [it.who, K.d.fmt(it.date)].filter(Boolean).join(' · '), trail: K.ui.pill(K.due.label(it), K.due.tone(it)) }))}</div></section>` : ''}
-      <section class="sec">${K.ui.secH(K.t('card.preg'))}
+      <section class="sec">${K.ui.secH(recent ? K.t('pnc.title') : K.t('card.preg'))}
         ${p ? (K.preg && K.preg.summaryCard ? K.preg.summaryCard(c, p) : K.ui.li({ href: `#/card/${c.id}/preg/${p.id}`, icon: 'mother', title: K.t('card.preg') }))
+          : recent ? h`<div class="list">${K.ui.li({ href: `#/card/${c.id}/preg/${recent.id}/pnc`, icon: 'heart', tone: 'info', title: K.t('preg.deliveredOn', { d: K.d.fmt(recent.delivery.date) }), meta: recentDay <= 42 ? K.t('stage.pnc', { d: recentDay }) : '' })}</div>`
           : K.ui.btn(K.t('card.addPreg'), { href: `#/card/${c.id}/preg/new`, tone: 'ghost', icon: 'plus' })}
       </section>
       <section class="sec">${K.ui.secH(K.t('card.children'), K.ui.btn(K.t('card.addChild'), { href: `#/card/${c.id}/child/new`, tone: 'ghost', size: 'sm', icon: 'plus' }))}
@@ -3074,6 +3088,614 @@ K.due.add((c, today) => {
   const d32 = K.preg.dateAt(p, 32); if (d32 && done < 5 && g.days < 40 * 7) out.push({ id: 'plan', kind: 'plan', icon: 'flag', href: url + '/plan', title: { en: 'Complete the birth plan', or: 'ପ୍ରସବ ପ୍ରସ୍ତୁତି ସମ୍ପୂର୍ଣ୍ଣ କରନ୍ତୁ' }, date: d32 });
   return out;
 });
+
+}
+/* ── modules/25-delivery.js ── */
+{
+/* ============================================================================
+   modules/25-delivery — delivery record, postnatal (PNC/HBNC) home visits
+   for mother and newborn, postpartum IFA/calcium.
+   HBNC schedule (Odisha MCP V-2023-24 p.10; HBNC guidelines): ASHA visits on
+   days 3, 7, 14, 21, 28, 42 (plus day 1 for home births); after SNCU/NBSU
+   discharge the same days are counted from discharge.
+   ============================================================================ */
+const h = K.h;
+
+K.i18n.add({
+  'del.title': { en: 'Delivery record', or: 'ପ୍ରସବ ବିବରଣୀ' },
+  'del.date': { en: 'Date of delivery', or: 'ପ୍ରସବ ତାରିଖ' },
+  'del.time': { en: 'Time', or: 'ସମୟ' },
+  'del.place': { en: 'Place of delivery', or: 'ପ୍ରସବ ସ୍ଥାନ' },
+  'del.place.inst': { en: 'Hospital', or: 'ଡାକ୍ତରଖାନା' }, 'del.place.home': { en: 'Home', or: 'ଘର' }, 'del.place.transit': { en: 'On the way', or: 'ବାଟରେ' },
+  'del.facility': { en: 'Hospital name', or: 'ଡାକ୍ତରଖାନାର ନାମ' },
+  'del.facType': { en: 'Type of facility', or: 'ସ୍ୱାସ୍ଥ୍ୟକେନ୍ଦ୍ରର ପ୍ରକାର' },
+  'fac.sc': { en: 'Sub-centre', or: 'ଉପକେନ୍ଦ୍ର' }, 'fac.phc': { en: 'PHC', or: 'ପ୍ରା.ସ୍ୱା.କେ.' }, 'fac.chc': { en: 'CHC', or: 'ଗୋ.ସ୍ୱା.କେ.' }, 'fac.sdh': { en: 'Sub-divisional hospital', or: 'ଉପଖଣ୍ଡ ଡାକ୍ତରଖାନା' },
+  'fac.dh': { en: 'District hospital', or: 'ଜିଲ୍ଲା ମୁଖ୍ୟ ଚିକିତ୍ସାଳୟ' }, 'fac.mch': { en: 'Medical college', or: 'ମେଡିକାଲ୍ କଲେଜ' }, 'fac.pvt': { en: 'Private hospital', or: 'ଘରୋଇ ଡାକ୍ତରଖାନା' },
+  'del.by': { en: 'Delivery conducted by', or: 'କିଏ ପ୍ରସବ କରାଇଲେ' },
+  'att.doc': { en: 'Doctor', or: 'ଡାକ୍ତର' }, 'att.sba': { en: 'Nurse / ANM (skilled)', or: 'ନର୍ସ / ଏ.ଏନ୍.ଏମ୍. (ଦକ୍ଷ)' }, 'att.other': { en: 'Other / untrained', or: 'ଅନ୍ୟ / ଅପ୍ରଶିକ୍ଷିତ' },
+  'del.type': { en: 'Type of delivery', or: 'ପ୍ରସବର ପ୍ରକାର' },
+  'dt.normal': { en: 'Normal', or: 'ସାଧାରଣ' }, 'dt.assisted': { en: 'Assisted (vacuum / forceps)', or: 'ଯାନ୍ତ୍ରିକ' }, 'dt.cs': { en: 'Caesarean', or: 'ଅସ୍ତ୍ରୋପଚାର' },
+  'del.ga': { en: 'Weeks of pregnancy at delivery', or: 'ପ୍ରସବ ସମୟରେ ଗର୍ଭର ସପ୍ତାହ' },
+  'del.gaBand': { en: 'Delivered', or: 'ପ୍ରସବ ସମୟ' },
+  'ga.lt34': { en: 'Before 34 weeks', or: '୩୪ ସପ୍ତାହ ପୂର୍ବରୁ' }, 'ga.34to37': { en: '34–37 weeks', or: '୩୪-୩୭ ସପ୍ତାହ ମଧ୍ୟରେ' }, 'ga.ge37': { en: 'After 37 weeks', or: '୩୭ ସପ୍ତାହ ପରେ' },
+  'del.acs': { en: 'If born before 34 weeks: antenatal corticosteroid (dexamethasone) given?', or: 'ଯଦି ୩୪ ସପ୍ତାହ ପୂର୍ବରୁ ପ୍ରସବ ହୋଇଥାଏ, ତେବେ Antenatal Corticosteroid (ଡେକ୍ସାମିଥାଜୋନ) ଦିଆଯାଇଛି କି?' },
+  'del.babies': { en: 'Number of babies', or: 'ଶିଶୁଙ୍କ ସଂଖ୍ୟା' },
+  'del.baby': { en: 'Baby {n}', or: 'ଶିଶୁ {n}' },
+  'del.outcome': { en: 'Outcome', or: 'ଫଳାଫଳ' }, 'out.live': { en: 'Live birth', or: 'ଜୀବିତ ଜନ୍ମ' }, 'out.still': { en: 'Stillbirth', or: 'ମୃତ ଜନ୍ମ' },
+  'del.stay': { en: 'Days in hospital after delivery', or: 'ପ୍ରସବ ପରେ କେତେଦିନ ଡାକ୍ତରଖାନାରେ ରହିଲେ' },
+  'del.compl': { en: 'Problems at delivery, if any', or: 'ଅସୁବିଧା, ଯଦି ହୋଇଛି' },
+  'cmp.pph': { en: 'Heavy bleeding (PPH)', or: 'ଅତିରିକ୍ତ ରକ୍ତସ୍ରାବ (PPH)' }, 'cmp.ecl': { en: 'Fits (eclampsia)', or: 'ବାତ (ଏକ୍ଲାମ୍ପସିଆ)' }, 'cmp.obst': { en: 'Prolonged / obstructed labour', or: 'ଦୀର୍ଘ / ଅବରୁଦ୍ଧ ପ୍ରସବ' },
+  'cmp.ret': { en: 'Retained placenta', or: 'ଗର୍ଭଫୁଲ ରହିଯିବା' }, 'cmp.tear': { en: 'Tear needing stitches', or: 'ଛିଣ୍ଡିବା (ସିଲେଇ ଆବଶ୍ୟକ)' }, 'cmp.sepsis': { en: 'Infection / fever', or: 'ସଂକ୍ରମଣ / ଜ୍ୱର' },
+  'del.save': { en: 'Save delivery', or: 'ପ୍ରସବ ବିବରଣୀ ସେଭ୍ କରନ୍ତୁ' },
+  'del.babyName': { en: 'Name (optional)', or: 'ନାମ (ଇଚ୍ଛାଧୀନ)' },
+  'del.after': { en: 'After delivery', or: 'ପ୍ରସବ ପରେ' },
+  'del.summary': { en: '{d} · {place} · {type}', or: '{d} · {place} · {type}' },
+  'del.edit': { en: 'Edit delivery record', or: 'ପ୍ରସବ ବିବରଣୀ ସଂଶୋଧନ' },
+  'pnc.title': { en: 'After delivery', or: 'ପ୍ରସବ ପରର ଯତ୍ନ' },
+  'pnc.visits': { en: 'Home visits (mother and newborn)', or: 'ଗୃହ ପରିଦର୍ଶନ (ମା\' ଓ ନବଜାତ ଶିଶୁ)' },
+  'pnc.day': { en: 'Day {n}', or: '{n} ଦିନ' },
+  'pnc.visit': { en: 'Home visit · day {n}', or: 'ଗୃହ ପରିଦର୍ଶନ · {n} ଦିନ' },
+  'pnc.mother': { en: "Mother's check", or: "ମା'ଙ୍କ ପ୍ରସବ ପରବର୍ତ୍ତୀ ଆକଳନ" },
+  'pnc.baby': { en: 'Newborn check', or: 'ନବଜାତ ଶିଶୁର ଆକଳନ' },
+  'pnc.rule': { en: 'The ASHA visits on days 3, 7, 14, 21, 28 and 42 after delivery (also day 1 if born at home). Stay 48 hours in hospital after delivery.', or: 'ପ୍ରସବ ପରେ ଆଶାକର୍ମୀ ୩ୟ, ୭ମ, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନରେ ଗୃହ ପରିଦର୍ଶନ କରିବେ (ଘରେ ଜନ୍ମ ହୋଇଥିଲେ ୧ମ ଦିନ ମଧ୍ୟ)। ପ୍ରସବ ପରେ ୪୮ ଘଣ୍ଟା ଡାକ୍ତରଖାନାରେ ରୁହନ୍ତୁ।' },
+  'pnc.save': { en: 'Save visit', or: 'ପରିଦର୍ଶନ ସେଭ୍ କରନ୍ତୁ' },
+  'pnc.ppTabs': { en: 'Iron and calcium after delivery', or: 'ପ୍ରସବ ପରେ ଲୌହ ଓ କ୍ୟାଲସିୟମ୍' },
+  'pnc.ppRule': { en: 'Take one IFA tablet and two calcium tablets every day for 6 months after delivery.', or: 'ପ୍ରସବ ପରଠାରୁ ୬ ମାସ ପର୍ଯ୍ୟନ୍ତ ଗୋଟିଏ IFA ଏବଂ ଦୁଇଟି କ୍ୟାଲସିୟମ୍ ବଟିକା ନିଶ୍ଚିତ ଖାଆନ୍ତୁ।' },
+  'pnc.result': { en: 'What this visit shows', or: 'ଏହି ପରିଦର୍ଶନରୁ କ\'ଣ ଜଣାପଡ଼ିଲା' },
+  'pnc.sncuNote': { en: 'Visits counted from SNCU/NBSU discharge on {d}.', or: '{d} ରେ SNCU/NBSU ଡିସ୍‌ଚାର୍ଜ ଦିନଠାରୁ ପରିଦର୍ଶନ ଗଣନା।' },
+  // mother checks (Odisha p.6 list)
+  'pm.pallor': { en: 'Palms or eyes pale (anaemia)', or: 'ହାତ ପାପୁଲି, ଆଖି ଶେଥା ପଡ଼ିଯିବା ବା ରକ୍ତହୀନତା ହେବା' },
+  'pm.breast': { en: 'Breasts', or: 'ସ୍ତନ' }, 'br.normal': { en: 'Normal', or: 'ସାଧାରଣ' }, 'br.engorged': { en: 'Hard, swollen, painful', or: 'ଟାଣ/ନରମ/ଫୁଲିଯିବା' }, 'br.cracked': { en: 'Cracked nipple', or: 'ସ୍ତନବୃନ୍ତ ଫାଟିଯିବା' },
+  'pm.uterus': { en: 'Pain or tenderness in the uterus', or: 'ଗର୍ଭାଶୟର ଦରଜ' },
+  'pm.discharge': { en: 'Fever or foul-smelling discharge', or: 'ଜ୍ୱର କିମ୍ବା ଦୁର୍ଗନ୍ଧଯୁକ୍ତ ସ୍ରାବ' },
+  'pm.episio': { en: 'Stitch site painful, swollen, or with pus or blood', or: 'ଏପିସିଓଟୋମି ଜାଗାରେ ବ୍ୟଥା /ଫୁଲିବା /ପୂଜ କିମ୍ବା ରକ୍ତ ବାହାରିବା' },
+  'pm.pain': { en: 'Pain after delivery', or: 'ପ୍ରସବ ପରବର୍ତ୍ତୀ ଯନ୍ତ୍ରଣା' },
+  'pm.bleed': { en: 'Heavy bleeding', or: 'ରକ୍ତ ସ୍ରାବ ହେବା' },
+  'pm.fits': { en: 'Fits', or: 'ବାତ ମାରିବା' },
+  'pm.headache': { en: 'Severe headache', or: 'ତୀକ୍ଷଣ ମୁଣ୍ଡବ୍ୟଥା ହେବା' },
+  'pm.toilet': { en: 'Passing urine and stool normally', or: 'ପରିସ୍ରା / ମଳତ୍ୟାଗ କରିଛନ୍ତି' },
+  'pm.bf': { en: 'Breastfeeding well', or: 'ସ୍ତନ୍ୟପାନ କରାଉଛନ୍ତି' },
+  'pm.diet': { en: 'Eating normal food', or: 'ସାଧାରଣ ଖାଦ୍ୟ ଖାଉଛନ୍ତି' },
+  'pm.rest': { en: 'Resting 8–10 hours a day', or: 'ଦିନକୁ ୮ ରୁ ୧୦ ଘଣ୍ଟା ବିଶ୍ରାମ' },
+  'pm.mood': { en: 'Feeling very sad, anxious or unable to sleep most days', or: 'ଅଧିକାଂଶ ଦିନ ଅତ୍ୟଧିକ ଦୁଃଖ, ଚିନ୍ତା ବା ନିଦ ନ ହେବା' },
+  'pm.fp': { en: 'Family planning counselling given', or: 'ପରିବାର ନିୟୋଜନ ପରାମର୍ଶ ଦିଆଗଲା' },
+  'pm.other': { en: 'Any other problem', or: 'ଅନ୍ୟ କୌଣସି ଅସୁବିଧା' },
+  // newborn checks (national MCP p.7 "Care of baby" + Odisha p.9)
+  'pb.weight': { en: 'Weight', or: 'ଓଜନ' }, 'pb.temp': { en: 'Temperature (armpit)', or: 'ତାପମାତ୍ରା (କାଖ)' },
+  'pb.breaths': { en: 'Breaths in one minute', or: 'ମିନିଟ୍‌ରେ ଶ୍ୱାସ ସଂଖ୍ୟା' },
+  'pb.urine': { en: 'Passed urine', or: 'ପରିସ୍ରା କରୁଛି' }, 'pb.stool': { en: 'Passed stool', or: 'ଝାଡ଼ା ହେଉଛି' },
+  'pb.ebf': { en: 'Only breast milk', or: 'କେବଳ ମା\' କ୍ଷୀର' },
+  'pb.suck': { en: 'Sucking well', or: 'ଭଲ ଭାବେ ଚୁଚୁମୁଛି' }, 'pb.active': { en: 'Active (not drowsy)', or: 'ସକ୍ରିୟ (ନିସ୍ତେଜ ନୁହେଁ)' },
+  'pb.diarrhoea': { en: 'Diarrhoea', or: 'ତରଳ ଝାଡ଼ା' }, 'pb.vomit': { en: 'Vomiting', or: 'ବାନ୍ତି' }, 'pb.fits': { en: 'Convulsions', or: 'ବାତ' },
+  'pb.indrawing': { en: 'Chest indrawing', or: 'ଛାତି ଭିତରକୁ ପଶିବା' }, 'pb.jaundice': { en: 'Yellow palms or soles', or: 'ପାପୁଲି ବା ପାଦ ତଳ ହଳଦିଆ' },
+  'pb.cord': { en: 'Cord stump', or: 'ନାଭି' }, 'cord.dry': { en: 'Dry, clean', or: 'ଶୁଖିଲା, ପରିଷ୍କାର' }, 'cord.red': { en: 'Red or with pus', or: 'ଲାଲ ବା ପୂଜ' },
+  'pb.pustules': { en: 'Pus-filled boils on skin', or: 'ଚର୍ମରେ ପୂଜଥିବା ଫୋଟକା' }, 'pb.eyes': { en: 'Sticky or red eyes', or: 'ଆଖିରୁ ପିଚୁଟି ବା ଲାଲ ଆଖି' },
+  'pb.kmc': { en: 'Kept warm (skin-to-skin if small)', or: 'ଉଷୁମ ରଖାଯାଇଛି (ଛୋଟ ଶିଶୁ ହେଲେ ଛାତିରେ ଲଗାଇ)' },
+  'tool.breath': { en: 'Count breaths with the timer', or: 'ଟାଇମର୍ ସହ ଶ୍ୱାସ ଗଣନ୍ତୁ' },
+});
+
+K.pnc = {};
+K.pnc.days = (p) => { const d = p.delivery || {}; return (d.place === 'inst' ? [3, 7, 14, 21, 28, 42] : [1, 3, 7, 14, 21, 28, 42]); };
+K.pnc.base = (p, c) => { const d = p.delivery || {}; const kids = (c.children || []).filter(k => k.pregId === p.id); const s = kids.map(k => k.birth && k.birth.sncu && k.birth.sncuDischarge).filter(Boolean).sort().pop(); return s || d.date; };
+K.pnc.schedule = (p, c, today) => {
+  today = today || K.d.today(); if (!p.delivery || !p.delivery.date) return [];
+  const base = K.pnc.base(p, c); // day 1 = day of birth (or of SNCU discharge)
+  return K.pnc.days(p).map(n => {
+    const date = K.d.addDays(base, n - 1);
+    const v = (p.pnc || []).find(x => x.day === n);
+    const lag = K.d.diff(date, today);
+    const st = v ? 'done' : lag < 0 ? 'upcoming' : lag <= 2 ? 'due' : 'overdue';
+    return { n, date, v, st };
+  });
+};
+
+/* flags */
+K.pnc.motherFlags = (m) => {
+  const out = []; const F = (tone, key, extra) => out.push({ tone, en: K.i18n.dict[key].en + (extra ? ` — ${extra.en}` : ''), or: K.i18n.dict[key].or + (extra ? ` — ${extra.or}` : '') });
+  const sys = K.num(m.bpSys), dia = K.num(m.bpDia), t = K.num(m.temp); const tC = t == null ? null : (t > 45 ? (t - 32) * 5 / 9 : t);
+  if ((sys != null && sys >= 140) || (dia != null && dia >= 90)) out.push({ tone: 'danger', en: 'High BP after delivery (≥140/90): refer today — risk of eclampsia.', or: 'ପ୍ରସବ ପରେ ଉଚ୍ଚ ରକ୍ତଚାପ (≥୧୪୦/୯୦): ଆଜି ହିଁ ପଠାନ୍ତୁ — ଏକ୍ଲାମ୍ପସିଆ ଆଶଙ୍କା।' });
+  if (tC != null && tC >= 38) out.push({ tone: 'danger', en: 'Fever after delivery: possible infection — refer.', or: 'ପ୍ରସବ ପରେ ଜ୍ୱର: ସଂକ୍ରମଣ ଆଶଙ୍କା — ପଠାନ୍ତୁ।' });
+  const D = { tone: 'danger' }, W = { tone: 'warn' };
+  [['bleed', D], ['fits', D], ['headache', D], ['uterus', D], ['discharge', D]].forEach(([k, o]) => { if (+m[k] === 1) F(o.tone, 'pm.' + k, { en: 'go to hospital', or: 'ଡାକ୍ତରଖାନା ଯାଆନ୍ତୁ' }); });
+  [['pallor', W, { en: 'check haemoglobin; continue IFA', or: 'ହିମୋଗ୍ଲୋବିନ୍ ଯାଞ୍ଚ; IFA ଜାରି ରଖନ୍ତୁ' }], ['episio', W, { en: 'show to the ANM', or: 'ଏ.ଏନ୍.ଏମ୍.ଙ୍କୁ ଦେଖାନ୍ତୁ' }], ['pain', W, null]].forEach(([k, o, x]) => { if (+m[k] === 1) F(o.tone, 'pm.' + k, x); });
+  if (m.breast === 'engorged') out.push({ tone: 'warn', en: 'Breasts hard and painful: feed often from both sides, check attachment; fever with a red breast needs a doctor.', or: 'ସ୍ତନ ଟାଣ ଓ ଯନ୍ତ୍ରଣାଦାୟକ: ଦୁଇପଟୁ ବାରମ୍ବାର ପିଆନ୍ତୁ, ଠିକ୍ ଭାବେ ଲଗାନ୍ତୁ; ଜ୍ୱର ସହ ଲାଲ ସ୍ତନ ହେଲେ ଡାକ୍ତର ଦେଖାନ୍ତୁ।' });
+  if (m.breast === 'cracked') out.push({ tone: 'warn', en: 'Cracked nipple: correct the position and attachment; apply a little breast milk after feeds.', or: 'ସ୍ତନବୃନ୍ତ ଫାଟିଛି: ଶିଶୁକୁ ଠିକ୍ ଭାବେ ଲଗାନ୍ତୁ; ପିଆଇବା ପରେ ଟିକେ ମା\' କ୍ଷୀର ଲଗାନ୍ତୁ।' });
+  if (+m.toilet === 0) out.push({ tone: 'warn', en: 'Not passing urine or stool normally: tell the ANM.', or: 'ପରିସ୍ରା ବା ମଳତ୍ୟାଗ ସାଧାରଣ ନୁହେଁ: ଏ.ଏନ୍.ଏମ୍.ଙ୍କୁ ଜଣାନ୍ତୁ।' });
+  if (+m.bf === 0) out.push({ tone: 'warn', en: 'Breastfeeding difficulty: ask the ASHA/ANM to help with position and attachment.', or: 'ସ୍ତନ୍ୟପାନରେ ଅସୁବିଧା: ଆଶା/ଏ.ଏନ୍.ଏମ୍.ଙ୍କ ସାହାଯ୍ୟ ନିଅନ୍ତୁ।' });
+  if (+m.mood === 1) out.push({ tone: 'warn', en: 'Low mood or worry after delivery is common and treatable. Talk to the ANM or doctor; Tele-MANAS 14416 is free.', or: 'ପ୍ରସବ ପରେ ମନ ଦୁଃଖ ବା ଚିନ୍ତା ସାଧାରଣ ଓ ଚିକିତ୍ସା ଯୋଗ୍ୟ। ଏ.ଏନ୍.ଏମ୍. ବା ଡାକ୍ତରଙ୍କ ସହ କଥା ହୁଅନ୍ତୁ; ଟେଲି-ମାନସ୍ ୧୪୪୧୬ ମାଗଣା।' });
+  return out;
+};
+K.pnc.babyFlags = (b, k, day) => {
+  const out = []; const D = (en, or) => out.push({ tone: 'danger', en, or }); const W = (en, or) => out.push({ tone: 'warn', en, or });
+  const t = K.num(b.temp); const tC = t == null ? null : (t > 45 ? (t - 32) * 5 / 9 : t);
+  if (tC != null && tC >= 37.5) D('Feels hot (37.5 °C or more): danger sign — take to hospital.', 'ଗରମ (୩୭.୫ °C ବା ଅଧିକ): ବିପଦ ଲକ୍ଷଣ — ଡାକ୍ତରଖାନା ନିଅନ୍ତୁ।');
+  if (tC != null && tC < 35.5) D('Feels cold (below 35.5 °C): warm skin-to-skin and take to hospital.', 'ଥଣ୍ଡା (୩୫.୫ °C ରୁ କମ୍): ଛାତିରେ ଲଗାଇ ଉଷୁମ କରି ଡାକ୍ତରଖାନା ନିଅନ୍ତୁ।');
+  const br = K.num(b.breaths); if (br != null && br >= 60) D(`${br} breaths a minute (60 or more): fast breathing — take to hospital.`, `ମିନିଟ୍‌କୁ ${br} ଥର ଶ୍ୱାସ (୬୦ ବା ଅଧିକ): ଦ୍ରୁତ ଶ୍ୱାସ — ଡାକ୍ତରଖାନା ନିଅନ୍ତୁ।`);
+  if (+b.fits === 1) D('Convulsions: take to hospital now.', 'ବାତ: ଏବେ ହିଁ ଡାକ୍ତରଖାନା ନିଅନ୍ତୁ।');
+  if (+b.indrawing === 1) D('Chest indrawing: take to hospital now.', 'ଛାତି ଭିତରକୁ ପଶୁଛି: ଏବେ ହିଁ ଡାକ୍ତରଖାନା ନିଅନ୍ତୁ।');
+  if (+b.suck === 0) D('Not sucking well: danger sign.', 'ଭଲ ଭାବେ ଚୁଚୁମୁନାହିଁ: ବିପଦ ଲକ୍ଷଣ।');
+  if (+b.active === 0) D('Drowsy or moves only when touched: danger sign.', 'ନିସ୍ତେଜ ବା ଛୁଇଁଲେ ହିଁ ହଲେ: ବିପଦ ଲକ୍ଷଣ।');
+  if (+b.jaundice === 1) D('Yellow palms or soles: severe jaundice — take to hospital.', 'ପାପୁଲି ବା ପାଦ ତଳ ହଳଦିଆ: ଗୁରୁତର ଜଣ୍ଡିସ୍ — ଡାକ୍ତରଖାନା ନିଅନ୍ତୁ।');
+  if (b.cord === 'red') D('Red or pus-filled cord: infection — see the ANM today.', 'ନାଭି ଲାଲ ବା ପୂଜ: ସଂକ୍ରମଣ — ଆଜି ଏ.ଏନ୍.ଏମ୍.ଙ୍କୁ ଦେଖାନ୍ତୁ।');
+  if (+b.pustules === 1) W('Skin boils with pus: see the ANM.', 'ଚର୍ମରେ ପୂଜଥିବା ଫୋଟକା: ଏ.ଏନ୍.ଏମ୍.ଙ୍କୁ ଦେଖାନ୍ତୁ।');
+  if (+b.diarrhoea === 1) W('Diarrhoea: keep breastfeeding; see the ANM.', 'ତରଳ ଝାଡ଼ା: ସ୍ତନ୍ୟପାନ ଜାରି ରଖନ୍ତୁ; ଏ.ଏନ୍.ଏମ୍.ଙ୍କୁ ଦେଖାନ୍ତୁ।');
+  if (+b.vomit === 1) W('Vomiting: see the ANM.', 'ବାନ୍ତି: ଏ.ଏନ୍.ଏମ୍.ଙ୍କୁ ଦେଖାନ୍ତୁ।');
+  if (+b.eyes === 1) W('Sticky or red eyes: see the ANM.', 'ଆଖି ପିଚୁଟି ବା ଲାଲ: ଏ.ଏନ୍.ଏମ୍.ଙ୍କୁ ଦେଖାନ୍ତୁ।');
+  if (+b.urine === 0 && day >= 2) W('No urine: danger if none within 48 hours of birth.', 'ପରିସ୍ରା ନାହିଁ: ଜନ୍ମର ୪୮ ଘଣ୍ଟା ମଧ୍ୟରେ ନ ହେଲେ ବିପଦ।');
+  if (+b.ebf === 0) W('Give only breast milk for 6 months — no water, honey or other milk.', '୬ ମାସ ପର୍ଯ୍ୟନ୍ତ କେବଳ ମା\' କ୍ଷୀର — ପାଣି, ମହୁ ବା ଅନ୍ୟ କ୍ଷୀର ନୁହେଁ।');
+  const w = K.num(b.weight), bw = k && k.birthWeight;
+  if (w != null && bw) { const pct = (w - bw) / bw * 100;
+    if (day <= 7 && pct < -10) W(`Lost ${K.round(-pct, 0)}% of birth weight: check feeding.`, `ଜନ୍ମ ଓଜନରୁ ${K.round(-pct, 0)}% କମିଛି: ସ୍ତନ୍ୟପାନ ଯାଞ୍ଚ କରନ୍ତୁ।`);
+    if (day >= 14 && w < bw) W('Not back to birth weight by 2 weeks: check feeding with the ANM.', '୨ ସପ୍ତାହରେ ଜନ୍ମ ଓଜନରେ ପହଞ୍ଚିନାହିଁ: ଏ.ଏନ୍.ଏମ୍.ଙ୍କ ସହ ସ୍ତନ୍ୟପାନ ଯାଞ୍ଚ କରନ୍ତୁ।'); }
+  return out;
+};
+K.pnc.flagList = (fl) => fl.length ? h`<div class="stack">${fl.map(f => K.ui.callout(f.tone === 'danger' ? 'danger' : 'warn', '', K.L(f)))}</div>` : K.ui.callout('', '', K.t('anc.allOk'), 'check');
+
+/* ---------------------------------------------------------------- delivery form */
+K.route('/card/:id/preg/:pid/delivery', ({ id, pid }) => {
+  const c = K.card.load(id); if (!c) return K.screens.notFound(); const p = K.card.findPreg(c, pid); if (!p) return K.screens.notFound();
+  const d = p.delivery || { date: K.d.today(), place: 'inst', type: 'normal', babies: [{ outcome: 'live' }], n: 1 };
+  const g = K.preg.ga(p, d.date); const gaW = d.gaWeeks != null ? d.gaWeeks : (g ? g.w : null);
+  const nb = d.n || (d.babies || []).length || 1;
+  const baby = (i) => { const b = (d.babies || [])[i] || {}; const kid = b.childId ? K.card.findKid(c, b.childId) : null; const pre = `b${i + 1}_`;
+    return h`<fieldset class="fgroup baby-fs" data-baby="${i + 1}" ${i >= nb ? K.raw('hidden') : ''}><legend>${K.t('del.baby', { n: i + 1 })}</legend>
+      ${K.ui.choices({ name: pre + 'outcome', label: K.t('del.outcome'), value: b.outcome || 'live', options: [{ v: 'live', l: K.t('out.live') }, { v: 'still', l: K.t('out.still'), tone: 'danger' }] })}
+      ${K.ui.choices({ name: pre + 'sex', label: K.t('child.sex'), value: b.sex || (kid && kid.sex), options: [{ v: 'f', l: K.t('sex.f') }, { v: 'm', l: K.t('sex.m') }] })}
+      <div class="frow">${K.ui.field({ name: pre + 'wt', type: 'decimal', label: K.t('child.bw'), unit: K.t('u.kg'), value: b.wt != null ? b.wt : (kid && kid.birthWeight) })}${K.ui.field({ name: pre + 'name', label: K.t('del.babyName'), value: kid ? kid.name : b.name })}</div>
+      ${K.ui.yn({ name: pre + 'cried', q: K.t('child.cried'), value: b.cried, pos: true })}
+      ${K.ui.yn({ name: pre + 'resus', q: K.t('child.resus'), value: b.resus })}
+      ${K.ui.yn({ name: pre + 'vitk', q: K.t('child.vitk'), value: b.vitk, pos: true })}
+      ${K.ui.choices({ name: pre + 'bf', label: K.t('child.bf'), value: b.bf, options: ['1h', '24h', 'late'].map(v => ({ v, l: K.t('bf.' + v), tone: v === 'late' ? 'warn' : '' })) })}
+      ${K.ui.yn({ name: pre + 'colostrum', q: K.t('child.colostrum'), value: b.colostrum, pos: true })}
+    </fieldset>`; };
+  return {
+    title: K.t('del.title'), sub: c.mother.name, back: K.preg.url(c, p).slice(1), tab: 'home',
+    html: h`<div class="wrap">${K.ui.phead(K.t('preg.overview'), K.t('del.title'))}
+      <form class="form" data-form="delSave" data-id="${id}" data-pid="${pid}" novalidate>
+        <div class="fgroup">
+          <div class="frow">${K.ui.field({ name: 'date', type: 'date', label: K.t('del.date'), value: d.date, max: K.d.today(), required: true, attrs: { 'data-live': 'delGa' } })}${K.ui.field({ name: 'time', type: 'time', label: K.t('del.time'), value: d.time })}</div>
+          ${K.ui.choices({ name: 'place', label: K.t('del.place'), value: d.place, options: ['inst', 'home', 'transit'].map(v => ({ v, l: K.t('del.place.' + v) })) })}
+          ${K.ui.field({ name: 'facility', label: K.t('del.facility'), value: d.facility || (p.birthPlan && p.birthPlan.facility) || c.contacts.deliveryPoint })}
+          ${K.ui.field({ name: 'facType', type: 'select', label: K.t('del.facType'), value: d.facType, options: ['sc', 'phc', 'chc', 'sdh', 'dh', 'mch', 'pvt'].map(v => ({ v, l: K.t('fac.' + v) })) })}
+          ${K.ui.choices({ name: 'by', label: K.t('del.by'), value: d.by, options: ['doc', 'sba', 'other'].map(v => ({ v, l: K.t('att.' + v), tone: v === 'other' ? 'warn' : '' })) })}
+          ${K.ui.choices({ name: 'type', label: K.t('del.type'), value: d.type, options: ['normal', 'assisted', 'cs'].map(v => ({ v, l: K.t('dt.' + v) })) })}
+        </div>
+        <div class="fgroup">
+          ${K.ui.field({ name: 'gaWeeks', type: 'number', label: K.t('del.ga'), value: gaW, unit: K.t('preg.weeks'), attrs: { 'data-live': 'delAcs' } })}
+          <div id="acs-row" ${gaW != null && gaW < 34 ? '' : K.raw('hidden')}>${K.ui.yn({ name: 'acs', q: K.t('del.acs'), value: d.acs })}</div>
+          ${K.ui.field({ name: 'stayDays', type: 'number', label: K.t('del.stay'), value: d.stayDays, unit: K.t('preg.days') })}
+          <div class="field"><span class="lbl">${K.t('del.compl')}</span><div class="choices">${['pph', 'ecl', 'obst', 'ret', 'tear', 'sepsis'].map(k => h`<label class="choice danger"><input type="checkbox" name="compl" value="${k}" ${(d.compl || []).includes(k) ? K.raw('checked') : ''}><span>${K.t('cmp.' + k)}</span></label>`)}</div></div>
+        </div>
+        ${K.ui.choices({ name: 'n', label: K.t('del.babies'), value: String(nb), options: [1, 2, 3].map(v => ({ v: String(v), l: K.digits(v) })), live: 'delBabies' })}
+        ${[0, 1, 2].map(baby)}
+        <div class="btn-bar">${K.ui.btn(K.t('del.save'), { type: 'submit', icon: 'check' })}</div>
+      </form></div>`,
+  };
+});
+K.live.delBabies = (el) => { const n = +el.value; K.$$('.baby-fs').forEach(fs => { fs.hidden = +fs.dataset.baby > n; }); };
+K.live.delAcs = (el) => { const v = K.num(K.toLatinDigits(el.value)); K.$('#acs-row').hidden = !(v != null && v < 34); };
+K.live.delGa = (el) => {
+  const f = el.closest('form'); const c = K.card.load(f.dataset.id); const p = c && K.card.findPreg(c, f.dataset.pid); if (!p || !el.value) return;
+  const g = K.preg.ga(p, el.value); if (g && f.gaWeeks) { f.gaWeeks.value = g.w; K.live.delAcs(f.gaWeeks); }
+};
+K.forms.delSave = async (v, f) => {
+  const c = K.card.load(f.dataset.id); const p = c && K.card.findPreg(c, f.dataset.pid); if (!p) return;
+  if (!v.date || !K.d.valid(v.date)) { K.ui.toast(K.t('err.date')); return; }
+  if (K.d.diff(v.date, K.d.today()) < 0) { K.ui.toast(K.t('err.future')); return; }
+  const n = +(v.n || 1); const prev = (p.delivery && p.delivery.babies) || [];
+  const d = { date: v.date, time: v.time || '', place: v.place || 'inst', facility: v.facility || '', facType: v.facType || '', by: v.by || '', type: v.type || 'normal',
+    gaWeeks: v.gaWeeks != null ? v.gaWeeks : null, acs: v.acs == null ? null : +v.acs, stayDays: v.stayDays != null ? v.stayDays : null, compl: v.compl || [], n, babies: [] };
+  for (let i = 1; i <= n; i++) {
+    const g = (k) => v[`b${i}_${k}`];
+    let wt = g('wt'); if (wt != null && wt > 20) wt = wt / 1000;
+    const b = { outcome: g('outcome') || 'live', sex: g('sex') || '', wt: wt != null ? K.round(wt, 3) : null, cried: g('cried') == null ? null : +g('cried'), resus: g('resus') == null ? null : +g('resus'),
+      vitk: g('vitk') == null ? null : +g('vitk'), bf: g('bf') || '', colostrum: g('colostrum') == null ? null : +g('colostrum'), childId: (prev[i - 1] || {}).childId || null };
+    if (b.outcome === 'live') {
+      let k = b.childId ? K.card.findKid(c, b.childId) : null;
+      if (!k) { k = K.blank.child(); c.children.push(k); b.childId = k.id; }
+      Object.assign(k, { pregId: p.id, dob: d.date, sex: b.sex, birthWeight: b.wt, gaWeeks: d.gaWeeks, name: g('name') || k.name || '' });
+      k.birth = Object.assign(k.birth || {}, { cried: b.cried, resus: b.resus, vitk: b.vitk, bf: b.bf, colostrum: b.colostrum, place: d.place });
+    } else if (b.childId) { c.children = c.children.filter(x => x.id !== b.childId); b.childId = null; }
+    d.babies.push(b);
+  }
+  p.delivery = d; p.status = 'delivered';
+  if (!p.ppIfa || !p.ppIfa.start) p.ppIfa = { days: (p.ppIfa && p.ppIfa.days) || {}, start: d.date };
+  if (!p.ppCalcium || !p.ppCalcium.start) p.ppCalcium = { days: (p.ppCalcium && p.ppCalcium.days) || {}, start: d.date };
+  await K.store.save(c); K.ui.toast(K.t('saved')); K.go(K.preg.url(c, p, '/pnc').slice(1));
+};
+
+/* ---------------------------------------------------------------- PNC overview */
+K.route('/card/:id/preg/:pid/pnc', ({ id, pid }) => {
+  const c = K.card.load(id); if (!c) return K.screens.notFound(); const p = K.card.findPreg(c, pid); if (!p) return K.screens.notFound();
+  if (!p.delivery) return { redirect: `/card/${id}/preg/${pid}/delivery` };
+  const d = p.delivery; const kids = c.children.filter(k => k.pregId === p.id);
+  const sch = K.pnc.schedule(p, c); const base = K.pnc.base(p, c);
+  const day = K.d.diff(d.date, K.d.today());
+  const tone = { done: 'ok', due: 'due', overdue: 'over', upcoming: 'soon' }, lbl = { done: K.t('st.done'), due: K.t('st.due'), overdue: K.t('st.overdue'), upcoming: K.t('st.upcoming') };
+  return {
+    title: K.t('pnc.title'), sub: c.mother.name, back: `/card/${id}`, tab: 'home',
+    html: h`<div class="wrap">${K.ui.phead(K.t('preg.deliveredOn', { d: K.d.fmt(d.date, 'long') }), K.t('pnc.title'), day >= 0 && day <= 42 ? K.t('stage.pnc', { d: day }) : '')}
+      <div class="k-card pad-s"><dl class="kv">
+        <dt>${K.t('del.place')}</dt><dd>${K.t('del.place.' + d.place)}${d.facility ? ' · ' + d.facility : ''}</dd>
+        <dt>${K.t('del.type')}</dt><dd>${K.t('dt.' + d.type)}</dd>
+        ${d.gaWeeks != null ? h`<dt>${K.t('del.ga')}</dt><dd class="num">${K.digits(d.gaWeeks)}</dd>` : ''}
+        ${d.babies.map((b, i) => h`<dt>${K.t('del.baby', { n: i + 1 })}</dt><dd>${K.t('out.' + b.outcome)}${b.sex ? ' · ' + K.t('sex.' + b.sex) : ''}${b.wt != null ? ' · ' + K.n(b.wt, 2) + ' ' + K.t('u.kg') : ''}</dd>`)}
+      </dl><p style="margin:10px 0 0">${K.ui.btn(K.t('del.edit'), { href: K.preg.url(c, p, '/delivery'), tone: 'quiet', size: 'sm', icon: 'edit' })}</p></div>
+      ${kids.length ? h`<div class="cards-list" style="margin-top:10px">${kids.map(k => K.child.summaryCard(c, k))}</div>` : ''}
+      <section class="sec" style="margin-top:18px">${K.ui.secH(K.t('pnc.visits'))}
+        <p class="small">${K.t('pnc.rule')}</p>${base !== d.date ? h`<p class="small">${K.t('pnc.sncuNote', { d: K.d.fmt(base) })}</p>` : ''}
+        <div class="list">${sch.map(s => K.ui.li({ href: K.preg.url(c, p, '/pnc/' + s.n), icon: s.st === 'done' ? 'check' : 'house', tone: s.st === 'done' ? 'done' : s.st === 'due' ? 'amber' : s.st === 'overdue' ? 'red' : 'ink',
+          title: K.t('pnc.day', { n: s.n }), meta: s.v ? K.d.fmt(s.v.date) : K.d.fmt(s.date), trail: K.ui.pill(lbl[s.st], tone[s.st]) }))}</div></section>
+      <section class="sec">${K.ui.secH(K.t('pnc.ppTabs'))}<p class="small">${K.t('pnc.ppRule')}</p>
+        ${K.tracker.render('trk-ppifa', K.t('ifa.title'), p.ppIfa, 180, d.date, { key: `${id}:${pid}:ppIfa` })}<p></p>
+        ${K.tracker.render('trk-ppca', K.t('ca.title'), p.ppCalcium, 180, d.date, { key: `${id}:${pid}:ppCalcium` })}</section>
+      ${K.fp ? K.fp.section(c, p) : ''}
+      <section class="sec">${K.ui.callout('danger', K.L(K.content.danger.post.title), h`<ul>${K.content.danger.post.items.slice(0, 6).map(x => h`<li>${K.L(x)}</li>`)}</ul><p style="margin-top:8px"><a href="#/learn/danger/post">${K.t('see.all')}</a></p>`)}</section>
+    </div>`,
+  };
+});
+
+/* ---------------------------------------------------------------- PNC / HBNC visit form */
+K.route('/card/:id/preg/:pid/pnc/:day', ({ id, pid, day }) => {
+  const c = K.card.load(id); if (!c) return K.screens.notFound(); const p = K.card.findPreg(c, pid); if (!p || !p.delivery) return K.screens.notFound();
+  const n = +day; const s = K.pnc.schedule(p, c).find(x => x.n === n) || { date: K.d.today() };
+  const m = (p.pnc || []).find(x => x.day === n) || {};
+  const kids = c.children.filter(k => k.pregId === p.id);
+  const POS = ['pm.toilet', 'pm.bf', 'pm.diet', 'pm.rest', 'pm.fp', 'pb.ebf', 'pb.suck', 'pb.active', 'pb.urine', 'pb.stool', 'pb.kmc'];
+  const yn = (name, key, val, live) => K.ui.yn({ name, q: K.t(key), value: val, live: live || 'pncPreview', pos: POS.includes(key) });
+  const babyFs = (k) => { const b = (k.hbnc || []).find(x => x.day === n) || {}; const pre = `k_${k.id}_`;
+    return h`<fieldset class="fgroup"><legend>${K.t('pnc.baby')} · ${K.child.label(k)}</legend>
+      <div class="frow">${K.ui.field({ name: pre + 'weight', type: 'decimal', label: K.t('pb.weight'), unit: K.t('u.kg'), value: b.weight, attrs: { 'data-live': 'pncPreview' } })}${K.ui.field({ name: pre + 'temp', type: 'decimal', label: K.t('pb.temp'), unit: '°C', value: b.temp, attrs: { 'data-live': 'pncPreview' } })}</div>
+      ${K.ui.field({ name: pre + 'breaths', type: 'number', label: K.t('pb.breaths'), unit: '/min', value: b.breaths, hint: h`<a href="#/tools/breath">${K.t('tool.breath')}</a>`, attrs: { 'data-live': 'pncPreview' } })}
+      ${['ebf', 'suck', 'active', 'urine', 'stool', 'kmc'].map(x => yn(pre + x, 'pb.' + x, b[x]))}
+      ${['diarrhoea', 'vomit', 'fits', 'indrawing', 'jaundice', 'pustules', 'eyes'].map(x => yn(pre + x, 'pb.' + x, b[x]))}
+      ${K.ui.choices({ name: pre + 'cord', label: K.t('pb.cord'), value: b.cord, options: [{ v: 'dry', l: K.t('cord.dry') }, { v: 'red', l: K.t('cord.red'), tone: 'danger' }], live: 'pncPreview' })}
+    </fieldset>`; };
+  return {
+    title: K.t('pnc.visit', { n }), sub: c.mother.name, back: K.preg.url(c, p, '/pnc').slice(1), tab: 'home',
+    html: h`<div class="wrap">${K.ui.phead(K.t('pnc.title'), K.t('pnc.visit', { n }))}
+      <form class="form" data-form="pncSave" data-id="${id}" data-pid="${pid}" data-day="${n}" novalidate>
+        <div class="fgroup">${K.ui.field({ name: 'date', type: 'date', label: K.t('date'), value: m.date || (K.d.cmp(s.date, K.d.today()) <= 0 ? s.date : K.d.today()), max: K.d.today(), required: true })}
+          ${K.ui.choices({ name: 'by', label: K.t('anc.by'), value: m.by || (K.settings.isHcp() ? 'asha' : ''), options: ['asha', 'anm', 'doc', 'self'].map(v => ({ v, l: K.t('by.' + v) })) })}</div>
+        <fieldset class="fgroup"><legend>${K.t('pnc.mother')}</legend>
+          <div class="frow">${K.ui.field({ name: 'bpSys', type: 'number', label: K.t('anc.sys'), unit: 'mmHg', value: m.bpSys, attrs: { 'data-live': 'pncPreview' } })}${K.ui.field({ name: 'bpDia', type: 'number', label: K.t('anc.dia'), unit: 'mmHg', value: m.bpDia, attrs: { 'data-live': 'pncPreview' } })}</div>
+          ${K.ui.field({ name: 'temp', type: 'decimal', label: K.t('anc.temp'), unit: '°C', value: m.temp, attrs: { 'data-live': 'pncPreview' } })}
+          ${K.ui.choices({ name: 'breast', label: K.t('pm.breast'), value: m.breast, options: ['normal', 'engorged', 'cracked'].map(v => ({ v, l: K.t('br.' + v), tone: v === 'normal' ? '' : 'warn' })), live: 'pncPreview' })}
+          ${['pallor', 'bleed', 'uterus', 'discharge', 'episio', 'pain', 'fits', 'headache', 'mood'].map(k => yn(k, 'pm.' + k, m[k]))}
+          ${['toilet', 'bf', 'diet', 'rest', 'fp'].map(k => yn(k, 'pm.' + k, m[k]))}
+          ${K.ui.field({ name: 'other', label: K.t('pm.other'), value: m.other })}
+        </fieldset>
+        ${kids.map(babyFs)}
+        <section id="pnc-preview" aria-live="polite"></section>
+        <div class="btn-bar">${K.ui.btn(K.t('pnc.save'), { type: 'submit', icon: 'check' })}</div>
+      </form></div>`,
+    mount() { K.live.pncPreview(); },
+  };
+});
+const pncCollect = (v, f, c, p) => {
+  const n = +f.dataset.day; const m = { day: n, date: v.date, by: v.by || '' };
+  ['bpSys', 'bpDia', 'temp', 'breast', 'other'].forEach(k => { if (v[k] != null) m[k] = v[k]; });
+  ['pallor', 'bleed', 'uterus', 'discharge', 'episio', 'pain', 'fits', 'headache', 'mood', 'toilet', 'bf', 'diet', 'rest', 'fp'].forEach(k => { if (v[k] != null) m[k] = +v[k]; });
+  const babies = c.children.filter(k => k.pregId === p.id).map(k => { const pre = `k_${k.id}_`; const b = { day: n, date: v.date };
+    Object.keys(v).filter(x => x.startsWith(pre)).forEach(x => { const key = x.slice(pre.length); const val = v[x]; b[key] = ['weight', 'temp', 'breaths', 'cord'].includes(key) ? val : +val; });
+    return { k, b }; });
+  return { m, babies, n };
+};
+K.live.pncPreview = K.debounce(() => {
+  const f = K.$('form[data-form="pncSave"]'); if (!f) return; const c = K.card.load(f.dataset.id); const p = c && K.card.findPreg(c, f.dataset.pid); if (!p) return;
+  const { m, babies, n } = pncCollect(K.formData(f), f, c, p);
+  const fl = K.pnc.motherFlags(m).concat(...babies.map(({ k, b }) => K.pnc.babyFlags(b, k, n).map(x => Object.assign({}, x, { en: `${K.child.label(k)}: ${x.en}`, or: `${K.child.label(k)}: ${x.or}` }))));
+  K.$('#pnc-preview').innerHTML = K.hv(h`<h3 style="margin:4px 0 8px">${K.t('pnc.result')}</h3>${K.pnc.flagList(fl)}`);
+}, 300);
+K.forms.pncSave = async (v, f) => {
+  const c = K.card.load(f.dataset.id); const p = c && K.card.findPreg(c, f.dataset.pid); if (!p) return;
+  if (!v.date || !K.d.valid(v.date) || K.d.diff(v.date, K.d.today()) < 0) { K.ui.toast(K.t('err.date')); return; }
+  const { m, babies, n } = pncCollect(v, f, c, p);
+  p.pnc = (p.pnc || []).filter(x => x.day !== n).concat([m]).sort(K.by('day'));
+  babies.forEach(({ k, b }) => { k.hbnc = (k.hbnc || []).filter(x => x.day !== n).concat([b]).sort(K.by('day'));
+    if (b.weight != null) { k.growth = k.growth || []; const g = k.growth.find(x => x.src === 'hbnc' && x.day === n); if (g) Object.assign(g, { date: b.date, wt: b.weight }); else k.growth.push({ id: K.uid('g'), date: b.date, wt: b.weight, src: 'hbnc', day: n }); } });
+  if (m.fp === 1) { p.fp = p.fp || {}; p.fp.counselled = p.fp.counselled || m.date; }
+  await K.store.save(c); K.ui.toast(K.t('saved')); K.go(K.preg.url(c, p, '/pnc').slice(1));
+};
+
+/* ---------------------------------------------------------------- pregnancy overview: delivery section */
+K.preg.addSection(60, (c, p) => {
+  if (p.status === 'ended') return '';
+  if (p.delivery) return h`<section class="sec">${K.ui.secH(K.t('preg.sec.delivery'))}<div class="list">${K.ui.li({ href: K.preg.url(c, p, '/pnc'), icon: 'baby', tone: 'done', title: K.t('preg.deliveredOn', { d: K.d.fmt(p.delivery.date) }), meta: `${K.t('del.place.' + p.delivery.place)} · ${K.t('dt.' + p.delivery.type)}` })}</div></section>`;
+  const g = K.preg.ga(p);
+  return h`<section class="sec">${K.ui.secH(K.t('preg.sec.delivery'))}${K.ui.btn(K.t('preg.recordDelivery'), { href: K.preg.url(c, p, '/delivery'), tone: g && g.days >= 28 * 7 ? 'primary' : 'ghost', icon: 'baby', block: true })}</section>`;
+});
+
+/* dashboard: delivered pregnancies within 42 days show the PNC card */
+K.due.add((c, today) => {
+  const out = [];
+  (c.pregnancies || []).filter(p => p.delivery && K.d.diff(p.delivery.date, today) <= 45).forEach(p => {
+    const nx = K.pnc.schedule(p, c, today).find(s => s.st !== 'done');
+    if (nx) out.push({ id: 'pnc' + nx.n, kind: 'pnc', icon: 'house', href: K.preg.url(c, p, '/pnc/' + nx.n), title: { en: `Home visit after delivery · day ${nx.n}`, or: `ପ୍ରସବ ପରେ ଗୃହ ପରିଦର୍ଶନ · ${nx.n} ଦିନ` }, date: nx.date, status: nx.st === 'overdue' ? 'overdue' : undefined });
+  });
+  return out;
+});
+K.summary.add((c) => (c.pregnancies || []).filter(p => p.delivery && K.d.diff(p.delivery.date, K.d.today()) <= 60).map(p => `${K.t('preg.deliveredOn', { d: K.d.fmt(p.delivery.date) })} · ${K.t('del.place.' + p.delivery.place)} · ${K.t('dt.' + p.delivery.type)}`));
+
+}
+/* ── modules/26-fp.js ── */
+{
+/* ============================================================================
+   modules/26-fp — family planning after delivery: method basket, timing,
+   breastfeeding safety, Odisha beneficiary incentives (MCP V-2023-24 p.42).
+   ============================================================================ */
+const h = K.h;
+
+K.i18n.add({
+  'fp.title': { en: 'Family planning', or: 'ପରିବାର ନିୟୋଜନ' },
+  'fp.lede': { en: 'A gap of 3 years between two children is good for the health of both mother and child. Choose any method from the basket of choices.', or: '୨ଟି ପିଲା ମଧ୍ୟରେ ୩ ବର୍ଷ ବ୍ୟବଧାନ ରହିଲେ ଉଭୟ ମା\' ଓ ଛୁଆର ସ୍ୱାସ୍ଥ୍ୟ ପାଇଁ ହିତକର। ପରିବାର ନିୟୋଜନ ଯୋଜନାରେ ଯୋଗାଉଥିବା ପସନ୍ଦ ବାସ୍କେଟ୍‌ରୁ ଯେ କୌଣସି ପଦ୍ଧତି ଆପଣ ବ୍ୟବହାର କରିପାରିବେ।' },
+  'fp.spacing': { en: 'Spacing methods', or: 'ବ୍ୟବଧାନ ପଦ୍ଧତି' },
+  'fp.permanent': { en: 'If your family is complete — permanent methods', or: 'ଯଦି ଆପଣଙ୍କର ପରିବାର ସମ୍ପୂର୍ଣ୍ଣ — ସ୍ଥାୟୀ ପଦ୍ଧତି' },
+  'fp.when': { en: 'When to start', or: 'କେବେ ଆରମ୍ଭ କରିବେ' },
+  'fp.bfSafe': { en: 'Safe while breastfeeding', or: 'ସ୍ତନ୍ୟପାନ ସମୟରେ ସୁରକ୍ଷିତ' },
+  'fp.incentive': { en: 'Incentive (Odisha)', or: 'ପ୍ରୋତ୍ସାହନ ରାଶି (ଓଡ଼ିଶା)' },
+  'fp.chosen': { en: 'Method chosen', or: 'ବଛାଯାଇଥିବା ପଦ୍ଧତି' },
+  'fp.adopted': { en: 'Date started', or: 'ଆରମ୍ଭ ତାରିଖ' },
+  'fp.counselled': { en: 'Counselling given on', or: 'ପରାମର୍ଶ ଦିଆଯାଇଥିବା ତାରିଖ' },
+  'fp.none': { en: 'Not decided yet', or: 'ଏପର୍ଯ୍ୟନ୍ତ ସ୍ଥିର ହୋଇନାହିଁ' },
+  'fp.save': { en: 'Save choice', or: 'ପସନ୍ଦ ସେଭ୍ କରନ୍ତୁ' },
+  'fp.incNote': { en: 'Amounts as printed on the Odisha MCP card V-2023-24; confirm with the ANM.', or: 'ଓଡ଼ିଶା MCP କାର୍ଡ V-2023-24 ରେ ଥିବା ରାଶି; ଏ.ଏନ୍.ଏମ୍.ଙ୍କଠାରୁ ନିଶ୍ଚିତ କରନ୍ତୁ।' },
+  'fp.next': { en: 'Choose a method before 6 weeks after delivery', or: 'ପ୍ରସବର ୬ ସପ୍ତାହ ପୂର୍ବରୁ ଗୋଟିଏ ପଦ୍ଧତି ବାଛନ୍ତୁ' },
+});
+
+K.fp = {};
+K.fp.METHODS = [
+  { k: 'lam', group: 'spacing', icon: 'heart', name: { en: 'Breastfeeding method (LAM)', or: 'ସ୍ତନ୍ୟପାନ ପଦ୍ଧତି (LAM)' },
+    what: { en: 'Protects only while all three are true: baby under 6 months, only breast milk day and night, and periods have not returned. Start another method by 6 months.', or: 'କେବଳ ଏହି ତିନୋଟି ସତ୍ୟ ଥିବା ପର୍ଯ୍ୟନ୍ତ ସୁରକ୍ଷା ଦିଏ: ଶିଶୁ ୬ ମାସରୁ କମ୍, ଦିନରାତି କେବଳ ମା\' କ୍ଷୀର, ଏବଂ ମାସିକ ଫେରିନାହିଁ। ୬ ମାସ ପୂର୍ବରୁ ଅନ୍ୟ ପଦ୍ଧତି ଆରମ୍ଭ କରନ୍ତୁ।' },
+    when: { en: 'From delivery', or: 'ପ୍ରସବ ପରଠାରୁ' }, bf: 1 },
+  { k: 'ppiucd', group: 'spacing', icon: 'shield', name: { en: 'Copper-T (IUCD)', or: 'କପର୍-ଟି (ଆଇ ୟୁ ସି ଡି)' },
+    what: { en: 'IUCD 380A works for 10 years; IUCD 375 for 5 years. Can be removed whenever you want a child.', or: 'ଆଇ ୟୁ ସି ଡି ୩୮୦ଏ ୧୦ ବର୍ଷ ଲାଗି, ୩୭୫ ୫ ବର୍ଷ ଲାଗି ପ୍ରଭାବ ପକାଇଥାଏ। ଶିଶୁ ଚାହିଁଲେ ଯେକୌଣସି ସମୟରେ କଢ଼ାଯାଇପାରେ।' },
+    when: { en: 'Within 48 hours of delivery (PPIUCD), or after 6 weeks (interval IUCD)', or: 'ପ୍ରସବର ୪୮ ଘଣ୍ଟା ମଧ୍ୟରେ (ପ୍ରସବ ପରବର୍ତ୍ତୀ ଆଇ ୟୁ ସି ଡି), କିମ୍ବା ପ୍ରସବର ୬ ସପ୍ତାହ ପରେ' }, bf: 1, inc: '₹300 (PPIUCD / post-abortion IUCD)' },
+  { k: 'antara', group: 'spacing', icon: 'syringe', name: { en: 'Injectable (Antara)', or: 'ଗର୍ଭନିରୋଧକ ଇଞ୍ଜେକସନ୍ (ଅନ୍ତରା)' },
+    what: { en: 'One injection every 3 months. Available with the ANM.', or: 'ପ୍ରତି ୩ ମାସରେ ଗୋଟିଏ ଇଞ୍ଜେକସନ୍। ମହିଳା ସ୍ୱାସ୍ଥ୍ୟକର୍ମୀଙ୍କ ନିକଟରେ ଉପଲବ୍ଧ।' },
+    when: { en: '6 weeks after delivery', or: 'ପ୍ରସବର ୬ ସପ୍ତାହ ପରେ' }, bf: 1, inc: '₹100 per injection' },
+  { k: 'chhaya', group: 'spacing', icon: 'pill', name: { en: 'Weekly pill (Chhaya)', or: 'ସାପ୍ତାହିକ ବଟିକା (ଛାୟା - ସେଣ୍ଟକ୍ରୋମାନ୍)' },
+    what: { en: 'Non-hormonal. Twice a week for the first 3 months, then once a week.', or: 'ହରମୋନ୍ ବିହୀନ। ପ୍ରଥମ ୩ ମାସ ସପ୍ତାହକୁ ଦୁଇଥର, ତା\'ପରେ ସପ୍ତାହକୁ ଥରେ।' },
+    when: { en: 'Any time after delivery', or: 'ପ୍ରସବ ପରେ ଯେକୌଣସି ସମୟରେ' }, bf: 1 },
+  { k: 'pop', group: 'spacing', icon: 'pill', name: { en: 'Progestogen-only pill', or: 'କେବଳ ପ୍ରୋଜେଷ୍ଟେରୋନ୍ ବଟିକା' },
+    what: { en: 'One pill every day at the same time.', or: 'ପ୍ରତିଦିନ ସମାନ ସମୟରେ ଗୋଟିଏ ବଟିକା।' },
+    when: { en: '6 weeks after delivery', or: 'ପ୍ରସବର ୬ ସପ୍ତାହ ପରେ' }, bf: 1 },
+  { k: 'malan', group: 'spacing', icon: 'pill', name: { en: 'Combined pill (Mala-N)', or: 'ସଂଯୁକ୍ତ ଗର୍ଭନିରୋଧକ ବଟିକା (ମାଲା-ଏନ୍)' },
+    what: { en: 'One pill every day. Can reduce breast milk in the first months.', or: 'ପ୍ରତିଦିନ ଗୋଟିଏ ବଟିକା। ପ୍ରଥମ ମାସଗୁଡ଼ିକରେ ମା\' କ୍ଷୀର କମାଇପାରେ।' },
+    when: { en: 'After 6 months if breastfeeding', or: 'ସ୍ତନ୍ୟପାନ କରାଉଥିଲେ ୬ ମାସ ପରେ' }, bf: 0 },
+  { k: 'condom', group: 'spacing', icon: 'shield', name: { en: 'Condom (Nirodh)', or: 'ନିରୋଧ' },
+    what: { en: 'Use every time. Also protects from sexually transmitted infections. Free from the ASHA.', or: 'ପ୍ରତି ଥର ବ୍ୟବହାର କରନ୍ତୁ। ଯୌନ ସଂକ୍ରମଣରୁ ମଧ୍ୟ ରକ୍ଷା କରେ। ଆଶାଙ୍କଠାରୁ ମାଗଣା।' },
+    when: { en: 'Any time', or: 'ଯେକୌଣସି ସମୟରେ' }, bf: 1 },
+  { k: 'implant', group: 'spacing', icon: 'shield', name: { en: 'Implant', or: 'ଇମ୍ପ୍ଲାଣ୍ଟ' },
+    what: { en: 'A modern method placed under the skin of the arm; protects continuously for 3 years. Also used after delivery.', or: 'ଇମ୍ପ୍ଲାଣ୍ଟ ଏକ ଆଧୁନିକ ଗର୍ଭନିରୋଧକ ପଦ୍ଧତି ଯାହା କ୍ରମାଗତ ଭାବରେ ତିନିବର୍ଷ ପର୍ଯ୍ୟନ୍ତ ମହିଳାଙ୍କୁ ଅନିଚ୍ଛାକୃତ ଗର୍ଭଧାରଣରୁ ସୁରକ୍ଷା ଯୋଗାଇଥାଏ। ଏହା ଏକ ଫଳପ୍ରଦ ପ୍ରସବ-ପରବର୍ତ୍ତୀ ପଦ୍ଧତି।' },
+    when: { en: 'After delivery, where available', or: 'ପ୍ରସବ ପରେ, ଯେଉଁଠାରେ ଉପଲବ୍ଧ' }, bf: 1 },
+  { k: 'fster', group: 'permanent', icon: 'flag', name: { en: 'Female sterilisation', or: 'ମହିଳା ବନ୍ଧ୍ୟାକରଣ' },
+    what: { en: 'Permanent. Minilap or laparoscopic operation.', or: 'ସ୍ଥାୟୀ। ମିନିଲ୍ୟାପ୍ ବା ଲାପରୋସ୍କୋପି ଅସ୍ତ୍ରୋପଚାର।' },
+    when: { en: 'Within 7 days of delivery, or after 6 weeks', or: 'ପ୍ରସବର ୭ ଦିନ ମଧ୍ୟରେ, କିମ୍ବା ୬ ସପ୍ତାହ ପରେ' }, bf: 1, inc: '₹2200 after delivery · ₹1400 interval (minilap / laparoscopy)' },
+  { k: 'nsv', group: 'permanent', icon: 'flag', name: { en: 'Male sterilisation (NSV)', or: 'ପୁରୁଷ ବନ୍ଧ୍ୟାକରଣ (NSV)' },
+    what: { en: 'Permanent, simple, no-scalpel. Use condoms for 3 months after the operation.', or: 'ସ୍ଥାୟୀ, ସରଳ, ଛୁରୀ ବିନା। ଅସ୍ତ୍ରୋପଚାର ପରେ ୩ ମାସ ପର୍ଯ୍ୟନ୍ତ ନିରୋଧ ବ୍ୟବହାର କରନ୍ତୁ।' },
+    when: { en: 'Any time', or: 'ଯେକୌଣସି ସମୟରେ' }, bf: 1, inc: '₹2000' },
+];
+K.fp.card = (m, chosen) => h`<details class="acc fp ${chosen ? 'on' : ''}"><summary>${K.ui.icon(m.icon, 'sm')}<span>${K.L(m.name)}</span>${chosen ? K.ui.pill(K.t('fp.chosen'), 'ok', 'check') : ''}</summary>
+  <div class="acc-b"><p>${K.L(m.what)}</p><dl class="kv"><dt>${K.t('fp.when')}</dt><dd>${K.L(m.when)}</dd><dt>${K.t('fp.bfSafe')}</dt><dd>${m.bf ? K.t('yes') : K.t('no')}</dd>
+  ${m.inc ? h`<dt>${K.t('fp.incentive')}</dt><dd class="num">${m.inc}</dd>` : ''}</dl></div></details>`;
+K.fp.section = (c, p) => {
+  const fp = p.fp || {}; const m = K.fp.METHODS.find(x => x.k === fp.method);
+  return h`<section class="sec">${K.ui.secH(K.t('fp.title'), h`<a class="link" href="${K.preg.url(c, p, '/fp')}">${K.t('open')}</a>`)}
+    <div class="list">${K.ui.li({ href: K.preg.url(c, p, '/fp'), icon: 'family', tone: m ? 'done' : 'amber', title: m ? K.L(m.name) : K.t('fp.none'), meta: m && fp.date ? K.t('fp.adopted') + ': ' + K.d.fmt(fp.date) : K.t('fp.next') })}</div></section>`;
+};
+K.route('/card/:id/preg/:pid/fp', ({ id, pid }) => {
+  const c = K.card.load(id); if (!c) return K.screens.notFound(); const p = K.card.findPreg(c, pid); if (!p) return K.screens.notFound();
+  const fp = p.fp || {};
+  const grp = (g) => K.fp.METHODS.filter(m => m.group === g).map(m => K.fp.card(m, fp.method === m.k));
+  return {
+    title: K.t('fp.title'), sub: c.mother.name, back: (p.delivery ? K.preg.url(c, p, '/pnc') : K.preg.url(c, p)).slice(1), tab: 'home',
+    html: h`<div class="wrap">${K.ui.phead('', K.t('fp.title'), K.t('fp.lede'))}
+      <section class="sec">${K.ui.eyebrow(K.t('fp.spacing'))}${grp('spacing')}</section>
+      <section class="sec">${K.ui.eyebrow(K.t('fp.permanent'))}${grp('permanent')}<p class="foot-note">${K.t('fp.incNote')}</p></section>
+      <form class="form" data-form="fpSave" data-id="${id}" data-pid="${pid}"><div class="fgroup">
+        ${K.ui.field({ name: 'method', type: 'select', label: K.t('fp.chosen'), value: fp.method, options: K.fp.METHODS.map(m => ({ v: m.k, l: K.L(m.name) })), placeholder: K.t('fp.none') })}
+        <div class="frow">${K.ui.field({ name: 'date', type: 'date', label: K.t('fp.adopted'), value: fp.date, max: K.d.today() })}${K.ui.field({ name: 'counselled', type: 'date', label: K.t('fp.counselled'), value: fp.counselled, max: K.d.today() })}</div>
+      </div><div class="btn-bar">${K.ui.btn(K.t('fp.save'), { type: 'submit', icon: 'check' })}</div></form>
+    </div>`,
+  };
+});
+K.forms.fpSave = async (v, f) => {
+  const c = K.card.load(f.dataset.id); const p = c && K.card.findPreg(c, f.dataset.pid); if (!p) return;
+  p.fp = { method: v.method || '', date: v.date || '', counselled: v.counselled || '' };
+  await K.store.save(c); K.ui.toast(K.t('saved')); K.back();
+};
+K.due.add((c, today) => {
+  const out = [];
+  (c.pregnancies || []).filter(p => p.delivery && !(p.fp && p.fp.method) && K.d.diff(p.delivery.date, today) <= 60).forEach(p => {
+    out.push({ id: 'fp', kind: 'fp', icon: 'family', href: K.preg.url(c, p, '/fp'), title: { en: 'Choose a family planning method', or: 'ପରିବାର ନିୟୋଜନ ପଦ୍ଧତି ବାଛନ୍ତୁ' }, date: K.d.addDays(p.delivery.date, 41) });
+  });
+  return out;
+});
+
+}
+/* ── modules/30-child.js ── */
+{
+/* ============================================================================
+   modules/30-child — child record: add/edit, overview, summary card
+   Sections on the overview come from other modules via K.child.addSection.
+   ============================================================================ */
+const h = K.h;
+
+K.i18n.add({
+  'child.new': { en: 'Add a child', or: 'ଶିଶୁ ଯୋଗ କରନ୍ତୁ' },
+  'child.edit': { en: "Edit child's details", or: 'ଶିଶୁର ବିବରଣୀ ସଂଶୋଧନ' },
+  'child.name': { en: "Child's name", or: 'ଶିଶୁର ନାମ' },
+  'child.nameHint': { en: 'Leave blank if not named yet', or: 'ନାମକରଣ ହୋଇନଥିଲେ ଖାଲି ରଖନ୍ତୁ' },
+  'child.sex': { en: 'Sex', or: 'ଶିଶୁର ଲିଙ୍ଗ' }, 'sex.f': { en: 'Girl', or: 'ଝିଅ' }, 'sex.m': { en: 'Boy', or: 'ପୁଅ' },
+  'child.dob': { en: 'Date of birth', or: 'ଜନ୍ମ ତାରିଖ' },
+  'child.bw': { en: 'Birth weight', or: 'ଜନ୍ମ ସମୟରେ ଓଜନ' },
+  'child.bwHint': { en: 'In kg, for example 2.8', or: 'କି.ଗ୍ରା.ରେ, ଯେପରି 2.8' },
+  'child.ga': { en: 'Weeks of pregnancy at birth', or: 'ଜନ୍ମ ସମୟରେ ଗର୍ଭର ସପ୍ତାହ' },
+  'child.gaHint': { en: 'Needed for babies born early (before 37 weeks)', or: 'ସମୟ ପୂର୍ବରୁ (୩୭ ସପ୍ତାହ ପୂର୍ବରୁ) ଜନ୍ମିତ ଶିଶୁ ପାଇଁ ଆବଶ୍ୟକ' },
+  'child.ids': { en: 'Registration', or: 'ପଞ୍ଜୀକରଣ' },
+  'child.birthReg': { en: 'Birth registration number', or: 'ଜନ୍ମ ପଞ୍ଜୀକରଣ ନଂ.' },
+  'child.rch': { en: 'RCH ID (child)', or: 'ଶିଶୁର RCH ନଂ.' },
+  'child.abha': { en: 'ABHA ID (child)', or: 'ଶିଶୁର ABHA ID ନଂ.' },
+  'child.birth': { en: 'At birth', or: 'ଜନ୍ମ ସମୟରେ' },
+  'child.cried': { en: 'Cried immediately after birth', or: 'ଶିଶୁ ଜନ୍ମ ହେବା ସଙ୍ଗେ ସଙ୍ଗେ କାନ୍ଦିଲା' },
+  'child.resus': { en: 'If not, was resuscitation done?', or: 'ଯଦି ନା, ରିସସିଟେସନ କରାଯାଇଥିଲା କି?' },
+  'child.bf': { en: 'Breastfeeding started', or: 'ଶିଶୁକୁ ସ୍ତନ୍ୟପାନ କରାଇବା' },
+  'bf.1h': { en: 'Within 1 hour', or: 'ଜନ୍ମ ହେବାର ୧ ଘଣ୍ଟା ମଧ୍ୟରେ' }, 'bf.24h': { en: 'Within 24 hours', or: 'ଜନ୍ମ ହେବାର ୨୪ ଘଣ୍ଟା ମଧ୍ୟରେ' }, 'bf.late': { en: 'After 24 hours', or: 'ଜନ୍ମ ହେବାର ୨୪ ଘଣ୍ଟା ପରେ' },
+  'child.colostrum': { en: 'First yellow milk (colostrum) given', or: 'ଶାଲଦୁଧ (ପ୍ରଥମ ହଳଦିଆ କ୍ଷୀର) ଦିଆଗଲା' },
+  'child.vitk': { en: 'Vitamin K injection given', or: 'ଭିଟାମିନ୍ କେ ଦିଆଯାଇଥିଲା' },
+  'child.sncu': { en: 'Admitted to SNCU / NBSU', or: 'ଏସ୍.ଏନ୍.ସି.ୟୁ. / ଏନ୍.ବି.ଏସ୍.ୟୁ.ରେ ଭର୍ତ୍ତି' },
+  'child.sncuDis': { en: 'Discharge date', or: 'ଡିସ୍‌ଚାର୍ଜ ତାରିଖ' },
+  'child.save': { en: 'Save child', or: 'ଶିଶୁ ସେଭ୍ କରନ୍ତୁ' },
+  'child.photo': { en: 'Photo', or: 'ଫଟୋ' },
+  'child.addPhoto': { en: 'Add photo', or: 'ଫଟୋ ଯୋଗ କରନ୍ତୁ' },
+  'child.age': { en: 'Age', or: 'ବୟସ' },
+  'child.corrected': { en: 'Corrected age {a} (born {w} weeks early)', or: 'ସଂଶୋଧିତ ବୟସ {a} ({w} ସପ୍ତାହ ଆଗରୁ ଜନ୍ମ)' },
+  'child.lbw': { en: 'Low birth weight', or: 'କମ୍ ଓଜନ' }, 'child.vlbw': { en: 'Very low birth weight', or: 'ଅତି କମ୍ ଓଜନ' },
+  'child.preterm': { en: 'Born early', or: 'ସମୟ ପୂର୍ବରୁ ଜନ୍ମ' },
+  'child.details': { en: "Child's details", or: 'ଶିଶୁର ବିବରଣୀ' },
+  'child.delete': { en: 'Remove this child from the card', or: 'ଏହି ଶିଶୁକୁ କାର୍ଡରୁ ହଟାନ୍ତୁ' },
+  'child.deleteQ': { en: "All of this child's records (vaccines, weights) will be removed.", or: 'ଏହି ଶିଶୁର ସମସ୍ତ ବିବରଣୀ (ଟୀକା, ଓଜନ) ହଟିଯିବ।' },
+  'child.lbwCare': { en: 'Baby under 2.5 kg: keep the baby warm with skin-to-skin contact (Kangaroo Mother Care), breastfeed often, and ask the ANM for extra visits.', or: 'ଶିଶୁର ଓଜନ ୨.୫ କି.ଗ୍ରା.ରୁ କମ୍: ମା\'ଙ୍କ ଛାତିରେ ଲଗାଇ ଉଷୁମ ରଖନ୍ତୁ (କଙ୍ଗାରୁ ମଦର୍ କେୟାର), ବାରମ୍ବାର ସ୍ତନ୍ୟପାନ କରାନ୍ତୁ ଏବଂ ଅଧିକ ଗୃହ ପରିଦର୍ଶନ ପାଇଁ ଏ.ଏନ୍.ଏମ୍.ଙ୍କୁ କୁହନ୍ତୁ।' },
+  'child.rop': { en: 'Eye check for ROP by an eye doctor before 1 month of age (born before 34 weeks or under 2 kg).', or: 'ଏକ ମାସ ବୟସ ମଧ୍ୟରେ ଚକ୍ଷୁ ଡାକ୍ତରଙ୍କ ପାଖରେ ROP ଚକ୍ଷୁ ପରୀକ୍ଷା (୩୪ ସପ୍ତାହ ପୂର୍ବରୁ ଜନ୍ମ ବା ୨ କି.ଗ୍ରା.ରୁ କମ୍ ଓଜନ)।' },
+  'child.ropDone': { en: 'ROP eye check done on', or: 'ROP ଚକ୍ଷୁ ପରୀକ୍ଷା ତାରିଖ' },
+  'child.dangerBtn': { en: 'Danger signs', or: 'ବିପଦ ଲକ୍ଷଣ' },
+});
+
+K.child = K.child || {};
+K.child.sections = [];
+K.child.addSection = (order, fn) => { K.child.sections.push({ order, fn }); K.child.sections.sort(K.by('order')); };
+Object.assign(K.child, {
+  url: (c, k, rest = '') => `#/card/${c.id}/child/${k.id}${rest}`,
+  label: (k) => k.name || (k.sex === 'f' ? K.t('sex.f') : k.sex === 'm' ? K.t('sex.m') : K.t('child.baby')),
+  preterm: (k) => k.gaWeeks != null && k.gaWeeks < 37,
+  /* corrected age for babies born before 37 weeks, used until 2 years */
+  correctedDob: (k) => (K.child.preterm(k) && k.dob ? K.d.addDays(k.dob, (40 - k.gaWeeks) * 7) : k.dob),
+  useCorrected: (k, on) => K.child.preterm(k) && k.dob && K.d.age(k.dob, on).months < 24,
+  tone: (k) => (k.sex === 'f' ? 'pink' : k.sex === 'm' ? 'blue' : ''),
+  bwClass(k) { const w = k.birthWeight; if (w == null) return null; if (w < 1.5) return { k: 'vlbw', tone: 'red' }; if (w < 2.5) return { k: 'lbw', tone: 'amber' }; return null; },
+  ropNeeded: (k) => (k.gaWeeks != null && k.gaWeeks < 34) || (k.birthWeight != null && k.birthWeight < 2),
+});
+
+/* dashboard tile */
+K.child.summaryCard = (c, k) => {
+  const bits = K.child.cardBits.map(fn => { try { return fn(c, k); } catch (e) { return ''; } }).filter(Boolean);
+  return h`<a class="k-card cardrow" href="${K.child.url(c, k)}">
+    ${K.ui.avatar(K.child.label(k), { tone: K.child.tone(k), img: k.photoThumb })}
+    <span class="who"><b>${K.child.label(k)}</b><span class="small">${k.dob ? K.d.ageText(k.dob) : '–'}${k.dob ? ' · ' + K.d.fmt(k.dob) : ''}</span>
+      ${bits.length ? h`<span class="pills">${bits}</span>` : ''}</span>${K.ui.icon('chev', 'sm')}</a>`;
+};
+K.child.cardBits = []; // modules push (c,k) => pill
+
+/* ---------------------------------------------------------------- form */
+function childForm(c, k, isNew) {
+  const b = k.birth || {};
+  const F = (name, label, o = {}) => K.ui.field(Object.assign({ name, label, value: k[name] }, o));
+  return h`<form class="form" data-form="childSave" data-id="${c.id}" data-kid="${isNew ? '' : k.id}" novalidate>
+    <div class="fgroup">
+      ${F('name', K.t('child.name'), { hint: K.t('child.nameHint'), attrs: { autocomplete: 'off' } })}
+      ${K.ui.choices({ name: 'sex', label: K.t('child.sex'), value: k.sex, options: [{ v: 'f', l: K.t('sex.f') }, { v: 'm', l: K.t('sex.m') }] })}
+      ${F('dob', K.t('child.dob'), { type: 'date', max: K.d.today(), required: true })}
+      <div class="frow">${F('birthWeight', K.t('child.bw'), { type: 'decimal', unit: K.t('u.kg'), hint: K.t('child.bwHint') })}${F('gaWeeks', K.t('child.ga'), { type: 'number', hint: K.t('child.gaHint') })}</div>
+    </div>
+    <fieldset class="fgroup"><legend>${K.t('child.birth')}</legend>
+      ${K.ui.yn({ name: 'cried', q: K.t('child.cried'), value: b.cried, pos: true })}
+      ${K.ui.yn({ name: 'resus', q: K.t('child.resus'), value: b.resus })}
+      ${K.ui.choices({ name: 'bf', label: K.t('child.bf'), value: b.bf, options: ['1h', '24h', 'late'].map(v => ({ v, l: K.t('bf.' + v), tone: v === 'late' ? 'warn' : '' })) })}
+      ${K.ui.yn({ name: 'colostrum', q: K.t('child.colostrum'), value: b.colostrum, pos: true })}
+      ${K.ui.yn({ name: 'vitk', q: K.t('child.vitk'), value: b.vitk, pos: true })}
+      ${K.ui.yn({ name: 'sncu', q: K.t('child.sncu'), value: b.sncu })}
+      ${F('sncuDischarge', K.t('child.sncuDis'), { type: 'date', max: K.d.today(), value: b.sncuDischarge })}
+    </fieldset>
+    <fieldset class="fgroup"><legend>${K.t('child.ids')}</legend>
+      ${F('birthRegNo', K.t('child.birthReg'), { cls: 'mono' })}
+      <div class="frow">${F('rchId', K.t('child.rch'), { cls: 'mono', type: 'number', inputmode: 'numeric' })}${F('abhaId', K.t('child.abha'), { cls: 'mono' })}</div>
+    </fieldset>
+    <div class="fgroup"><div class="field"><span class="lbl">${K.t('child.photo')}</span>
+      <label class="btn ghost sm" style="justify-self:start">${K.ui.icon('upload')}<span>${K.t('child.addPhoto')}</span><input type="file" accept="image/*" capture="environment" name="photoFile" hidden data-live="photoPick"></label>
+      <div id="photo-prev">${k.photoThumb ? h`<img src="${k.photoThumb}" alt="" class="photo-prev">` : ''}</div></div></div>
+    <div class="btn-bar">${K.ui.btn(K.t('child.save'), { type: 'submit', icon: 'check' })}${K.ui.btn(K.t('btn.cancel'), { href: isNew ? `#/card/${c.id}` : K.child.url(c, k), tone: 'ghost' })}</div>
+  </form>`;
+}
+/* photo → small JPEG thumbnail kept in the card (≈20–40 KB) */
+K.child._photo = null;
+K.live.photoPick = async (el) => {
+  const f = el.files && el.files[0]; if (!f) return;
+  const url = URL.createObjectURL(f); const img = new Image();
+  img.onload = () => { const s = 360 / Math.max(img.width, img.height); const cv = document.createElement('canvas'); cv.width = Math.round(img.width * Math.min(1, s)); cv.height = Math.round(img.height * Math.min(1, s));
+    cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height); K.child._photo = cv.toDataURL('image/jpeg', 0.72); URL.revokeObjectURL(url);
+    K.$('#photo-prev').innerHTML = K.hv(K.h`<img src="${K.child._photo}" alt="" class="photo-prev">`); };
+  img.src = url;
+};
+
+K.route('/card/:id/child/new', ({ id }, q) => {
+  const c = K.card.load(id); if (!c) return K.screens.notFound();
+  K.child._photo = null;
+  const k = K.blank.child();
+  return { title: K.t('child.new'), sub: c.mother.name, back: `/card/${id}`, tab: 'home', html: h`<div class="wrap">${K.ui.phead(c.mother.name, K.t('child.new'))}${childForm(c, k, true)}</div>` };
+});
+K.route('/card/:id/child/:kid/edit', ({ id, kid }) => {
+  const c = K.card.load(id); if (!c) return K.screens.notFound(); const k = K.card.findKid(c, kid); if (!k) return K.screens.notFound();
+  K.child._photo = null;
+  return { title: K.t('child.edit'), sub: K.child.label(k), back: K.child.url(c, k).slice(1), tab: 'home',
+    html: h`<div class="wrap">${K.ui.phead(c.mother.name, K.t('child.edit'))}${childForm(c, k, false)}<p></p>
+      <div class="list">${K.ui.li({ act: 'childDelete', arg: `${c.id}|${k.id}`, icon: 'trash', tone: 'red', title: K.t('child.delete') })}</div></div>` };
+});
+K.forms.childSave = async (v, f) => {
+  const c = K.card.load(f.dataset.id); if (!c) return;
+  if (!v.dob || !K.d.valid(v.dob)) { K.ui.toast(K.t('err.date')); return; }
+  if (K.d.diff(v.dob, K.d.today()) < 0) { K.ui.toast(K.t('err.future')); return; }
+  let k = f.dataset.kid ? K.card.findKid(c, f.dataset.kid) : null; const isNew = !k;
+  if (!k) { k = K.blank.child(); c.children.push(k); }
+  let bw = v.birthWeight; if (bw != null && bw > 20) bw = bw / 1000; // typed in grams
+  Object.assign(k, { name: v.name || '', sex: v.sex || '', dob: v.dob, birthWeight: bw != null ? K.round(bw, 3) : null, gaWeeks: v.gaWeeks != null ? v.gaWeeks : null,
+    birthRegNo: v.birthRegNo || '', rchId: v.rchId != null ? String(v.rchId) : '', abhaId: v.abhaId || '' });
+  k.birth = Object.assign(k.birth || {}, { cried: v.cried == null ? null : +v.cried, resus: v.resus == null ? null : +v.resus, bf: v.bf || '', colostrum: v.colostrum == null ? null : +v.colostrum,
+    vitk: v.vitk == null ? null : +v.vitk, sncu: v.sncu == null ? null : +v.sncu, sncuDischarge: v.sncuDischarge || '' });
+  if (K.child._photo) { k.photoThumb = K.child._photo; K.child._photo = null; }
+  await K.store.save(c); K.ui.toast(K.t('saved')); K.go(K.child.url(c, k).slice(1), { replace: isNew });
+};
+K.acts.childDelete = async (el) => {
+  const [cid, kid] = el.dataset.arg.split('|'); const c = K.card.load(cid); if (!c) return;
+  if (!(await K.ui.confirm(K.t('child.deleteQ'), { danger: true, ok: K.t('btn.delete') }))) return;
+  c.children = c.children.filter(x => x.id !== kid); await K.store.save(c); K.go(`/card/${cid}`);
+};
+
+/* ---------------------------------------------------------------- overview */
+K.route('/card/:id/child/:kid', ({ id, kid }) => {
+  const c = K.card.load(id); if (!c) return K.screens.notFound(); const k = K.card.findKid(c, kid); if (!k) return K.screens.notFound();
+  const a = k.dob ? K.d.age(k.dob) : null; const bw = K.child.bwClass(k);
+  const corr = K.child.useCorrected(k) ? K.t('child.corrected', { a: K.d.ageText(K.child.correctedDob(k)), w: 40 - k.gaWeeks }) : '';
+  const sections = K.child.sections.map(s => { try { return s.fn(c, k); } catch (e) { console.error(e); return ''; } });
+  return {
+    title: K.child.label(k), sub: c.mother.name, back: `/card/${id}`, tab: 'home',
+    html: h`<div class="wrap">
+      <header class="phead cardhead"><div class="cardrow">${K.ui.avatar(K.child.label(k), { lg: true, tone: K.child.tone(k), img: k.photoThumb })}
+        <div class="who"><h1>${K.child.label(k)}</h1><p class="small" style="margin:2px 0 6px">${a ? K.d.ageText(k.dob) : '–'} · ${K.d.fmt(k.dob, 'long')}${corr ? h`<br>${corr}` : ''}</p>
+        <span class="pills">${k.sex ? K.ui.pill(K.t('sex.' + k.sex), 'ink') : ''}${k.birthWeight != null ? K.ui.pill(`${K.n(k.birthWeight, 2)} ${K.t('u.kg')}`, bw ? bw.tone : 'ink') : ''}${bw ? K.ui.pill(K.t('child.' + bw.k), bw.tone) : ''}${K.child.preterm(k) ? K.ui.pill(K.t('child.preterm'), 'amber') : ''}</span></div><span></span></div></header>
+      <div class="btn-row" style="margin:0 0 16px">${K.ui.btn(K.t('child.dangerBtn'), { href: a && a.days < 60 ? '#/learn/danger/newborn' : '#/learn/danger/child', tone: 'ghost', icon: 'alert' })}</div>
+      ${sections}
+      <section class="sec">${K.ui.secH(K.t('child.details'))}<div class="list">${K.ui.li({ href: K.child.url(c, k, '/edit'), icon: 'edit', title: K.t('child.edit'), meta: [k.rchId ? 'RCH ' + k.rchId : '', k.birthRegNo ? K.t('child.birthReg') + ' ' + k.birthRegNo : ''].filter(Boolean).join(' · ') })}</div></section>
+    </div>`,
+  };
+});
+
+/* newborn alerts section: LBW care + ROP reminder */
+K.child.addSection(2, (c, k) => {
+  if (!k.dob) return '';
+  const a = K.d.age(k.dob); const out = [];
+  if (k.birthWeight != null && k.birthWeight < 2.5 && a.days <= 90) out.push(K.ui.callout('warn', K.t('child.lbw'), K.t('child.lbwCare'), 'heart'));
+  if (K.child.ropNeeded(k) && a.days <= 60 && !k.ropDate) out.push(K.ui.callout('warn', 'ROP', h`<p>${K.t('child.rop')}</p><form class="form" data-form="ropSave" data-id="${c.id}" data-kid="${k.id}" style="margin-top:8px"><div class="frow">${K.ui.field({ name: 'ropDate', type: 'date', label: K.t('child.ropDone'), max: K.d.today() })}<div style="align-self:end">${K.ui.btn(K.t('btn.save'), { type: 'submit', size: 'sm' })}</div></div></form>`, 'eye'));
+  return out.length ? h`<div class="stack" style="margin-bottom:16px">${out}</div>` : '';
+});
+K.forms.ropSave = async (v, f) => { const c = K.card.load(f.dataset.id); const k = c && K.card.findKid(c, f.dataset.kid); if (!k || !v.ropDate) return; k.ropDate = v.ropDate; await K.store.save(c); K.refresh(); };
+K.due.add((c, today) => {
+  const out = [];
+  K.card.kids(c).forEach(k => { if (k.dob && K.child.ropNeeded(k) && !k.ropDate && K.d.diff(k.dob, today) <= 60)
+    out.push({ id: 'rop' + k.id, kind: 'test', icon: 'eye', href: K.child.url(c, k), who: K.child.label(k), title: { en: 'ROP eye check (before 1 month)', or: 'ROP ଚକ୍ଷୁ ପରୀକ୍ଷା (୧ ମାସ ପୂର୍ବରୁ)' }, date: K.d.addDays(k.dob, 20) }); });
+  return out;
+});
+K.summary.add((c) => K.card.kids(c).map(k => `${K.child.label(k)}: ${K.d.fmt(k.dob)} (${K.d.ageText(k.dob)})${k.birthWeight != null ? ', ' + K.t('child.bw') + ' ' + K.n(k.birthWeight, 2) + ' kg' : ''}`));
 
 }
 /* ── modules/90-more.js ── */

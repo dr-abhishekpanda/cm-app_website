@@ -53,3 +53,12 @@
 .tk.td{outline:2px solid var(--accent);outline-offset:1px}
 .tk.m1{border-color:var(--ink-faint)}
 .tk[disabled]{opacity:.35}
+
+/* family planning + misc */
+details.acc.fp>summary{gap:10px}
+details.acc.fp>summary .pill{margin-left:auto}
+details.acc.fp>summary::after{margin-left:8px}
+details.acc.fp.on{border-color:var(--primary)}
+.photo-prev{width:96px;height:96px;object-fit:cover;border-radius:14px;border:1px solid var(--line);margin-top:6px}
+.cardhead .who h1{font-size:clamp(1.5rem,6vw,2rem)}
+.cardrow .who .small{display:block}

@@ -195,7 +195,9 @@ K.route('/card/:id', ({ id }) => {
     trail: phone ? h`<a class="icon-btn" href="tel:${K.card.tel(phone)}" aria-label="${K.t('btn.call')}">${K.ui.icon('phone')}</a>` : '' }) : '';
   const contactsHtml = [contact('c.asha', ct.asha, ct.ashaPhone), contact('c.anm', ct.anm, ct.anmPhone), contact('c.aww', ct.aww, ct.awwPhone),
     ct.deliveryPoint || ct.deliveryPhone ? contact('c.dp', ct.deliveryPoint, ct.deliveryPhone) : '', ct.mamataDivas ? K.ui.li({ icon: 'calendar', title: ct.mamataDivas, meta: K.t('c.mamataDivas') }) : ''].filter(x => x && String(x));
-  const pastPregs = (c.pregnancies || []).filter(x => x !== p).sort(K.by(x => (x.delivery && x.delivery.date) || x.createdAt, -1));
+  const last = K.card.lastDelivered(c); const recentDay = last ? K.d.diff(last.delivery.date, K.d.today()) : 999;
+  const recent = !p && last && recentDay <= 60 ? last : null;
+  const pastPregs = (c.pregnancies || []).filter(x => x !== p && x !== recent).sort(K.by(x => (x.delivery && x.delivery.date) || x.createdAt, -1));
   return {
     title: m.name || K.t('app.name'), sub: K.t('app.tag'), back: '/', tab: 'home',
     html: h`<div class="wrap">
@@ -205,8 +207,9 @@ K.route('/card/:id', ({ id }) => {
       ${c.sample ? K.ui.callout('info', '', K.t('sample.note'), 'sparkle') : ''}
       ${due.length ? h`<section class="sec">${K.ui.secH(K.t('card.next'))}<div class="list">${due.map(it => K.ui.li({ href: it.href, icon: it.icon || 'bell', tone: it.status === 'overdue' ? 'red' : it.status === 'due' ? 'amber' : 'ink',
           title: K.L(it.title), meta: [it.who, K.d.fmt(it.date)].filter(Boolean).join(' · '), trail: K.ui.pill(K.due.label(it), K.due.tone(it)) }))}</div></section>` : ''}
-      <section class="sec">${K.ui.secH(K.t('card.preg'))}
+      <section class="sec">${K.ui.secH(recent ? K.t('pnc.title') : K.t('card.preg'))}
         ${p ? (K.preg && K.preg.summaryCard ? K.preg.summaryCard(c, p) : K.ui.li({ href: `#/card/${c.id}/preg/${p.id}`, icon: 'mother', title: K.t('card.preg') }))
+          : recent ? h`<div class="list">${K.ui.li({ href: `#/card/${c.id}/preg/${recent.id}/pnc`, icon: 'heart', tone: 'info', title: K.t('preg.deliveredOn', { d: K.d.fmt(recent.delivery.date) }), meta: recentDay <= 42 ? K.t('stage.pnc', { d: recentDay }) : '' })}</div>`
           : K.ui.btn(K.t('card.addPreg'), { href: `#/card/${c.id}/preg/new`, tone: 'ghost', icon: 'plus' })}
       </section>
       <section class="sec">${K.ui.secH(K.t('card.children'), K.ui.btn(K.t('card.addChild'), { href: `#/card/${c.id}/child/new`, tone: 'ghost', size: 'sm', icon: 'plus' }))}
