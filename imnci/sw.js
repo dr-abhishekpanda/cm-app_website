@@ -4,7 +4,7 @@
  * is shown and the update finishes in the background.
  * Saved responses are never redirects: Cloudflare Pages answers /imnci/index.html with a 308 to
  * /imnci/, and Safari refuses a redirected response for a page load. */
-const CACHE = 'imnci-ca-1.0.1';
+const CACHE = 'imnci-ca-1.1';
 const ROOT = new URL('./', self.location).href;
 const ASSETS = ['./', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 const SLOW_MS = 4000;

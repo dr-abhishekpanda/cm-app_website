@@ -89,10 +89,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-.eyebrow { display: flex; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: .72rem; font-weight: 500;
-  letter-spacing: .18em; text-transform: uppercase; color: var(--primary); margin: 0 0 14px; }
-.eyebrow::before { content: ""; width: 26px; height: 1.5px; background: var(--primary); opacity: .6; flex: none; }
-.eyebrow.plain::before { display: none; }
+/* section headings inside cards (v1.1: plain headings, no eyebrow labels) */
+.sec-h { font-family: var(--font-body); font-size: 1.02rem; font-weight: 600; line-height: 1.3; color: var(--ink); margin: 0 0 12px; letter-spacing: 0; }
 
 /* ---------------------------------------------------------------- app bar */
 .bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; background: color-mix(in srgb, var(--paper) 88%, transparent);
@@ -101,7 +99,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .brand { display: flex; align-items: center; gap: 10px; min-width: 0; background: none; border: 0; padding: 0; cursor: pointer; text-align: left; }
 .brand-mark { width: 30px; height: 30px; flex: none; }
 .brand-name { font-family: var(--font-display); font-weight: 600; font-size: 1.08rem; line-height: 1.1; }
-.brand-sub { font-family: var(--font-mono); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-faint); }
+.brand-sub { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .1em; color: var(--ink-faint); }
 .nav { display: flex; gap: 2px; margin-left: auto; }
 .nav button { background: none; border: 0; padding: 8px 12px; border-radius: 999px; cursor: pointer; color: var(--ink-soft); font-size: .9rem; display: flex; gap: 7px; align-items: center; }
 .nav button svg { width: 17px; height: 17px; }
@@ -122,8 +120,22 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 main { max-width: var(--maxw); margin: 0 auto; padding-inline: var(--gutter); padding-block: 22px 40px; }
 .credit { border-top: 1px solid var(--line); background: color-mix(in srgb, var(--paper) 92%, transparent); }
-.credit-in { max-width: var(--maxw); margin: 0 auto; padding: 14px var(--gutter) 22px; font-size: .8rem; line-height: 1.55; color: var(--ink-soft); }
+.credit-in { max-width: var(--maxw); margin: 0 auto; padding: 14px var(--gutter) 22px; font-size: .8rem; line-height: 1.55; color: var(--ink-soft);
+  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 10px 24px; }
+.credit-text { min-width: 0; }
 .credit-in p { margin: 0; max-width: 90ch; }
+.credit-fb { flex: none; }
+.nw { white-space: nowrap; }
+.credit-block { margin-top: 10px; font-size: .9rem; line-height: 1.55; }
+.credit-block p { margin: 0; }
+.credit-block a { color: var(--primary); text-underline-offset: 2px; word-break: break-word; }
+.steps-list { margin: 8px 0 0; padding-left: 1.4em; }
+.steps-list li { margin: 7px 0; }
+.exp-row { display: flex; gap: 12px; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.exp-row .grow { min-width: 0; }
+.exp-row p { margin: 2px 0 0; }
+.exp-row .btn { flex: none; }
+.fb-out { width: 100%; margin-top: 10px; font-family: var(--font-mono); font-size: .82rem; }
 .credit a { color: var(--primary); text-underline-offset: 2px; word-break: break-word; }
 .view-head { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 20px; margin-bottom: 18px; }
 .view-head .grow { flex: 1 1 260px; min-width: 0; }
@@ -211,7 +223,7 @@ table.t tr.hit td { background: color-mix(in srgb, var(--primary) 12%, transpare
 .cls.green .cls-h { background: var(--green); }
 .cls.note .cls-h { background: var(--note); color: var(--ink); }
 .cls-name { font-weight: 700; font-size: .92rem; letter-spacing: .01em; flex: 1; min-width: 0; }
-.cls-tab { font-family: var(--font-mono); font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; opacity: .75; display: block; margin-bottom: 1px; font-weight: 500; }
+.cls-tab { font-size: .76rem; opacity: .8; display: block; margin-bottom: 2px; font-weight: 500; }
 .cls-b { padding: 9px 12px 11px; font-size: .88rem; }
 .cls-b ul { margin: 0; padding-left: 18px; }
 .cls-flag { font-family: var(--font-mono); font-size: .62rem; text-transform: uppercase; letter-spacing: .08em; background: rgba(255, 255, 255, .7); color: #5a3a10; padding: 2px 6px; border-radius: 5px; white-space: nowrap; }
@@ -393,7 +405,7 @@ ul.plain li { margin: 3px 0; }
 <body>
 <div id="app"><noscript><p style="padding:16px">This tool needs JavaScript.</p></noscript></div>
 <script>
-var IMNCI_BUILD = {"tests":"2192 automated checks passed at build","built":"2026-10-09"};
+var IMNCI_BUILD = {"tests":"2211 automated checks passed at build","built":"2026-10-10"};
 /* ---- src/sd_data.js ---- */
 /* Generated from the IMNCI Chart Booklet for MOs (2023) pp.44-46 (booklet values as printed),
    WHO corrections for cells that differ from the WHO Child Growth Standards (2006), and WHO LMS
@@ -2913,15 +2925,22 @@ IMNCI.App = IMNCI.App || {};
 (function (App, E, KB) {
   'use strict';
 
-  App.META = { name: 'IMNCI Case Assistant', version: '1.0.1', schema: 1, released: '2026-10-09', tests: typeof IMNCI_BUILD !== 'undefined' ? IMNCI_BUILD.tests : '' };
-  // Credit line shown at the foot of every screen and every PDF page.
+  App.META = { name: 'IMNCI Case Assistant', version: '1.1', schema: 1, released: '2026-10-10', tests: typeof IMNCI_BUILD !== 'undefined' ? IMNCI_BUILD.tests : '' };
+  // Credit, in three lines, at the foot of every screen and every PDF page, and in the Excel file.
   App.CREDIT = {
-    text: 'Prepared by Dr Abhishek Panda, Asst. Professor in Community Medicine, Govt. Medical College & Hospital, Sundargarh, Odisha.',
+    line1: '\u00A9 Dr Abhishek Panda, Asst. Professor in Community Medicine',
+    line2: 'Govt. Medical College & Hospital, Sundargarh, Odisha',
     email: 'support@dr-abhishekpanda-cm.app',
-    whatsapp: '(+91) 7008909595',
+    whatsapp: '(+91) 700-890-9595',
     whatsappLink: 'https://wa.me/917008909595'
   };
-  App.CREDIT.plain = App.CREDIT.text + ' Email: ' + App.CREDIT.email + '; WhatsApp: ' + App.CREDIT.whatsapp;
+  App.CREDIT.line3 = 'Email: ' + App.CREDIT.email + '; WhatsApp: ' + App.CREDIT.whatsapp;
+  App.CREDIT.lines = [App.CREDIT.line1, App.CREDIT.line2, App.CREDIT.line3];
+  // The three lines as HTML, with the e-mail and WhatsApp links.
+  App.creditHtml = function () {
+    var C = App.CREDIT, esc = App.U.esc;
+    return '<p>' + esc(C.line1) + '</p><p>' + esc(C.line2) + '</p><p><span class="nw">Email: <a href="mailto:' + esc(C.email) + '">' + esc(C.email) + '</a>;</span> <span class="nw">WhatsApp: <a href="' + esc(C.whatsappLink) + '" target="_blank" rel="noopener">' + esc(C.whatsapp) + '</a></span></p>';
+  };
 
   // ------------------------------------------------------------------ utilities
   var U = App.U = {};
@@ -2999,7 +3018,9 @@ IMNCI.App = IMNCI.App || {};
     copy: '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
     trash: '<path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>',
     eye: '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>',
-    info: '<circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/>'
+    info: '<circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/>',
+    message: '<path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+    mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>'
   };
   App.icon = function (name, cls) {
     return '<svg class="' + (cls || 'ic') + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICON_PATHS[name] || '') + '</svg>';
@@ -3755,15 +3776,15 @@ IMNCI.App = IMNCI.App || {};
 
   App.renderLive = function (c, r) {
     if (c.practice && !c.practice.revealed) {
-      return '<div class="card"><p class="eyebrow plain">Practice mode</p><p>Classifications are hidden. Work them out from the booklet, then enter them at the last step.</p></div>';
+      return '<div class="card"><p class="sec-h" role="heading" aria-level="2">Practice mode</p><p>Classifications are hidden. Work them out from the booklet, then enter them at the last step.</p></div>';
     }
-    var html = '<div class="card"><p class="eyebrow">Live classification</p>';
+    var html = '<div class="card"><p class="sec-h" role="heading" aria-level="2">Live classification</p>';
     if (!r.classes.length && !r.pending.length) html += '<p class="soft small">Answer the questions; classifications appear here as soon as a table can be classified.</p>';
     html += App.referralBanner(r, true);
     if (r.classes.length) html += '<div style="margin-top:10px">' + r.classes.map(function (x) { return clsCard(x, { reasons: true }); }).join('') + '</div>';
     var pend = r.pending.filter(function (p) { return !p.optional; });
     if (pend.length) {
-      html += '<div style="margin-top:12px"><p class="eyebrow plain" style="margin-bottom:6px">Still needed</p><ul class="pending plain">' + pend.map(function (p) {
+      html += '<div style="margin-top:12px"><p class="sec-h" role="heading" aria-level="2" style="margin-bottom:6px">Still needed</p><ul class="pending plain">' + pend.map(function (p) {
         return '<li><b>' + esc((KB.TABLES[p.table] || {}).title || p.table) + '</b>: ' + esc(p.missing.join(', ')) + '</li>';
       }).join('') + '</ul></div>';
     }
@@ -3805,8 +3826,8 @@ IMNCI.App = IMNCI.App || {};
     var isQuiz = quizStep && W.step === secs.length;
     var sec = secs[W.step];
     var groupLabel = c.group === 'yi' ? 'Sick young infant' : c.group === 'ch' ? 'Sick child' : 'New case';
-    var html = '<div class="view-head"><div class="grow"><p class="eyebrow">' + esc(groupLabel) + (c.practice ? ' · practice' : '') + ' · ' + (c.status === 'complete' ? 'completed' : 'draft, saved as you type') + '</p>' +
-      '<h1>' + esc(c.pt.name || (c.practice ? c.practice.title : 'New case')) + '</h1></div>' +
+    var html = '<div class="view-head"><div class="grow">' +
+      '<h1>' + esc(c.pt.name || (c.practice ? c.practice.title : 'New case')) + '</h1><p class="mono small">' + esc(groupLabel) + (c.practice ? ' · practice' : '') + ' · ' + (c.status === 'complete' ? 'completed' : 'draft, saved as you type') + '</p></div>' +
       '<div class="btn-row"><button type="button" class="btn" data-act="to-summary">' + App.icon('eye') + 'Summary</button></div></div>';
     if (c.practice && c.practice.brief) html += '<p class="vignette">' + esc(c.practice.brief) + '</p>';
     // step chips
@@ -4082,8 +4103,8 @@ IMNCI.App = IMNCI.App || {};
     var r = App.result(c);
     var age = r.age;
     var t = E.tempC(c);
-    var meta = [U.fmtAge(age), c.pt.sex === 'M' ? 'Male' : c.pt.sex === 'F' ? 'Female' : c.pt.sex === 'O' ? 'Other' : '', c.pt.weight ? c.pt.weight + ' kg' : '', t !== null ? t + '°C' : '', U.fmtDate(c.visit.date), c.visit.opd ? 'OPD ' + c.visit.opd : ''].filter(Boolean);
-    var html = '<div class="view-head"><div class="grow"><p class="eyebrow">' + (c.group === 'yi' ? 'Sick young infant' : 'Sick child') + ' · case summary' + (c.practice ? ' · practice' : '') + (c.demo ? ' · demo' : '') + '</p>' +
+    var meta = [(c.group === 'yi' ? 'Sick young infant' : 'Sick child') + (c.practice ? ' (practice)' : '') + (c.demo ? ' (demo)' : ''), U.fmtAge(age), c.pt.sex === 'M' ? 'Male' : c.pt.sex === 'F' ? 'Female' : c.pt.sex === 'O' ? 'Other' : '', c.pt.weight ? c.pt.weight + ' kg' : '', t !== null ? t + '°C' : '', U.fmtDate(c.visit.date), c.visit.opd ? 'OPD ' + c.visit.opd : ''].filter(Boolean);
+    var html = '<div class="view-head"><div class="grow">' +
       '<h1>' + esc(c.pt.name || (c.practice ? c.practice.title : 'Unnamed case')) + '</h1><p class="mono small">' + esc(meta.join(' · ')) + '</p></div>' +
       '<div class="btn-row"><button type="button" class="btn" data-act="edit-case">' + App.icon('edit') + 'Edit findings</button>' +
       '<button type="button" class="btn" data-act="pdf-case"' + (App.canDownload() ? '' : ' hidden') + '>' + App.icon('pdf') + 'PDF case sheet</button>' +
@@ -4103,7 +4124,7 @@ IMNCI.App = IMNCI.App || {};
 
     html += '<div class="split" style="margin-top:16px"><div class="stack">';
     // classifications
-    html += '<section class="card"><p class="eyebrow">Classifications</p><div style="display:grid;gap:10px">' +
+    html += '<section class="card"><p class="sec-h" role="heading" aria-level="2">Classifications</p><div style="display:grid;gap:10px">' +
       (r.classes.length ? r.classes.map(function (x) {
         var extra = '<div class="btn-row" style="margin-top:8px"><button type="button" class="btn sm ghost" data-act="override" data-table="' + esc(x.table) + '">' + (x.override ? 'Change again or restore' : 'Change classification') + '</button></div>';
         if (x.override && x.auto) extra = '<p class="small soft" style="margin:6px 0 0">Engine classification: ' + esc(KB.CLS_BY_ID[x.auto].name) + '</p>' + extra;
@@ -4117,20 +4138,20 @@ IMNCI.App = IMNCI.App || {};
 
     // pre-referral
     if (r.plan.prereferral.length) {
-      html += '<section class="card"><p class="eyebrow">Pre-referral treatment</p><ul class="tx-list">' + r.plan.prereferral.map(function (p) {
+      html += '<section class="card"><p class="sec-h" role="heading" aria-level="2">Pre-referral treatment</p><ul class="tx-list">' + r.plan.prereferral.map(function (p) {
         return txItem({ t: p.t, b: true, status: p.status, cond: p.cond, doses: p.doses }, '<div class="small faint">For ' + esc(p.from.join(', ')) + '</div>');
       }).join('') + '</ul>' + notReferredHtml(r) + '</section>';
     } else if (r.plan.notReferred) html += '<section class="card">' + notReferredHtml(r) + '</section>';
     // treatment per classification
     var anyNo = r.classes.some(function (x) { return x.tx.some(function (i) { return i.status === 'no'; }); });
-    html += '<section class="card" id="tx"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><p class="eyebrow" style="margin:0;flex:1">Identify treatment</p>' +
+    html += '<section class="card" id="tx"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><p class="sec-h" role="heading" aria-level="2" style="margin:0;flex:1">Identify treatment</p>' +
       (anyNo ? '<label class="small soft"><input type="checkbox" id="show-no"> Show items that do not apply</label>' : '') + '</div>' +
       r.classes.map(function (x) {
         return '<div style="margin-top:14px"><span class="chip ' + x.sev + '">' + esc(x.name) + '</span><ul class="tx-list" style="margin-top:8px">' + x.tx.map(function (it) { return txItem(it); }).join('') + '</ul></div>';
       }).join('') + '</section>';
     // medicines
     if (r.plan.medicines.length) {
-      html += '<section class="card"><p class="eyebrow">Medicines and doses</p><div class="scroll-x"><table class="t stackable"><thead><tr><th>Medicine</th><th>Dose for this child</th><th>For</th></tr></thead><tbody>' +
+      html += '<section class="card"><p class="sec-h" role="heading" aria-level="2">Medicines and doses</p><div class="scroll-x"><table class="t stackable"><thead><tr><th>Medicine</th><th>Dose for this child</th><th>For</th></tr></thead><tbody>' +
         r.plan.medicines.map(function (m) {
           return '<tr><td><b>' + esc(m.name) + '</b><br><span class="pg">p.' + m.page + '</span>' + (m.status === 'maybe' ? ' <span class="pill amber">' + esc(m.cond || 'conditional') + '</span>' : '') + '</td><td>' + (m.dose.ok === false ? '<span style="color:var(--accent)">' + esc(m.dose.text) + '</span>' : esc(m.dose.text)) +
             (m.dose.band ? '<br><span class="faint small mono">' + esc(m.dose.band) + '</span>' : '') + (m.dose.note ? '<br><span class="small" style="color:var(--accent)">' + esc(m.dose.note) + '</span>' : '') +
@@ -4140,7 +4161,7 @@ IMNCI.App = IMNCI.App || {};
     html += '</div><div class="stack">';
     // follow-up
     var f = App.followUpDate(c, r);
-    html += '<section class="card"><p class="eyebrow">Follow-up</p>';
+    html += '<section class="card"><p class="sec-h" role="heading" aria-level="2">Follow-up</p>';
     if (r.plan.referral === 'urgent') {
       var fnr = r.plan.followUpIfNotReferred;
       html += '<p>Referred urgently: follow up after the hospital visit.</p>' + (fnr ? '<p class="small soft">If referral is not possible: ' + (fnr.daily ? 'see the ' + (c.group === 'yi' ? 'infant' : 'child') + ' ' + esc(fnr.note) : 'follow-up after ' + fnr.days + ' days (' + esc(fnr.cls) + ')') + '.</p>' : '');
@@ -4152,10 +4173,10 @@ IMNCI.App = IMNCI.App || {};
     if (c.fu && c.fu.length) html += '<div style="margin-top:10px">' + c.fu.map(function (v) { return '<div class="callout small" style="margin-top:6px"><b>' + esc(U.fmtDate(v.date)) + '</b>: ' + esc(v.outcome || '') + (v.action ? ' · ' + esc(v.action) : '') + (v.notes ? '<br>' + esc(v.notes) : '') + '</div>'; }).join('') + '</div>';
     html += '</section>';
     // return immediately
-    html += '<section class="card"><p class="eyebrow">Return immediately if</p><ul class="plain">' + r.plan.returnSigns.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul><p class="small faint">Booklet p.' + (c.group === 'yi' ? '14' : '36') + '</p></section>';
+    html += '<section class="card"><p class="sec-h" role="heading" aria-level="2">Return immediately if</p><ul class="plain">' + r.plan.returnSigns.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul><p class="small faint">Booklet p.' + (c.group === 'yi' ? '14' : '36') + '</p></section>';
     // immunisation
     var im = r.immunisation || {};
-    html += '<section class="card"><p class="eyebrow">Immunisation</p>' +
+    html += '<section class="card"><p class="sec-h" role="heading" aria-level="2">Immunisation</p>' +
       (im.recordedDue && im.recordedDue.length ? '<p><b>Needed today:</b> ' + esc(im.recordedDue.join(', ')) + '</p>' : '') +
       (im.suggested && im.suggested.length ? '<p><b>Due by age, not recorded:</b> ' + esc(im.suggested.join(', ')) + '</p>' : '') +
       (im.missed && im.missed.length ? '<p><b>Missed:</b> ' + esc(im.missed.join(', ')) + '</p>' : '') +
@@ -4163,13 +4184,13 @@ IMNCI.App = IMNCI.App || {};
       (!(im.recordedDue || []).length && !(im.suggested || []).length && !(im.missed || []).length ? '<p class="soft small">Nothing outstanding from what is recorded.</p>' : '') +
       '<p class="small faint">' + esc(KB.VACCINE_NOTES[0]) + '</p></section>';
     // counselling
-    html += '<section class="card"><p class="eyebrow">Counsel the mother</p>' + r.plan.counselling.map(function (k) {
+    html += '<section class="card"><p class="sec-h" role="heading" aria-level="2">Counsel the mother</p>' + r.plan.counselling.map(function (k) {
       return '<details class="more"><summary>' + esc(k.title) + ' <span class="pg">p.' + k.page + '</span></summary><ul class="plain small">' + k.items.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul></details>';
     }).join('') + '</section>';
     // what was done
     var tx = c.tx || {};
     if (tx.referral || tx.given || (tx.immToday || []).length || (tx.counsel || []).length) {
-      html += '<section class="card"><p class="eyebrow">Recorded by the clinician</p><dl class="kv">' +
+      html += '<section class="card"><p class="sec-h" role="heading" aria-level="2">Recorded by the clinician</p><dl class="kv">' +
         (tx.referral ? '<dt>Referral</dt><dd>' + esc({ done: 'Referred', refused: 'Refused or not possible', no: 'Not needed' }[tx.referral] || tx.referral) + '</dd>' : '') +
         (tx.given ? '<dt>Treatment</dt><dd style="white-space:pre-wrap">' + esc(tx.given) + '</dd>' : '') +
         ((tx.immToday || []).length ? '<dt>Given today</dt><dd>' + esc(tx.immToday.map(labelForImm).join(', ')) + '</dd>' : '') +
@@ -4205,7 +4226,7 @@ IMNCI.App = IMNCI.App || {};
   App.renderPracticeQuiz = function (c, r) {
     var ans = (c.practice && c.practice.answers) || {};
     var exp = expected(c, r);
-    var html = '<p class="eyebrow">Classify this ' + (c.group === 'yi' ? 'young infant' : 'child') + '</p><p class="soft">Use every table that applies. Choose "Not classified" when the main symptom is absent.</p><div style="display:grid;gap:10px">';
+    var html = '<p class="sec-h" role="heading" aria-level="2">Classify this ' + (c.group === 'yi' ? 'young infant' : 'child') + '</p><p class="soft">Use every table that applies. Choose "Not classified" when the main symptom is absent.</p><div style="display:grid;gap:10px">';
     quizTables(c).forEach(function (t) {
       var opts = App.clsOptions(t);
       html += '<label class="practice-q"><span><b>' + esc(KB.TABLES[t].title) + '</b> <span class="pg">p.' + KB.TABLES[t].page + '</span>' + (exp[t] === null ? ' <span class="pill amber">findings incomplete: not scored</span>' : '') + '</span>' +
@@ -4228,7 +4249,7 @@ IMNCI.App = IMNCI.App || {};
   function practiceResult(c, r) {
     var s = score(c, r);
     var name = function (t, id) { return id === 'none' ? (t === '_referral' ? 'No referral (treat here)' : 'Not classified') : t === '_referral' ? ({ urgent: 'Refer urgently', refer: 'Refer, not urgently' }[id] || '—') : id ? KB.CLS_BY_ID[id].name : '—'; };
-    return '<section class="card" style="margin-bottom:14px"><div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><div class="score mono">' + s.correct + '/' + s.total + '</div><div><p class="eyebrow plain" style="margin:0">Practice result</p><p class="soft" style="margin:0">' +
+    return '<section class="card" style="margin-bottom:14px"><div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><div class="score mono">' + s.correct + '/' + s.total + '</div><div><p class="sec-h" role="heading" aria-level="2" style="margin:0">Practice result</p><p class="soft" style="margin:0">' +
       (s.correct === s.total ? 'All correct.' : 'Compare your answers with the booklet classification below.') + '</p></div><div class="btn-row" style="margin-left:auto"><button type="button" class="btn sm" data-act="quiz-retry">Try again</button></div></div>' +
       '<div style="display:grid;gap:8px;margin-top:12px">' + s.items.map(function (i) {
         var title = i.t === '_referral' ? 'Referral decision' : KB.TABLES[i.t].title;
@@ -4439,18 +4460,18 @@ IMNCI.App = IMNCI.App || {};
       return true;
     }).sort(function (a, b) { return (b.c.visit.date || '').localeCompare(a.c.visit.date || '') || (b.c.updated || '').localeCompare(a.c.updated || ''); });
 
-    var html = '<div class="view-head"><div class="grow"><p class="eyebrow">#CM-APP · IMNCI 2023 · MoHFW chart booklet</p><h1>Cases</h1>' +
+    var html = '<div class="view-head"><div class="grow"><h1>Cases</h1>' +
       '<p>Record a sick young infant or child on the case recording form; the app classifies each table, identifies treatment with doses, and keeps follow-ups.</p></div>' +
       '<div class="btn-row"><button type="button" class="btn primary" data-act="new" data-group="yi">' + App.icon('plus') + 'Young infant</button><button type="button" class="btn primary" data-act="new" data-group="ch">' + App.icon('plus') + 'Child 2 months-5 years</button></div></div>';
     if (!App.cases.length) {
       html += '<div class="card empty"><h2>No cases yet</h2><p>Start a case, try a practice exercise, or load demonstration cases to see the dashboard and exports.</p>' +
         '<div class="btn-row" style="justify-content:center;margin-top:12px"><button type="button" class="btn primary" data-act="new" data-group="yi">' + App.icon('plus') + 'Young infant (up to 2 months)</button><button type="button" class="btn primary" data-act="new" data-group="ch">' + App.icon('plus') + 'Child (2 months-5 years)</button>' +
-        '<button type="button" class="btn" data-go="practice">' + App.icon('practice') + 'Practice exercises</button><button type="button" class="btn" data-act="demo-load">Load 40 demo cases</button><button type="button" class="btn ghost" data-go="about">How it works</button></div>' +
+        '<button type="button" class="btn" data-go="practice">' + App.icon('practice') + 'Practice exercises</button><button type="button" class="btn" data-act="demo-load">Load 40 demo cases</button><button type="button" class="btn ghost" data-go="about">How it works</button><button type="button" class="btn ghost" data-act="restore">' + App.icon('upload') + 'Restore a backup</button></div>' +
         '<p class="small faint" style="margin-top:14px">Cases stay in this browser only. Nothing is sent anywhere.</p></div>';
       root.innerHTML = html; return;
     }
     html += '<div class="toolbar"><input type="search" id="case-search" placeholder="Search name, OPD number, classification" value="' + esc(App.ui.search || '') + '" aria-label="Search cases">' +
-      '<button type="button" class="btn" data-act="export-xlsx"' + (App.canDownload() ? '' : ' hidden') + '>' + App.icon('xls') + 'Excel</button></div>';
+      '<button type="button" class="btn" data-act="export-menu">' + App.icon('download') + 'Export</button></div>';
     var F = [['all', 'All', counts.all], ['draft', 'Drafts', counts.draft], ['complete', 'Completed', counts.complete], ['urgent', 'Urgent referral', counts.urgent], ['fu', 'Follow-up due', counts.fu], ['practice', 'Practice', counts.practice]];
     if (counts.demo) F.push(['demo', 'Demo', counts.demo]);
     html += '<div class="filters" role="tablist" aria-label="Filter cases">' + F.map(function (f) {
@@ -4489,7 +4510,7 @@ IMNCI.App = IMNCI.App || {};
       groups[g].push({ c: c, r: r, f: f });
     });
     Object.keys(groups).forEach(function (g) { groups[g].sort(function (a, b) { return ((a.f || {}).date || a.c.visit.date).localeCompare((b.f || {}).date || b.c.visit.date); }); });
-    var html = '<div class="view-head"><div class="grow"><p class="eyebrow">Follow-up register</p><h1>Follow-ups</h1><p>Completed cases with a follow-up visit due, from the earliest follow-up in each plan (or the days you set). Record the visit to close it.</p></div></div>';
+    var html = '<div class="view-head"><div class="grow"><h1>Follow-ups</h1><p>Completed cases with a follow-up visit due, from the earliest follow-up in each plan (or the days you set). Record the visit to close it.</p></div></div>';
     var sec = function (key, title, note) {
       var L = groups[key];
       if (!L.length) return '';
@@ -4547,7 +4568,7 @@ IMNCI.App = IMNCI.App || {};
     var today = U.today(), fuDue = 0, fuOver = 0;
     d.res.forEach(function (x) { var f = App.followUpDate(x.c, x.r); if (f && !x.c.fuDone && x.r.plan.referral !== 'urgent') { if (f.date < today) fuOver++; else if (f.date <= U.addDays(today, 7)) fuDue++; } });
     var pct = function (a, b) { return b ? Math.round(a * 1000 / b) / 10 + '%' : '0%'; };
-    var html = '<div class="view-head"><div class="grow"><p class="eyebrow">Facility summary</p><h1>Dashboard</h1><p>Counts from the cases in this browser for the chosen period. Each case counts once per classification.</p></div>' +
+    var html = '<div class="view-head"><div class="grow"><h1>Dashboard</h1><p>Counts from the cases in this browser for the chosen period. Each case counts once per classification.</p></div>' +
       '<div class="btn-row"' + (App.canDownload() ? '' : ' hidden') + '><button type="button" class="btn" data-act="export-xlsx">' + App.icon('xls') + 'Excel</button><button type="button" class="btn" data-act="export-register-pdf">' + App.icon('pdf') + 'PDF summary</button></div></div>';
     html += '<div class="card"><div class="cols" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr))">' +
       '<label class="small">From<input type="date" data-dash="from" value="' + esc(o.from) + '"></label><label class="small">To<input type="date" data-dash="to" value="' + esc(o.to) + '"></label>' +
@@ -4566,7 +4587,7 @@ IMNCI.App = IMNCI.App || {};
       tile(d.provisional, 'Provisional', 'cases with missing findings') + '</div>';
     // severity mix
     var segs = [['pink', 'Pink'], ['yellow', 'Yellow'], ['green', 'Green'], ['note', 'Problem only'], ['none', 'Not classified']].filter(function (s) { return d.sev[s[0]]; });
-    html += '<section class="card" style="margin-top:14px"><p class="eyebrow">Highest severity per case</p><div class="stackbar" role="img" aria-label="' + esc(segs.map(function (s) { return s[1] + ' ' + d.sev[s[0]]; }).join(', ')) + '">' +
+    html += '<section class="card" style="margin-top:14px"><p class="sec-h" role="heading" aria-level="2">Highest severity per case</p><div class="stackbar" role="img" aria-label="' + esc(segs.map(function (s) { return s[1] + ' ' + d.sev[s[0]]; }).join(', ')) + '">' +
       segs.map(function (s) { return '<span class="sb ' + s[0] + '" style="flex:' + d.sev[s[0]] + '" title="' + s[1] + ': ' + d.sev[s[0]] + '">' + (d.sev[s[0]] / d.n >= 0.08 ? d.sev[s[0]] : '') + '</span>'; }).join('') + '</div>' +
       '<div class="legend">' + segs.map(function (s) { return '<span><i class="' + s[0] + '"></i>' + s[1] + ' <span class="mono">' + d.sev[s[0]] + ' (' + pct(d.sev[s[0]], d.n) + ')</span></span>'; }).join('') + '</div></section>';
     // classifications by table
@@ -4578,7 +4599,7 @@ IMNCI.App = IMNCI.App || {};
       var tables = App.TABLE_ORDER[g];
       var max = 0;
       tables.forEach(function (t) { App.clsOptions(t).forEach(function (k) { max = Math.max(max, d.byCls[k.id] || 0); }); });
-      html += '<section class="card"><p class="eyebrow">' + (g === 'yi' ? 'Young infants' : 'Children') + ' · ' + nG + '</p>' + tables.map(function (t) {
+      html += '<section class="card"><p class="sec-h" role="heading" aria-level="2">' + (g === 'yi' ? 'Young infants' : 'Children') + ' · ' + nG + '</p>' + tables.map(function (t) {
         var opts = App.clsOptions(t).filter(function (k) { return d.byCls[k.id]; });
         if (!opts.length) return '';
         return '<div class="hgroup"><div class="hg-t">' + esc(KB.TABLES[t].title) + '</div>' + opts.map(function (k) {
@@ -4591,7 +4612,7 @@ IMNCI.App = IMNCI.App || {};
     // cases per week
     var wkKeys = Object.keys(d.weeks).sort().slice(-16);
     var wmax = Math.max.apply(null, wkKeys.map(function (k) { return (d.weeks[k].yi || 0) + (d.weeks[k].ch || 0); }).concat([1]));
-    html += '<section class="card" style="margin-top:14px"><p class="eyebrow">Cases per week (week starting Monday)</p><div class="vbars" role="img" aria-label="Cases per week">' + wkKeys.map(function (k) {
+    html += '<section class="card" style="margin-top:14px"><p class="sec-h" role="heading" aria-level="2">Cases per week (week starting Monday)</p><div class="vbars" role="img" aria-label="Cases per week">' + wkKeys.map(function (k) {
       var w = d.weeks[k], tot = (w.yi || 0) + (w.ch || 0);
       return '<div class="vb" title="' + esc(U.fmtDate(k)) + ': ' + tot + ' (' + (w.yi || 0) + ' young infants, ' + (w.ch || 0) + ' children)"><div class="vb-col"><span class="vb-n mono">' + tot + '</span>' +
         (w.yi ? '<span class="vb-yi" style="height:' + ((w.yi || 0) * 85 / wmax) + '%"></span>' : '') + (w.ch ? '<span class="vb-ch" style="height:' + ((w.ch || 0) * 85 / wmax) + '%"></span>' : '') + '</div><span class="vb-l mono">' + esc(k.slice(5)) + '</span></div>';
@@ -4604,7 +4625,7 @@ IMNCI.App = IMNCI.App || {};
   var REF_TABS = [['doses', 'Dose calculator'], ['charts', 'Classification charts'], ['growth', 'Growth tables'], ['fluids', 'Plans A, B, C'], ['counsel', 'Counsel'], ['imm', 'Immunisation'], ['followup', 'Follow-up care']];
   App.views.reference = function (root) {
     var tab = App.ui.refTab || 'doses';
-    var html = '<div class="view-head"><div class="grow"><p class="eyebrow">IMNCI Chart Booklet for Medical Officers · 2023</p><h1>Reference</h1><p>Booklet tables in a searchable form, with the page number of each.</p></div></div>' +
+    var html = '<div class="view-head"><div class="grow"><h1>Reference</h1><p>Tables from the IMNCI Chart Booklet for Medical Officers (2023) in a searchable form, with the page number of each.</p></div></div>' +
       '<div class="tabs" role="tablist">' + REF_TABS.map(function (t) { return '<button type="button" role="tab" data-reftab="' + t[0] + '" aria-selected="' + (tab === t[0]) + '">' + t[1] + '</button>'; }).join('') + '</div><div id="ref-body"></div>';
     root.innerHTML = html;
     var body = root.querySelector('#ref-body');
@@ -4663,11 +4684,11 @@ IMNCI.App = IMNCI.App || {};
       var w = U.num(g.weight), dd = U.num(g.days), l = U.num(g.length), html = '';
       if (w !== null && dd !== null) {
         var res = E.wfaYoungInfant(g.sex, { days: dd, months: dd / 30.4375 }, w, App.engineSettings());
-        html += res ? '<div class="card"><p class="eyebrow">Weight for age · p.44</p><p>' + esc(res.rowLabel) + ': <b>' + esc(E.BAND_TEXT[res.band]) + '</b>' + (res.z !== null ? ' · WHO z = ' + res.z.toFixed(2) : '') + '</p><p class="small mono soft">-3 SD ' + res.cuts[0] + ' · -2 SD ' + res.cuts[1] + ' · -1 SD ' + res.cuts[2] + ' · median ' + res.cuts[3] + ' kg</p></div>' : '<div class="card"><p class="soft">Age outside the weight-for-age table (0 days to 6 months).</p></div>';
+        html += res ? '<div class="card"><p class="sec-h" role="heading" aria-level="2">Weight for age · p.44</p><p>' + esc(res.rowLabel) + ': <b>' + esc(E.BAND_TEXT[res.band]) + '</b>' + (res.z !== null ? ' · WHO z = ' + res.z.toFixed(2) : '') + '</p><p class="small mono soft">-3 SD ' + res.cuts[0] + ' · -2 SD ' + res.cuts[1] + ' · -1 SD ' + res.cuts[2] + ' · median ' + res.cuts[3] + ' kg</p></div>' : '<div class="card"><p class="soft">Age outside the weight-for-age table (0 days to 6 months).</p></div>';
       }
       if (w !== null && l !== null) {
         var wl = E.wfLengthHeight(g.sex, l, w, App.engineSettings());
-        html += wl && !wl.outOfRange ? '<div class="card"><p class="eyebrow">' + esc(wl.table) + ' · p.' + (wl.cm < 87 ? 45 : 46) + '</p><p>' + wl.cm + ' cm: <b>' + esc(E.BAND_TEXT[wl.band]) + '</b>' + (wl.z !== null ? ' · WHO z = ' + wl.z.toFixed(2) : '') + '</p><p class="small mono soft">-3 SD ' + wl.cuts[0] + ' · -2 SD ' + wl.cuts[1] + ' · -1 SD ' + wl.cuts[2] + ' · median ' + wl.cuts[3] + ' kg</p>' +
+        html += wl && !wl.outOfRange ? '<div class="card"><p class="sec-h" role="heading" aria-level="2">' + esc(wl.table) + ' · p.' + (wl.cm < 87 ? 45 : 46) + '</p><p>' + wl.cm + ' cm: <b>' + esc(E.BAND_TEXT[wl.band]) + '</b>' + (wl.z !== null ? ' · WHO z = ' + wl.z.toFixed(2) : '') + '</p><p class="small mono soft">-3 SD ' + wl.cuts[0] + ' · -2 SD ' + wl.cuts[1] + ' · -1 SD ' + wl.cuts[2] + ' · median ' + wl.cuts[3] + ' kg</p>' +
           (wl.corrected ? '<p class="small"><span class="pill amber">WHO value used</span> The booklet prints ' + wl.bookletCuts.join(' / ') + ' kg for this row.</p>' : '') + '</div>' : '<div class="card"><p class="soft">Length/height outside the tables (45-120 cm).</p></div>';
       }
       out.innerHTML = html || '<div class="card empty"><p>Enter the weight with an age (weight for age) or a length/height (weight for length/height).</p></div>';
@@ -4678,16 +4699,16 @@ IMNCI.App = IMNCI.App || {};
   }
 
   function cardList(title, page, items) {
-    return '<section class="card"><p class="eyebrow">' + esc(title) + (page ? ' · p.' + page : '') + '</p><ul class="plain small">' + items.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul></section>';
+    return '<section class="card"><p class="sec-h" role="heading" aria-level="2">' + esc(title) + (page ? ' · p.' + page : '') + '</p><ul class="plain small">' + items.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul></section>';
   }
   function refFluids(body) {
-    body.innerHTML = '<div class="cols">' + cardList(KB.REF.planA.title, 29, KB.REF.planA.items) + '<section class="card"><p class="eyebrow">' + esc(KB.REF.planB.title) + ' · p.25</p>' + App.doseTableHtml('planB') + '<ul class="plain small">' + KB.REF.planB.items.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul></section>' + cardList(KB.REF.planC.title, 23, KB.REF.planC.items) + '</div>';
+    body.innerHTML = '<div class="cols">' + cardList(KB.REF.planA.title, 29, KB.REF.planA.items) + '<section class="card"><p class="sec-h" role="heading" aria-level="2">' + esc(KB.REF.planB.title) + ' · p.25</p>' + App.doseTableHtml('planB') + '<ul class="plain small">' + KB.REF.planB.items.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul></section>' + cardList(KB.REF.planC.title, 23, KB.REF.planC.items) + '</div>';
   }
   function refCounsel(body) {
-    var html = '<div class="stack"><section class="card"><p class="eyebrow">Feeding recommendations · p.31</p>' + KB.FOOD.map(function (f) { return '<details class="more"><summary>' + esc(f.label) + '</summary><ul class="plain small">' + f.items.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul></details>'; }).join('') + '<p class="small soft" style="margin-top:8px">' + esc(KB.FOOD_NOTE) + '</p></section>';
-    html += '<section class="card"><p class="eyebrow">Care for development · p.34</p>' + KB.DEV.map(function (d) { return '<details class="more"><summary>' + esc(d.label) + '</summary><p class="small"><b>Play:</b> ' + esc(d.play) + '</p><p class="small"><b>Communicate:</b> ' + esc(d.talk) + '</p></details>'; }).join('') + '</section>';
-    html += '<section class="card"><p class="eyebrow">Feeding problems · p.32</p>' + KB.FEED_ISSUES.map(function (f) { return '<details class="more"><summary>' + esc(f.label) + '</summary><ul class="plain small">' + f.advice.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul></details>'; }).join('') + '</section>';
-    html += '<section class="card"><p class="eyebrow">Development problems · pp.14, 35</p>' + KB.DEV_ISSUES.map(function (f) { return '<details class="more"><summary>' + esc(f.label) + '</summary><ul class="plain small">' + f.advice.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul></details>'; }).join('') + '</section>';
+    var html = '<div class="stack"><section class="card"><p class="sec-h" role="heading" aria-level="2">Feeding recommendations · p.31</p>' + KB.FOOD.map(function (f) { return '<details class="more"><summary>' + esc(f.label) + '</summary><ul class="plain small">' + f.items.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul></details>'; }).join('') + '<p class="small soft" style="margin-top:8px">' + esc(KB.FOOD_NOTE) + '</p></section>';
+    html += '<section class="card"><p class="sec-h" role="heading" aria-level="2">Care for development · p.34</p>' + KB.DEV.map(function (d) { return '<details class="more"><summary>' + esc(d.label) + '</summary><p class="small"><b>Play:</b> ' + esc(d.play) + '</p><p class="small"><b>Communicate:</b> ' + esc(d.talk) + '</p></details>'; }).join('') + '</section>';
+    html += '<section class="card"><p class="sec-h" role="heading" aria-level="2">Feeding problems · p.32</p>' + KB.FEED_ISSUES.map(function (f) { return '<details class="more"><summary>' + esc(f.label) + '</summary><ul class="plain small">' + f.advice.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul></details>'; }).join('') + '</section>';
+    html += '<section class="card"><p class="sec-h" role="heading" aria-level="2">Development problems · pp.14, 35</p>' + KB.DEV_ISSUES.map(function (f) { return '<details class="more"><summary>' + esc(f.label) + '</summary><ul class="plain small">' + f.advice.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul></details>'; }).join('') + '</section>';
     html += cardList(KB.REF.mother_health.title, 14, KB.REF.mother_health.items) + cardList(KB.REF.fluids.title, 36, KB.REF.fluids.items) +
       cardList('When to return immediately: young infant', 14, KB.RETURN_SIGNS.yi) + cardList('When to return immediately: sick child', 36, KB.RETURN_SIGNS.ch.any.concat(KB.RETURN_SIGNS.ch.cough.map(function (s) { return s + ' (no pneumonia: cough or cold)'; }), KB.RETURN_SIGNS.ch.diarrhoea.map(function (s) { return s + ' (diarrhoea)'; }), KB.RETURN_SIGNS.ch.dengue.map(function (s) { return s + ' (dengue)'; }))) + '</div>';
     body.innerHTML = html;
@@ -4695,7 +4716,7 @@ IMNCI.App = IMNCI.App || {};
   function refImm(body) {
     var at = {};
     KB.VACCINES.forEach(function (v) { (at[v.at] = at[v.at] || []).push(v.label + (v.je ? '*' : '')); });
-    body.innerHTML = '<section class="card"><p class="eyebrow">Immunisation schedule · p.21</p><div class="scroll-x"><table class="t"><thead><tr><th>Age</th><th>Vaccines</th></tr></thead><tbody>' +
+    body.innerHTML = '<section class="card"><p class="sec-h" role="heading" aria-level="2">Immunisation schedule · p.21</p><div class="scroll-x"><table class="t"><thead><tr><th>Age</th><th>Vaccines</th></tr></thead><tbody>' +
       Object.keys(at).map(function (k) { return '<tr><td class="nowrap">' + esc(k) + '</td><td>' + esc(at[k].join(' + ')) + '</td></tr>'; }).join('') + '</tbody></table></div>' +
       '<p class="small soft">* JE only in states where it is in the schedule. ' + esc(KB.VACCINE_NOTES[0]) + '</p></section>' +
       cardList('Prophylactic IFA, deworming and vitamin A · p.21', 21, [KB.DRUGS.ch_ifa_prophylaxis.prep, KB.DRUGS.ch_albendazole.prep, 'Give vitamin A supplementation as per state guidelines.']);
@@ -4715,13 +4736,13 @@ IMNCI.App = IMNCI.App || {};
     var mine = App.cases.filter(function (c) { return c.practice; });
     var imported = App.importedExercises || [];
     var list = App.EXERCISES.concat(imported);
-    var html = '<div class="view-head"><div class="grow"><p class="eyebrow">For students and teaching sessions</p><h1>Practice</h1>' +
+    var html = '<div class="view-head"><div class="grow"><h1>Practice</h1>' +
       '<p>Each exercise is a fictional case with the findings filled in. Read the findings, classify every table, and compare your answers with the booklet. Teachers can export any real case as an exercise (identifiers removed) and share the file.</p></div>' +
       '<div class="btn-row"><button type="button" class="btn" data-act="import-exercises">' + App.icon('upload') + 'Import exercises</button><button type="button" class="btn" data-act="new-practice">' + App.icon('plus') + 'Blank practice case</button></div></div>';
     html += '<div class="cols">' + list.map(function (x) {
       var done = mine.filter(function (c) { return c.practice.exerciseId === x.id && c.practice.score; });
       var best = done.reduce(function (m, c) { return Math.max(m, c.practice.score.correct / c.practice.score.total); }, -1);
-      return '<div class="card"><p class="eyebrow plain">' + (x.group === 'yi' ? 'Young infant' : 'Sick child') + ' · ' + esc(x.level || 'core') + (x.imported ? ' · imported' : '') + '</p><h3>' + esc(x.title) + '</h3><p class="small soft" style="margin-top:6px">' + esc(x.brief) + '</p>' +
+      return '<div class="card"><p class="sec-h" role="heading" aria-level="2">' + (x.group === 'yi' ? 'Young infant' : 'Sick child') + ' · ' + esc(x.level || 'core') + (x.imported ? ' · imported' : '') + '</p><h3>' + esc(x.title) + '</h3><p class="small soft" style="margin-top:6px">' + esc(x.brief) + '</p>' +
         '<div class="btn-row"><button type="button" class="btn sm primary" data-start="' + esc(x.id) + '">Start</button>' + (best >= 0 ? '<span class="pill teal">Best ' + Math.round(best * 100) + '%</span>' : '') + '</div></div>';
     }).join('') + '</div>';
     if (mine.length) {
@@ -4734,7 +4755,7 @@ IMNCI.App = IMNCI.App || {};
   App.views.settings = function (root) {
     var s = App.settings;
     function seg(k, opts) { return '<div class="seg" data-setting="' + k + '">' + opts.map(function (o) { return '<button type="button" role="radio" aria-checked="' + (String(s[k]) === String(o[0])) + '" data-v="' + esc(o[0]) + '">' + esc(o[1]) + '</button>'; }).join('') + '</div>'; }
-    var html = '<div class="view-head"><div class="grow"><p class="eyebrow">This browser only</p><h1>Settings</h1><p>Defaults for new cases and the rules that depend on where you work.</p></div></div><div class="stack">';
+    var html = '<div class="view-head"><div class="grow"><h1>Settings</h1><p>Defaults for new cases and the rules that depend on where you work. Saved in this browser only.</p></div></div><div class="stack">';
     html += '<section class="card"><h2>Facility</h2><div class="cols" style="margin-top:10px">' +
       '<label class="small">Health facility<input type="text" data-set="facility" value="' + esc(s.facility) + '"></label>' +
       '<label class="small">District / block<input type="text" data-set="district" value="' + esc(s.district) + '"></label>' +
@@ -4775,11 +4796,26 @@ IMNCI.App = IMNCI.App || {};
 
   // ================================================================== ABOUT
   App.views.about = function (root) {
-    root.innerHTML = '<div class="view-head"><div class="grow"><p class="eyebrow">#CM-APP · version ' + App.META.version + '</p><h1>About this tool</h1></div></div><div class="stack" style="max-width:860px">' +
-      '<section class="card"><h2>What it does</h2><p style="margin-top:8px">The IMNCI Case Assistant digitises the Medical Officer\'s case recording forms for the sick young infant (up to 2 months) and the sick child (2 months up to 5 years). As you record the findings, it applies the classification tables of the <b>IMNCI Chart Booklet for Medical Officers</b> (Child Health Division, MoHFW, Government of India, 2023), shows each classification in the booklet\'s pink, yellow or green, and lists the treatment with doses from the booklet\'s tables, the follow-up date, when to return, and counselling.</p>' +
-      '<p>It also keeps a follow-up register, a facility dashboard, a reference section (dose calculator, charts, growth tables, counselling cards) and practice exercises for teaching. Exports: Excel workbook, PDF case sheet, PDF summary, JSON backup.</p></section>' +
-      '<section class="card"><h2>Decision support, not a decision</h2><p style="margin-top:8px">The tool follows the booklet\'s rules as written: the first matching row in each table, "two of the following signs" for dehydration, and the conditions printed in the treatment column. It cannot see the child. Classifications marked <b>provisional</b> are missing findings. You can change any classification on the summary; the plan then follows your decision and the engine\'s answer is kept for the record. Doses come from the booklet\'s tables, chosen by weight, and by age only when no weight is recorded. When a weight is outside a table, the booklet\'s mg/kg dose is used if it prints one; otherwise the app says so rather than guessing.</p></section>' +
-      '<section class="card"><h2>Where the rules needed an interpretation</h2><ul class="plain">' +
+    var sec = function (id, title, inner) { return '<section class="card"' + (id ? ' id="' + id + '"' : '') + '><h2>' + title + '</h2>' + inner + '</section>'; };
+    root.innerHTML = '<div class="view-head"><div class="grow"><h1>About this tool</h1><p>Digital IMNCI case recording forms for Medical Officers, with classification and treatment from the MoHFW Chart Booklet (2023).</p></div></div><div class="stack" style="max-width:860px">' +
+      sec('how', 'How it works', '<ol class="steps-list">' +
+        '<li><b>Start a case</b> on the Cases screen: young infant (up to 2 months) or child (2 months up to 5 years).</li>' +
+        '<li><b>Record the findings</b> section by section, as on the case recording form. Each table is classified as you go, in the booklet\'s pink, yellow or green, and anything still needed is listed.</li>' +
+        '<li><b>Open the summary</b> for the classifications, pre-referral treatment, treatment with doses for this child\'s weight, the follow-up date, when to return and counselling. If your judgement differs, change a classification: the plan follows your decision and the app\'s own answer is kept for the record.</li>' +
+        '<li><b>Follow up:</b> visits that are due appear under Follow-ups, where you record them.</li>' +
+        '<li><b>Practise:</b> exercises hide the classifications until you have worked them out, then score your answers.</li>' +
+        '<li><b>Keep your data safe:</b> cases stay in this browser. Use Export on the Cases screen for Excel, PDF and backups.</li></ol>') +
+      sec('', 'Decision support, not a decision', '<p style="margin-top:8px">The tool follows the booklet\'s rules as written: the first matching row in each table, "two of the following signs" for dehydration, and the conditions printed in the treatment column. It cannot see the child. Classifications marked <b>provisional</b> are missing findings. You can change any classification on the summary; the plan then follows your decision and the engine\'s answer is kept for the record. Doses come from the booklet\'s tables, chosen by weight, and by age only when no weight is recorded. When a weight is outside a table, the booklet\'s mg/kg dose is used if it prints one; otherwise the app says so rather than guessing.</p>') +
+      sec('exports', 'Exports and backups', '<ul class="plain">' +
+        '<li><b>Excel workbook</b>, every case in eight sheets: Cases, then Export; also on the Dashboard and in Settings.</li>' +
+        '<li><b>PDF summary</b>, the case register and counts for a period: Cases, then Export, or the Dashboard, where you set the period.</li>' +
+        '<li><b>PDF case sheet</b>, one case to print or file: on that case\'s summary.</li>' +
+        '<li><b>Backup and restore</b> (JSON), to move cases to another device or browser: Cases, then Export, or Settings.</li></ul>' +
+        '<p class="small soft">Exports can be de-identified in Settings.</p>') +
+      sec('', 'Privacy and data', '<p style="margin-top:8px">Cases are stored only in this browser on this device. Nothing is uploaded. Anyone using this browser profile can open them, so use a personal device or delete cases after exporting. Back up regularly: clearing browser data deletes the cases. The website, a downloaded copy of the file and the claude.ai page each keep their own cases; move them with a backup.</p>' +
+        '<p class="small soft">The PDF export uses standard fonts; names typed in Odia or other Indian scripts print as "?" in the PDF (they are kept correctly in the app, the Excel file and the backup).</p>') +
+      sec('feedback', 'Feedback', '<p style="margin-top:8px">Found an error, a missing rule, or an idea for the next version? Send it from your own WhatsApp or e-mail.</p><div class="btn-row"><button type="button" class="btn primary" data-act="feedback">' + App.icon('message') + 'Send feedback</button></div>') +
+      sec('', 'Where the rules needed an interpretation', '<ul class="plain">' +
       '<li>Dehydration: a sign from the severe row also counts toward the "some" row (lethargic counts as restless; very slow skin pinch counts as slow; drinking poorly counts with the thirst sign).</li>' +
       '<li>Fever: when the RDT is negative or not done, the app asks whether another obvious cause of fever is present. Classifications made in this case that the booklet lists as other causes (cough or cold, pneumonia, diarrhoea, dysentery, dengue, measles) count automatically, as does a bacterial focus found on examination.</li>' +
       '<li>Anaemia: when haemoglobin is entered and there is no other pink classification, Hb decides (p.21); otherwise palmar pallor decides. Severe acute malnutrition counts as that other pink classification only when it is complicated by something other than the severe anaemia itself.</li>' +
@@ -4788,12 +4824,92 @@ IMNCI.App = IMNCI.App || {};
       '<li>Young infant: movements are looked at in the infection box and again, with diarrhoea, as the general condition. An abnormal finding in either counts for both tables, and a disagreement is flagged.</li>' +
       '<li>Provisional until checked: PNEUMONIA with wheezing until the bronchodilator trial is recorded (p.17), and MODERATE ACUTE MALNUTRITION found by one measurement until the other (WFL/H or MUAC) is taken.</li>' +
       '<li>Doses: a recorded weight chooses the band; age is used only when no weight is recorded (p.25). For a weight outside a table, the app uses the mg/kg dose printed in the booklet (ampicillin, gentamicin, diazepam, amoxicillin, cefixime) and otherwise says the dose must be worked out, rather than falling back to age. A weight in a gap between two printed bands takes the lower band.</li>' +
-      '<li>Inputs the paper form does not print but the booklet needs are marked <span class="pill teal">booklet</span>: convulsing now, blood in stool (young infant), other obvious cause of fever, poor appetite, the bronchodilator trial, vitamin A in the last month and, from 6 months, "how do you think your child is learning?"</li></ul></section>' +
-      '<section class="card"><h2>Growth reference: a booklet discrepancy</h2><p style="margin-top:8px">Checked cell by cell against the WHO 2006 Child Growth Standards, the booklet\'s weight-for-age and weight-for-height tables and all -3 SD columns match. The girls\' weight-for-length table does not: its -2 SD column from 48 to 85 cm is 0.1-0.4 kg higher than WHO (for example 6.3 kg instead of 5.9 kg at 65 cm), and the medians at 72-74 and 76-79 cm differ by 0.1 kg. With the printed values, some girls would be classified MODERATE ACUTE MALNUTRITION who are above -2 SD by the WHO standard. The app uses the WHO values in these 45 cells by default and shows when it has done so; Settings can switch to the booklet as printed.</p></section>' +
-      '<section class="card"><h2>Privacy and data</h2><p style="margin-top:8px">Cases are stored only in this browser on this device. Nothing is uploaded. Anyone using this browser profile can open them, so use a personal device or delete cases after exporting. Exports can be de-identified (Settings). Back up regularly: clearing browser data deletes the cases.</p>' +
-      '<p class="small soft">The PDF export uses standard fonts; names typed in Odia or other Indian scripts print as "?" in the PDF (they are kept correctly in the app, the Excel file and the backup).</p></section>' +
-      '<section class="card"><h2>Validation</h2><p style="margin-top:8px">The classification engine is tested against every row of every booklet table, the boundary values (breath counts 60/50/40, ages 7 days, 2 weeks, 6, 12 and 24 months, MUAC 11.5 and 12.5 cm, Hb 7 and 11 g/dl, temperatures 35.5, 36.5, 37.5 and 38.5°C in both units), every dose band, Plans A, B and C, referral and follow-up logic, and 3000 random cases (' + (App.META.tests || 'see the validation report') + ').</p></section>' +
-      '<section class="card"><h2>Source and credits</h2><p style="margin-top:8px">IMNCI Chart Booklet for Medical Officers, Child Health Division, Ministry of Health & Family Welfare, Government of India, 2023. WHO Child Growth Standards (2006) for the z-scores. Case recording forms: IMNCI case recording forms for the Medical Officer.</p><p>' + esc(App.CREDIT.text) + ' Email: <a href="mailto:' + esc(App.CREDIT.email) + '">' + esc(App.CREDIT.email) + '</a>; WhatsApp: <a href="' + esc(App.CREDIT.whatsappLink) + '" target="_blank" rel="noopener">' + esc(App.CREDIT.whatsapp) + '</a></p><p class="small soft">Version ' + esc(App.META.version) + ' · engine ' + esc(E.VERSION) + ' · knowledge base ' + esc(KB.META.kbVersion) + '. Fonts: Fraunces and IBM Plex (SIL Open Font License 1.1), embedded so the app works offline.</p></section></div>';
+      '<li>Inputs the paper form does not print but the booklet needs are marked <span class="pill teal">booklet</span>: convulsing now, blood in stool (young infant), other obvious cause of fever, poor appetite, the bronchodilator trial, vitamin A in the last month and, from 6 months, "how do you think your child is learning?"</li></ul>') +
+      sec('', 'Growth reference: a booklet discrepancy', '<p style="margin-top:8px">Checked cell by cell against the WHO 2006 Child Growth Standards, the booklet\'s weight-for-age and weight-for-height tables and all -3 SD columns match. The girls\' weight-for-length table does not: its -2 SD column from 48 to 85 cm is 0.1-0.4 kg higher than WHO (for example 6.3 kg instead of 5.9 kg at 65 cm), and the medians at 72-74 and 76-79 cm differ by 0.1 kg. With the printed values, some girls would be classified MODERATE ACUTE MALNUTRITION who are above -2 SD by the WHO standard. The app uses the WHO values in these 45 cells by default and shows when it has done so; Settings can switch to the booklet as printed.</p>') +
+      sec('', 'Validation', '<p style="margin-top:8px">The classification engine is tested against every row of every booklet table, the boundary values (breath counts 60/50/40, ages 7 days, 2 weeks, 6, 12 and 24 months, MUAC 11.5 and 12.5 cm, Hb 7 and 11 g/dl, temperatures 35.5, 36.5, 37.5 and 38.5°C in both units), every dose band, Plans A, B and C, referral and follow-up logic, and 3000 random cases (' + (App.META.tests || 'see the validation report') + ').</p>') +
+      sec('credits', 'Sources and credits', '<p style="margin-top:8px">IMNCI Chart Booklet for Medical Officers, Child Health Division, Ministry of Health & Family Welfare, Government of India, 2023. WHO Child Growth Standards (2006) for the z-scores. Case recording forms: IMNCI case recording forms for the Medical Officer.</p>' +
+        '<div class="credit-block">' + App.creditHtml() + '</div><p class="small soft">Version ' + esc(App.META.version) + ' · engine ' + esc(E.VERSION) + ' · knowledge base ' + esc(KB.META.kbVersion) + '</p>') +
+      '</div>';
+  };
+
+  // Export and back up: every download in one place, opened from the Cases screen.
+  App.exportMenu = function () {
+    var dl = App.canDownload();
+    var row = function (act, icon, title, text, label) {
+      return '<div class="exp-row"><div class="grow"><b>' + title + '</b><p class="small soft">' + text + '</p></div><button type="button" class="btn sm" data-act="' + act + '">' + App.icon(icon) + label + '</button></div>';
+    };
+    var body = (dl ? row('export-xlsx', 'xls', 'Excel workbook', 'Every case in this browser (' + App.cases.length + '), with classifications, treatment, follow-ups and a data dictionary, in eight sheets.', 'Download') +
+        row('export-register-pdf', 'pdf', 'PDF summary', 'The case register and counts for the period set on the Dashboard (the last 90 days unless you change it).', 'Download') +
+        row('backup', 'download', 'Backup (JSON)', 'Every case, to restore in another browser or on another device.', 'Download')
+      : '<p class="small soft">Downloads are not available in this viewer.</p>') +
+      row('restore', 'upload', 'Restore or merge a backup', 'Adds the cases from a backup file; cases already here are kept.', 'Choose file') +
+      '<p class="small soft" style="margin-top:12px">The PDF case sheet for one case is on that case\'s summary. De-identified exports: Settings.</p>';
+    App.openSheet({ title: 'Export and back up', body: body });
+  };
+
+  // Feedback goes from the user's own WhatsApp or e-mail; the app sends nothing itself.
+  App.openFeedback = function () {
+    var C = App.CREDIT;
+    var roles = ['Medical Officer', 'Postgraduate resident', 'Intern', 'MBBS student', 'Faculty', 'Nursing or other staff', 'Other'];
+    var st = { rating: '' };
+    var body = '<p class="small soft">Your message goes from your own WhatsApp or e-mail to the developer; the app sends nothing itself. Please do not include patient names or other identifiers.</p>' +
+      '<div class="fld"><div class="fld-l"><span id="fb-r-l">How useful is the app?</span> <span class="faint small">(optional)</span></div>' +
+      '<div class="seg" role="radiogroup" aria-labelledby="fb-r-l" id="fb-rating">' + ['1', '2', '3', '4', '5'].map(function (n) { return '<button type="button" role="radio" aria-checked="false" data-v="' + n + '">' + n + '</button>'; }).join('') + '</div>' +
+      '<p class="fld-h">1 = not useful, 5 = very useful</p></div>' +
+      '<div class="fld"><label class="fld-l" for="fb-role">You are <span class="faint small">(optional)</span></label><select id="fb-role"><option value="">Choose…</option>' + roles.map(function (r) { return '<option>' + esc(r) + '</option>'; }).join('') + '</select></div>' +
+      '<div class="fld"><label class="fld-l" for="fb-msg">What worked, what went wrong, or what should change?</label><textarea id="fb-msg" rows="5"></textarea></div>' +
+      '<div class="fld"><label class="fld-l" for="fb-who">Your name and institution <span class="faint small">(optional)</span></label><input id="fb-who" type="text" autocomplete="name"></div>' +
+      '<div class="btn-row" style="margin-top:10px"><a class="btn primary" id="fb-wa" href="' + esc(C.whatsappLink) + '" target="_blank" rel="noopener">' + App.icon('message') + 'Send by WhatsApp</a>' +
+      '<a class="btn" id="fb-mail" href="mailto:' + esc(C.email) + '">' + App.icon('mail') + 'Send by e-mail</a>' +
+      '<button type="button" class="btn ghost" id="fb-copy">' + App.icon('copy') + 'Copy message</button></div>' +
+      '<textarea id="fb-out" class="fb-out" rows="6" readonly hidden aria-label="Feedback message to copy"></textarea>' +
+      '<p class="small faint" id="fb-hint" role="status" style="margin-top:8px">WhatsApp ' + esc(C.whatsapp) + ' · ' + esc(C.email) + '</p>';
+    App.openSheet({ title: 'Send feedback', body: body, onOpen: function (ov) {
+      var q = function (s) { return ov.querySelector(s); };
+      var where = function () {
+        var h = location.hostname || '';
+        if (location.protocol === 'file:') return 'a downloaded file';
+        if (/dr-abhishekpanda-cm\.app$/.test(h)) return 'the website';
+        if (/workers\.dev$/.test(h)) return 'a website preview';
+        return /claude|anthropic/.test(h) ? 'the claude.ai page' : (h || 'unknown');
+      };
+      var text = function () {
+        var lines = ['IMNCI Case Assistant feedback', 'Version ' + App.META.version + ' (engine ' + E.VERSION + '), opened from ' + where()];
+        if (st.rating) lines.push('Usefulness: ' + st.rating + '/5');
+        if (q('#fb-role').value) lines.push('Role: ' + q('#fb-role').value);
+        if (q('#fb-who').value.trim()) lines.push('From: ' + q('#fb-who').value.trim());
+        lines.push('', q('#fb-msg').value.trim());
+        return lines.join('\n');
+      };
+      var update = function () {
+        var m = text();
+        q('#fb-wa').setAttribute('href', C.whatsappLink + '?text=' + encodeURIComponent(m));
+        q('#fb-mail').setAttribute('href', 'mailto:' + C.email + '?subject=' + encodeURIComponent('IMNCI Case Assistant feedback (v' + App.META.version + ')') + '&body=' + encodeURIComponent(m));
+      };
+      var needMsg = function (e) {
+        if (q('#fb-msg').value.trim()) return false;
+        e.preventDefault(); q('#fb-hint').textContent = 'Please write your message first.'; q('#fb-msg').focus(); return true;
+      };
+      ov.addEventListener('input', update);
+      ov.addEventListener('change', update);
+      q('#fb-rating').addEventListener('click', function (e) {
+        var b = e.target.closest('button[data-v]'); if (!b) return;
+        st.rating = st.rating === b.getAttribute('data-v') ? '' : b.getAttribute('data-v');
+        U.$$('button', q('#fb-rating')).forEach(function (x) { x.setAttribute('aria-checked', String(x.getAttribute('data-v') === st.rating)); });
+        update();
+      });
+      q('#fb-wa').addEventListener('click', needMsg);
+      q('#fb-mail').addEventListener('click', needMsg);
+      q('#fb-copy').addEventListener('click', function (e) {
+        if (needMsg(e)) return;
+        var m = text(), hint = q('#fb-hint');
+        var shown = function () { var out = q('#fb-out'); out.value = m; out.hidden = false; out.focus(); out.select(); hint.textContent = 'Select the text above and copy it into WhatsApp (' + C.whatsapp + ') or an e-mail to ' + C.email + '.'; };
+        try {
+          navigator.clipboard.writeText(m).then(function () { hint.textContent = 'Copied. Paste it into WhatsApp (' + C.whatsapp + ') or an e-mail to ' + C.email + '.'; }, shown);
+        } catch (err) { shown(); }
+      });
+      update();
+    } });
   };
 })(IMNCI.App, IMNCI.Engine, IMNCI.KB);
 
@@ -4918,7 +5034,9 @@ IMNCI.App = IMNCI.App || {};
       ['Data dictionary', 'Field codes, questions, sections and booklet pages'],
       [''],
       ['Note', 'Classifications follow the booklet rules applied to the recorded findings. Decision support: it does not replace clinical judgement.'],
-      ['Prepared by', App.CREDIT.plain]
+      ['Credit', App.CREDIT.line1],
+      ['Institution', App.CREDIT.line2],
+      ['Contact', App.CREDIT.line3]
     ] });
     sheets.push({ name: 'Cases', columns: [
       { header: 'Case ID', width: 24 }, { header: 'Status', width: 10 }, { header: 'Visit date', width: 12 }, { header: 'Visit type', width: 10 }, { header: 'Facility', width: 18 },
@@ -4962,7 +5080,7 @@ IMNCI.App = IMNCI.App || {};
   // ------------------------------------------------------------------ PDF helpers
   var C = { teal: '#0C5E4E', amber: '#BE651F', ink: '#15201B', soft: '#4B5A52', faint: '#7B877E', line: '#D7DCD1', paper2: '#ECEEE7', pink: '#FF99CC', yellow: '#FFFF99', green: '#92D050', note: '#D7DCD1', danger: '#A23B2B' };
   function Flow(doc, header) {
-    this.doc = doc; this.x = 40; this.w = doc.W - 80; this.top = 64; this.bottom = doc.H - 74; this.header = header; this.y = this.top;
+    this.doc = doc; this.x = 40; this.w = doc.W - 80; this.top = 64; this.bottom = doc.H - 86; this.header = header; this.y = this.top;
     this.newPage();
   }
   Flow.prototype.newPage = function () { this.doc.page(); this.y = this.top; if (this.header) this.header(this); };
@@ -5025,7 +5143,7 @@ IMNCI.App = IMNCI.App || {};
   // Footer on every page: the credit line (wrapped), then the source line with the page number.
   function footers(doc, left) {
     var n = doc.pageCount();
-    var credit = P.wrap(App.CREDIT.plain, 'R', 6.8, doc.W - 80);
+    var credit = App.CREDIT.lines;
     for (var i = 0; i < n; i++) {
       doc.onPage(i);
       var y = doc.H - 48 - (credit.length - 1) * 8.5;
@@ -5414,10 +5532,11 @@ IMNCI.App = IMNCI.App || {};
   App.shell = function () {
     var app = document.getElementById('app');
     app.innerHTML = '<div class="grid-bg" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div>' +
-      '<header class="bar"><div class="bar-in"><button type="button" class="brand" data-go="cases" aria-label="IMNCI Case Assistant: cases">' + App.mark() + '<span><span class="brand-name">IMNCI Case Assistant</span><br><span class="brand-sub">#CM-APP · MoHFW booklet 2023</span></span></button>' +
+      '<header class="bar"><div class="bar-in"><button type="button" class="brand" data-go="cases" aria-label="IMNCI Case Assistant: cases">' + App.mark() + '<span><span class="brand-name">IMNCI Case Assistant</span><br><span class="brand-sub">#CM-APP · IMNCI 2.0 (2023)</span></span></button>' +
       '<nav class="nav" aria-label="Main">' + NAV.map(function (n) { return '<button type="button" data-go="' + n[0] + '">' + App.icon(n[2]) + '<span>' + n[1] + '</span></button>'; }).join('') + '</nav></div></header>' +
       '<div id="storage-warn" class="storage-warn"></div><main id="view" tabindex="-1"></main>' +
-      '<footer class="credit" id="credit"><div class="credit-in"><p>' + esc(App.CREDIT.text) + ' Email: <a href="mailto:' + esc(App.CREDIT.email) + '">' + esc(App.CREDIT.email) + '</a>; WhatsApp: <a href="' + esc(App.CREDIT.whatsappLink) + '" target="_blank" rel="noopener">' + esc(App.CREDIT.whatsapp) + '</a></p></div></footer>' +
+      '<footer class="credit" id="credit"><div class="credit-in"><div class="credit-text">' + App.creditHtml() + '</div>' +
+      '<button type="button" class="btn sm credit-fb" data-act="feedback">' + App.icon('message') + 'Send feedback</button></div></footer>' +
       '<nav class="tabbar" aria-label="Main">' + TABBAR.map(function (n) { return '<button type="button" data-go="' + n[0] + '">' + App.icon(n[2]) + '<span>' + n[1] + '</span></button>'; }).join('') + '</nav>';
     var view = document.getElementById('view');
     App.wizardEvents(view);
@@ -5514,6 +5633,8 @@ IMNCI.App = IMNCI.App || {};
     var b = e.target.closest('[data-act]');
     if (!b) return;
     var a = b.getAttribute('data-act');
+    // a download or restore started from a sheet (Export) closes the sheet first
+    if (b.closest('#sheet') && /^(export-xlsx|export-register-pdf|backup|restore)$/.test(a)) App.closeSheet();
     switch (a) {
       case 'new': newCase(b.getAttribute('data-group')); break;
       case 'new-practice':
@@ -5530,6 +5651,8 @@ IMNCI.App = IMNCI.App || {};
       case 'export-register-pdf': App.exportRegisterPdf(); break;
       case 'backup': App.exportBackup(App.cases); break;
       case 'restore': App.restoreBackup(); break;
+      case 'export-menu': App.exportMenu(); break;
+      case 'feedback': App.openFeedback(); break;
       case 'import-exercises': App.importExercises(); break;
       case 'demo-load':
         App.cases = App.cases.filter(function (c) { return !c.demo; }).concat(App.makeDemoCases(40));
