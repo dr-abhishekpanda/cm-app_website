@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <!--
   Homepage of https://dr-abhishekpanda-cm.app/
-  BEFORE MERGING: search this file for "[INSERT:" and fill in or delete every placeholder.
-  They are styled in amber (class "ph") so they are easy to spot on the preview.
+  Content follows the CV of October 2026. Personal details on the CV (date of birth,
+  council registration number, personal email) are deliberately not shown here.
 -->
 <title>Dr. Abhishek Panda — Community Medicine, GMCH Sundargarh</title>
 <meta name="author" content="Dr. Abhishek Panda" />
@@ -45,7 +45,10 @@
   "url": "https://dr-abhishekpanda-cm.app/",
   "image": "https://dr-abhishekpanda-cm.app/assets/abhishek-640.jpg",
   "email": "mailto:support@dr-abhishekpanda-cm.app",
-  "knowsAbout": ["Community medicine", "Epidemiology", "Biostatistics", "Public health", "Medical education", "Digital health"]
+  "sameAs": ["https://www.linkedin.com/in/dr-abhishekpanda"],
+  "award": "Best Paper Award, APCRICON 2018",
+  "knowsLanguage": ["English", "Hindi", "Odia"],
+  "knowsAbout": ["Community medicine", "Epidemiology", "Biostatistics", "Research methodology", "Evidence synthesis", "Digital health", "Artificial intelligence", "Medical education"]
 }
 </script>
 
@@ -120,11 +123,6 @@ body{
 
 a{color:inherit}
 img{max-width:100%;display:block}
-
-/* placeholder still to be filled in (visible on purpose; remove before going live) */
-.ph{font-family:var(--font-mono);font-size:.84em;font-weight:500;font-style:normal;letter-spacing:0;text-transform:none;
-  color:var(--accent);background:var(--accent-tint);border:1px dashed var(--accent);border-radius:5px;
-  padding:1px 6px;overflow-wrap:anywhere}
 
 /* ============================================================
    LAYOUT UTILITIES
@@ -322,6 +320,36 @@ img{max-width:100%;display:block}
   color:var(--ink-faint);border:1px solid var(--line);border-radius:6px;padding:4px 9px;display:inline-block}
 .talks .pub h3{margin-bottom:8px}
 .talks .pub .auth{margin:0}
+.pub .auth b{color:var(--ink);font-weight:600}
+.sub-h{margin:0 0 4px;font-family:var(--font-display);font-weight:500;font-size:1.3rem;letter-spacing:-.01em;line-height:1.25}
+.block-h{margin-top:clamp(44px,6vw,68px)}
+
+/* ============================================================
+   CAREER (experience, qualifications, certifications)
+   ============================================================ */
+.career-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(32px,5vw,64px);align-items:start}
+.career-grid > *{min-width:0}
+.tl .pub{padding:18px 0;gap:18px}
+.tl .pub .meta{min-width:96px}
+.tl .pub h3{font-size:1.06rem;margin:0 0 4px}
+.tl .pub .auth{margin:0}
+.when{display:block;margin-top:5px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.02em;color:var(--ink-faint)}
+.proj .pub .meta{min-width:96px}
+.state{display:inline-block;margin-top:8px;font-family:var(--font-mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--primary);background:rgba(12,94,78,.1);border-radius:6px;padding:3px 8px}
+.cert-groups{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
+.cert-groups > *{min-width:0}
+.cert{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px 20px 10px}
+.cert .k{display:block;font-family:var(--font-mono);font-size:.67rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:4px}
+.cert ul{list-style:none;margin:0;padding:0}
+.cert li{padding:11px 0;border-top:1px dashed var(--line-soft)}
+.cert li:first-child{border-top:0}
+.cert li b{display:block;font-weight:600;font-size:.92rem;line-height:1.35;color:var(--ink)}
+.cert li span{display:block;font-size:.84rem;line-height:1.45;color:var(--ink-soft);margin-top:2px}
+.cert li time{font-family:var(--font-mono);font-size:.74rem;color:var(--ink-faint);white-space:nowrap}
+.recog{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+.recog > *{min-width:0}
+.memb{display:flex;flex-wrap:wrap;gap:8px}
 
 /* ============================================================
    CARD GRIDS  (teaching, tools)
@@ -407,8 +435,9 @@ a.card:hover .go .arw{transform:translateX(3px)}
 @media (max-width:920px){
   .hero .wrap{grid-template-columns:1fr;gap:40px}
   .id-card{max-width:380px}
-  .about-grid,.contact-grid{grid-template-columns:1fr;gap:34px}
+  .about-grid,.contact-grid,.career-grid{grid-template-columns:1fr;gap:34px}
   .cards.cols-3{grid-template-columns:repeat(2,1fr)}
+  .cert-groups,.recog{grid-template-columns:1fr}
 }
 @media (max-width:760px){
   .nav-toggle{display:flex}
@@ -426,6 +455,7 @@ a.card:hover .go .arw{transform:translateX(3px)}
 @media (max-width:560px){
   .cards.cols-2,.cards.cols-3{grid-template-columns:1fr}
   .pub{grid-template-columns:1fr;gap:10px}
+  .tl .pub{gap:4px}
   .sec-head{margin-bottom:28px}
   .card.feature{padding:24px 20px 22px}
 }
@@ -453,6 +483,7 @@ a.card:hover .go .arw{transform:translateX(3px)}
     <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
     <ul class="nav-links" id="nav-links">
       <li><a href="#about">About</a></li>
+      <li><a href="#career">Career</a></li>
       <li><a href="#research">Research</a></li>
       <li><a href="#teaching">Teaching</a></li>
       <li><a href="#talks">Talks</a></li>
@@ -476,9 +507,10 @@ a.card:hover .go .arw{transform:translateX(3px)}
         <a class="btn btn-ghost" href="#contact">Get in touch <span class="arw">→</span></a>
       </div>
       <div class="creds reveal">
-        <span class="cred"><span class="dot"></span><b>MBBS</b> SCB Medical College, Cuttack</span>
-        <span class="cred"><span class="dot"></span><b>MD</b> Community Medicine · MKCG, Berhampur</span>
-        <span class="cred"><span class="dot"></span><b>PGDM</b> Applied Epidemiology · NIHFW (pursuing)</span>
+        <span class="cred"><span class="dot"></span><b>MBBS</b> SCB Medical College, Cuttack · 2014</span>
+        <span class="cred"><span class="dot"></span><b>MD</b> Community Medicine · MKCG, Berhampur · 2020</span>
+        <span class="cred"><span class="dot"></span><b>Fellowship</b> Digital Health · Medvarsity</span>
+        <span class="cred"><span class="dot"></span><b>PG Diploma</b> Applied Epidemiology · NIHFW (pursuing)</span>
       </div>
     </div>
 
@@ -512,19 +544,22 @@ a.card:hover .go .arw{transform:translateX(3px)}
     <div class="about-grid">
       <div class="about-body reveal">
         <p class="lede">I teach and practise community medicine at GMCH Sundargarh. The district is tribal-majority, depends on mining and carries a heavy sickle cell burden, so the public health questions here are immediate.</p>
-        <p>Malaria, filariasis, tuberculosis, maternal and child health and the occupational risks of mining fill the daily work. I teach epidemiology and biostatistics to Phase I–III MBBS students under the competency-based curriculum, and coordinate the college's work in NTEP, NVBDCP, RMNCAH+N and immunisation. I also serve as a master trainer and resource person for national health programme trainings.</p>
-        <p>At the college I sit on the Medical Education Unit and the Medical Research Unit. A growing share of my time goes to digital health and AI fluency: helping doctors, teachers and students use AI tools well and check what those tools produce.</p>
+        <p>I trained at S.C.B. Medical College, Cuttack (MBBS, 2014) and M.K.C.G. Medical College, Berhampur (MD in Community Medicine, 2020). I taught at M.K.C.G. and at Shri Jagannath Medical College, Puri, before joining GMCH Sundargarh in January 2024.</p>
+        <p>Malaria, filariasis, tuberculosis and maternal and child health fill the daily work here. I teach Community Medicine to MBBS students under the CBME curriculum, in the classroom, on clinical postings and in the field, and coordinate the college's work in NTEP, NVBDCP, RMNCAH+N and immunisation. I am a resource person and master trainer for IMNCI, NTEP, NLEP and biomedical waste management.</p>
+        <p>I sit on the Medical Education Unit and the Medical Research Unit, and serve as Nodal Officer for the Ayushman Bharat Digital Mission (ABDM). A growing share of my time goes to digital health and AI fluency: helping doctors, teachers and students use AI tools well and check what those tools produce.</p>
         <p>The #CM-APP tools on this site come from the same place. Each began with a real classroom or clinic problem, such as a statistic students keep misreading or a calculation a colleague needs for a dissertation.</p>
-        <div class="tags" aria-label="Focus areas">
-          <span class="tag">Tuberculosis · NTEP</span>
-          <span class="tag">Vector-borne disease · NVBDCP</span>
-          <span class="tag">Sickle cell disease</span>
-          <span class="tag">Tribal &amp; rural health</span>
-          <span class="tag">Maternal &amp; child health</span>
-          <span class="tag">Occupational health</span>
+        <div class="tags" aria-label="Areas of interest">
+          <span class="tag">Epidemiology</span>
+          <span class="tag">Biostatistics</span>
+          <span class="tag">Research methodology</span>
+          <span class="tag">Evidence synthesis</span>
+          <span class="tag">Digital health · ABDM</span>
+          <span class="tag">Artificial intelligence</span>
           <span class="tag">Medical education · CBME</span>
-          <span class="tag">Digital health &amp; AI</span>
-          <span class="tag">Biostatistics &amp; epidemiology</span>
+          <span class="tag">Tuberculosis · NTEP</span>
+          <span class="tag">Vector-borne disease</span>
+          <span class="tag">Maternal &amp; child health · IMNCI</span>
+          <span class="tag">Tribal &amp; rural health</span>
         </div>
       </div>
 
@@ -534,9 +569,11 @@ a.card:hover .go .arw{transform:translateX(3px)}
           <div class="row"><dt>Role</dt><dd>Assistant Professor</dd></div>
           <div class="row"><dt>Department</dt><dd>Community Medicine</dd></div>
           <div class="row"><dt>Institution</dt><dd>GMCH, Sundargarh</dd></div>
+          <div class="row"><dt>Teaching since</dt><dd>2020</dd></div>
           <div class="row"><dt>Degrees</dt><dd>MBBS · MD</dd></div>
-          <div class="row"><dt>Pursuing</dt><dd>PGDM-AE, NIHFW</dd></div>
-          <div class="row"><dt>College units</dt><dd>MEU · MRU</dd></div>
+          <div class="row"><dt>Pursuing</dt><dd>PG Diplomas · NIHFW, CLRI</dd></div>
+          <div class="row"><dt>College roles</dt><dd>MEU · MRU · ABDM</dd></div>
+          <div class="row"><dt>Languages</dt><dd>English · Hindi · Odia</dd></div>
           <div class="row"><dt>Award</dt><dd>Best Paper, APCRICON 2018</dd></div>
         </dl>
       </aside>
@@ -544,51 +581,213 @@ a.card:hover .go .arw{transform:translateX(3px)}
   </div>
 </section>
 
+<!-- ============================ CAREER ============================ -->
+<section id="career" class="section">
+  <div class="wrap">
+    <p class="eyebrow reveal">Career &amp; training</p>
+    <div class="sec-head reveal"><h2>Experience &amp; Qualifications</h2></div>
+
+    <div class="career-grid">
+      <div class="reveal">
+        <h3 class="sub-h">Experience</h3>
+        <ol class="pubs tl">
+          <li class="pub">
+            <div class="meta"><span class="yr">2024 – now</span></div>
+            <div>
+              <h3>Assistant Professor, Community Medicine</h3>
+              <p class="auth">Government Medical College &amp; Hospital, Sundargarh</p><span class="when">Jan 2024 – present</span>
+            </div>
+          </li>
+          <li class="pub">
+            <div class="meta"><span class="yr">2022 – 2024</span></div>
+            <div>
+              <h3>Assistant Professor, Community Medicine</h3>
+              <p class="auth">Shri Jagannath Medical College &amp; Hospital, Puri</p><span class="when">Apr 2022 – Jan 2024</span>
+            </div>
+          </li>
+          <li class="pub">
+            <div class="meta"><span class="yr">2021 – 2022</span></div>
+            <div>
+              <h3>Senior Resident / Tutor, Community Medicine</h3>
+              <p class="auth">Shri Jagannath Medical College &amp; Hospital, Puri</p><span class="when">Mar 2021 – Apr 2022</span>
+            </div>
+          </li>
+          <li class="pub">
+            <div class="meta"><span class="yr">2020 – 2021</span></div>
+            <div>
+              <h3>Senior Resident / Tutor, Community Medicine</h3>
+              <p class="auth">M.K.C.G. Medical College &amp; Hospital, Berhampur</p><span class="when">Jul 2020 – Mar 2021</span>
+            </div>
+          </li>
+          <li class="pub">
+            <div class="meta"><span class="yr">2017 – 2020</span></div>
+            <div>
+              <h3>Junior Resident, MD Community Medicine</h3>
+              <p class="auth">M.K.C.G. Medical College &amp; Hospital, Berhampur</p><span class="when">Jun 2017 – Jun 2020</span>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="reveal">
+        <h3 class="sub-h">Qualifications</h3>
+        <ol class="pubs tl">
+          <li class="pub">
+            <div class="meta"><span class="yr">Pursuing</span></div>
+            <div>
+              <h3>PG Diploma in Applied Epidemiology</h3>
+              <p class="auth">National Institute of Health &amp; Family Welfare (NIHFW), New Delhi</p>
+            </div>
+          </li>
+          <li class="pub">
+            <div class="meta"><span class="yr">Pursuing</span></div>
+            <div>
+              <h3>PG Diploma in AI/ML in Healthcare</h3>
+              <p class="auth">Clini Launch Research Institute (CLRI)</p>
+            </div>
+          </li>
+          <li class="pub">
+            <div class="meta"><span class="yr">Completed</span></div>
+            <div>
+              <h3>Fellowship in Digital Health</h3>
+              <p class="auth">Medvarsity</p>
+            </div>
+          </li>
+          <li class="pub">
+            <div class="meta"><span class="yr">2020</span></div>
+            <div>
+              <h3>MD, Community Medicine</h3>
+              <p class="auth">M.K.C.G. Medical College, Berhampur, Odisha</p>
+            </div>
+          </li>
+          <li class="pub">
+            <div class="meta"><span class="yr">2014</span></div>
+            <div>
+              <h3>MBBS</h3>
+              <p class="auth">S.C.B. Medical College, Cuttack, Odisha</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <h3 class="sub-h block-h reveal">Certifications &amp; Continuing Professional Development</h3>
+    <div class="cert-groups" data-stagger>
+      <div class="cert">
+        <span class="k">Medical education &amp; research</span>
+        <ul>
+          <li><b>Basic Course in Medical Education (BCME)</b><span>S.C.B. Medical College, Cuttack (Regional Centre) · <time>Jun 2025</time></span></li>
+          <li><b>Basic Course in Biomedical Research (BCBR)</b><span>ICMR–NIE, SWAYAM–NPTEL · <time>Aug 2025</time></span></li>
+          <li><b>Advanced Epidemiology Workshop</b><span>JIPMER International School of Public Health, Puducherry · <time>Oct 2025</time></span></li>
+          <li><b>Essential Epidemiologic Tools for Public Health Practice</b><span>Johns Hopkins University</span></li>
+          <li><b>Data and Health Indicators in Public Health Practice</b><span>Johns Hopkins University</span></li>
+        </ul>
+      </div>
+      <div class="cert">
+        <span class="k">AI in healthcare</span>
+        <ul>
+          <li><b>AI in Healthcare (Certificate Programme)</b><span>NBEMS, MoHFW, Government of India · <time>Jan–Jun 2026</time></span></li>
+          <li><b>AI for Clinicians</b><span>Wadhwani School of AI, IIT Madras · <time>Apr–May 2026</time></span></li>
+          <li><b>AI in Healthcare</b><span>EICTA, IIT Kanpur</span></li>
+          <li><b>AI in Healthcare</b><span>EICTA, MNIT Jaipur</span></li>
+          <li><b>Foundation and Potential of AI in Healthcare</b><span>University of Colorado System</span></li>
+          <li><b>Generative AI for Healthcare</b><span>Google Cloud</span></li>
+          <li><b>Introduction to Using Generative AI in Public Health</b><span>Johns Hopkins University</span></li>
+        </ul>
+      </div>
+      <div class="cert">
+        <span class="k">AI tools for teaching &amp; work</span>
+        <ul>
+          <li><b>Google AI Professional Certificate</b><span>Google · 8 courses</span></li>
+          <li><b>Google Prompting Essentials</b><span>Google · 4 courses</span></li>
+          <li><b>Microsoft Copilot: Your Everyday AI Companion</b><span>Microsoft · 3 courses</span></li>
+          <li><b>Fundamentals of Microsoft 365 Generative AI</b><span>Microsoft</span></li>
+          <li><b>Data Analysis and Visualization with Generative AI in Excel</b><span>Microsoft</span></li>
+          <li><b>AI for Education, Basic &amp; Advanced</b><span>Kennesaw State University</span></li>
+          <li><b>ChatGPT Foundations for Teachers</b><span>OpenAI</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="recog" data-stagger>
+      <div class="card">
+        <span class="k">Award</span>
+        <h3>Best Paper Award, APCRICON 2018</h3>
+        <p>20th Annual National Conference of the Association for Prevention and Control of Rabies in India, New Delhi, 7–8 July 2018.</p>
+      </div>
+      <div class="card">
+        <span class="k">Professional memberships</span>
+        <div class="memb">
+          <span class="tag">IAPSM</span><span class="tag">IPHA</span><span class="tag">APCRI</span><span class="tag">EFI</span><span class="tag">ISAI</span>
+          <span class="tag">IAME</span><span class="tag">ICAIM</span><span class="tag">IMA</span><span class="tag">NMO</span><span class="tag">OMTA</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============================ RESEARCH ============================ -->
 <section id="research" class="section">
   <div class="wrap">
-    <p class="eyebrow reveal">Selected publications</p>
+    <p class="eyebrow reveal">Publications &amp; projects</p>
     <div class="sec-head reveal">
       <h2>Research</h2>
-      <!-- When the Google Scholar profile is ready, add:
-           <a class="sec-link" href="SCHOLAR-URL">All publications →</a> -->
+      <!-- When a Google Scholar or ORCID profile is ready, add:
+           <a class="sec-link" href="PROFILE-URL">All publications →</a> -->
     </div>
-    <p class="sec-intro reveal">My research follows the district's public health problems: vector-borne disease and filariasis elimination, tuberculosis, sickle cell disease, maternal and child health, and how doctors and students use AI.</p>
+    <p class="sec-intro reveal">My research interests are epidemiology, biostatistics, research methodology and evidence synthesis, digital health and AI, and medical education. Field projects follow the district's programmes, from filariasis elimination to maternal health services.</p>
 
-    <!-- Final form of each entry (Vancouver style):
-         <h3><a href="https://doi.org/10.xxxx/xxxxx">Article title</a></h3>
-         <p class="auth">Authors as printed. <em>Journal</em>. Year;Volume(Issue):pages.</p> -->
+    <h3 class="sub-h reveal">Publications</h3>
+    <!-- To link a title to its article, wrap it: <h3><a href="https://doi.org/...">Title</a></h3> -->
     <ol class="pubs">
       <li class="pub reveal">
-        <div class="meta"><span class="idx"></span><span class="yr"><span class="ph">[INSERT: year]</span></span></div>
+        <div class="meta"><span class="idx"></span><span class="yr">2026</span></div>
         <div>
-          <h3><span class="ph">[INSERT: title of peer-reviewed article 1, linked to its DOI]</span></h3>
-          <p class="auth"><span class="ph">[INSERT: authors as printed]</span>, <em><span class="ph">[INSERT: journal]</span></em></p>
-          <span class="topic"><span class="ph">[INSERT: topic]</span></span>
+          <h3>Rational drug utilization in geriatric patients: a systematic review of prescribing practices, polypharmacy, and medication safety</h3>
+          <p class="auth"><b>Panda A</b>, Narmada Reddy P, Mohanty R. <em>CME J Ger Med</em>. 2026;18(7):97–112.</p>
+          <span class="topic">Systematic review</span>
         </div>
       </li>
       <li class="pub reveal">
-        <div class="meta"><span class="idx"></span><span class="yr"><span class="ph">[INSERT: year]</span></span></div>
+        <div class="meta"><span class="idx"></span><span class="yr">2026</span></div>
         <div>
-          <h3><span class="ph">[INSERT: title of peer-reviewed article 2, linked to its DOI]</span></h3>
-          <p class="auth"><span class="ph">[INSERT: authors as printed]</span>, <em><span class="ph">[INSERT: journal]</span></em></p>
-          <span class="topic"><span class="ph">[INSERT: topic]</span></span>
+          <h3>A global perspective on mental health in medical students: evidence from systematic review and meta-analysis</h3>
+          <p class="auth">Kumari T, Singh A, <b>Panda A</b>. <em>Am J Forensic Psychol</em>. 2026;28(1):19–26.</p>
+          <span class="topic">Systematic review &amp; meta-analysis</span>
         </div>
       </li>
       <li class="pub reveal">
-        <div class="meta"><span class="idx"></span><span class="yr"><span class="ph">[INSERT: year]</span></span></div>
+        <div class="meta"><span class="idx"></span><span class="yr">2020</span></div>
         <div>
-          <h3><span class="ph">[INSERT: title of peer-reviewed article 3, linked to its DOI]</span></h3>
-          <p class="auth"><span class="ph">[INSERT: authors as printed]</span>, <em><span class="ph">[INSERT: journal]</span></em></p>
-          <span class="topic"><span class="ph">[INSERT: topic]</span></span>
+          <h3>Comparison of analgesic efficacy between the adjuvants dexamethasone and clonidine on supraclavicular brachial plexus block: a randomised study</h3>
+          <p class="auth">Behera CS, Nayak GK, <b>Panda A</b>. <em>Ann Int Med Den Res</em>. 2020;6(2):AN26–AN30.</p>
+          <span class="topic">Randomised study</span>
         </div>
       </li>
       <li class="pub reveal">
-        <div class="meta"><span class="idx"></span><span class="yr">In press</span></div>
+        <div class="meta"><span class="idx"></span><span class="yr">2026</span></div>
         <div>
-          <h3><span class="ph">[INSERT: book chapter title]</span></h3>
-          <p class="auth">In: <span class="ph">[INSERT: book title, editors, publisher]</span></p>
+          <h3>Comprehensive Lung Disease: Infection, Pathology and Oncology</h3>
+          <p class="auth">Chauhan S, <b>Panda A</b>, Mishra P, Vincent S, Verma N. New Delhi: Professional Publication Services; 2026. 337 p.</p>
           <span class="topic">Book chapter</span>
+        </div>
+      </li>
+    </ol>
+
+    <h3 class="sub-h block-h reveal">Research Projects</h3>
+    <ol class="pubs talks proj">
+      <li class="pub reveal">
+        <div class="meta"><span class="yr">Ongoing</span></div>
+        <div>
+          <h3>Evaluation of maternal health services at Village Health Sanitation &amp; Nutrition Day (VHSND) sites in the aspirational blocks of Sundargarh district</h3>
+          <p class="auth">UNICEF-funded project</p>
+        </div>
+      </li>
+      <li class="pub reveal">
+        <div class="meta"><span class="yr">2024 · 2025</span></div>
+        <div>
+          <h3>Post-MDA Coverage Evaluation Surveys, Sundargarh and Jharsuguda districts</h3>
+          <p class="auth">Mass Drug Administration for the elimination of lymphatic filariasis, 2024 and 2025 rounds</p>
         </div>
       </li>
     </ol>
@@ -604,7 +803,12 @@ a.card:hover .go .arw{transform:translateX(3px)}
       <div class="card">
         <span class="k">Phase I–III MBBS</span>
         <h3>Undergraduate Community Medicine</h3>
-        <p>Lectures, small-group teaching, the Family Adoption Programme and field postings in epidemiology, biostatistics and the national health programmes, mapped to CBME competencies.</p>
+        <p>Theory and practical classes and clinical postings in Community Medicine under the CBME curriculum, mapped to competencies.</p>
+      </div>
+      <div class="card">
+        <span class="k">In the field</span>
+        <h3>Community-Based Training</h3>
+        <p>Field visits, postings at the rural and urban health training centres, and the Family Adoption Programme.</p>
       </div>
       <div class="card">
         <span class="k">Method</span>
@@ -614,22 +818,17 @@ a.card:hover .go .arw{transform:translateX(3px)}
       <div class="card">
         <span class="k">Programmes</span>
         <h3>National Health Programmes</h3>
-        <p>Coordinates NTEP, NVBDCP, RMNCAH+N and immunisation activities at the college, and trains programme staff as a master trainer and resource person.</p>
+        <p>Resource person and master trainer for IMNCI, NTEP, NLEP and biomedical waste management. Coordinates the college's work in NTEP, NVBDCP, RMNCAH+N and immunisation.</p>
       </div>
       <div class="card">
-        <span class="k">Faculty development</span>
-        <h3>Medical Education</h3>
-        <p>Member of the Medical Education Unit. Course coordinator and resource faculty for the NMC Basic Course in Medical Education at GMCH Sundargarh in April 2026.</p>
+        <span class="k">Faculty development &amp; research</span>
+        <h3>Medical Education &amp; Research</h3>
+        <p>Member of the Medical Education and Medical Research Units. Course coordinator and resource faculty for the NMC Basic Course in Medical Education at GMCH Sundargarh in April 2026. Guides MBBS students' short-term research projects during elective postings.</p>
       </div>
       <div class="card">
         <span class="k">Digital health</span>
-        <h3>AI Fluency for Healthcare Professionals</h3>
-        <p>Sessions for doctors, teachers and students on using AI tools in teaching, assessment and research, and on checking their output. Runs the Digital &amp; AI Fluency Clinic for Healthcare Professionals, a WhatsApp learning group.</p>
-      </div>
-      <div class="card">
-        <span class="k">Research support</span>
-        <h3>Research Methods &amp; Mentoring</h3>
-        <p>Help with protocols, sample size and analysis for postgraduate theses and faculty research, as a member of the Medical Research Unit.</p>
+        <h3>Digital Health &amp; AI Fluency</h3>
+        <p>Nodal Officer for the Ayushman Bharat Digital Mission. Sessions for doctors, teachers and students on using AI tools in teaching, assessment and research, and on checking their output. Runs the Digital &amp; AI Fluency Clinic for Healthcare Professionals, a WhatsApp learning group.</p>
       </div>
     </div>
   </div>
@@ -670,10 +869,10 @@ a.card:hover .go .arw{transform:translateX(3px)}
         </div>
       </li>
       <li class="pub reveal">
-        <div class="meta"><span class="yr"><span class="ph">[INSERT: year]</span></span></div>
+        <div class="meta"><span class="yr">2026</span></div>
         <div>
           <h3>Heat-related illness: sensitisation for healthcare professionals</h3>
-          <p class="auth">Resource person · Sundargarh district (NPCCHH) <span class="ph">[INSERT: confirm it was delivered, or delete]</span></p>
+          <p class="auth">Resource person · Sundargarh district (NPCCHH)</p>
         </div>
       </li>
       <li class="pub reveal">
@@ -779,10 +978,9 @@ a.card:hover .go .arw{transform:translateX(3px)}
       <div class="contact-info reveal">
         <div class="row"><span class="lbl">Email</span><a href="mailto:support@dr-abhishekpanda-cm.app">support@dr-abhishekpanda-cm.app</a></div>
         <div class="row"><span class="lbl">WhatsApp</span><a href="https://wa.me/917008909595" target="_blank" rel="noopener">(+91) 700-890-9595</a></div>
+        <div class="row"><span class="lbl">LinkedIn</span><a href="https://www.linkedin.com/in/dr-abhishekpanda" target="_blank" rel="noopener">in/dr-abhishekpanda</a></div>
         <div class="row"><span class="lbl">Institution</span><span class="val">GMCH Sundargarh, Odisha</span></div>
-        <!-- Fill in both links, or delete the rows you do not use -->
-        <div class="row"><span class="lbl">Scholar</span><span class="val"><span class="ph">[INSERT: Google Scholar link]</span></span></div>
-        <div class="row"><span class="lbl">ORCID</span><span class="val"><span class="ph">[INSERT: ORCID link]</span></span></div>
+        <!-- To add a Google Scholar or ORCID profile later, copy the LinkedIn row and change the label and link -->
       </div>
     </div>
   </div>
@@ -798,6 +996,7 @@ a.card:hover .go .arw{transform:translateX(3px)}
     </div>
     <nav aria-label="Footer">
       <a href="#about">About</a>
+      <a href="#career">Career</a>
       <a href="#research">Research</a>
       <a href="#teaching">Teaching</a>
       <a href="#talks">Talks</a>
