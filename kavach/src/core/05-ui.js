@@ -136,7 +136,8 @@ K.formData = (form) => {
     out[e.name] = v;
   });
   Object.entries(groups).forEach(([name, list]) => {
-    if (list.length === 1 && !form.querySelectorAll(`[name="${CSS.escape(name)}"]`)[1]) out[name] = list[0].checked;
+    // a lone switch (no value attribute) is a boolean; checkboxes that carry values are always a list, even when only one is shown
+    if (list.length === 1 && !list[0].hasAttribute('value') && !form.querySelectorAll(`[name="${CSS.escape(name)}"]`)[1]) out[name] = list[0].checked;
     else out[name] = list.filter(e => e.checked).map(e => e.value);
   });
   Object.keys(out).forEach(k => { if (out[k] === undefined) delete out[k]; });

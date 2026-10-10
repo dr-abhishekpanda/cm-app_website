@@ -34,13 +34,14 @@ K.d = (() => {
     or: ['ରବିବାର','ସୋମବାର','ମଙ୍ଗଳବାର','ବୁଧବାର','ଗୁରୁବାର','ଶୁକ୍ରବାର','ଶନିବାର'],
   };
   const L = () => (MONTHS[K.i18n.lang] ? K.i18n.lang : 'en');
-  /* fmt: 'long' 12 March 2026 · 'short' 12 Mar 2026 · 'dm' 12 Mar · 'num' 12/03/2026 · 'my' March 2026 */
+  /* fmt: 'long' 12 March 2026 · 'short' 12 Mar 2026 · 'dm' 12 Mar · 'num' 12/03/2026 · 'tbl' 12/03/26 · 'my' March 2026 */
   const fmt = (s, style = 'short') => {
     if (!s || !valid(s)) return '–';
     const d = parse(s), lg = L(), mn = MONTHS[lg][d.getMonth()];
     const short = lg === 'en' ? mn.slice(0, 3) : mn;
     let out;
     if (style === 'num') out = `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()}`;
+    else if (style === 'tbl') out = `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${String(d.getFullYear()).slice(2)}`;
     else if (style === 'dm') out = `${d.getDate()} ${short}`;
     else if (style === 'my') out = `${mn} ${d.getFullYear()}`;
     else if (style === 'long') out = `${d.getDate()} ${mn} ${d.getFullYear()}`;
