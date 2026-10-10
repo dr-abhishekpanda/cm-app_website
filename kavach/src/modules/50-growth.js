@@ -256,9 +256,9 @@ K.route('/card/:id/child/:kid/growth/:mid', ({ id, kid, mid }) => {
     html: h`<div class="wrap">${K.ui.phead(K.child.label(k) + ' · ' + K.d.ageText(k.dob), isNew ? K.t('gr.add') : K.t('gr.edit'))}${grForm(c, k, m, isNew)}</div>`, mount() { K.live.grPreview(); } };
 });
 K.acts.grEdit = (el) => { const [cid, kid, mid] = el.dataset.arg.split('|'); K.go(`/card/${cid}/child/${kid}/growth/${mid}`); };
-K.growth.resultHtml = (k, r) => {
+K.growth.resultHtml = (k, r, o = {}) => {
   if (!r) return '';
-  const hcp = K.settings.isHcp(); const out = []; const hl = K.growth.headline(r);
+  const hcp = o.stats != null ? o.stats : K.settings.isHcp(); const out = []; const hl = K.growth.headline(r);
   if (r.flag) out.push(K.ui.callout('warn', '', K.t('gr.implaus')));
   if (hl) out.push(K.ui.callout(hl.tone === 'red' ? 'danger' : hl.tone === 'amber' ? 'warn' : hl.tone === 'info' ? 'info' : '', hl.t, hl.tone === 'red' ? (r.sam ? K.t('gr.samDo') : K.t('gr.adv.s')) : hl.tone === 'amber' ? K.t('gr.adv.m') : '', hl.tone === 'teal' ? 'check' : null));
   if (r.haz != null && r.haz < -2) out.push(K.ui.callout('warn', r.haz < -3 ? K.t('gr.stuntS') : K.t('gr.stunt'), ''));

@@ -30,3 +30,8 @@
 - Reading mode with read-aloud per card; counselling flipbook (`#/learn/<topic>/flip/<n>`: one large card per screen, swipe, arrow keys, progress dots); search across all cards; danger-sign set pages with 108/102/104 buttons.
 - Odia written for the app (not on the card) is listed in the data-file headers for the review sheet.
 - Checked in Chromium at 393×851, English and Odia: hub, search ("zinc" → sick-child card), topic pages, flipbook next/arrow/swipe, danger sets.
+
+## 2026-10-10 · session 2 · chunk 8
+- Tools tab (`modules/80-tools.js`): EDD and weeks (LMP / ultrasound / known EDD, key dates incl. next PMSMA), high-risk quick check (the card's HRP list, nothing saved), anaemia (WHO cut-offs by group, AMB treatment by group and weight band, severe-anaemia referral by gestation, iron cautions in thalassaemia / sickle cell), vaccine due dates from a date of birth, growth z-scores (same engine as the card), corrected age, ORS/zinc with the IMNCI dehydration check (Plan B volume from weight), IFA and deworming doses by age.
+- `K.growth.resultHtml` takes `{ stats }` so the z-score tool can show its own table.
+- Checked in Chromium (English and Odia) with worked examples: LMP −168 d → 24w0d; scan 12w3d 70 days ago → EDD matches scan + 193 d; pregnant Hb 8.5 → moderate, 2 tablets; Hb 6.2 at 36 weeks → admit; 6–59 m Hb 9.5 at 9 kg → 1 ml, at 12 kg → 1.5 ml; 5–9 y 20 kg → 60 mg/day; girl 10 m 6.05 kg 66 cm → WAZ −2.85, WLZ −2.15 (MAM); 32-week baby at 120 days → corrected 64 days; 9 kg with some dehydration → 680 ml over 4 h.
