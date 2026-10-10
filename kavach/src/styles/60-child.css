@@ -40,7 +40,7 @@
 .gchart .b-hi{fill:#E2EBEE}
 .gchart .gl{stroke:rgba(21,32,27,.07);stroke-width:.6}
 .gchart .gl.yr{stroke:rgba(21,32,27,.2);stroke-width:.9}
-.gchart .tk{font-size:8.5px;fill:var(--ink-faint)}
+.gchart .gtk{font-size:8.5px;fill:var(--ink-faint)}
 .gchart .zl{fill:none;stroke:var(--ink-faint);stroke-width:.9;stroke-linejoin:round}
 .gchart .z0{stroke:var(--primary);stroke-width:1.5}
 .gchart .zm2{stroke:var(--accent);stroke-width:1.1}

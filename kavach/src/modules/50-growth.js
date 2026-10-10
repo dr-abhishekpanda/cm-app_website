@@ -174,8 +174,8 @@ K.growth.chart = (k, ind, range) => {
     <rect x="${ML}" y="${MT}" width="${W - ML - MR}" height="${H - MT - MB}" class="bg"/>
     ${ind === 'wfa' ? h`<polygon class="b-s" points="${band(bottom, L[-3])}"/><polygon class="b-m" points="${band(L[-3], L[-2])}"/><polygon class="b-n" points="${band(L[-2], L[2])}"/>`
       : h`<polygon class="b-s" points="${band(bottom, L[-3])}"/><polygon class="b-m" points="${band(L[-3], L[-2])}"/><polygon class="b-n" points="${band(L[-2], L[2])}"/><polygon class="b-hi" points="${band(L[2], top)}"/>`}
-    ${yt.map(v => h`<line class="gl" x1="${ML}" x2="${W - MR}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}"/><text class="tk" x="${ML - 5}" y="${(Y(v) + 3.5).toFixed(1)}" text-anchor="end">${K.digits(v)}</text>`)}
-    ${xt.map(t => h`<line class="${t.yr ? 'gl yr' : 'gl'}" x1="${X(t.v).toFixed(1)}" x2="${X(t.v).toFixed(1)}" y1="${MT}" y2="${H - MB}"/><text class="tk" x="${X(t.v).toFixed(1)}" y="${H - MB + 13}" text-anchor="middle">${t.l}</text>`)}
+    ${yt.map(v => h`<line class="gl" x1="${ML}" x2="${W - MR}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}"/><text class="gtk" x="${ML - 5}" y="${(Y(v) + 3.5).toFixed(1)}" text-anchor="end">${K.digits(v)}</text>`)}
+    ${xt.map(t => h`<line class="${t.yr ? 'gl yr' : 'gl'}" x1="${X(t.v).toFixed(1)}" x2="${X(t.v).toFixed(1)}" y1="${MT}" y2="${H - MB}"/><text class="gtk" x="${X(t.v).toFixed(1)}" y="${H - MB + 13}" text-anchor="middle">${t.l}</text>`)}
     ${zl.map(z => h`<polyline class="zl z${z < 0 ? 'm' + -z : z}" points="${poly(L[z])}"/><text class="zt" x="${W - MR + 3}" y="${(Y(L[z][L[z].length - 1][1]) + 3.5).toFixed(1)}">${K.digits(z)}</text>`)}
     ${pts.length > 1 ? h`<polyline class="pl" points="${pts.map(p => `${X(p.x).toFixed(1)},${Y(p.y).toFixed(1)}`).join(' ')}"/>` : ''}
     ${pts.map(p => h`<circle class="${p === lastP ? 'pt last' : 'pt'}" cx="${X(p.x).toFixed(1)}" cy="${Y(p.y).toFixed(1)}" r="${p === lastP ? 5 : 3.6}"/>`)}

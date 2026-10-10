@@ -10,8 +10,11 @@ K.route = (pattern, fn) => {
   const re = new RegExp('^' + pattern.replace(/:(\w+)/g, (_, k) => { keys.push(k); return '([^/]+)'; }) + '/?$');
   K.routes.push({ pattern, re, keys, fn });
 };
-K.path = () => (location.hash.replace(/^#/, '') || '/').split('?')[0] || '/';
-K.query = () => new URLSearchParams(location.hash.split('?')[1] || '');
+/* hash = #/path?query#anchor — the optional second # names an element to scroll to */
+const hashParts = () => { const raw = location.hash.replace(/^#/, ''); const i = raw.indexOf('#'); return { main: i < 0 ? raw : raw.slice(0, i), anchor: i < 0 ? '' : raw.slice(i + 1) }; };
+K.path = () => (hashParts().main || '/').split('?')[0] || '/';
+K.query = () => new URLSearchParams(hashParts().main.split('?')[1] || '');
+K.anchor = () => hashParts().anchor;
 K.go = (path, opts = {}) => {
   const h = '#' + path;
   if (opts.replace) { history.replaceState(null, '', h); K.render(); }

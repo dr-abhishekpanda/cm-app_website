@@ -1,0 +1,49 @@
+/* ------------------------------------------------- child overview tiles ---- */
+.ctiles .tile{min-height:96px}
+.ctiles .tile small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+[id]{scroll-margin-top:calc(var(--top-h) + 12px)}
+
+/* ----------------------------------------------------------- development -- */
+.dev-band{display:grid;gap:10px}
+.dev-sub{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;margin-top:6px}
+.dev-sub h3{margin:0;font-size:1rem}
+button.chk{background:none;border:0;border-bottom:1px solid var(--line-soft);width:100%;text-align:left;font:inherit;color:inherit;min-height:48px}
+button.chk:last-child{border-bottom:0}
+button.chk.on .box{background:var(--primary);border-color:var(--primary);color:#fff}
+button.chk:focus-visible .box{box-shadow:var(--primary-ring)}
+.dev-can{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:2px 12px}
+.dev-check .ynrow{padding-left:0;padding-right:0}
+
+/* --------------------------------------------------------------- feeding -- */
+details.feed-st>summary{align-items:flex-start}
+details.feed-st>summary>span:nth-child(2){display:flex;flex-direction:column;gap:2px;min-width:0}
+details.feed-st>summary small{font-weight:400;color:var(--ink-soft);font-size:.86rem;line-height:1.35}
+.feed-ic{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:var(--ok-tint);color:var(--primary);flex:none}
+.feed-amt{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;padding:10px 12px;border-radius:var(--r-sm);background:var(--accent-tint);color:var(--ink);margin-bottom:10px;font-weight:600}
+.feed-amt .ic{color:var(--accent);margin-top:2px}
+
+/* ------------------------------------------------------------ IFA syrup --- */
+.trk-today.off{border-style:solid;background:var(--paper-2);color:var(--ink-soft);text-align:center;padding:8px;font-size:.86rem}
+.cifa-weeks{display:grid;gap:6px;margin-top:10px}
+.cifa-wk{display:grid;grid-template-columns:64px repeat(2,1fr);gap:6px;align-items:center}
+.cifa-wk .tk{aspect-ratio:auto;min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:.8rem}
+.cifa-wk .tk small{font-family:var(--font-body);font-size:.66rem;opacity:.85}
+
+/* ------------------------------------------------------------ sick child -- */
+.danger-box{border-color:color-mix(in srgb,var(--danger) 40%,var(--line));background:color-mix(in srgb,var(--danger-tint) 60%,var(--card))}
+.danger-box h2{margin:0 0 4px;color:var(--danger)}
+.ill-h{font-size:1rem;margin:4px 0 8px}
+.ill-list{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:8px}
+.ill-list li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;font-size:.95rem;line-height:1.4}
+.ill-list .ic{color:var(--primary);margin-top:3px}
+.danger-box .ill-list .ic{color:var(--danger)}
+
+/* -------------------------------------------------------- breath counter -- */
+.br-box{display:grid;gap:12px;justify-items:center;margin:6px 0 14px}
+.br-ring{position:relative;width:180px;height:180px}
+.br-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.br-bg{fill:none;stroke:var(--paper-2);stroke-width:9}
+.br-fg{fill:none;stroke:var(--primary);stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset .25s linear}
+.br-mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.br-mid b{font-size:3rem;line-height:1;color:var(--ink)}
+.br-tap{min-height:120px;font-size:1.2rem;touch-action:manipulation;user-select:none;-webkit-user-select:none}

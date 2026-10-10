@@ -68,6 +68,16 @@ K.child.summaryCard = (c, k) => {
       ${bits.length ? h`<span class="pills">${bits}</span>` : ''}</span>${K.ui.icon('chev', 'sm')}</a>`;
 };
 K.child.cardBits = []; // modules push (c,k) => pill
+/* small status tiles on the child overview (development, feeding, IFA syrup, home visits, sick child):
+   modules call K.child.addTile(order, (c, k) => ({ icon, tone, title, sub, href }) | null) */
+K.child.tiles = [];
+K.child.addTile = (order, fn) => { K.child.tiles.push({ order, fn }); K.child.tiles.sort(K.by('order')); };
+K.child.addSection(30, (c, k) => {
+  if (!k.dob) return '';
+  const tiles = K.child.tiles.map(t => { try { return t.fn(c, k); } catch (e) { console.error(e); return null; } }).filter(Boolean);
+  if (!tiles.length) return '';
+  return h`<section class="sec"><div class="tiles ctiles">${tiles.map(t => h`<a class="tile" href="${t.href}"><span class="ti-ic ${t.tone || ''}">${K.ui.icon(t.icon)}</span><b>${t.title}</b>${t.sub ? h`<small>${t.sub}</small>` : ''}</a>`)}</div></section>`;
+});
 
 /* ---------------------------------------------------------------- form */
 function childForm(c, k, isNew) {

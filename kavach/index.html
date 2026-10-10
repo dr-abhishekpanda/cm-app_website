@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2132512262">
+<html lang="en" data-build="092ddae4da">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -630,7 +630,7 @@ details.acc.fp.on{border-color:var(--primary)}
 .gchart .b-hi{fill:#E2EBEE}
 .gchart .gl{stroke:rgba(21,32,27,.07);stroke-width:.6}
 .gchart .gl.yr{stroke:rgba(21,32,27,.2);stroke-width:.9}
-.gchart .tk{font-size:8.5px;fill:var(--ink-faint)}
+.gchart .gtk{font-size:8.5px;fill:var(--ink-faint)}
 .gchart .zl{fill:none;stroke:var(--ink-faint);stroke-width:.9;stroke-linejoin:round}
 .gchart .z0{stroke:var(--primary);stroke-width:1.5}
 .gchart .zm2{stroke:var(--accent);stroke-width:1.1}
@@ -676,6 +676,57 @@ details.vgroup[open] .vg-chev{transform:rotate(180deg)}
 .gr-table td small{display:block;font-family:var(--font-body);font-size:.72rem;color:var(--ink-faint);white-space:nowrap}
 .gr-table th,.gr-table td{padding-left:8px;padding-right:8px}
 .gr-table table{font-size:.86rem}
+
+/* ── styles/70-dev.css ── */
+/* ------------------------------------------------- child overview tiles ---- */
+.ctiles .tile{min-height:96px}
+.ctiles .tile small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+[id]{scroll-margin-top:calc(var(--top-h) + 12px)}
+
+/* ----------------------------------------------------------- development -- */
+.dev-band{display:grid;gap:10px}
+.dev-sub{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;margin-top:6px}
+.dev-sub h3{margin:0;font-size:1rem}
+button.chk{background:none;border:0;border-bottom:1px solid var(--line-soft);width:100%;text-align:left;font:inherit;color:inherit;min-height:48px}
+button.chk:last-child{border-bottom:0}
+button.chk.on .box{background:var(--primary);border-color:var(--primary);color:#fff}
+button.chk:focus-visible .box{box-shadow:var(--primary-ring)}
+.dev-can{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:2px 12px}
+.dev-check .ynrow{padding-left:0;padding-right:0}
+
+/* --------------------------------------------------------------- feeding -- */
+details.feed-st>summary{align-items:flex-start}
+details.feed-st>summary>span:nth-child(2){display:flex;flex-direction:column;gap:2px;min-width:0}
+details.feed-st>summary small{font-weight:400;color:var(--ink-soft);font-size:.86rem;line-height:1.35}
+.feed-ic{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:var(--ok-tint);color:var(--primary);flex:none}
+.feed-amt{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;padding:10px 12px;border-radius:var(--r-sm);background:var(--accent-tint);color:var(--ink);margin-bottom:10px;font-weight:600}
+.feed-amt .ic{color:var(--accent);margin-top:2px}
+
+/* ------------------------------------------------------------ IFA syrup --- */
+.trk-today.off{border-style:solid;background:var(--paper-2);color:var(--ink-soft);text-align:center;padding:8px;font-size:.86rem}
+.cifa-weeks{display:grid;gap:6px;margin-top:10px}
+.cifa-wk{display:grid;grid-template-columns:64px repeat(2,1fr);gap:6px;align-items:center}
+.cifa-wk .tk{aspect-ratio:auto;min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:.8rem}
+.cifa-wk .tk small{font-family:var(--font-body);font-size:.66rem;opacity:.85}
+
+/* ------------------------------------------------------------ sick child -- */
+.danger-box{border-color:color-mix(in srgb,var(--danger) 40%,var(--line));background:color-mix(in srgb,var(--danger-tint) 60%,var(--card))}
+.danger-box h2{margin:0 0 4px;color:var(--danger)}
+.ill-h{font-size:1rem;margin:4px 0 8px}
+.ill-list{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:8px}
+.ill-list li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;font-size:.95rem;line-height:1.4}
+.ill-list .ic{color:var(--primary);margin-top:3px}
+.danger-box .ill-list .ic{color:var(--danger)}
+
+/* -------------------------------------------------------- breath counter -- */
+.br-box{display:grid;gap:12px;justify-items:center;margin:6px 0 14px}
+.br-ring{position:relative;width:180px;height:180px}
+.br-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.br-bg{fill:none;stroke:var(--paper-2);stroke-width:9}
+.br-fg{fill:none;stroke:var(--primary);stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset .25s linear}
+.br-mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.br-mid b{font-size:3rem;line-height:1;color:var(--ink)}
+.br-tap{min-height:120px;font-size:1.2rem;touch-action:manipulation;user-select:none;-webkit-user-select:none}
 
 </style>
 </head>
@@ -799,8 +850,8 @@ details.vgroup[open] .vg-chev{transform:rotate(180deg)}
    escapes interpolated values unless they are K.raw()/nested K.h results.
    ============================================================================ */
 const K = window.K = window.K || {};
-K.build = '2132512262';
-K.builtAt = '2026-10-10T11:00:33.411Z';
+K.build = '092ddae4da';
+K.builtAt = '2026-10-10T11:19:31.570Z';
 
 class Raw { constructor(s){ this.s = s; } toString(){ return this.s; } }
 K.Raw = Raw;
@@ -1147,8 +1198,11 @@ K.route = (pattern, fn) => {
   const re = new RegExp('^' + pattern.replace(/:(\w+)/g, (_, k) => { keys.push(k); return '([^/]+)'; }) + '/?$');
   K.routes.push({ pattern, re, keys, fn });
 };
-K.path = () => (location.hash.replace(/^#/, '') || '/').split('?')[0] || '/';
-K.query = () => new URLSearchParams(location.hash.split('?')[1] || '');
+/* hash = #/path?query#anchor — the optional second # names an element to scroll to */
+const hashParts = () => { const raw = location.hash.replace(/^#/, ''); const i = raw.indexOf('#'); return { main: i < 0 ? raw : raw.slice(0, i), anchor: i < 0 ? '' : raw.slice(i + 1) }; };
+K.path = () => (hashParts().main || '/').split('?')[0] || '/';
+K.query = () => new URLSearchParams(hashParts().main.split('?')[1] || '');
+K.anchor = () => hashParts().anchor;
 K.go = (path, opts = {}) => {
   const h = '#' + path;
   if (opts.replace) { history.replaceState(null, '', h); K.render(); }
@@ -1810,6 +1864,360 @@ K.who = {
     2: [[[0,-0.0631,13.3363,0.09272],[1,0.0362,13.3185,0.0936],[2,0.1355,13.3006,0.09448],[3,0.2347,13.2828,0.09535],[4,0.334,13.2649,0.09623],[5,0.4333,13.247,0.09711],[6,0.5326,13.2292,0.09799],[7,0.6319,13.2113,0.09887],[8,0.6142,13.2455,0.09866],[9,0.5965,13.2796,0.09845],[10,0.5789,13.3137,0.09824],[11,0.5612,13.3478,0.09804],[12,0.5435,13.3819,0.09783],[13,0.5258,13.416,0.09762],[14,0.5082,13.4501,0.09741],[15,0.4947,13.5169,0.09726],[16,0.482,13.5873,0.09711],[17,0.4699,13.6595,0.09697],[18,0.4583,13.7325,0.09684],[19,0.4472,13.8056,0.09671],[20,0.4365,13.8784,0.09659],[21,0.4263,13.9505,0.09647],[22,0.4164,14.0216,0.09636],[23,0.4069,14.0916,0.09625],[24,0.3977,14.1603,0.09615],[25,0.3888,14.2276,0.09605],[26,0.3802,14.2935,0.09595],[27,0.3718,14.3579,0.09586],[28,0.3637,14.4208,0.09577],[29,0.3558,14.4824,0.09568],[30,0.3481,14.5422,0.09559],[31,0.3406,14.6003,0.09551],[32,0.3333,14.6566,0.09543],[33,0.3262,14.7112,0.09535],[34,0.3192,14.7642,0.09527],[35,0.3124,14.8157,0.0952],[36,0.3058,14.8657,0.09513],[37,0.2993,14.9142,0.09506],[38,0.2929,14.9614,0.09499],[39,0.2867,15.0073,0.09492],[40,0.2806,15.052,0.09485],[41,0.2747,15.0955,0.09479],[42,0.2688,15.138,0.09472],[49,0.2306,15.4063,0.09431],[56,0.1966,15.6311,0.09394],[63,0.1658,15.8232,0.09361],[70,0.1377,15.9874,0.09332],[77,0.1118,16.1277,0.09304],[84,0.0877,16.2485,0.09279],[91,0.0652,16.3531,0.09255],[98,0.0442,16.4438,0.09233],[105,0.0243,16.5222,0.09212],[112,0.0055,16.5901,0.09192],[119,-0.0124,16.6492,0.09173],[126,-0.0293,16.7009,0.09156],[133,-0.0455,16.746,0.09139],[140,-0.061,16.7848,0.09122],[147,-0.0758,16.8178,0.09107],[154,-0.0901,16.8452,0.09092],[161,-0.1037,16.8677,0.09077],[168,-0.1169,16.8854,0.09063],[175,-0.1296,16.8987,0.0905],[182,-0.1418,16.9077,0.09037],[189,-0.1537,16.9125,0.09024],[196,-0.1652,16.9136,0.09012],[203,-0.1763,16.9112,0.09001],[210,-0.187,16.9055,0.08989],[217,-0.1975,16.8967,0.08978],[224,-0.2076,16.8852,0.08967],[231,-0.2175,16.8712,0.08957],[238,-0.227,16.8548,0.08947],[245,-0.2364,16.8362,0.08937],[252,-0.2455,16.8157,0.08927],[259,-0.2543,16.7934,0.08917],[266,-0.263,16.7695,0.08908],[273,-0.2714,16.7441,0.08899],[280,-0.2796,16.7176,0.0889],[287,-0.2876,16.69,0.08882],[294,-0.2955,16.6616,0.08873],[301,-0.3032,16.6326,0.08865],[308,-0.3107,16.603,0.08857],[315,-0.3181,16.5731,0.08849],[322,-0.3253,16.543,0.08841],[329,-0.3323,16.5127,0.08834],[336,-0.3392,16.4823,0.08826],[343,-0.346,16.452,0.08819],[350,-0.3526,16.4218,0.08812],[357,-0.3592,16.3918,0.08805],[364,-0.3656,16.3621,0.08798],[371,-0.3719,16.3326,0.08791],[378,-0.378,16.3034,0.08784],[385,-0.3841,16.2745,0.08778],[392,-0.3901,16.246,0.08771],[399,-0.3959,16.2178,0.08765],[406,-0.4017,16.1901,0.08759],[413,-0.4074,16.1628,0.08753],[420,-0.4129,16.1359,0.08747],[427,-0.4184,16.1095,0.08741],[434,-0.4238,16.0835,0.08735],[441,-0.4292,16.058,0.08729],[448,-0.4344,16.0329,0.08723],[455,-0.4396,16.0083,0.08718],[462,-0.4447,15.9841,0.08712],[469,-0.4497,15.9604,0.08707],[476,-0.4546,15.9372,0.08701],[483,-0.4595,15.9145,0.08696],[490,-0.4643,15.8922,0.08691],[497,-0.469,15.8704,0.08686],[504,-0.4737,15.8491,0.08681],[511,-0.4783,15.8283,0.08676],[518,-0.4829,15.808,0.08671],[525,-0.4874,15.7881,0.08666],[532,-0.4919,15.7687,0.08661],[539,-0.4962,15.7497,0.08656],[546,-0.5006,15.7312,0.08651],[553,-0.5049,15.7132,0.08647],[560,-0.5091,15.6956,0.08642],[567,-0.5133,15.6784,0.08638],[574,-0.5174,15.6617,0.08633],[581,-0.5215,15.6455,0.08629],[588,-0.5255,15.6297,0.08624],[595,-0.5295,15.6144,0.0862],[602,-0.5335,15.5994,0.08616],[609,-0.5374,15.585,0.08611],[616,-0.5412,15.5709,0.08607],[623,-0.5451,15.5574,0.08603],[630,-0.5488,15.5443,0.08599],[637,-0.5526,15.5316,0.08595],[644,-0.5563,15.5194,0.08591],[651,-0.5599,15.5077,0.08587],[658,-0.5636,15.4965,0.08583],[665,-0.5672,15.4856,0.08579],[672,-0.5707,15.4753,0.08575],[679,-0.5742,15.4653,0.08571],[686,-0.5777,15.4558,0.08568],[693,-0.5812,15.4467,0.08564],[700,-0.5846,15.4381,0.0856],[707,-0.588,15.4298,0.08556],[714,-0.5913,15.4219,0.08553],[721,-0.5946,15.4143,0.08549],[728,-0.5979,15.4072,0.08546],[730,-0.5989,15.4052,0.08545]],[[731,-0.5684,15.6881,0.08454],[738,-0.5684,15.6812,0.08454],[745,-0.5684,15.6743,0.08453],[752,-0.5684,15.6675,0.08453],[759,-0.5684,15.6608,0.08452],[766,-0.5684,15.6542,0.08452],[773,-0.5684,15.6476,0.08451],[780,-0.5684,15.6411,0.0845],[787,-0.5684,15.6347,0.0845],[794,-0.5684,15.6284,0.08449],[801,-0.5684,15.6221,0.08448],[808,-0.5684,15.6159,0.08447],[815,-0.5684,15.6097,0.08447],[822,-0.5684,15.6036,0.08446],[829,-0.5684,15.5975,0.08446],[836,-0.5684,15.5915,0.08445],[843,-0.5684,15.5855,0.08445],[850,-0.5684,15.5796,0.08444],[857,-0.5684,15.5737,0.08444],[864,-0.5684,15.5678,0.08443],[871,-0.5684,15.562,0.08443],[878,-0.5684,15.5562,0.08443],[885,-0.5684,15.5504,0.08443],[892,-0.5684,15.5447,0.08443],[899,-0.5684,15.539,0.08443],[906,-0.5684,15.5333,0.08443],[913,-0.5684,15.5277,0.08444],[920,-0.5684,15.5221,0.08444],[927,-0.5684,15.5165,0.08445],[934,-0.5684,15.5109,0.08446],[941,-0.5684,15.5054,0.08447],[948,-0.5684,15.4999,0.08448],[955,-0.5684,15.4944,0.0845],[962,-0.5684,15.489,0.08452],[969,-0.5684,15.4836,0.08454],[976,-0.5684,15.4783,0.08456],[983,-0.5684,15.473,0.08458],[990,-0.5684,15.4678,0.08461],[997,-0.5684,15.4626,0.08464],[1004,-0.5684,15.4575,0.08467],[1011,-0.5684,15.4524,0.0847],[1018,-0.5684,15.4474,0.08474],[1025,-0.5684,15.4425,0.08478],[1032,-0.5684,15.4376,0.08482],[1039,-0.5684,15.4328,0.08487],[1046,-0.5684,15.4281,0.08492],[1053,-0.5684,15.4234,0.08497],[1060,-0.5684,15.4189,0.08502],[1067,-0.5684,15.4144,0.08508],[1074,-0.5684,15.41,0.08514],[1081,-0.5684,15.4056,0.0852],[1088,-0.5684,15.4014,0.08527],[1095,-0.5684,15.3972,0.08534],[1102,-0.5684,15.3931,0.08541],[1109,-0.5684,15.3891,0.08549],[1116,-0.5684,15.3852,0.08557],[1123,-0.5684,15.3813,0.08565],[1130,-0.5684,15.3775,0.08574],[1137,-0.5684,15.3738,0.08582],[1144,-0.5684,15.3702,0.08592],[1151,-0.5684,15.3666,0.08601],[1158,-0.5684,15.3631,0.08611],[1165,-0.5684,15.3597,0.08621],[1172,-0.5684,15.3563,0.08631],[1179,-0.5684,15.353,0.08641],[1186,-0.5684,15.3497,0.08652],[1193,-0.5684,15.3465,0.08663],[1200,-0.5684,15.3434,0.08675],[1207,-0.5684,15.3403,0.08686],[1214,-0.5684,15.3373,0.08698],[1221,-0.5684,15.3343,0.0871],[1228,-0.5684,15.3314,0.08722],[1235,-0.5684,15.3285,0.08734],[1242,-0.5684,15.3257,0.08746],[1249,-0.5684,15.3229,0.08759],[1256,-0.5684,15.3201,0.08772],[1263,-0.5684,15.3174,0.08785],[1270,-0.5684,15.3147,0.08798],[1277,-0.5684,15.3121,0.08811],[1284,-0.5684,15.3095,0.08824],[1291,-0.5684,15.307,0.08837],[1298,-0.5684,15.3044,0.08851],[1305,-0.5684,15.302,0.08864],[1312,-0.5684,15.2996,0.08878],[1319,-0.5684,15.2972,0.08892],[1326,-0.5684,15.2948,0.08905],[1333,-0.5684,15.2925,0.08919],[1340,-0.5684,15.2903,0.08933],[1347,-0.5684,15.2881,0.08947],[1354,-0.5684,15.286,0.08961],[1361,-0.5684,15.2839,0.08974],[1368,-0.5684,15.2818,0.08988],[1375,-0.5684,15.2799,0.09002],[1382,-0.5684,15.2779,0.09015],[1389,-0.5684,15.2761,0.09029],[1396,-0.5684,15.2742,0.09043],[1403,-0.5684,15.2725,0.09056],[1410,-0.5684,15.2708,0.0907],[1417,-0.5684,15.2691,0.09083],[1424,-0.5684,15.2676,0.09097],[1431,-0.5684,15.266,0.0911],[1438,-0.5684,15.2646,0.09124],[1445,-0.5684,15.2632,0.09138],[1452,-0.5684,15.2619,0.09151],[1459,-0.5684,15.2606,0.09165],[1466,-0.5684,15.2594,0.09178],[1473,-0.5684,15.2583,0.09192],[1480,-0.5684,15.2572,0.09205],[1487,-0.5684,15.2562,0.09219],[1494,-0.5684,15.2553,0.09232],[1501,-0.5684,15.2544,0.09246],[1508,-0.5684,15.2536,0.0926],[1515,-0.5684,15.2529,0.09273],[1522,-0.5684,15.2523,0.09287],[1529,-0.5684,15.2517,0.093],[1536,-0.5684,15.2512,0.09314],[1543,-0.5684,15.2508,0.09327],[1550,-0.5684,15.2504,0.09341],[1557,-0.5684,15.2501,0.09354],[1564,-0.5684,15.2499,0.09368],[1571,-0.5684,15.2497,0.09381],[1578,-0.5684,15.2497,0.09394],[1585,-0.5684,15.2496,0.09407],[1592,-0.5684,15.2497,0.09421],[1599,-0.5684,15.2498,0.09434],[1606,-0.5684,15.25,0.09447],[1613,-0.5684,15.2502,0.0946],[1620,-0.5684,15.2505,0.09472],[1627,-0.5684,15.2508,0.09485],[1634,-0.5684,15.2512,0.09498],[1641,-0.5684,15.2517,0.0951],[1648,-0.5684,15.2522,0.09523],[1655,-0.5684,15.2527,0.09535],[1662,-0.5684,15.2533,0.09547],[1669,-0.5684,15.2539,0.09559],[1676,-0.5684,15.2545,0.09571],[1683,-0.5684,15.2552,0.09583],[1690,-0.5684,15.2559,0.09594],[1697,-0.5684,15.2567,0.09606],[1704,-0.5684,15.2575,0.09617],[1711,-0.5684,15.2583,0.09628],[1718,-0.5684,15.2591,0.09639],[1725,-0.5684,15.2599,0.0965],[1732,-0.5684,15.2608,0.0966],[1739,-0.5684,15.2617,0.09671],[1746,-0.5684,15.2626,0.09681],[1753,-0.5684,15.2636,0.09691],[1760,-0.5684,15.2646,0.09701],[1767,-0.5684,15.2655,0.09711],[1774,-0.5684,15.2665,0.09721],[1781,-0.5684,15.2676,0.0973],[1788,-0.5684,15.2686,0.0974],[1795,-0.5684,15.2697,0.09749],[1802,-0.5684,15.2708,0.09758],[1809,-0.5684,15.2719,0.09767],[1816,-0.5684,15.273,0.09776],[1823,-0.5684,15.2742,0.09785],[1826,-0.5684,15.2747,0.09789]]],
   },
 };
+
+}
+/* ── data/50-dev.js ── */
+{
+/* ============================================================================
+   data/50-dev — developmental milestones, parenting tips and warning signs.
+   English: national MCP card 2018 pp.12–25. Odia: Odisha MCP card V-2023-24
+   pp.11–24 (obvious print slips corrected: ପତ୍ୟେକ→ପ୍ରତ୍ୟେକ, ବୁଲଉ→ବୁଲାଉ,
+   ଧିର→ଧୀର, ସିଡ଼ି→ସିଢ଼ି, ଉଚାରଣ→ଉଚ୍ଚାରଣ). One meaning fix for review: 24-month
+   warning 1 follows the national card ("does not walk steadily while pulling
+   a toy"); the Odisha print says "cannot stand steady".
+   The mother ticks what the child can do; the ASHA/AWW checks the warning
+   signs at the "at N months" age. Any warning sign → health worker / DEIC.
+   Bands: `from` = month (corrected age under 2 y) when the band becomes
+   current; `at` = month the warning signs apply.
+   ============================================================================ */
+K.dev = K.dev || {};
+K.dev.BANDS = [
+  {
+    k: 'm3', from: 1.5, at: 3,
+    name: { en: 'By 2–3 months', or: '୨-୩ ମାସ ଭିତରେ' }, atName: { en: 'At 3 months', or: '୩ ମାସ ବୟସରେ' },
+    can: [
+      { en: "Begins to recognise the mother's face", or: 'ମା’ର ମୁହଁକୁ ଦେଖି ଚିହ୍ନି ପାରୁଛି' },
+      { en: 'Smiles at people (social smile)', or: 'ଲୋକମାନଙ୍କୁ ଦେଖି ହସି ପାରୁଛି' },
+      { en: 'Makes eye contact', or: 'ଆଖିକୁ ଆଖି ମିଳେଇ ପାରୁଛି' },
+      { en: 'Moves both arms and both legs when excited', or: 'ଖୁସି ହୋଇ ଦି ହାତ ଓ ଦି ଗୋଡ଼ ହଲେଇ ପାରୁଛି' },
+      { en: 'Keeps hands open and relaxed', or: 'ହାତକୁ ଆରାମ୍‌ରେ ଓ ଖୋଲା କରି ରଖି ପାରୁଛି' },
+      { en: 'Raises head at times when lying on the tummy', or: 'ପେଟେଇକି ଶୋଇଲେ ବେଳେ ବେଳେ ମୁଣ୍ଡ ଟେକି ପାରୁଛି' },
+    ],
+    tips: [
+      { en: "Massage gently, and stretch and exercise the baby's arms and legs.", or: 'ଶିଶୁକୁ ହାଲ୍‌କାରେ ମାଲିଶ କରନ୍ତୁ ଏବଂ ଶିଶୁର ହାତ ଓ ଗୋଡ଼କୁ ହାଲ୍‌କାରେ ଟାଣି ବ୍ୟାୟାମ କରାନ୍ତୁ।' },
+      { en: 'Let the baby lie on the tummy for some time every day.', or: 'ପ୍ରତ୍ୟେକ ଦିନ କିଛି ସମୟ ପାଇଁ ଶିଶୁକୁ ପେଟେଇକି ଶୋଇବା ପାଇଁ ଉତ୍ସାହିତ କରାନ୍ତୁ।' },
+      { en: 'Cuddle and play with the baby every day. Cuddling or quickly responding to every cry does not spoil a baby.', or: 'ସବୁଦିନ ଶିଶୁଙ୍କୁ କୁଣ୍ଢେଇ ଗେହ୍ଲା କରନ୍ତୁ ଓ ତା’ଙ୍କ ସହ ଖେଳନ୍ତୁ।' },
+      { en: 'Talk to the baby in your mother tongue every day.', or: 'ପ୍ରତ୍ୟେକ ଦିନ ଶିଶୁଟି ସାଙ୍ଗରେ ନିଜ ମାତୃଭାଷାରେ କଥା ହୁଅନ୍ତୁ।' },
+      { en: 'Hang colourful moving objects about 1 foot (30 cm) away for the baby to look at and follow.', or: 'ଶିଶୁ ଠାରୁ ଫୁଟେ ଦୂରରେ କିଛି ରଙ୍ଗିନ ହଲୁଥିବା ବସ୍ତୁ ଟଙ୍ଗାନ୍ତୁ ଯେପରି କି ଶିଶୁ ସେହି ବସ୍ତୁ ଉପରେ ନଜରକୁ କେନ୍ଦ୍ରିତ କରି ତା’କୁ ଅନୁସରଣ କରିପାରିବ।' },
+      { en: 'Keep mobile phones, TV and other screens away from children under 2 years.', or: '୨୪ ମାସରୁ କମ୍ ବୟସର ଶିଶୁମାନଙ୍କୁ ମୋବାଇଲ୍ ଫୋନ୍, ଟି.ଭି. ବା କୌଣସି ଇଲେକ୍‌ଟ୍ରୋନିକ୍ ଉପକରଣର ସଂସ୍ପର୍ଶରେ ଆଣନ୍ତୁ ନାହିଁ।' },
+    ],
+    warn: [
+      { en: 'Does not make eye contact when being fed, cuddled or spoken to', or: 'ଶିଶୁକୁ ଖୁଆଇବା ସମୟରେ, ଗେହ୍ଲା କରିବା ସମୟରେ ବା ତା’ ସହିତ କଥା ହେବା ସମୟରେ ସେ ଆଖିକୁ ଆଖି ମିଳାଉନାହିଁ' },
+      { en: 'Eyes squint all the time after 2 months', or: '୨ ମାସ ପରେ ଆଖି ଡୋଳା ସବୁବେଳେ ଟେରା କରି ରଖୁଛି' },
+      { en: 'Does not smile at anyone', or: 'କାହାକୁ ଦେଖି ହସୁ ନାହିଁ' },
+      { en: 'Does not startle, wake up or cry at a sudden loud sound', or: 'ହଠାତ୍ କିଛି ବଡ଼ ଆୱାଜ୍ ହେଲେ, ଶିଶୁ ଚମକୁ ନାହିଁ ବା ଉଠୁ ନାହିଁ ବା କାନ୍ଦୁ ନାହିଁ' },
+      { en: 'Head pushed back, with stiff arms and legs', or: 'ମୁଣ୍ଡକୁ ପଛକୁ ରଖି, ହାତ ଓ ଗୋଡ଼ ଟାଣ କରି ରଖୁଛି' },
+      { en: 'Always keeps the thumb inside the palm, hands open or fisted', or: 'ସବୁବେଳେ ହାତ ଖୋଲା କରି ବା ମୁଠା କରି ବୁଢ଼ା ଆଙ୍ଗୁଠିକୁ ପାପୁଲି ଭିତରେ ପସେଇ ରଖୁଛି' },
+    ],
+  },
+  {
+    k: 'm6', from: 4, at: 6,
+    name: { en: 'By 4–6 months', or: '୪-୬ ମାସ ଭିତରେ' }, atName: { en: 'At 6 months', or: '୬ ମାସ ବୟସରେ' },
+    can: [
+      { en: 'Holds the head steady when held upright, and sits with support', or: 'ଶିଶୁକୁ ସିଧା ଧରିଲେ ସିଏ ମୁଣ୍ଡକୁ ସ୍ଥିର କରି ରଖିପାରୁଛି ଏବଂ ସାହାରା ନେଇ ବସିପାରୁଛି' },
+      { en: 'Turns the head towards a sound', or: 'ଶବ୍ଦ ଆସୁଥିବା ଦିଗକୁ ମୁଣ୍ଡ ବୁଲାଇ ଚାହିଁପାରୁଛି' },
+      { en: 'Tries to reach for and grasp an object', or: 'କୌଣସି ବସ୍ତୁକୁ ଦେଖି ତା ଆଡ଼କୁ ପହଞ୍ଚିବାକୁ ଓ ତା’କୁ ଧରିବାକୁ ଚେଷ୍ଟା କରିପାରୁଛି' },
+      { en: 'Laughs aloud or squeals', or: 'ଜୋର୍‌ରେ ହସିପାରୁଛି ବା କୁହାଟ ମାରିପାରୁଛି' },
+      { en: 'Babbles "ah, ee, oo" other than crying', or: 'କାନ୍ଦିବା ଛଡ଼ା ‘ଆ’, ‘ଇ’, ‘ଉ’ ପରି କିଛି ଶବ୍ଦ କହିପାରୁଛି' },
+      { en: 'Likes to look at self in a mirror', or: 'ନିଜର ଛବି ଦର୍ପଣରେ ଦେଖିବାକୁ ଭଲ ପାଉଛି' },
+    ],
+    tips: [
+      { en: 'Talk with the baby; copy the baby’s sounds and praise the baby for copying yours.', or: 'ନିଜ ଶିଶୁ ସାଙ୍ଗେ କଥାବାର୍ତ୍ତା ହୁଅନ୍ତୁ; ତା’ଙ୍କ ପରି ଶବ୍ଦ କରନ୍ତୁ ଓ ସିଏ ଆପଣଙ୍କ ପରି ଶବ୍ଦ ବାହାର କରିଲେ ତାକୁ ଉତ୍ସାହିତ କରନ୍ତୁ।' },
+      { en: 'Put interesting things on the floor for the baby to reach out and explore.', or: 'ଭୁଇଁରେ ବିଭିନ୍ନ ରୋଚକ ଆକର୍ଷକ ବସ୍ତୁ ସଜାଇ ରଖନ୍ତୁ ଯାହା ଦେଖି ଶିଶୁ ସେଗୁଡ଼ିକ ଧରିବାକୁ ଚାହିଁବ ବା ସେସବୁ ଜିନିଷଗୁଡ଼ିକ କ’ଣ ତାହା ନିଜେ ବୁଝିବାକୁ ଚାହିଁବ।' },
+      { en: 'Take the baby outdoors and show the world outside.', or: 'ଶିଶୁକୁ ଘର ବାହାରକୁ ନେଇ ବାହାର ଦୁନିଆର ବସ୍ତୁଗୁଡ଼ିକ ସହିତ ପରିଚିତ କରାନ୍ତୁ।' },
+      { en: 'Babies suck their fingers and thumb for comfort. This is not a worry; do not stop it early.', or: 'ଶିଶୁମାନେ ନିଜ ମନ ବୁଝାଇବା ପାଇଁ ନିଜ ଆଙ୍ଗୁଠି ବା ବୁଢ଼ା ଆଙ୍ଗୁଠିକୁ ଚୁଚୁମି ଥା’ନ୍ତି। ଏହା କୌଣସି ଚିନ୍ତାର ବିଷୟ ନୁହେଁ। ଏହା ନିର୍ଦ୍ଦିଷ୍ଟ ସମୟ ଆଗରୁ ବନ୍ଦ କରନ୍ତୁ ନାହିଁ।' },
+    ],
+    warn: [
+      { en: 'No head control', or: 'ମୁଣ୍ଡ ସିଧା ରଖି ପାରୁନାହିଁ' },
+      { en: 'Does not make sounds like "ah", "ee", "oo"', or: '‘ଆ’ ‘ଇ’ ‘ଉ’ ପରି କିଛି ଶବ୍ଦ କରୁନାହିଁ' },
+      { en: 'Cannot sit even with help', or: 'ସହାୟତା ସହିତ ମଧ୍ୟ ବସି ପାରୁନାହିଁ' },
+      { en: 'Head and eyes do not follow a moving object', or: 'ସାମ୍ନାରେ ହଲୁଥିବା ବସ୍ତୁକୁ ଦେଖିବା ପାଇଁ ମୁଣ୍ଡକୁ ବା ଆଖିକୁ ବୁଲାଉ ନାହିଁ' },
+      { en: 'Does not grasp things within reach', or: 'ନିଜ ପହଞ୍ଚରେ ଥିବା ବସ୍ତୁକୁ ଧରୁନାହିଁ' },
+      { en: 'Cannot raise the head when lying on the tummy', or: 'ପେଟେଇକି ଶୋଇଲେ ମୁଣ୍ଡ ଟେକି ପାରୁନାହିଁ' },
+    ],
+  },
+  {
+    k: 'm9', from: 7, at: 9,
+    name: { en: 'By 7–9 months', or: '୭-୯ ମାସ ଭିତରେ' }, atName: { en: 'At 9 months', or: '୯ ମାସ ବୟସରେ' },
+    can: [
+      { en: 'Rolls over in both directions', or: 'ଦୁଇ ପଟକୁ କଡ଼ ଲେଉଟାଇ ପାରୁଛି' },
+      { en: 'Grasps a toy using all the fingers', or: 'ସବୁ ଆଙ୍ଗୁଠିର ପ୍ରୟୋଗ କରି କୌଣସି ଖେଳଣାକୁ ଧରିପାରୁଛି' },
+      { en: 'Turns the head to follow familiar faces or toys', or: 'ଚିହ୍ନିଥିବା ଚେହେରା ବା ଖେଳଣାଗୁଡ଼ିକୁ ଅନୁସରଣ କରିବା ପାଇଁ ନିଜ ମୁଣ୍ଡକୁ ବୁଲାଇ ପାରୁଛି' },
+      { en: 'Looks for toys hidden in front of the baby', or: 'ସାମନାରେ ଲୁଚାଇଥିବା ଖେଳଣାଗୁଡ଼ିକୁ ଖୋଜିବା ପାଇଁ ଚେଷ୍ଟା କରିପାରୁଛି' },
+      { en: 'Responds when the name is called', or: 'ଶିଶୁଟିର ନା’ ଡାକିଲେ ଶୁଣୁଛି' },
+    ],
+    tips: [
+      { en: 'Let the baby drop, bang and throw things again and again. Respond to the baby’s noises gently and patiently.', or: 'ଶିଶୁଟିକୁ ତା’ ଖେଳନା ବା ଜିନିଷଗୁଡ଼ିକୁ ବାରମ୍ବାର ପକେଇବାକୁ, ବାଡ଼େଇବାକୁ ବା ଫିଙ୍ଗିବାକୁ ଦିଅନ୍ତୁ। ଶିଶୁଟି କରୁଥିବା ଶବ୍ଦଗୁଡ଼ିକୁ ଧୀରସ୍ଥିର ଭାବେ ଏବଂ କୋମଳ ଭାବେ ଉତ୍ତର ଦିଅନ୍ତୁ।' },
+      { en: 'Give clean, safe household utensils to play with and explore.', or: 'ଶିଶୁକୁ ଘରେ ବ୍ୟବହାର କରୁଥିବା ସଫା ଏବଂ ସୁରକ୍ଷିତ ବାସନକୁସନ ଖେଳିବା ପାଇଁ ଏବଂ ଅନୁସନ୍ଧାନ କରିବା ପାଇଁ ଦିଅନ୍ତୁ।' },
+      { en: 'Play peek-a-boo. Hide the baby’s favourite toy under a cloth or box and see if the baby finds it.', or: 'ଶିଶୁ ସହିତ ଲୁଚକାଳି ଖେଳନ୍ତୁ। ଶିଶୁର ପ୍ରିୟ ଖେଳଣାଟିକୁ ଗୋଟିଏ କପଡ଼ା ବା ବାକ୍ସ ତଳେ ଲୁଚାଇ ଦେଖନ୍ତୁ। ଶିଶୁଟି ଖୋଜି ପାରୁଛି କି ନାହିଁ।' },
+    ],
+    warn: [
+      { en: 'Cannot roll over', or: 'କଡ଼ ଲେଉଟାଇ ପାରୁନାହିଁ' },
+      { en: 'Needs support to sit', or: 'ବସିବା ପାଇଁ ସହାୟତା ଲୋଡ଼ା କରୁଛି' },
+      { en: 'Does not turn towards a sound coming from out of sight', or: 'ନିଜ ଦୃଷ୍ଟିରୁ ଦୂରରେ ପ୍ରକଟ ହେଉଥିବା ଶବ୍ଦ ଆଡ଼କୁ ବୁଲୁ ନାହିଁ ବା ଚାହୁଁ ନାହିଁ' },
+      { en: 'Does not say "pa-pa-pa", "ma-ma", "ba-ba-ba" and similar sounds', or: 'ପା...ପା...ପା...ମା...ମା, ବା...ବା...ବା, ଇତ୍ୟାଦି ପରି କିଛି ଶବ୍ଦ କହୁ ନାହିଁ' },
+      { en: 'Always tilts the head to one side when looking at things', or: 'କୌଣସି ବସ୍ତୁ ଆଡ଼େ ଚାହିଁବା ସମୟରେ ସବୁବେଳେ ଗୋଟିଏ ଆଡ଼କୁ ମୁଣ୍ଡ ଝୁଲାଇ ରଖୁଛି' },
+    ],
+  },
+  {
+    k: 'm12', from: 10, at: 12,
+    name: { en: 'By 10–12 months', or: '୧୦-୧୨ ମାସ ବୟସ ଭିତରେ' }, atName: { en: 'At 12 months', or: '୧୨ ମାସ ବୟସରେ' },
+    can: [
+      { en: 'Sits without support and reaches for toys without falling', or: 'କୌଣସି ସହାୟତା ବିନା ବସିପାରୁଛି ଓ ବିନା ପଡ଼ି ଖେଳଣାଗୁଡ଼ିକୁ ଧରିପାରୁଛି' },
+      { en: 'Raises arms to be picked up', or: 'କୋଳେଇ ନେବା ପାଇଁ ଦୁଇ ହାତ ଉଠେଇ ଇସାରା କରିପାରୁଛି' },
+      { en: 'Crawls to a wanted toy without bumping into things', or: 'ନିଜେ ଚାହୁଁଥିବା ଖେଳଣାଗୁଡ଼ିକୁ ଧରିବା ପାଇଁ, ଅନ୍ୟ କୌଣସି ବସ୍ତୁ ସହିତ ନ ଧକ୍କା ହୋଇ ଆରାମ୍‌ରେ ଗୁରୁଣ୍ଡି ପାରୁଛି' },
+      { en: 'Says one or two common words in the mother tongue', or: 'ନିଜ ମାତୃଭାଷାରେ ଗୋଟିଏ କି ଦୁଇଟି ଶବ୍ଦ କହିପାରୁଛି' },
+      { en: 'Understands simple requests like "no" or "come here"', or: 'କିଛିଟି ସାଧାରଣ କଥା ଯେପରି କି ‘ନା’ / ‘ଏଠିକୁ ଆସ’ ପରି ଅନୁରୋଧକୁ ବୁଝିପାରୁଛି' },
+    ],
+    tips: [
+      { en: 'Keep a toy slightly out of reach to encourage the baby to stand and walk holding on to something.', or: 'କିଛି ଖେଳଣାକୁ ଶିଶୁର ପହଞ୍ଚରୁ ଟିକେ ଦୂରରେ ରଖି ଶିଶୁଟିକୁ କୌଣସି ବସ୍ତୁର ସହାୟତା ନେଇ ଠିଆ ହେବା ପାଇଁ ଓ ଚାଲିବା ପାଇଁ ଉତ୍ସାହିତ କରନ୍ତୁ।' },
+      { en: 'While exploring, babies may hurt others by accident. Show them how to touch gently; do not shout at them.', or: 'ନୂତନ ବସ୍ତୁ ଗୁଡ଼ିକୁ ଅନୁସନ୍ଧାନ କରିବା ସମୟରେ ଶିଶୁମାନେ ଅନ୍ୟମାନଙ୍କୁ ଆଘାତ ପହଞ୍ଚାଇ ପାରନ୍ତି। ସେମାନଙ୍କୁ ଧୀର ଭାବରେ ସ୍ପର୍ଶ କରିବା ଶିଖାନ୍ତୁ, ତା’ଙ୍କୁ ପାଟି କରନ୍ତୁ ନାହିଁ।' },
+      { en: 'Tell stories and read picture books aloud. Show and name the things around the baby.', or: 'ଶିଶୁକୁ ବିଭିନ୍ନ ଗପ ସହ ଛବି ଥିବା ବହି ବଡ଼ ପାଟିରେ ପଢ଼ି ଶୁଣାନ୍ତୁ। ଶିଶୁର ପରିବେଶରେ ଥିବା ବସ୍ତୁଗୁଡ଼ିକୁ ଶିଶୁକୁ ଦେଖାନ୍ତୁ ଓ ସେଗୁଡ଼ିକର ନାମ କୁହନ୍ତୁ।' },
+    ],
+    warn: [
+      { en: 'Cannot pick up small objects with finger and thumb', or: 'ଛୋଟ ଜିନିଷଗୁଡ଼ିକୁ ଆଙ୍ଗୁଠି ବା ବୁଢ଼ା ଆଙ୍ଗୁଠିର ବ୍ୟବହାର କରି ଉଠେଇ ପାରୁନାହିଁ' },
+      { en: 'Does not stretch out the hands to be picked up', or: 'କୋଳେଇ ନେବା ପାଇଁ ହାତ ଉଠାଉ ନାହିଁ' },
+      { en: 'Does not respond to own name', or: 'ଶିଶୁର ନା’ ଡାକିଲେ କିଛି ପ୍ରତିକ୍ରିୟା ଦେଖାଉନାହିଁ' },
+      { en: 'Does not search for a half-hidden toy after watching you hide it', or: 'ଶିଶୁର ସାମ୍‌ନାରେ କିଛି ଖେଳଣା ଅଧା ଲୁଚେଇ ରଖିଲେ ତା’କୁ ଖୋଜିବାକୁ ଚେଷ୍ଟା କରୁନାହିଁ' },
+      { en: 'Does not play social games like peek-a-boo', or: 'କୌଣସି ସାମାଜିକ ଖେଳ ଯେମିତି କି ଲୁଚକାଳି ଖେଳୁନାହିଁ' },
+    ],
+  },
+  {
+    k: 'm18', from: 13, at: 18,
+    name: { en: 'By 18 months', or: '୧୮ ମାସ ବୟସ ଭିତରେ' }, atName: { en: 'At 18 months', or: '୧୮ ମାସ ବୟସରେ' },
+    can: [
+      { en: 'Stands and takes several steps alone', or: 'ନିଜେ ସ୍ୱାଧୀନ ଭାବେ ଠିଆ ହୋଇ କେତେକ ପାଦ ପକାଇ ଚାଲି ପାରୁଛି' },
+      { en: 'Uses familiar gestures like waving and clapping', or: 'ବିଭିନ୍ନ ପ୍ରକାରର ସାମାଜିକ ଠାର ଯେପରିକି ‘ଟାଟା’ କରିବା, ତାଳି ମାରିବା, ଇତ୍ୟାଦି କରିପାରୁଛି' },
+      { en: 'Puts pebbles or small objects into a container', or: 'ଛୋଟ ବସ୍ତୁ ବା ଗୋଡ଼ିଗୁଡ଼ିକୁ ଉଠାଇ ଗୋଟିଏ ପାତ୍ରରେ ରଖିପାରୁଛି' },
+      { en: 'Names and identifies common objects and their pictures in a book', or: 'ସାଧାରଣ ବସ୍ତୁ ଦେଖି ବା ସେଗୁଡ଼ିକର ଛବି କୌଣସି ବହିରେ ଦେଖି, ସେଗୁଡ଼ିକୁ ଚିହ୍ନି ପାରୁଛି ଓ ତା’ ନା’ କହିପାରୁଛି' },
+    ],
+    tips: [
+      { en: 'Give a push toy to help the child learn to walk.', or: 'ଶିଶୁକୁ ଠେଲିକି ଗଡ଼େଇ ଗଡ଼େଇ ନେଲା ପରି ଖେଳଣା ଦିଅନ୍ତୁ। ଏହା ସେମାନଙ୍କୁ ଚାଲିବା ଶିଖିବାରେ ସାହାଯ୍ୟ କରିଥାଏ।' },
+      { en: 'Give fruits, toys and other things; ask the child to name them and to put them in and take them out of a container.', or: 'ଶିଶୁକୁ କିଛି ଫଳ, ଖେଳଣା, ଇତ୍ୟାଦି ଦିଅନ୍ତୁ। ସେମାନଙ୍କୁ ବସ୍ତୁଗୁଡ଼ିକୁ ଚିହ୍ନିବା ପାଇଁ ଓ ସେଗୁଡ଼ିକୁ ଏକ ପାତ୍ରରେ ପୁରେଇବା ପାଇଁ ଏବଂ ପାତ୍ରରୁ ବାହାର କରିବା ପାଇଁ କୁହନ୍ତୁ।' },
+      { en: 'Ask the child simple questions and encourage the child to talk.', or: 'ଶିଶୁମାନଙ୍କୁ କିଛି ସହଜ ପ୍ରଶ୍ନ ପଚାରନ୍ତୁ ଏବଂ ସେମାନଙ୍କୁ କଥାବାର୍ତ୍ତା କରିବା ପାଇଁ ଉତ୍ସାହିତ କରନ୍ତୁ।' },
+    ],
+    warn: [
+      { en: 'Cannot stand alone without support', or: 'ନିଜେ ସ୍ୱାଧୀନ ଭାବେ, ବିନା କୌଣସି ସହାୟତାରେ ଠିଆ ହୋଇପାରୁନାହିଁ' },
+      { en: 'Cannot put small objects into a container', or: 'ଛୋଟ ଛୋଟ ବସ୍ତୁଗୁଡ଼ିକୁ ପାତ୍ରରେ ରଖି ପାରୁନାହିଁ' },
+      { en: 'Does not point at an object when it is named', or: 'କୌଣସି ବସ୍ତୁ ବିଷୟରେ କହିଲେ ବା ପଚାରିଲେ ତା’ ଆଡ଼କୁ ଆଙ୍ଗୁଠି ଦେଖାଉନାହିଁ' },
+      { en: "Does not respond to the mother's gestures and seems to be in a world of the child's own", or: 'ମା’ର ଠାରକୁ କିଛି ପ୍ରତିକ୍ରିୟା ଦେଖାଉନାହିଁ ଏବଂ ନିଜ ଦୁନିଆରେ ଥିଲା ପରି ରହୁଛି' },
+      { en: 'Does not use both hands for everyday activities (prefers one hand)', or: 'ନିତିଦିନିଆ କାମ ପାଇଁ ଦୁଇ ହାତ ବ୍ୟବହାର କରୁନାହିଁ (କୌଣସି ଗୋଟିଏ ହାତ ପାଇଁ ଅଧିକ ଆଗ୍ରହ ଦେଖାଉଛି)' },
+      { en: 'Does not say single words like "mama" or "dada"', or: '‘ମାମା’, ‘ବାବା’ ବା ‘ଦାଦା’ ପରି ଶବ୍ଦ କହୁ ନାହିଁ' },
+    ],
+  },
+  {
+    k: 'm24', from: 19, at: 24,
+    name: { en: 'By 24 months', or: '୨୪ ମାସ ବୟସ ଭିତରେ' }, atName: { en: 'At 24 months', or: '୨୪ ମାସ ବୟସରେ' },
+    can: [
+      { en: 'Walks steadily, even while pulling a toy', or: 'ସ୍ଥିର ଭାବେ ଚାଲି ପାରୁଛି (କୌଣସି ଖେଳଣା ଟାଣିଲା ବେଳେ ମଧ୍ୟ)' },
+      { en: 'Copies household chores', or: 'ବିଭିନ୍ନ ଦୈନନ୍ଦିନ କାର୍ଯ୍ୟକୁ ଅନୁକରଣ କରିପାରୁଛି' },
+      { en: 'Points to and names one or more body parts, in person or in a book', or: 'ନିଜେ ବା ବହିରେ ଦେଖି ଶରୀରର ବିଭିନ୍ନ ଅଙ୍ଗର ନାମ ଠିକ୍ ଭାବରେ କହିପାରୁଛି' },
+    ],
+    tips: [
+      { en: 'Let the child walk, run and climb in safe places.', or: 'ଶିଶୁକୁ ସୁରକ୍ଷିତ ପରିସ୍ଥିତି ଓ ପରିବେଶରେ ଚଲାଚଲି କରିବାକୁ, ଦୌଡ଼ାଦୌଡ଼ି କରିବାକୁ ଓ ଚଢ଼ାଚଢ଼ି କରିବାକୁ ସୁଯୋଗ ଦିଅନ୍ତୁ।' },
+      { en: 'Let the child copy you and learn skills. Be patient if the child makes a mess.', or: 'ଶିଶୁକୁ ଆପଣଙ୍କର ଅନୁକରଣ କରି ନିଜର ଦକ୍ଷତା ବଢ଼ାଇବାର ସୁଯୋଗ ଦିଅନ୍ତୁ।' },
+      { en: 'Keep a daily routine, such as sleeping and waking at fixed times.', or: 'ଶିଶୁକୁ ତା’ର ନିତ୍ୟକର୍ମ ଓ ଦୈନନ୍ଦିନ କାର୍ଯ୍ୟ ଯେପରିକି ଶୋଇବା ଓ ଉଠିବା ପ୍ରତ୍ୟେକ ଦିନ ଏକ ନିର୍ଦ୍ଦିଷ୍ଟ ସମୟରେ କରିବା ପାଇଁ ଉତ୍ସାହିତ କରନ୍ତୁ।' },
+      { en: 'Read aloud often, repeating stories. Give books, paper, chalk and colours for scribbling.', or: 'ଶିଶୁକୁ ବଡ଼ ପାଟିରେ ବହି ପଢ଼ି ଶୁଣାନ୍ତୁ। ଗୋଟିଏ ଗପକୁ ବାରମ୍ବାର ଶିଶୁକୁ ପଢ଼ି ଶୁଣାନ୍ତୁ। ଶିଶୁକୁ ବିଭିନ୍ନ ବହି, ଖାତା, କାଗଜ, ଚକ୍ ଖଡ଼ି, ରଙ୍ଗ ଇତ୍ୟାଦି ଦିଅନ୍ତୁ ଯାହାର ପ୍ରୟୋଗ କରି ସିଏ ଏଣୁତେଣୁ ଲେଖାଲେଖି କରିବାକୁ ଚେଷ୍ଟା କରିବ।' },
+    ],
+    warn: [
+      { en: 'Does not walk steadily while pulling a toy', or: 'କୌଣସି ଖେଳଣା ଟାଣିଲାବେଳେ ସ୍ଥିର ହୋଇ ଚାଲି ପାରୁନାହିଁ' },
+      { en: 'Cannot scribble', or: 'ଏଣୁତେଣୁ ଲେଖାଲେଖି ବା ଗାରାଗାରି କରିପାରୁନାହିଁ' },
+      { en: 'Does not use two-word phrases like "give milk"', or: 'ଦି ଶବ୍ଦିଆ ବାକ୍ୟ ଯେପରିକି “କ୍ଷୀର ଦିଅ” ଇତ୍ୟାଦି କହିପାରୁନାହିଁ' },
+      { en: 'Does not respond to gestures like bye-bye or namaste', or: 'ବିଭିନ୍ନ ଠାର ଯେପରିକି ଟା-ଟା, ନମସ୍କାର, ଇତ୍ୟାଦିର କୌଣସି ପ୍ରତିକ୍ରିୟା ଦେଉନାହିଁ' },
+      { en: 'Does not point to body parts', or: 'ଶରୀରର ବିଭିନ୍ନ ଅଙ୍ଗକୁ ଚିହ୍ନି ଦେଖେଇ ପାରୁନାହିଁ' },
+      { en: 'Does not seem to understand or follow simple instructions', or: 'ମନେ ହୁଏ ଯେପରି କୌଣସି ସହଜ ଆଦେଶଗୁଡ଼ିକୁ ବୁଝିପାରୁନାହିଁ ବା ଅନୁସରଣ କରିପାରୁନାହିଁ' },
+    ],
+  },
+  {
+    k: 'y3', from: 25, at: 36,
+    name: { en: 'By 3 years', or: '୩ ବର୍ଷ ବୟସ ଭିତରେ' }, atName: { en: 'At 3 years', or: '୩ ବର୍ଷ ବୟସରେ' },
+    can: [
+      { en: 'Drinks from a cup without spilling', or: 'ବାହାରେ ନ ପକେଇ କୌଣସି ପାତ୍ରରେ ପିଇପାରୁଛି' },
+      { en: 'Climbs up and down stairs', or: 'ସିଢ଼ି ଚଢ଼ିପାରୁଛି ଓ ଓହ୍ଲେଇ ପାରୁଛି' },
+      { en: 'Names most familiar things; knows colours and shapes', or: 'ପରିଚିତ ବସ୍ତୁ ଗୁଡ଼ିକର ନାମ ସୁସଂଗତ ଭାବେ କହିପାରୁଛି। ବିଭିନ୍ନ ରଙ୍ଗ ଓ ଆକାରଗୁଡ଼ିକୁ ଚିହ୍ନି ପାରୁଛି।' },
+      { en: 'Makes sentences of 3 or more words', or: '୩ ବା ୩ ରୁ ଅଧିକ ଶବ୍ଦ ଯୋଡ଼ି ବାକ୍ୟ ଗଠନ କରିପାରୁଛି' },
+    ],
+    tips: [
+      { en: 'Play outdoor games that need movement and physical activity.', or: 'ଶିଶୁ ସହିତ ବିଭିନ୍ନ ବାହ୍ୟ କ୍ରୀଡ଼ା ଖେଳନ୍ତୁ ଯାହା ଦ୍ୱାରା ଶିଶୁର ଶାରୀରିକ କସରତ ହୋଇଥାଏ।' },
+      { en: 'Give a variety of things to play with: blocks, puzzles, rings.', or: 'ଶିଶୁକୁ ବିଭିନ୍ନ ପ୍ରକାରର ବସ୍ତୁ ବା ଖେଳଣା ଖେଳିବାକୁ ଦିଅନ୍ତୁ।' },
+      { en: 'Let the child use hands and fingers in different ways to build skills.', or: 'ଶିଶୁକୁ ନିଜର ହାତ ଓ ଆଙ୍ଗୁଠି ବିଭିନ୍ନ ପ୍ରକାରରେ ବ୍ୟବହାର କରିବାକୁ ଦିଅନ୍ତୁ। ଏହା ଦ୍ୱାରା ସେମାନଙ୍କର ଦକ୍ଷତା ବଢ଼ିଥାଏ।' },
+    ],
+    warn: [
+      { en: 'Has trouble climbing up and down stairs', or: 'ସିଢ଼ି ଚଢ଼ିବା ବା ଓହ୍ଲେଇବାରେ କଷ୍ଟ ହେଉଛି' },
+      { en: 'Cannot eat without help', or: 'ବିନା ସାହାଯ୍ୟରେ ଖାଇପାରୁ ନାହିଁ' },
+      { en: "Does not talk meaningfully and often repeats others' words", or: 'ସଠିକ୍ ଭାବେ କହିପାରୁନାହିଁ ଏବଂ ଅନ୍ୟମାନେ କହୁଥିବା ଶବ୍ଦକୁ ବାରମ୍ବାର ବ୍ୟବହାର କରୁଛି' },
+      { en: 'Does not play pretend games (such as feeding a doll)', or: 'ଖେଳଣା, ଘରକରଣା ଜିନିଷ ବ୍ୟବହାର କରି ଖେଳୁନାହିଁ' },
+      { en: 'Drools all the time; speech is unclear', or: 'ପାଟିରୁ ସବୁବେଳେ ଲାଳ ବୋହୁଛି ଓ ସଠିକ୍ ଭାବରେ ଉଚ୍ଚାରଣ କରିପାରୁନାହିଁ' },
+      { en: 'Does not speak in short sentences like "mummy give milk"', or: 'ସହଜ ଓ ଛୋଟ ବାକ୍ୟ ଯେପରିକି “ମା’ ମୋତେ କ୍ଷୀର ଦିଅ” କହିପାରୁ ନାହିଁ' },
+    ],
+  },
+];
+K.dev.TEXT = {
+  canHead: { en: 'What most children can do (mother ticks)', or: 'ସାଧାରଣତଃ ଶିଶୁମାନେ କ’ଣ କରିପାରନ୍ତି (ମା’ ଚିହ୍ନ ଦେବେ)' },
+  tipsHead: { en: 'Parenting tips', or: 'ଶିଶୁର ଲାଳନପାଳନ ସମ୍ବନ୍ଧୀୟ ସୂଚନା' },
+  warnHead: { en: 'Warning signs (checked by ASHA / AWW)', or: '‘ସତର୍କତା’ର ଲକ୍ଷଣ (ଆଶା / ଅଙ୍ଗନୱାଡ଼ି କର୍ମୀ ଯାଞ୍ଚ କରିବେ)' },
+  warnLead: { en: 'If you see any one of these, contact the AWW or health worker at once, or call 104.', or: 'ଏଥି ମଧ୍ୟରୁ କୌଣସି ଗୋଟିଏ ଲକ୍ଷଣ ଦେଖିବା ମାତ୍ରେ, ନିକଟସ୍ଥ ଅଙ୍ଗନୱାଡ଼ି କର୍ମୀ ବା ସ୍ୱାସ୍ଥ୍ୟକର୍ମୀଙ୍କୁ ତୁରନ୍ତ ଯୋଗାଯୋଗ କରନ୍ତୁ କିମ୍ବା ‘୧୦୪’କୁ ଫୋନ୍ କରନ୍ତୁ।' },
+  deic: { en: 'District Early Intervention Centre (DEIC)', or: 'ଡି.ଇ.ଆଇ.ସି. (DEIC)' },
+  deicBody: { en: 'Birth defects, developmental delay and disability are picked up early and treated free by specialists at the DEIC in the district headquarters hospital (also at Sishu Bhawan Cuttack, RGH Rourkela and Capital Hospital Bhubaneswar). Services include physiotherapy and help for learning and thinking skills.', or: 'ଶିଶୁମାନଙ୍କଠାରେ ଥିବା ଜନ୍ମଗତ ତ୍ରୁଟି, ବିଳମ୍ବିତ ବିକାଶ ଓ ଅକ୍ଷମତାର ସଅଳ ଚିହ୍ନଟିକରଣ ଓ ଚିକିତ୍ସା ଡି.ଇ.ଆଇ.ସି.ରେ ଅଭିଜ୍ଞ ବିଶେଷଜ୍ଞମାନଙ୍କ ଦ୍ୱାରା ମାଗଣାରେ କରାଯାଏ। ଡି.ଇ.ଆଇ.ସି. ଜିଲ୍ଲା ମୁଖ୍ୟ ଚିକିତ୍ସାଳୟ, ଶିଶୁଭବନ କଟକ, ଆର.ଜି.ଏଚ୍. ରାଉରକେଲା ଏବଂ କ୍ୟାପିଟାଲ ହସ୍ପିଟାଲରେ କାର୍ଯ୍ୟ କରୁଛି। ଫିଜିଓଥେରାପି ଓ ବୌଦ୍ଧିକ ବିକାଶ ପାଇଁ ଚିକିତ୍ସା ମିଳେ।' },
+};
+
+}
+/* ── data/51-feed.js ── */
+{
+/* ============================================================================
+   data/51-feed — infant and young child feeding by age.
+   Sources: Odisha MCP card V-2023-24 pp.6–8 (Odia), national MCP card 2018
+   pp.10–11 (English). Amounts per meal follow the HBYC table on the same
+   Odisha card (p.7) and the national card, which agree with India's IYCF
+   guidance (6 m: 2–3 spoons; 9 m: ½ katori; 12–24 m: ¾–1 katori). The Odisha
+   feeding page says "¾ katori after 9 months"; that line is left out so the
+   card's two pages do not contradict each other — flagged for review.
+   1 katori = 250 ml.
+   ============================================================================ */
+K.feed = K.feed || {};
+K.feed.STAGES = [
+  {
+    k: 'ebf', from: 0, to: 6, icon: 'heart',
+    name: { en: 'Birth to 6 months', or: 'ଜନ୍ମରୁ ୬ ମାସ' },
+    head: { en: 'Early and only breastfeeding', or: 'ଯଥା ଶୀଘ୍ର ସମ୍ଭବ ଓ କେବଳ ସ୍ତନ୍ୟପାନ' },
+    amount: { en: 'Only breast milk, day and night, as often as the baby wants', or: 'କେବଳ ମା’ କ୍ଷୀର, ଦିନ ଓ ରାତି, ଶିଶୁ ଯେତେବେଳେ ଚାହିଁବ' },
+    items: [
+      { en: 'Put the baby to the breast within 1 hour of birth. It helps breastfeeding succeed and builds the bond between mother and baby.', or: 'ଜନ୍ମ ପରେ ଯେତେଶୀଘ୍ର ସମ୍ଭବ ୧ ଘଣ୍ଟା ମଧ୍ୟରେ ଶିଶୁକୁ ସ୍ତନ୍ୟପାନ କରାନ୍ତୁ। ଏହା ସ୍ତନ୍ୟପାନକୁ ସଫଳ କରିବା ସହିତ ମା’ ଓ ଶିଶୁ ମଧ୍ୟରେ ଆବେଗିକ ସମ୍ପର୍କ ସ୍ଥାପନ କରେ।' },
+      { en: "The mother's first yellow milk builds the baby's immunity and protects from diseases and infections.", or: 'ମା’ର ପ୍ରଥମ ହଳଦିଆ କ୍ଷୀର ଶିଶୁର ରୋଗ ପ୍ରତିରୋଧକାରୀ ଶକ୍ତି ବଢ଼ାଏ ଓ ଶିଶୁକୁ ବିଭିନ୍ନ ରୋଗ ଓ ସଂକ୍ରମଣରୁ ରକ୍ଷା କରେ।' },
+      { en: 'Breast milk has all the nutrients and enough water. Until 6 months give only breast milk — nothing else to eat or drink.', or: 'ମା’ କ୍ଷୀରରେ ସମସ୍ତ ଖାଦ୍ୟସାର ଓ ଯଥେଷ୍ଟ ପାଣି ଥାଏ। ଶିଶୁକୁ ୬ ମାସ ପୁରିବା ପର୍ଯ୍ୟନ୍ତ କେବଳ ସ୍ତନ୍ୟପାନ କରାନ୍ତୁ। ସ୍ତନ୍ୟପାନ ଛଡ଼ା କୌଣସି ଖାଦ୍ୟ ଓ ପାନୀୟ ଦିଅନ୍ତୁ ନାହିଁ।' },
+      { en: 'No honey, no other milk, no water, and nothing from a bottle or bowl.', or: 'ମହୁ, ଅନ୍ୟ କ୍ଷୀର, ପାଣି ବା ବୋତଲ / ଗିନାରେ କିଛି ଦିଅନ୍ତୁ ନାହିଁ।' },
+      { en: 'Breastfeed whenever the baby wants, day and night. Frequent feeding makes more milk. Do not forget night feeds.', or: 'ଶିଶୁଟିକୁ ଦିନ ଓ ରାତି ଯେତେବେଳେ ଚାହିଁବ ସ୍ତନ୍ୟପାନ କରାନ୍ତୁ। ବାରମ୍ବାର ସ୍ତନ୍ୟପାନ କରାଇବା ଦ୍ୱାରା ମା’ର ଅଧିକ କ୍ଷୀର କ୍ଷରଣ ହୋଇଥାଏ। ରାତିରେ ସ୍ତନ୍ୟପାନ କରାଇବାକୁ ଭୁଲନ୍ତୁ ନାହିଁ।' },
+      { en: "While feeding, hold the baby close to your body, look into the baby's eyes, smile and talk. Do not rock the baby while feeding.", or: 'ସ୍ତନ୍ୟପାନ କରାଇବା ସମୟରେ ନିଜ ଦେହ ସହିତ ଶିଶୁକୁ ଲଗାଇ ରଖନ୍ତୁ ଏବଂ ଶିଶୁର ଆଖି ସହିତ ଆଖି ମିଳାଇ ହସନ୍ତୁ, କଥା କୁହନ୍ତୁ। ସ୍ତନ୍ୟପାନ କରାଇବା ସମୟରେ ଶିଶୁକୁ ଝୁଲାନ୍ତୁ ନାହିଁ।' },
+      { en: 'Good attachment: most of the dark part around the nipple is inside the baby’s mouth, and more of it shows above the mouth than below.', or: 'ସ୍ତନର ଅଗ୍ରଭାଗରେ ଥିବା କଳା ଅଂଶର ଅଧିକ ଭାଗ ପାଟି ଭିତରେ ରହିଛି ଏବଂ କଳା ଅଂଶର ତଳ ଭାଗଠାରୁ ଉପର ଭାଗ ଅଧିକ ଦେଖାଯାଉଛି।' },
+      { en: 'Even when the baby is ill, give only breast milk until 6 months.', or: 'ଶିଶୁକୁ ଅସୁସ୍ଥତା ସମୟରେ ମଧ୍ୟ ୬ ମାସ ପର୍ଯ୍ୟନ୍ତ କେବଳ ସ୍ତନ୍ୟପାନ କରାନ୍ତୁ।' },
+      { en: 'Breastfeeding makes children brighter.', or: 'ସ୍ତନ୍ୟପାନ ଶିଶୁକୁ ବୁଦ୍ଧିଆ କରାଏ।' },
+      { en: 'Any difficulty with breastfeeding: talk to your ASHA, Anganwadi worker or ANM.', or: 'ସ୍ତନ୍ୟପାନ କରାଇବାରେ କୌଣସି ଅସୁବିଧା ହେଲେ ନିଜ ଅଞ୍ଚଳରେ ଥିବା ଆଶା, ଅଙ୍ଗନୱାଡ଼ି କର୍ମୀ ଓ ସ୍ୱାସ୍ଥ୍ୟକର୍ମୀ ସହିତ ସଂପର୍କ କରନ୍ତୁ।' },
+    ],
+  },
+  {
+    k: 'm6', from: 6, to: 7, icon: 'bowl',
+    name: { en: 'At 6 months', or: '୬ ମାସ ପୂରଣ ହେଲେ' },
+    head: { en: 'Start soft home-made food, keep breastfeeding', or: 'ସ୍ତନ୍ୟପାନ ସହିତ ଘରେ ତିଆରି ନରମ ଖାଦ୍ୟ ଆରମ୍ଭ କରନ୍ତୁ' },
+    amount: { en: '2–3 spoons of soft, mashed food, 2–3 times a day', or: 'ଦିନକୁ ୨-୩ ଥର ୨-୩ ଚାମଚ ନରମ, ଚକଟା ଖାଦ୍ୟ' },
+    items: [
+      { en: 'Continue breastfeeding.', or: 'ସ୍ତନ୍ୟପାନ ଚାଲୁ ରଖନ୍ତୁ।' },
+      { en: 'When 6 months are complete, give 2–3 spoons of soft, well-mashed food 2–3 times a day.', or: '୬ ମାସ ପରେ ଦିନକୁ ୨-୩ ଥର ୨-୩ ଚାମଚ ନରମ, ଚକଟା ଖାଦ୍ୟ ଦିଅନ୍ତୁ।' },
+      { en: 'Start one food at a time: cereals and dal, with fruits and vegetables.', or: 'ଗୋଟିଏ ଥରରେ ଗୋଟିଏ ପ୍ରକାର ଖାଦ୍ୟ ଦିଅନ୍ତୁ। ଶସ୍ୟ, ଡାଲି ସହିତ ଫଳ ଓ ପନିପରିବା ଖାଇବାକୁ ଦିଅନ୍ତୁ।' },
+      { en: 'Increase the amount slowly.', or: 'ଧୀରେ ଧୀରେ ଖାଦ୍ୟର ପରିମାଣ ବଢ଼ାନ୍ତୁ।' },
+      { en: 'Give iron (IFA) syrup to keep the child healthy and help the brain grow.', or: 'ଶିଶୁକୁ ସୁସ୍ଥ ରଖିବା ସହିତ ବୁଦ୍ଧିର ବିକାଶ ପାଇଁ ଲୌହସାର ଦ୍ରବଣ ଖାଇବାକୁ ଦିଅନ୍ତୁ।' },
+    ],
+  },
+  {
+    k: 'm7', from: 7, to: 9, icon: 'bowl',
+    name: { en: '7–9 months', or: '୭ ରୁ ୯ ମାସ' },
+    head: { en: 'Thicker food, more often, more variety', or: 'ଅଧିକ ବହଳିଆ ଖାଦ୍ୟ, ଅଧିକ ଥର, ଅଧିକ ପ୍ରକାର' },
+    amount: { en: '3 meals and 1 snack a day; by 9 months ½ katori a meal', or: 'ଦିନକୁ ୩ଥର ମୁଖ୍ୟ ଖାଦ୍ୟ ସହ ୧ ଥର ଜଳଖିଆ; ୯ ମାସ ବେଳକୁ ଥରକରେ ୧/୨ ଗିନା' },
+    items: [
+      { en: 'Continue breastfeeding.', or: 'ସ୍ତନ୍ୟପାନ ଚାଲୁ ରଖନ୍ତୁ।' },
+      { en: 'Make the food thicker and give it 3–4 times a day: 3 meals and 1 snack.', or: 'ଖାଦ୍ୟକୁ ଅଧିକ ବହଳିଆ କରି ଦିନକୁ ୩-୪ଥର ଖାଇବାକୁ ଦିଅନ୍ତୁ। ୩ଥର ମୁଖ୍ୟ ଖାଦ୍ୟ ସହ ୧ ଥର ଜଳଖିଆ ଦିଅନ୍ତୁ।' },
+      { en: 'By 9 months, give ½ katori of food at a time.', or: '୯ ମାସ ବେଳକୁ ଶିଶୁକୁ ୧/୨ ଗିନା ଖାଦ୍ୟ ଦିଅନ୍ତୁ।' },
+      { en: 'Increase the amount and give many kinds of food. Try new dishes such as khichdi and upma.', or: 'ଖାଦ୍ୟର ପରିମାଣ ବଢ଼ାଇବା ସହିତ ବିଭିନ୍ନ ପ୍ରକାର ଖାଦ୍ୟ ଖାଇବାକୁ ଦିଅନ୍ତୁ। ନୂଆ ନୂଆ ଖାଦ୍ୟ ତିଆରି କରି ଦିଅନ୍ତୁ ଯେପରି ଖେଚୁଡ଼ି, ଉପମା ଇତ୍ୟାଦି।' },
+      { en: 'Give at least 4 food groups: 1. cereals; 2. dal, fish, egg; 3. vegetables and fruits; 4. oil, ghee.', or: 'ଅତି କମ୍‌ରେ ୪ ପ୍ରକାର ଖାଦ୍ୟ ଦିଅନ୍ତୁ: ୧- ଶସ୍ୟ, ୨- ଡାଲି, ମାଛ, ଅଣ୍ଡା, ୩- ପନିପରିବା ଓ ଫଳ, ୪- ତେଲ, ଘିଅ।' },
+      { en: 'Give iron (IFA) syrup.', or: 'ଲୌହସାର ଦ୍ରବଣ ଖାଇବାକୁ ଦିଅନ୍ତୁ।' },
+    ],
+  },
+  {
+    k: 'm9', from: 9, to: 12, icon: 'bowl',
+    name: { en: '9–12 months', or: '୯ ରୁ ୧୨ ମାସ' },
+    head: { en: 'Food the child can chew and pick up', or: 'ଚୋବାଇ ଖାଇବା ଓ ଆଙ୍ଗୁଠିରେ ଧରି ଖାଇବା ଭଳି ଖାଦ୍ୟ' },
+    amount: { en: '½ katori a meal, 3–4 times a day, with 1–2 snacks', or: 'ଥରକରେ ୧/୨ ଗିନା, ଦିନକୁ ୩-୪ଥର, ୧-୨ ଥର ଜଳଖିଆ' },
+    items: [
+      { en: 'Continue breastfeeding.', or: 'ସ୍ତନ୍ୟପାନ ଚାଲୁ ରଖନ୍ତୁ।' },
+      { en: 'Give at least ½ katori of food that needs chewing, 3–4 times a day, with 1–2 snacks.', or: 'ଅତି କମ୍‌ରେ ୧/୨ ଗିନା ଚୋବାଇ ଖାଇବା ଭଳି ଖାଦ୍ୟ ଦିନକୁ ୩-୪ଥର ଓ ୧-୨ ଥର ଜଳଖିଆ ଦିଅନ୍ତୁ।' },
+      { en: 'Give food the child can pick up with the fingers. Let the child eat by hand, even if it is messy.', or: 'ଶିଶୁ ଆଙ୍ଗୁଠିରେ ଧରି ପାରୁଥିବା ଖାଦ୍ୟ ଖାଇବାକୁ ଦିଅନ୍ତୁ। ଶିଶୁ ନଷ୍ଟ କଲେ ମଧ୍ୟ ତାକୁ ନିଜ ହାତରେ ଖାଇବାକୁ ଉତ୍ସାହିତ କରନ୍ତୁ।' },
+      { en: 'Vitamin A syrup (at 9 months) helps eyesight.', or: 'ଦୃଷ୍ଟିଶକ୍ତିର ଉନ୍ନତି ପାଇଁ ଖାଦ୍ୟ ପ୍ରାଣ ‘କ’ ଦ୍ରବଣ ଖାଇବାକୁ ଦିଅନ୍ତୁ।' },
+      { en: 'Give iron (IFA) syrup.', or: 'ଲୌହସାର ଦ୍ରବଣ ଖାଇବାକୁ ଦିଅନ୍ତୁ।' },
+    ],
+  },
+  {
+    k: 'm12', from: 12, to: 60, icon: 'bowl',
+    name: { en: '1 year and older', or: '୧ ବର୍ଷ ଓ ଅଧିକ' },
+    head: { en: 'Family food, and breastfeeding to 2 years and beyond', or: 'ଘରର ସବୁ ଖାଦ୍ୟ, ଓ ୨ ବର୍ଷ ଓ ତଦୁର୍ଦ୍ଧ୍ୱ ପର୍ଯ୍ୟନ୍ତ ସ୍ତନ୍ୟପାନ' },
+    amount: { en: '¾ to 1 katori a meal, 3–4 times a day, with 1–2 snacks', or: 'ଥରକରେ ୩/୪-୧ ଗିନା, ଦିନକୁ ୩-୪ଥର, ୧-୨ ଥର ଜଳଖିଆ' },
+    items: [
+      { en: 'Keep breastfeeding until 2 years and beyond, along with home-cooked food.', or: '୨ ବର୍ଷ ଓ ତଦୁର୍ଦ୍ଧ୍ୱ ବୟସ ପର୍ଯ୍ୟନ୍ତ ସ୍ତନ୍ୟପାନ ଜାରି ରଖିବା ସହିତ ଘର ତିଆରି ରନ୍ଧା ଖାଦ୍ୟ ଖାଇବାକୁ ଦିଅନ୍ତୁ।' },
+      { en: 'After 12 months, give all the foods cooked at home for the family.', or: '୧୨ ମାସ ପରେ ଘରେ ତିଆରି ହେଉଥିବା ସମସ୍ତ ଖାଦ୍ୟ ଦିଅନ୍ତୁ।' },
+      { en: '¾ to 1 katori at a time, 3–4 times a day, with 1–2 snacks.', or: 'ଥରକରେ ୩/୪-୧ ଗିନା ଖାଦ୍ୟ, ଦିନକୁ ୩-୪ଥର, ୧-୨ ଥର ଜଳଖିଆ ଦିଅନ୍ତୁ।' },
+      { en: 'Let the child eat by hand, even if it is messy.', or: 'ଶିଶୁ ନଷ୍ଟ କଲେ ମଧ୍ୟ ତାକୁ ନିଜ ହାତରେ ଖାଇବାକୁ ଉତ୍ସାହିତ କରନ୍ତୁ।' },
+      { en: 'Vitamin A every 6 months and deworming tablets as scheduled.', or: 'ପ୍ରତି ୬ ମାସରେ ଭିଟାମିନ୍ ‘ଏ’ ଓ ସମୟ ଅନୁସାରେ କୃମିନାଶକ ବଟିକା ଦିଅନ୍ତୁ।' },
+      { en: 'Give iron (IFA) syrup.', or: 'ଲୌହସାର ଦ୍ରବଣ ଖାଇବାକୁ ଦିଅନ୍ତୁ।' },
+    ],
+  },
+];
+K.feed.GENERAL = [
+  { en: 'Talk, smile and be patient to encourage the child to eat.', or: 'ଶିଶୁ ସହିତ କଥା କହି, ହସାଇ, ଧୈର୍ଯ୍ୟର ସହିତ ଶିଶୁକୁ ଖୁଆନ୍ତୁ।' },
+  { en: 'Wash your hands with soap before preparing food and before feeding the child.', or: 'ଖାଦ୍ୟ ପ୍ରସ୍ତୁତ କରିବା ପୂର୍ବରୁ ଓ ଶିଶୁକୁ ଖୁଆଇବା ପୂର୍ବରୁ ହାତକୁ ସାବୁନରେ ଭଲ ଭାବେ ଧୁଅନ୍ତୁ।' },
+  { en: 'If you give eggs, cook them well.', or: 'ଅଣ୍ଡା ଖୁଆଉଥିଲେ ଭଲ ଭାବରେ ରାନ୍ଧି ଖୁଆନ୍ତୁ।' },
+  { en: 'Wash vegetables and fruits well in water before cooking or eating.', or: 'ରାନ୍ଧିବା / ଖାଇବା ପୂର୍ବରୁ ପନିପରିବା ଓ ଫଳକୁ ପାଣିରେ ଭଲ ଭାବେ ଧୁଅନ୍ତୁ।' },
+  { en: "Cook well with clean water. Throw away food left on the child's plate.", or: 'ସଫା ପାଣିରେ ଭଲ ଭାବରେ ରାନ୍ଧନ୍ତୁ। ଶିଶୁର ବଳକା ଖାଦ୍ୟ ଫିଙ୍ଗି ଦିଅନ୍ତୁ।' },
+  { en: 'Use only iodised salt; iodine helps the brain develop.', or: 'ଆୟୋଡିନ ଯୁକ୍ତ ଲୁଣ ବ୍ୟବହାର କରନ୍ତୁ। ଏହା ବୁଦ୍ଧିର ବିକାଶ କରାଏ।' },
+  { en: '1 katori = 250 ml.', or: '୧ ଗିନା = ୨୫୦ ମି.ଲି.' },
+];
+/* Odisha card p.6, printed under the breastfeeding page */
+K.feed.NO_BRAND = { en: 'Never brand (chenk) a child, whatever the illness. Branding harms the child and can kill.', or: 'କୌଣସି ପରିସ୍ଥିତିରେ ପିଲାଙ୍କୁ ଚେଙ୍କ ଦିଅନ୍ତୁ ନାହିଁ। ଚେଙ୍କ ପିଲାର ଜୀବନପ୍ରତି କ୍ଷତିକାରକ।' };
+K.feed.LEAD = { en: 'Feeding, playing and talking with children helps them grow in body and mind.', or: 'ପିଲାମାନଙ୍କ ସହିତ ଖାଇବା, ଖେଳିବା ଓ କଥାବାର୍ତ୍ତା କରିବା ଦ୍ୱାରା ସେମାନଙ୍କର ଶାରୀରିକ ଓ ବୌଦ୍ଧିକ ବିକାଶ ହୋଇଥାଏ।' };
+
+}
+/* ── data/52-illness.js ── */
+{
+/* ============================================================================
+   data/52-illness — diarrhoea and pneumonia (prevention, home care, when to
+   go), breath-count cut-offs, ORS and zinc, IFA syrup rules for children.
+   Sources: Odisha MCP card V-2023-24 p.9 (diarrhoea, pneumonia) and p.39
+   (IFA syrup, deworming); national MCP card 2018 pp.8–9 and p.27.
+   Fast breathing (IMNCI / MCP card): < 2 months ≥ 60, 2–12 months ≥ 50,
+   1–5 years ≥ 40 breaths a minute. Zinc 20 mg dispersible tablet: ½ tablet
+   (10 mg) for 2–6 months, 1 tablet (20 mg) from 6 months, once daily × 14 days.
+   ============================================================================ */
+K.ill = K.ill || {};
+K.ill.DIARR_PREVENT = [
+  { icon: 'hand', en: 'Wash both hands with soap before preparing food, before feeding the child, after using the toilet and after cleaning the child’s stool. Follow the right way of handwashing.', or: 'ଖାଦ୍ୟ ତିଆରି କରିବା ପୂର୍ବରୁ, ଶିଶୁକୁ ଖୁଆଇବା ପୂର୍ବରୁ, ମଳତ୍ୟାଗ କରିବା ପରେ ଏବଂ ଶିଶୁର ମଳ ସଫା କରିବା ପରେ ଦୁଇ ହାତକୁ ଭଲ ଭାବେ ସାବୁନ ଲଗାଇ ଧୁଅନ୍ତୁ। ହାତ ଧୋଇବାର ସଠିକ୍ ପ୍ରଣାଳୀ ଅନୁସରଣ କରନ୍ତୁ।' },
+  { icon: 'water', en: 'Keep drinking water clean and safe, in a covered container.', or: 'ପାନୀୟ ଜଳକୁ ସଫା, ସୁରକ୍ଷିତ ଏବଂ ଢାଙ୍କୁଣି ଥିବା ପାତ୍ରରେ ଘୋଡ଼ାଇ ରଖନ୍ତୁ।' },
+  { icon: 'house', en: "Keep the child's surroundings clean and wash the child's hands often.", or: 'ଶିଶୁଟିର ପରିବେଶକୁ ସଫା ଓ ସ୍ୱଚ୍ଛ ରଖନ୍ତୁ ଏବଂ ଶିଶୁଟିର ହାତକୁ ବାରମ୍ବାର ଧୁଅନ୍ତୁ।' },
+  { icon: 'shield', en: 'Always use a toilet; do not defecate in the open. Dispose of the child’s stool safely.', or: 'ସବୁ ସମୟରେ ପାଇଖାନା ବ୍ୟବହାର କରନ୍ତୁ ଏବଂ ଖୋଲାରେ ଶୌଚ କରନ୍ତୁ ନାହିଁ।' },
+  { icon: 'syringe', en: 'Rotavirus vaccine (6, 10 and 14 weeks) protects against severe diarrhoea.', or: 'ରୋଟାଭାଇରସ୍ ଟୀକା (୬, ୧୦ ଓ ୧୪ ସପ୍ତାହ) ଗୁରୁତର ତରଳ ଝାଡ଼ାରୁ ସୁରକ୍ଷା ଦିଏ।' },
+];
+K.ill.DIARR_TREAT = [
+  { icon: 'water', en: 'Mix 1 packet of ORS in 1 litre of clean drinking water.', or: '୧ ପ୍ୟାକେଟ୍ ଓଆର୍ଏସ୍ ଦ୍ରବଣକୁ ୧ ଲିଟର ପାନୀୟ ଜଳରେ ଭଲ ଭାବେ ଗୋଳାଇ ମିଶାଇ ଦିଅନ୍ତୁ।' },
+  { icon: 'bottle', en: 'Give ORS as soon as diarrhoea starts and after every loose stool.', or: 'ତରଳ ଝାଡ଼ା ଆରମ୍ଭ ହେବା ମାତ୍ରେ ଏବଂ ପ୍ରତ୍ୟେକ ତରଳ ଝାଡ଼ା ପରେ ଶିଶୁକୁ ସଙ୍ଗେ ସଙ୍ଗେ ଓଆର୍ଏସ୍ ଦ୍ରବଣ ଦିଅନ୍ତୁ।' },
+  { icon: 'pill', en: 'Zinc: ½ tablet for 2–6 months, 1 tablet from 6 months, dissolved in clean water or breast milk, once a day for 14 days — even after the diarrhoea stops.', or: '୨ ମାସରୁ ୬ ମାସର ଶିଶୁକୁ ଅଧା ବଟିକା ଏବଂ ୬ ମାସରୁ ଊର୍ଦ୍ଧ୍ୱ ଶିଶୁକୁ ଗୋଟିଏ ବଟିକା ଜିଙ୍କ୍, ବିଶୁଦ୍ଧ ଜଳ ବା ମା’ କ୍ଷୀରରେ ଗୋଳାଇ ଶିଶୁକୁ ଦିନକୁ ଥରେ ୧୪ ଦିନ ପର୍ଯ୍ୟନ୍ତ ଦିଅନ୍ତୁ।' },
+  { icon: 'bowl', en: 'Keep feeding, including breastfeeding, during and after the diarrhoea.', or: 'ତରଳ ଝାଡ଼ା ସମୟରେ ବା ତରଳ ଝାଡ଼ା ହେବା ପରେ ଶିଶୁକୁ ଖୁଆଇବା ବା ସ୍ତନ୍ୟପାନ କରାଇବା ଜାରି ରଖନ୍ତୁ।' },
+];
+K.ill.PNEU_PREVENT = [
+  { icon: 'sun', en: 'In winter keep children warm in woollen clothes and do not let them walk barefoot.', or: 'ଶୀତ ଦିନରେ ଶିଶୁଙ୍କୁ ଉଷୁମ ରଖିବା ପାଇଁ ଶୀତ ବସ୍ତ୍ରରେ ଘୋଡ଼ାଇ ରଖନ୍ତୁ ଓ ଖାଲି ପାଦରେ ଚାଲିବାକୁ ଦିଅନ୍ତୁ ନାହିଁ।' },
+  { icon: 'baby', en: 'Do not keep a newborn without clothes.', or: 'ନବଜାତ ଶିଶୁଙ୍କୁ ଖୋଲା ଦେହରେ ରଖନ୍ତୁ ନାହିଁ।' },
+  { icon: 'house', en: 'Cook on an LPG stove so that there is no smoke in the house.', or: 'ରୋଷେଇ କରିବା ପାଇଁ ଏଲ୍‌ପିଜି ଗ୍ୟାସ୍ ବ୍ୟବହାର କରନ୍ତୁ। ତା ଦ୍ୱାରା ଘରେ ଧୁଆଁ ହୋଇନଥାଏ।' },
+  { icon: 'syringe', en: 'Give all doses of the PCV vaccine.', or: 'ପିସିଭି ଟୀକାର ନିୟମିତ ମାତ୍ରା ଦିଅନ୍ତୁ।' },
+];
+K.ill.PNEU_SIGNS = [
+  { icon: 'lungs', en: 'Cough getting worse', or: 'ବହୁତ ଜୋର୍‌ରେ କାଶ ହେବା' },
+  { icon: 'pulse', en: 'Fast breathing', or: 'ଶ୍ୱାସ କ୍ରିୟାର ଗତି ବଢ଼ିବା' },
+  { icon: 'alert', en: 'Chest pulls in when breathing in', or: 'ନିଃଶ୍ୱାସ ନେଲାବେଳେ ଛାତି ଭିତରକୁ ପଶିବା' },
+  { icon: 'temp', en: 'Fever', or: 'ଜ୍ୱର ହେବା' },
+];
+/* fast-breathing cut-off by age in months */
+K.ill.fastCut = (ageMonths) => (ageMonths < 2 ? 60 : ageMonths < 12 ? 50 : 40);
+K.ill.FAST_TEXT = [
+  { en: 'Under 2 months: 60 or more breaths a minute', or: '୨ ମାସରୁ କମ୍ ବୟସର ଶିଶୁରେ ଶ୍ୱାସକ୍ରିୟାର ଗତି ମିନିଟ୍‌କୁ ୬୦ ବା ଅଧିକ' },
+  { en: '2 months to 1 year: 50 or more breaths a minute', or: '୨ ମାସରୁ ୧ ବର୍ଷ ବୟସର ଶିଶୁରେ ଶ୍ୱାସକ୍ରିୟାର ଗତି ମିନିଟ୍‌କୁ ୫୦ ବା ଅଧିକ' },
+  { en: '1 to 5 years: 40 or more breaths a minute', or: '୧ ବର୍ଷରୁ ୫ ବର୍ଷ ବୟସର ଶିଶୁରେ ଶ୍ୱାସକ୍ରିୟାର ଗତି ମିନିଟ୍‌କୁ ୪୦ ବା ଅଧିକ' },
+];
+K.ill.CONTACT = { en: 'At the first sign of diarrhoea or pneumonia, contact the ASHA or ANM at once.', or: 'ତରଳ ଝାଡ଼ା ବା ନିମୋନିଆର କୌଣସି ଲକ୍ଷଣ ଦେଖିବା ସଙ୍ଗେ ସଙ୍ଗେ ଆଶା ବା ମହିଳା ସ୍ୱାସ୍ଥ୍ୟକର୍ମୀଙ୍କ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ।' };
+/* IFA syrup for children 6–59 months (Anaemia Mukt Bharat; Odisha card p.39) */
+K.ill.IFA_RULES = [
+  { en: 'Give iron folic acid (IFA) syrup twice a week, on the fixed days.', or: 'ଆଇରନ୍ ଫଲିକ୍ ଏସିଡ୍ ସିରପ୍ ସପ୍ତାହକୁ ଦୁଇ ଥର, ନିର୍ଦ୍ଧାରିତ ଦିନରେ ଦିଅନ୍ତୁ।' },
+  { en: 'Give 1 ml of IFA syrup with the auto-dispenser.', or: 'ଅଟୋ ଡିସ୍ପେନସର ବ୍ୟବହାର କରି ୧ ମି.ଲି. ଆଇ.ଏଫ୍.ଏ. ସିରପ୍ ଦିଅନ୍ତୁ।' },
+  { en: 'If the child is sick or severely malnourished, give IFA syrup only as the doctor advises.', or: 'ଯଦି ଶିଶୁ ଅସୁସ୍ଥ ଥାଏ ବା ଅତିଶୟ ପୁଷ୍ଟିହୀନ ହୋଇଥାଏ ଡାକ୍ତରଙ୍କ ପରାମର୍ଶ ଅନୁଯାୟୀ ଆଇ.ଏଫ୍.ଏ ସିରପ୍ ଦିଅନ୍ତୁ।' },
+  { en: 'Always give IFA syrup after food.', or: 'ଆଇ.ଏଫ୍.ଏ ସିରପ୍ ସର୍ବଦା ଖାଦ୍ୟ ଖାଇବା ପରେ ଦିଅନ୍ତୁ।' },
+  { en: 'One 50 ml bottle lasts 6 months. When it is finished, ask your ASHA/ANM for a new bottle.', or: 'ଗୋଟିଏ ୫୦ ମି.ଲି. ଆଇ.ଏଫ୍.ଏ ସିରପ୍ ବୋତଲ ୬ ମାସ ଯାଇଥାଏ। ଏହା ସରିବା ମାତ୍ରେ ନିଜ ଆଶା/ଏ.ଏନ୍.ଏମ୍. ଦିଦିଙ୍କୁ ନୂଆ ବୋତଲ ମାଗନ୍ତୁ।' },
+  { en: 'Tick each dose after giving it.', or: 'ଗୋଟିଏ ଆଇ.ଏଫ୍.ଏ ସିରପ୍ ଦେବା ପରେ ଗୋଟିଏ ଚିହ୍ନ ଲଗାନ୍ତୁ।' },
+  { en: 'If there is any problem after the syrup, contact your ANM at once.', or: 'ଯଦି ସିରପ୍ ଖାଇବା ପରେ କୌଣସି ସମସ୍ୟା ହୋଇଥାଏ, ତୁରନ୍ତ ନିଜ ଏ.ଏନ୍.ଏମ୍. ଦିଦିଙ୍କୁ ଯୋଗାଯୋଗ କରନ୍ତୁ।' },
+];
 
 }
 /* ── modules/00-shell.js ── */
@@ -3803,6 +4211,16 @@ K.child.summaryCard = (c, k) => {
       ${bits.length ? h`<span class="pills">${bits}</span>` : ''}</span>${K.ui.icon('chev', 'sm')}</a>`;
 };
 K.child.cardBits = []; // modules push (c,k) => pill
+/* small status tiles on the child overview (development, feeding, IFA syrup, home visits, sick child):
+   modules call K.child.addTile(order, (c, k) => ({ icon, tone, title, sub, href }) | null) */
+K.child.tiles = [];
+K.child.addTile = (order, fn) => { K.child.tiles.push({ order, fn }); K.child.tiles.sort(K.by('order')); };
+K.child.addSection(30, (c, k) => {
+  if (!k.dob) return '';
+  const tiles = K.child.tiles.map(t => { try { return t.fn(c, k); } catch (e) { console.error(e); return null; } }).filter(Boolean);
+  if (!tiles.length) return '';
+  return h`<section class="sec"><div class="tiles ctiles">${tiles.map(t => h`<a class="tile" href="${t.href}"><span class="ti-ic ${t.tone || ''}">${K.ui.icon(t.icon)}</span><b>${t.title}</b>${t.sub ? h`<small>${t.sub}</small>` : ''}</a>`)}</div></section>`;
+});
 
 /* ---------------------------------------------------------------- form */
 function childForm(c, k, isNew) {
@@ -4090,7 +4508,7 @@ K.route('/card/:id/child/:kid/vax', ({ id, kid }) => {
       <section class="sec">${K.ui.secH(K.t('vax.know'))}<div class="k-card" id="vax-know"><ul class="ul">${K.vax.KNOW.map(x => h`<li>${K.L(x)}</li>`)}</ul><p style="margin:10px 0 0">${K.ui.say('#vax-know')}</p></div></section>
       <section class="sec"><a class="k-card" href="https://uwin.mohfw.gov.in/" target="_blank" rel="noopener"><b>${K.t('vax.uwin')}</b><p class="small" style="margin:4px 0 0">${K.t('vax.uwinSub')}</p></a></section>
     </div>`,
-    mount() { if (location.hash.endsWith('#vita')) { const e = K.$('#vita'); e && e.scrollIntoView(); } },
+    mount() { if (K.anchor() === 'vita') { const e = K.$('#vita'); e && e.scrollIntoView(); } },
   };
 });
 
@@ -4408,8 +4826,8 @@ K.growth.chart = (k, ind, range) => {
     <rect x="${ML}" y="${MT}" width="${W - ML - MR}" height="${H - MT - MB}" class="bg"/>
     ${ind === 'wfa' ? h`<polygon class="b-s" points="${band(bottom, L[-3])}"/><polygon class="b-m" points="${band(L[-3], L[-2])}"/><polygon class="b-n" points="${band(L[-2], L[2])}"/>`
       : h`<polygon class="b-s" points="${band(bottom, L[-3])}"/><polygon class="b-m" points="${band(L[-3], L[-2])}"/><polygon class="b-n" points="${band(L[-2], L[2])}"/><polygon class="b-hi" points="${band(L[2], top)}"/>`}
-    ${yt.map(v => h`<line class="gl" x1="${ML}" x2="${W - MR}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}"/><text class="tk" x="${ML - 5}" y="${(Y(v) + 3.5).toFixed(1)}" text-anchor="end">${K.digits(v)}</text>`)}
-    ${xt.map(t => h`<line class="${t.yr ? 'gl yr' : 'gl'}" x1="${X(t.v).toFixed(1)}" x2="${X(t.v).toFixed(1)}" y1="${MT}" y2="${H - MB}"/><text class="tk" x="${X(t.v).toFixed(1)}" y="${H - MB + 13}" text-anchor="middle">${t.l}</text>`)}
+    ${yt.map(v => h`<line class="gl" x1="${ML}" x2="${W - MR}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}"/><text class="gtk" x="${ML - 5}" y="${(Y(v) + 3.5).toFixed(1)}" text-anchor="end">${K.digits(v)}</text>`)}
+    ${xt.map(t => h`<line class="${t.yr ? 'gl yr' : 'gl'}" x1="${X(t.v).toFixed(1)}" x2="${X(t.v).toFixed(1)}" y1="${MT}" y2="${H - MB}"/><text class="gtk" x="${X(t.v).toFixed(1)}" y="${H - MB + 13}" text-anchor="middle">${t.l}</text>`)}
     ${zl.map(z => h`<polyline class="zl z${z < 0 ? 'm' + -z : z}" points="${poly(L[z])}"/><text class="zt" x="${W - MR + 3}" y="${(Y(L[z][L[z].length - 1][1]) + 3.5).toFixed(1)}">${K.digits(z)}</text>`)}
     ${pts.length > 1 ? h`<polyline class="pl" points="${pts.map(p => `${X(p.x).toFixed(1)},${Y(p.y).toFixed(1)}`).join(' ')}"/>` : ''}
     ${pts.map(p => h`<circle class="${p === lastP ? 'pt last' : 'pt'}" cx="${X(p.x).toFixed(1)}" cy="${Y(p.y).toFixed(1)}" r="${p === lastP ? 5 : 3.6}"/>`)}
@@ -4558,6 +4976,611 @@ K.due.add((c, today) => {
   return out;
 });
 K.summary.add((c) => K.card.kids(c).map(k => { const m = K.growth.latest(k); if (!m) return ''; const hl = K.growth.headline(K.growth.assess(k, m)); return `${K.child.label(k)}: ${K.n(m.wt, 2)} kg (${K.d.fmt(m.date)})${hl ? ' · ' + hl.t : ''}`; }));
+
+}
+/* ── modules/60-dev.js ── */
+{
+/* ============================================================================
+   modules/60-dev — child development: the current age band (corrected age
+   under 2 years), the mother's "can do" ticks, the ASHA/AWW warning-sign
+   check, parenting tips, DEIC referral. Content in data/50-dev.
+   Stored as k.dev = { <band>: { can: { i: date }, warn: { i: 0|1 }, date },
+                       deic: date-seen-at-DEIC }
+   ============================================================================ */
+const h = K.h;
+
+K.i18n.add({
+  'dev.title': { en: 'Development', or: 'ଶିଶୁର ବିକାଶ' },
+  'dev.lede': { en: 'Tick what your child can do. Play and talk with your child every day.', or: 'ଶିଶୁ ଯାହା କରିପାରୁଛି ସେଥିରେ ଚିହ୍ନ ଦିଅନ୍ତୁ। ପ୍ରତିଦିନ ଶିଶୁ ସହ ଖେଳନ୍ତୁ ଓ କଥା ହୁଅନ୍ତୁ।' },
+  'dev.now': { en: 'For this age', or: 'ଏହି ବୟସ ପାଇଁ' },
+  'dev.earlier': { en: 'Earlier ages', or: 'ପୂର୍ବ ବୟସ' },
+  'dev.next': { en: 'Coming next', or: 'ଆଗକୁ' },
+  'dev.young': { en: 'The first milestones are looked for from 2 months. Until then, breastfeed often, keep the baby warm, and talk and smile to your baby.', or: 'ପ୍ରଥମ ବିକାଶ ଲକ୍ଷଣ ୨ ମାସରୁ ଦେଖାଯାଏ। ସେ ପର୍ଯ୍ୟନ୍ତ ବାରମ୍ବାର ସ୍ତନ୍ୟପାନ କରାନ୍ତୁ, ଶିଶୁକୁ ଉଷୁମ ରଖନ୍ତୁ ଓ ତା’ ସହ କଥା ହୁଅନ୍ତୁ, ହସନ୍ତୁ।' },
+  'dev.done': { en: '{n} of {t} done', or: '{t}ଟି ମଧ୍ୟରୁ {n}ଟି ହୋଇଛି' },
+  'dev.warnSeen': { en: 'Warning sign noted', or: 'ସତର୍କତା ଲକ୍ଷଣ ଦେଖାଯାଇଛି' },
+  'dev.warnNone': { en: 'No warning signs at the last check', or: 'ଶେଷ ଯାଞ୍ଚରେ କୌଣସି ସତର୍କତା ଲକ୍ଷଣ ନାହିଁ' },
+  'dev.checkedOn': { en: 'Checked on {d}', or: '{d} ରେ ଯାଞ୍ଚ ହୋଇଛି' },
+  'dev.check': { en: 'Warning-sign check', or: 'ସତର୍କତା ଲକ୍ଷଣ ଯାଞ୍ଚ' },
+  'dev.checkSub': { en: 'Done by the ASHA / AWW. Answer "Yes" if the sign is present.', or: '{a} ଆଶା / ଅଙ୍ଗନୱାଡ଼ି କର୍ମୀ ଯାଞ୍ଚ କରିବେ। ଲକ୍ଷଣ ଥିଲେ “ହଁ” ଦିଅନ୍ତୁ।' },
+  'dev.checkDate': { en: 'Date of check', or: 'ଯାଞ୍ଚ ତାରିଖ' },
+  'dev.saveCheck': { en: 'Save check', or: 'ଯାଞ୍ଚ ସେଭ୍ କରନ୍ତୁ' },
+  'dev.refer': { en: 'Refer to the DEIC', or: 'ଡି.ଇ.ଆଇ.ସି.କୁ ପଠାନ୍ତୁ' },
+  'dev.referBody': { en: 'A warning sign was noted. Contact the health worker and get the child checked at the DEIC in the district headquarters hospital. Early help works best.', or: 'ସତର୍କତା ଲକ୍ଷଣ ଦେଖାଯାଇଛି। ସ୍ୱାସ୍ଥ୍ୟକର୍ମୀଙ୍କ ସହ ଯୋଗାଯୋଗ କରି ଜିଲ୍ଲା ମୁଖ୍ୟ ଚିକିତ୍ସାଳୟଠାରେ ଥିବା ଡି.ଇ.ଆଇ.ସି.ରେ ଶିଶୁର ସ୍ୱାସ୍ଥ୍ୟ ପରୀକ୍ଷା ଓ ପରାମର୍ଶ ନିଅନ୍ତୁ। ଶୀଘ୍ର ଚିକିତ୍ସା ଅଧିକ ଫଳପ୍ରଦ।' },
+  'dev.deicSeen': { en: 'Seen at the DEIC on', or: 'ଡି.ଇ.ଆଇ.ସି.ରେ ଦେଖାଇଥିବା ତାରିଖ' },
+  'dev.deicDone': { en: 'Seen at the DEIC on {d}', or: '{d} ରେ ଡି.ଇ.ଆଇ.ସି.ରେ ଦେଖାଯାଇଛି' },
+  'dev.corr': { en: 'Using corrected age {a} (born early)', or: 'ସଂଶୋଧିତ ବୟସ {a} ବ୍ୟବହୃତ (ସମୟ ପୂର୍ବରୁ ଜନ୍ମ)' },
+  'dev.tickHint': { en: 'Tap to tick', or: 'ଚିହ୍ନ ଦେବା ପାଇଁ ଛୁଅନ୍ତୁ' },
+  'dev.tile': { en: 'Development', or: 'ବିକାଶ' },
+});
+
+K.dev = K.dev || {};
+/* age in months for milestones: corrected age for babies born early, until 2 years */
+K.dev.ageM = (k, on) => { on = on || K.d.today(); const dob = K.child.useCorrected(k, on) ? K.child.correctedDob(k) : k.dob; return Math.max(0, K.d.diff(dob, on) / 30.4375); };
+K.dev.current = (k, on) => { const m = K.dev.ageM(k, on); let cur = null; K.dev.BANDS.forEach(b => { if (m >= b.from) cur = b; }); return cur; };
+K.dev.rec = (k, band) => ((k.dev || {})[band] || {});
+K.dev.warnCount = (k, band) => Object.values(K.dev.rec(k, band).warn || {}).filter(v => +v === 1).length;
+K.dev.anyWarn = (k) => K.dev.BANDS.some(b => K.dev.warnCount(k, b.k) > 0);
+K.dev.canCount = (k, band) => Object.keys(K.dev.rec(k, band).can || {}).length;
+
+function bandCard(c, k, b, o = {}) {
+  const r = K.dev.rec(k, b.k); const can = r.can || {}; const warn = r.warn || {}; const wn = K.dev.warnCount(k, b.k);
+  const id = 'dev-' + b.k; const hcp = K.settings.isHcp();
+  return h`<div class="dev-band" id="${id}">
+    <div class="dev-sub"><h3>${K.L(K.dev.TEXT.canHead)}</h3><span class="small faint">${K.t('dev.done', { n: Object.keys(can).length, t: b.can.length })}</span></div>
+    <div class="checklist dev-can">${b.can.map((x, i) => h`<button type="button" class="chk ${can[i] ? 'on' : ''}" data-act="devCan" data-arg="${c.id}|${k.id}|${b.k}|${i}" aria-pressed="${!!can[i]}"><span class="box">${K.ui.icon('check', 'sm')}</span><span>${K.L(x)}${can[i] ? h`<small class="faint"> · ${K.d.fmt(can[i], 'dm')}</small>` : ''}</span></button>`)}</div>
+    <div class="dev-sub"><h3>${K.L(K.dev.TEXT.tipsHead)}</h3></div>
+    <div class="k-card" id="${id}-tips"><ul class="ul">${b.tips.map(x => h`<li>${K.L(x)}</li>`)}</ul><p style="margin:10px 0 0">${K.ui.say('#' + id + '-tips')}</p></div>
+    <div class="dev-sub"><h3>${K.L(K.dev.TEXT.warnHead)} · ${K.L(b.atName)}</h3>${r.date ? K.ui.pill(wn ? K.t('dev.warnSeen') : K.t('dev.checkedOn', { d: K.d.fmt(r.date, 'dm') }), wn ? 'over' : 'ok', wn ? 'alert' : 'check') : ''}</div>
+    <p class="small" style="margin:0 0 8px">${K.L(K.dev.TEXT.warnLead)}</p>
+    <details class="acc dev-check" ${o.openCheck || wn ? K.raw('open') : ''}><summary>${K.t('dev.check')}</summary><div class="acc-b">
+      <form class="form" data-form="devCheck" data-arg="${c.id}|${k.id}|${b.k}">
+        <p class="small faint" style="margin:0">${K.t('dev.checkSub', { a: K.L(b.atName) })}</p>
+        ${b.warn.map((x, i) => K.ui.yn({ name: 'w' + i, q: K.L(x), value: warn[i] }))}
+        ${K.ui.field({ name: 'date', type: 'date', label: K.t('dev.checkDate'), value: r.date || K.d.today(), max: K.d.today(), attrs: { min: k.dob } })}
+        ${K.ui.btn(K.t('dev.saveCheck'), { type: 'submit', icon: 'check', tone: hcp ? 'primary' : 'ghost' })}
+      </form></div></details>
+  </div>`;
+}
+
+K.route('/card/:id/child/:kid/dev', ({ id, kid }) => {
+  const c = K.card.load(id); if (!c) return K.screens.notFound(); const k = K.card.findKid(c, kid); if (!k) return K.screens.notFound();
+  const back = K.child.url(c, k).slice(1);
+  if (!k.dob) return { title: K.t('dev.title'), back, html: h`<div class="wrap">${K.ui.callout('warn', '', K.t('vax.needDob'))}</div>` };
+  const cur = K.dev.current(k); const idx = cur ? K.dev.BANDS.indexOf(cur) : -1;
+  const earlier = idx > 0 ? K.dev.BANDS.slice(0, idx).reverse() : [];
+  const next = K.dev.BANDS[idx + 1];
+  const corr = K.child.useCorrected(k) ? K.t('dev.corr', { a: K.d.ageText(K.child.correctedDob(k)) }) : '';
+  const warnAny = K.dev.anyWarn(k); const deic = (k.dev || {}).deic;
+  return {
+    title: K.t('dev.title'), sub: K.child.label(k), back, tab: 'home',
+    html: h`<div class="wrap">${K.ui.phead(K.child.label(k) + ' · ' + K.d.ageText(k.dob), K.t('dev.title'), K.t('dev.lede'))}
+      ${corr ? h`<p class="small faint" style="margin-top:-6px">${corr}</p>` : ''}
+      ${warnAny ? h`<div class="stack" style="margin-bottom:14px">${K.ui.callout('danger', K.t('dev.refer'), deic ? K.t('dev.deicDone', { d: K.d.fmt(deic) }) : K.t('dev.referBody'))}
+        ${!deic ? h`<form class="form k-card" data-form="devDeic" data-arg="${c.id}|${k.id}"><div class="frow">${K.ui.field({ name: 'date', type: 'date', label: K.t('dev.deicSeen'), max: K.d.today() })}<div style="align-self:end">${K.ui.btn(K.t('btn.save'), { type: 'submit', size: 'sm', tone: 'ghost' })}</div></div></form>` : ''}</div>` : ''}
+      ${cur ? h`<section class="sec"><div class="sec-h"><h2>${K.L(cur.name)}</h2>${K.ui.pill(K.t('dev.now'), 'teal')}</div>${bandCard(c, k, cur, { openCheck: K.settings.isHcp() && K.dev.ageM(k) >= cur.at - 0.5 })}</section>`
+        : K.ui.callout('info', '', K.t('dev.young'), 'baby')}
+      ${next && !cur ? h`<section class="sec"><details class="acc"><summary>${K.t('dev.next')} · ${K.L(next.name)}</summary><div class="acc-b">${bandCard(c, k, next)}</div></details></section>` : ''}
+      ${earlier.length ? h`<section class="sec">${K.ui.secH(K.t('dev.earlier'))}<div class="stack">${earlier.map(b => { const wn = K.dev.warnCount(k, b.k);
+        return h`<details class="acc"><summary>${K.L(b.name)} <span class="small faint">· ${K.t('dev.done', { n: K.dev.canCount(k, b.k), t: b.can.length })}</span>${wn ? h` ${K.ui.pill(K.t('dev.warnSeen'), 'over', 'alert')}` : ''}</summary><div class="acc-b">${bandCard(c, k, b)}</div></details>`; })}</div></section>` : ''}
+      ${next && cur ? h`<section class="sec"><details class="acc"><summary>${K.t('dev.next')} · ${K.L(next.name)}</summary><div class="acc-b"><ul class="ul">${next.can.map(x => h`<li>${K.L(x)}</li>`)}</ul></div></details></section>` : ''}
+      <section class="sec"><div class="k-card"><b>${K.L(K.dev.TEXT.deic)}</b><p class="small" style="margin:6px 0 0">${K.L(K.dev.TEXT.deicBody)}</p></div></section>
+    </div>`,
+    mount() { const a = K.anchor(); if (a) { const e = document.getElementById(a); e && e.scrollIntoView(); } },
+  };
+});
+
+K.acts.devCan = async (el) => {
+  const [cid, kid, band, i] = el.dataset.arg.split('|'); const c = K.card.load(cid); const k = c && K.card.findKid(c, kid); if (!k) return;
+  k.dev = k.dev || {}; const r = k.dev[band] = k.dev[band] || {}; r.can = r.can || {};
+  if (r.can[i]) delete r.can[i]; else r.can[i] = K.d.today();
+  await K.store.save(c);
+  el.classList.toggle('on', !!r.can[i]); el.setAttribute('aria-pressed', String(!!r.can[i]));
+  const b = K.dev.BANDS.find(x => x.k === band); const sub = el.closest('.dev-band'); const cnt = sub && sub.querySelector('.dev-sub .faint');
+  if (cnt && b) cnt.textContent = K.t('dev.done', { n: Object.keys(r.can).length, t: b.can.length });
+};
+K.forms.devCheck = async (v, f) => {
+  const [cid, kid, band] = f.dataset.arg.split('|'); const c = K.card.load(cid); const k = c && K.card.findKid(c, kid); if (!k) return;
+  const b = K.dev.BANDS.find(x => x.k === band); if (!b) return;
+  if (!v.date || K.d.diff(v.date, K.d.today()) < 0) { K.ui.toast(K.t('err.date')); return; }
+  const warn = {}; b.warn.forEach((x, i) => { if (v['w' + i] != null) warn[i] = +v['w' + i]; });
+  k.dev = k.dev || {}; const r = k.dev[band] = k.dev[band] || {}; r.warn = warn; r.date = v.date;
+  await K.store.save(c); K.ui.toast(K.t('saved')); K.refresh();
+};
+K.forms.devDeic = async (v, f) => {
+  const [cid, kid] = f.dataset.arg.split('|'); const c = K.card.load(cid); const k = c && K.card.findKid(c, kid); if (!k || !v.date) return;
+  k.dev = k.dev || {}; k.dev.deic = v.date; await K.store.save(c); K.refresh();
+};
+
+/* overview tile, card pill, due items, summary */
+K.child.addTile(10, (c, k) => {
+  const cur = K.dev.current(k); const warn = K.dev.anyWarn(k) && !(k.dev || {}).deic;
+  return { icon: 'star', tone: warn ? 'red' : '', title: K.t('dev.tile'), href: K.child.url(c, k, '/dev'),
+    sub: warn ? K.t('dev.warnSeen') : cur ? `${K.L(cur.name)} · ${K.t('dev.done', { n: K.dev.canCount(k, cur.k), t: cur.can.length })}` : K.L(K.dev.BANDS[0].name) };
+});
+K.child.cardBits.push((c, k) => (K.dev.anyWarn(k) && !(k.dev || {}).deic ? K.ui.pill(K.t('dev.warnSeen'), 'over', 'star') : ''));
+K.due.add((c, today) => {
+  const out = [];
+  K.card.kids(c).forEach(k => {
+    if (!k.dob) return;
+    const m = K.dev.ageM(k, today);
+    if (K.dev.anyWarn(k) && !(k.dev || {}).deic) {
+      out.push({ id: 'deic' + k.id, kind: 'danger', icon: 'star', href: K.child.url(c, k, '/dev'), who: K.child.label(k), status: 'overdue', date: today,
+        title: { en: `${K.child.label(k)}: development warning sign — check at the DEIC`, or: `${K.child.label(k)}: ବିକାଶ ସତର୍କତା ଲକ୍ଷଣ — ଡି.ଇ.ଆଇ.ସି.ରେ ଯାଞ୍ଚ` } });
+      return;
+    }
+    // the warning-sign check is due from the band's "at" age for two months
+    const b = K.dev.BANDS.find(x => m >= x.at && m < x.at + 2 && !K.dev.rec(k, x.k).date);
+    if (b && K.settings.isHcp()) out.push({ id: 'devchk' + k.id + b.k, kind: 'check', icon: 'star', href: K.child.url(c, k, '/dev'), who: K.child.label(k),
+      date: K.d.addMonths(K.child.useCorrected(k, today) ? K.child.correctedDob(k) : k.dob, b.at),
+      title: { en: `${K.child.label(k)}: development check (${b.atName.en.toLowerCase()})`, or: `${K.child.label(k)}: ବିକାଶ ଯାଞ୍ଚ (${b.atName.or})` } });
+  });
+  return out;
+});
+K.summary.add((c) => K.card.kids(c).filter(k => k.dob).map(k => { const cur = K.dev.current(k); if (!cur) return '';
+  return `${K.child.label(k)} — ${K.t('dev.title')}: ${K.L(cur.name)}, ${K.t('dev.done', { n: K.dev.canCount(k, cur.k), t: cur.can.length })}${K.dev.anyWarn(k) ? ' · ' + K.t('dev.warnSeen') : ''}`; }));
+
+}
+/* ── modules/61-feed.js ── */
+{
+/* ============================================================================
+   modules/61-feed — what to feed at this age (data/51-feed), read aloud;
+   other ages folded. Also the general-information route /learn/feeding.
+   ============================================================================ */
+const h = K.h;
+
+K.i18n.add({
+  'feed.title': { en: 'Feeding', or: 'ଶିଶୁକୁ ଖାଦ୍ୟ' },
+  'feed.now': { en: 'For this age', or: 'ଏହି ବୟସ ପାଇଁ' },
+  'feed.howMuch': { en: 'How much', or: 'କେତେ ଖାଦ୍ୟ' },
+  'feed.other': { en: 'Other ages', or: 'ଅନ୍ୟ ବୟସ' },
+  'feed.general': { en: 'For every meal', or: 'ସାଧାରଣ ସୂଚନା' },
+  'feed.tile': { en: 'Feeding', or: 'ଖାଦ୍ୟ' },
+});
+
+K.feed = K.feed || {};
+K.feed.stageFor = (ageM) => K.feed.STAGES.slice().reverse().find(s => ageM >= s.from) || K.feed.STAGES[0];
+/* completed months of age (chronological; feeding follows actual age) */
+K.feed.ageM = (k) => (k.dob ? K.d.diff(k.dob, K.d.today()) / 30.4375 : 0);
+
+const stageCard = (st, id, open) => h`<details class="acc feed-st" ${open ? K.raw('open') : ''} id="${id}">
+  <summary><span class="feed-ic">${K.ui.icon(st.icon, 'sm')}</span><span><b>${K.L(st.name)}</b><small>${K.L(st.head)}</small></span></summary>
+  <div class="acc-b"><div class="feed-amt">${K.ui.icon('bowl', 'sm')}<span><span class="eyebrow" style="margin:0 0 2px">${K.t('feed.howMuch')}</span>${K.L(st.amount)}</span></div>
+    <ul class="ul" id="${id}-l">${st.items.map(x => h`<li>${K.L(x)}</li>`)}</ul><p style="margin:10px 0 0">${K.ui.say('#' + id + '-l')}</p></div></details>`;
+
+function feedPage(k) {
+  const ageM = k ? K.feed.ageM(k) : null; const cur = ageM != null ? K.feed.stageFor(ageM) : null;
+  return h`${K.ui.callout('', '', K.L(K.feed.LEAD), 'heart')}
+    ${cur ? h`<section class="sec">${K.ui.secH(K.t('feed.now'))}${stageCard(cur, 'feed-' + cur.k, true)}</section>` : ''}
+    <section class="sec">${cur ? K.ui.secH(K.t('feed.other')) : ''}<div class="stack">${K.feed.STAGES.filter(s => s !== cur).map(s => stageCard(s, 'feed-' + s.k, false))}</div></section>
+    <section class="sec">${K.ui.secH(K.t('feed.general'))}<div class="k-card" id="feed-gen"><ul class="ul">${K.feed.GENERAL.map(x => h`<li>${K.L(x)}</li>`)}</ul><p style="margin:10px 0 0">${K.ui.say('#feed-gen')}</p></div></section>
+    <section class="sec">${K.ui.callout('danger', '', K.L(K.feed.NO_BRAND))}</section>`;
+}
+
+K.route('/card/:id/child/:kid/feed', ({ id, kid }) => {
+  const c = K.card.load(id); if (!c) return K.screens.notFound(); const k = K.card.findKid(c, kid); if (!k) return K.screens.notFound();
+  return { title: K.t('feed.title'), sub: K.child.label(k), back: K.child.url(c, k).slice(1), tab: 'home',
+    html: h`<div class="wrap">${K.ui.phead(K.child.label(k) + (k.dob ? ' · ' + K.d.ageText(k.dob) : ''), K.t('feed.title'))}${feedPage(k)}</div>` };
+});
+K.route('/learn/feeding', () => ({ title: K.t('feed.title'), back: '/learn', tab: 'learn',
+  html: h`<div class="wrap">${K.ui.phead('', K.t('feed.title'))}${feedPage(null)}</div>` }));
+
+K.child.addTile(20, (c, k) => {
+  const st = K.feed.stageFor(K.feed.ageM(k));
+  return { icon: 'bowl', title: K.t('feed.tile'), sub: K.L(st.amount), href: K.child.url(c, k, '/feed') };
+});
+
+}
+/* ── modules/62-hbyc.js ── */
+{
+/* ============================================================================
+   modules/62-hbyc — Home Based Care for Young Child: ASHA home visits at
+   3, 6, 9, 12 and 15 months (Odisha MCP card V-2023-24 p.7 and p.10; HBYC
+   guidelines, MoHFW/MWCD 2018). Checklist rows apply to the visit months
+   marked on the card; vaccine, Vitamin A and weight rows are pre-filled
+   from the child's record and can be changed.
+   Stored as k.hbyc = [{ id, m, date, ans: { item: 0|1 }, notes }]
+   ============================================================================ */
+const h = K.h;
+
+K.i18n.add({
+  'hbyc.title': { en: 'Home visits (HBYC)', or: 'ଗୃହ ପରିଦର୍ଶନ (HBYC)' },
+  'hbyc.lede': { en: 'The ASHA visits at 3, 6, 9, 12 and 15 months to check growth, feeding, development and vaccines.', or: 'ଆଶା ଦିଦି ୩, ୬, ୯, ୧୨ ଓ ୧୫ ମାସରେ ଘରକୁ ଆସି ଶିଶୁର ବୃଦ୍ଧି, ଖାଦ୍ୟ, ବିକାଶ ଓ ଟୀକା ଯାଞ୍ଚ କରିବେ।' },
+  'hbyc.visit': { en: '{m}-month visit', or: '{m} ମାସ ପରିଦର୍ଶନ' },
+  'hbyc.verify': { en: 'ASHA checks', or: 'ଆଶାଙ୍କ ଦ୍ୱାରା ଯାଞ୍ଚ କରାଯିବ' },
+  'hbyc.serve': { en: 'ASHA gives', or: 'ଆଶାଙ୍କ ଦ୍ୱାରା ସେବା ପ୍ରଦାନ କରାଯିବ' },
+  'hbyc.date': { en: 'Date of visit', or: 'ପରିଦର୍ଶନ ତାରିଖ' },
+  'hbyc.notes': { en: 'Notes / referral', or: 'ଟିପ୍ପଣୀ / ପ୍ରେରଣ' },
+  'hbyc.save': { en: 'Save visit', or: 'ପରିଦର୍ଶନ ସେଭ୍ କରନ୍ତୁ' },
+  'hbyc.auto': { en: 'from the record', or: 'ରେକର୍ଡରୁ' },
+  'hbyc.done': { en: '{n} of {t} visits done', or: '{t}ଟି ମଧ୍ୟରୁ {n}ଟି ପରିଦର୍ଶନ ହୋଇଛି' },
+  'hbyc.vaxOk': { en: 'Vaccines up to date', or: 'ସମସ୍ତ ଟୀକା ସମୟରେ ଦିଆଯାଇଛି' },
+  'hbyc.vaxOver': { en: 'Overdue: {x}', or: 'ବିଳମ୍ବ: {x}' },
+  'hbyc.flagSick': { en: 'Child is sick — check danger signs and refer if needed.', or: 'ଶିଶୁ ଅସୁସ୍ଥ — ବିପଦ ଲକ୍ଷଣ ଯାଞ୍ଚ କରି ଆବଶ୍ୟକ ହେଲେ ପଠାନ୍ତୁ।' },
+  'hbyc.tile': { en: 'Home visits', or: 'ଗୃହ ପରିଦର୍ଶନ' },
+  'hbyc.deleteQ': { en: 'Delete this visit record?', or: 'ଏହି ପରିଦର୍ଶନ ବିବରଣୀ ବିଲୋପ କରିବେ?' },
+  'hbyc.over': { en: 'HBYC visits are for children aged 3 to 15 months.', or: 'HBYC ପରିଦର୍ଶନ ୩ ରୁ ୧୫ ମାସ ବୟସର ଶିଶୁଙ୍କ ପାଇଁ।' },
+});
+
+K.hbyc = {};
+K.hbyc.MONTHS = [3, 6, 9, 12, 15];
+const ALL = [3, 6, 9, 12, 15], FROM6 = [6, 9, 12, 15];
+/* pos: "Yes" is the good answer. at: visit months where the row applies (card p.7) */
+K.hbyc.CHECK = [
+  { k: 'sick', at: ALL, pos: false, en: 'Is the child sick?', or: 'ଶିଶୁ ଅସୁସ୍ଥ ଅଛି କି?' },
+  { k: 'bf', at: ALL, pos: true, en: 'Is breastfeeding continuing?', or: 'ସ୍ତନ୍ୟପାନ ଜାରି ଅଛି କି?' },
+  { k: 'cf6', at: [6], pos: true, en: 'Complementary food: 2–3 spoons at a time, 2–3 times a day, with 1–2 snacks?', or: 'ଥରକରେ ୨-୩ ଚାମଚର ଖାଦ୍ୟ, ଦିନକୁ ୨-୩ଥର, ୧-୨ଥର ଜଳଖିଆ ଦିଆଯାଉଛି କି?' },
+  { k: 'cf9', at: [9], pos: true, en: 'Complementary food: ½ cup at a time, 2–3 times a day, with 1–2 snacks?', or: 'ଥରକରେ ୧/୨ କପ୍ ଖାଦ୍ୟ, ଦିନକୁ ୨-୩ଥର, ୧-୨ ଥର ଜଳଖିଆ ଦିଆଯାଉଛି କି?' },
+  { k: 'cf12', at: [12, 15], pos: true, en: 'Complementary food: ¾ to 1 cup at a time, 3–4 times a day, with 1–2 snacks?', or: 'ଥରକରେ ୩/୪-୧ କପ୍ ଖାଦ୍ୟ, ଦିନକୁ ୩-୪ଥର, ୧-୨ ଥର ଜଳଖିଆ ଦିଆଯାଉଛି କି?' },
+  { k: 'wt', at: ALL, pos: true, en: 'Has the AWW recorded the weight?', or: 'ଅଙ୍ଗନୱାଡ଼ି କର୍ମୀ ଓଜନ ରେକର୍ଡ କରିଛନ୍ତି କି?', auto: (k, d) => ((k.growth || []).some(g => g.wt != null && Math.abs(K.d.diff(g.date, d)) <= 30) ? 1 : null) },
+  { k: 'delay', at: ALL, pos: false, en: 'Does the child have developmental delay (any warning sign)?', or: 'ଶିଶୁଟିର ବିଳମ୍ବିତ ବିକାଶ ଅଛି କି?', auto: (k) => (K.dev && K.dev.anyWarn(k) ? 1 : null) },
+  { k: 'imm', at: ALL, pos: true, en: 'Immunisation status checked?', or: 'ଟୀକାକରଣର ସ୍ଥିତି ଯାଞ୍ଚ କରାଯାଇଛି କି?' },
+  { k: 'mr', at: [9, 12, 15], pos: true, en: 'MR vaccine given?', or: 'ଏମ୍ଆର୍ ଟୀକା ଦିଆଯାଇଛି କି?', auto: (k) => (k.vax && k.vax.MR1 && k.vax.MR1.date ? 1 : null) },
+  { k: 'vita', at: [9, 12, 15], pos: true, en: 'Vitamin A given?', or: 'ଭିଟାମିନ୍ ‘ଏ’ ଦିଆଯାଇଛି କି?', auto: (k) => (k.vitA && k.vitA[1] ? 1 : null) },
+  { k: 'orsHome', at: ALL, pos: true, en: 'ORS packet at home?', or: 'ଓ.ଆର୍.ଏସ୍ ପ୍ୟାକେଟ୍ ଘରେ ଅଛି କି?' },
+  { k: 'ifaHome', at: FROM6, pos: true, en: 'IFA syrup at home?', or: 'ଆଇ.ଏଫ୍.ଏ ସିରପ ଘରେ ଅଛି କି?' },
+];
+K.hbyc.SERVE = [
+  { k: 'cEbf', at: [3, 6], en: 'Counselled on breastfeeding only (until 6 months)?', or: 'କେବଳ ସ୍ତନ୍ୟପାନ ପାଇଁ ପରାମର୍ଶ ଦିଆଯାଇଛି କି?' },
+  { k: 'cCf', at: FROM6, en: 'Counselled on complementary feeding?', or: 'ପରିପୂରକ ଖାଦ୍ୟ ବିଷୟରେ ପରାମର୍ଶ ଦିଆଯାଇଛି କି?' },
+  { k: 'cHw', at: ALL, en: 'Counselled on handwashing?', or: 'ହାତ ଧୋଇବା ପ୍ରଣାଳୀର ବିଷୟରେ ପରାମର୍ଶ ଦିଆଯାଇଛି କି?' },
+  { k: 'cPar', at: ALL, en: 'Counselled on parenting (play and talk)?', or: 'ଶିଶୁର ଲାଳନ ପାଳନ ବିଷୟରେ ପରାମର୍ଶ ଦିଆଯାଇଛି କି?' },
+  { k: 'cFp', at: ALL, en: 'Counselled on family planning?', or: 'ପରିବାର ନିୟୋଜନ ବିଷୟରେ ପରାମର୍ଶ ଦିଆଯାଇଛି କି?' },
+  { k: 'ors', at: ALL, en: 'ORS given?', or: 'ଓଆର୍ଏସ୍ ଦିଆଯାଇଛି କି?' },
+  { k: 'ifa', at: FROM6, en: 'IFA syrup given?', or: 'ଆଇ.ଏଫ୍.ଏ ସିରପ ଦିଆଯାଇଛି କି?' },
+];
+K.hbyc.rec = (k, m) => (k.hbyc || []).find(v => +v.m === +m) || null;
+/* visit status: done · due (from the due date for 30 days) · overdue (until the next visit is due) · missed · upcoming */
+K.hbyc.list = (k, today) => {
+  today = today || K.d.today();
+  return K.hbyc.MONTHS.map((m, i) => {
+    const date = K.d.addMonths(k.dob, m); const r = K.hbyc.rec(k, m); const next = K.hbyc.MONTHS[i + 1];
+    const closes = next ? K.d.addMonths(k.dob, next) : K.d.addMonths(k.dob, 18);
+    let st; if (r) st = 'given'; else if (K.d.cmp(today, closes) >= 0) st = 'missed'; else { const lag = K.d.diff(date, today); st = lag < 0 ? 'upcoming' : lag <= 30 ? 'due' : 'overdue'; }
+    return { m, date, r, st };
+  });
+};
+const vaxNote = (k, d) => { const st = K.vax.state(k, d); const over = Object.values(st).filter(s => s.st === 'overdue').map(s => s.it.code); return over.length ? K.t('hbyc.vaxOver', { x: over.join(', ') }) : K.t('hbyc.vaxOk'); };
+
+K.route('/card/:id/child/:kid/hbyc', ({ id, kid }) => {
+  const c = K.card.load(id); if (!c) return K.screens.notFound(); const k = K.card.findKid(c, kid); if (!k) return K.screens.notFound();
+  const back = K.child.url(c, k).slice(1);
+  if (!k.dob) return { title: K.t('hbyc.title'), back, html: h`<div class="wrap">${K.ui.callout('warn', '', K.t('vax.needDob'))}</div>` };
+  const list = K.hbyc.list(k); const n = list.filter(x => x.r).length;
+  return { title: K.t('hbyc.title'), sub: K.child.label(k), back, tab: 'home',
+    html: h`<div class="wrap">${K.ui.phead(K.child.label(k) + ' · ' + K.d.ageText(k.dob), K.t('hbyc.title'), K.t('hbyc.lede'))}
+      <p class="small">${K.t('hbyc.done', { n, t: list.length })}</p>
+      <div class="list">${list.map(x => K.ui.li({ href: K.child.url(c, k, '/hbyc/' + x.m), icon: x.st === 'given' ? 'check' : 'house', tone: x.st === 'given' ? 'done' : x.st === 'overdue' ? 'red' : x.st === 'due' ? 'amber' : 'ink',
+        title: K.t('hbyc.visit', { m: x.m }), meta: x.r ? K.d.fmt(x.r.date) : K.d.fmt(x.date), trail: K.ui.pill(x.st === 'given' ? K.t('st.done') : K.vax.lbl({ st: x.st }), K.vax.tone({ st: x.st })) }))}</div>
+      ${K.d.age(k.dob).months >= 18 ? h`<p class="small faint" style="margin-top:12px">${K.t('hbyc.over')}</p>` : ''}
+    </div>` };
+});
+
+K.route('/card/:id/child/:kid/hbyc/:m', ({ id, kid, m }) => {
+  const c = K.card.load(id); if (!c) return K.screens.notFound(); const k = K.card.findKid(c, kid); if (!k || !k.dob) return K.screens.notFound();
+  m = +m; if (!K.hbyc.MONTHS.includes(m)) return K.screens.notFound();
+  const r = K.hbyc.rec(k, m) || {}; const ans = r.ans || {}; const date = r.date || K.d.today();
+  const row = (it, pos) => { const auto = !r.ans && it.auto ? it.auto(k, date) : null; const v = ans[it.k] != null ? ans[it.k] : auto;
+    return K.ui.yn({ name: it.k, q: K.L(it), value: v, pos, sub: auto != null && ans[it.k] == null ? K.t('hbyc.auto') : '' }); };
+  return { title: K.t('hbyc.visit', { m }), sub: K.child.label(k), back: K.child.url(c, k, '/hbyc').slice(1), tab: 'home',
+    html: h`<div class="wrap">${K.ui.phead(K.child.label(k) + ' · ' + K.d.ageText(k.dob), K.t('hbyc.visit', { m }), K.d.fmt(K.d.addMonths(k.dob, m), 'long'))}
+      <form class="form" data-form="hbycSave" data-arg="${c.id}|${k.id}|${m}">
+        <div class="fgroup">${K.ui.field({ name: 'date', type: 'date', label: K.t('hbyc.date'), value: date, max: K.d.today(), attrs: { min: k.dob } })}</div>
+        <fieldset class="fgroup"><legend>${K.t('hbyc.verify')}</legend>
+          ${K.hbyc.CHECK.filter(it => it.at.includes(m)).map(it => row(it, it.pos))}
+          <p class="small" style="margin:6px 0 0">${K.ui.icon('syringe', 'sm')} ${vaxNote(k, date)}</p>
+        </fieldset>
+        <fieldset class="fgroup"><legend>${K.t('hbyc.serve')}</legend>${K.hbyc.SERVE.filter(it => it.at.includes(m)).map(it => row(it, true))}</fieldset>
+        <div class="fgroup">${K.ui.field({ name: 'notes', type: 'textarea', label: K.t('hbyc.notes'), value: r.notes })}</div>
+        <div class="btn-bar">${K.ui.btn(K.t('hbyc.save'), { type: 'submit', icon: 'check' })}${r.id ? K.ui.btn('', { act: 'hbycDelete', arg: `${c.id}|${k.id}|${m}`, tone: 'ghost', icon: 'trash', aria: K.t('btn.delete') }) : ''}</div>
+      </form>
+      <p class="small faint" style="margin-top:12px"><a href="${K.child.url(c, k, '/dev')}">${K.t('dev.title')}</a> · <a href="${K.child.url(c, k, '/feed')}">${K.t('feed.title')}</a> · <a href="${K.child.url(c, k, '/growth')}">${K.t('gr.title')}</a> · <a href="${K.child.url(c, k, '/vax')}">${K.t('vax.title')}</a></p>
+    </div>` };
+});
+K.forms.hbycSave = async (v, f) => {
+  const [cid, kid, m] = f.dataset.arg.split('|'); const c = K.card.load(cid); const k = c && K.card.findKid(c, kid); if (!k) return;
+  if (!v.date || K.d.diff(v.date, K.d.today()) < 0 || K.d.diff(k.dob, v.date) < 0) { K.ui.toast(K.t('err.date')); return; }
+  const ans = {}; K.hbyc.CHECK.concat(K.hbyc.SERVE).forEach(it => { if (v[it.k] != null) ans[it.k] = +v[it.k]; });
+  k.hbyc = k.hbyc || []; let r = K.hbyc.rec(k, m); if (!r) { r = { id: K.uid('hb'), m: +m }; k.hbyc.push(r); }
+  Object.assign(r, { date: v.date, ans, notes: v.notes || '' });
+  await K.store.save(c); K.ui.toast(K.t('saved'));
+  if (ans.sick === 1) { K.go(K.child.url(c, k, '/sick').slice(1)); K.ui.toast(K.t('hbyc.flagSick'), 4000); } else K.go(K.child.url(c, k, '/hbyc').slice(1));
+};
+K.acts.hbycDelete = async (el) => {
+  const [cid, kid, m] = el.dataset.arg.split('|'); const c = K.card.load(cid); const k = c && K.card.findKid(c, kid); if (!k) return;
+  if (!(await K.ui.confirm(K.t('hbyc.deleteQ'), { danger: true, ok: K.t('btn.delete') }))) return;
+  k.hbyc = (k.hbyc || []).filter(x => +x.m !== +m); await K.store.save(c); K.go(K.child.url(c, k, '/hbyc').slice(1));
+};
+
+K.child.addTile(40, (c, k) => {
+  const age = K.d.age(k.dob).months; if (age >= 18 && !(k.hbyc || []).length) return null;
+  const list = K.hbyc.list(k); const nx = list.find(x => ['due', 'overdue', 'upcoming'].includes(x.st));
+  return { icon: 'house', tone: nx && nx.st === 'overdue' ? 'amber' : '', title: K.t('hbyc.tile'), href: K.child.url(c, k, '/hbyc'),
+    sub: `${K.t('hbyc.done', { n: list.filter(x => x.r).length, t: list.length })}${nx ? ' · ' + K.t('hbyc.visit', { m: nx.m }) + ' ' + K.d.fmt(nx.date, 'dm') : ''}` };
+});
+K.due.add((c, today) => {
+  const out = [];
+  K.card.kids(c).forEach(k => {
+    if (!k.dob || K.d.age(k.dob, today).months >= 18) return;
+    K.hbyc.list(k, today).filter(x => x.st === 'due' || x.st === 'overdue' || (x.st === 'upcoming' && K.d.diff(today, x.date) <= 7)).forEach(x => out.push({
+      id: 'hbyc' + k.id + x.m, kind: 'visit', icon: 'house', href: K.child.url(c, k, '/hbyc/' + x.m), who: K.child.label(k), date: x.date, status: x.st === 'overdue' ? 'overdue' : undefined,
+      title: { en: `${K.child.label(k)}: ASHA home visit (${x.m} months)`, or: `${K.child.label(k)}: ଆଶାଙ୍କ ଗୃହ ପରିଦର୍ଶନ (${x.m} ମାସ)` } }));
+  });
+  return out;
+});
+
+}
+/* ── modules/63-ifa.js ── */
+{
+/* ============================================================================
+   modules/63-ifa — IFA syrup for children 6–59 months (Anaemia Mukt Bharat):
+   1 ml twice a week on the fixed days (Odisha: Tuesday and Friday; setting
+   `ifaDays`), one 50 ml bottle ≈ 6 months. Ticks reuse K.acts.tick
+   (k.ifa.days), bottles in k.ifa.bottles { n: date }.
+   ============================================================================ */
+const h = K.h;
+
+K.i18n.add({
+  'cifa.title': { en: 'IFA syrup (iron)', or: 'ଆଇ.ଏଫ୍.ଏ. ସିରପ୍ (ଲୌହସାର)' },
+  'cifa.lede': { en: '1 ml twice a week, after food, from 6 months to 5 years.', or: '୬ ମାସରୁ ୫ ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ ସପ୍ତାହକୁ ଦୁଇଥର ଖାଇବା ପରେ ୧ ମି.ଲି.।' },
+  'cifa.days': { en: 'Syrup days: {d}', or: 'ସିରପ୍ ଦିନ: {d}' },
+  'cifa.todayGive': { en: "Today is a syrup day — tap after giving", or: 'ଆଜି ସିରପ୍ ଦିନ — ଦେବା ପରେ ଛୁଅନ୍ତୁ' },
+  'cifa.todayDone': { en: "Today's dose given", or: 'ଆଜିର ମାତ୍ରା ଦିଆଗଲା' },
+  'cifa.todayIs': { en: 'Syrup day today', or: 'ଆଜି ସିରପ୍ ଦିନ' },
+  'cifa.next': { en: 'Next dose: {d}', or: 'ପରବର୍ତ୍ତୀ ମାତ୍ରା: {d}' },
+  'cifa.last4': { en: '{n} of {t} doses in the last 4 weeks', or: 'ଗତ ୪ ସପ୍ତାହରେ {t}ଟି ମଧ୍ୟରୁ {n}ଟି ମାତ୍ରା' },
+  'cifa.starts': { en: 'Starts when 6 months are complete: {d}', or: '୬ ମାସ ପୂରଣ ହେଲେ ଆରମ୍ଭ: {d}' },
+  'cifa.ended': { en: 'IFA syrup is given until 5 years of age.', or: 'ଆଇ.ଏଫ୍.ଏ. ସିରପ୍ ୫ ବର୍ଷ ବୟସ ପର୍ଯ୍ୟନ୍ତ ଦିଆଯାଏ।' },
+  'cifa.grid': { en: 'Last 8 weeks', or: 'ଗତ ୮ ସପ୍ତାହ' },
+  'cifa.week': { en: 'Week of {d}', or: '{d} ସପ୍ତାହ' },
+  'cifa.bottles': { en: 'Bottles received', or: 'ମା’ଙ୍କୁ ବୋତଲ ପ୍ରଦାନ କରିବାର ତାରିଖ' },
+  'cifa.bottle': { en: 'Bottle {n}', or: 'ବୋତଲ-{n}' },
+  'cifa.addBottle': { en: 'Record a bottle', or: 'ବୋତଲ ଲେଖନ୍ତୁ' },
+  'cifa.bottleDate': { en: 'Date received', or: 'ପାଇଥିବା ତାରିଖ' },
+  'cifa.nextBottle': { en: 'Ask for the next bottle around {d}', or: 'ପ୍ରାୟ {d} ରେ ନୂଆ ବୋତଲ ମାଗନ୍ତୁ' },
+  'cifa.noBottle': { en: 'No bottle recorded yet. Ask your ASHA/ANM for IFA syrup and an auto-dispenser.', or: 'ଏପର୍ଯ୍ୟନ୍ତ ବୋତଲ ଲେଖାଯାଇନାହିଁ। ଆଶା/ଏ.ଏନ୍.ଏମ୍.ଙ୍କୁ ଆଇ.ଏଫ୍.ଏ. ସିରପ୍ ଓ ଅଟୋ ଡିସ୍ପେନସର ମାଗନ୍ତୁ।' },
+  'cifa.rules': { en: 'Remember', or: 'ମନେରଖନ୍ତୁ' },
+  'cifa.setDays': { en: 'Change the days', or: 'ଦିନ ବଦଳାନ୍ତୁ' },
+  'cifa.tile': { en: 'IFA syrup', or: 'ଆଇ.ଏଫ୍.ଏ. ସିରପ୍' },
+  'cifa.removeBottle': { en: 'Remove', or: 'ହଟାନ୍ତୁ' },
+});
+
+K.cifa = {};
+K.cifa.days = () => { const d = K.settings.get('ifaDays'); return Array.isArray(d) && d.length ? d : [2, 5]; };
+K.cifa.dayNames = (style) => K.cifa.days().map(i => K.d.WD[K.i18n.lang === 'or' ? 'or' : 'en'][i]).join(style === 'short' ? '/' : ' + ');
+K.cifa.isDay = (iso) => K.cifa.days().includes(K.d.parse(iso).getDay());
+K.cifa.window = (k) => ({ start: K.d.addMonths(k.dob, 6), end: K.d.addMonths(k.dob, 60) });
+K.cifa.nextDay = (from) => { let d = from; for (let i = 0; i < 8; i++) { if (K.cifa.isDay(d)) return d; d = K.d.addDays(d, 1); } return from; };
+/* syrup days in [a, b] */
+K.cifa.daysIn = (a, b) => { const out = []; let d = a; while (K.d.cmp(d, b) <= 0) { if (K.cifa.isDay(d)) out.push(d); d = K.d.addDays(d, 1); } return out; };
+K.cifa.last4 = (k, today) => {
+  today = today || K.d.today(); const w = K.cifa.window(k);
+  const a = K.d.max(w.start, K.d.addDays(today, -27)); if (K.d.cmp(a, today) > 0) return { n: 0, t: 0 };
+  const ds = K.cifa.daysIn(a, today); const got = (k.ifa && k.ifa.days) || {};
+  return { n: ds.filter(d => got[d]).length, t: ds.length };
+};
+K.cifa.bottles = (k) => Object.entries((k.ifa && k.ifa.bottles) || {}).map(([n, d]) => ({ n: +n, d })).sort((x, y) => x.n - y.n);
+
+K.route('/card/:id/child/:kid/ifa', ({ id, kid }) => {
+  const c = K.card.load(id); if (!c) return K.screens.notFound(); const k = K.card.findKid(c, kid); if (!k) return K.screens.notFound();
+  const back = K.child.url(c, k).slice(1);
+  if (!k.dob) return { title: K.t('cifa.title'), back, html: h`<div class="wrap">${K.ui.callout('warn', '', K.t('vax.needDob'))}</div>` };
+  const today = K.d.today(); const w = K.cifa.window(k); const key = `${c.id}:${k.id}:ifa`; const got = (k.ifa && k.ifa.days) || {};
+  const before = K.d.cmp(today, w.start) < 0, after = K.d.cmp(today, w.end) >= 0;
+  const isDay = K.cifa.isDay(today); const nx = K.cifa.nextDay(isDay ? K.d.addDays(today, 1) : today);
+  const l4 = K.cifa.last4(k, today);
+  // weeks grid: 8 weeks back from this week (Monday start), syrup days only
+  const monday = K.d.addDays(today, -((K.d.parse(today).getDay() + 6) % 7));
+  const weeks = []; for (let i = 7; i >= 0; i--) { const ws = K.d.addDays(monday, -7 * i); weeks.push({ ws, days: K.cifa.daysIn(ws, K.d.addDays(ws, 6)) }); }
+  const btl = K.cifa.bottles(k); const lastB = btl[btl.length - 1];
+  return { title: K.t('cifa.title'), sub: K.child.label(k), back, tab: 'home',
+    html: h`<div class="wrap">${K.ui.phead(K.child.label(k) + ' · ' + K.d.ageText(k.dob), K.t('cifa.title'), K.t('cifa.lede'))}
+      <p class="small">${K.t('cifa.days', { d: K.cifa.dayNames() })} · <a href="#/settings">${K.t('cifa.setDays')}</a></p>
+      ${before ? K.ui.callout('info', '', K.t('cifa.starts', { d: K.d.fmt(w.start, 'long') }), 'calendar') : after ? K.ui.callout('info', '', K.t('cifa.ended')) : h`
+      <section class="k-card trk">
+        <div class="trk-top">
+          ${isDay ? h`<button type="button" class="trk-today ${got[today] ? 'on' : ''}" data-act="tick" data-arg="${key}|${today}" aria-pressed="${!!got[today]}">${K.ui.icon(got[today] ? 'check' : 'drop', 'lg')}<span>${got[today] ? K.t('cifa.todayDone') : K.t('cifa.todayGive')}</span></button>`
+            : h`<div class="trk-today off">${K.ui.icon('calendar', 'lg')}<span>${K.t('cifa.next', { d: K.d.weekday(nx) + ', ' + K.d.fmt(nx, 'dm') })}</span></div>`}
+          <div class="trk-n"><b class="mono">${K.digits(l4.n)}/${K.digits(l4.t)}</b><span class="small">${K.t('cifa.last4', { n: l4.n, t: l4.t })}</span>${K.ui.bar(l4.t ? l4.n / l4.t * 100 : 0, l4.n < l4.t ? 'amber' : '')}</div>
+        </div>
+        <details class="trk-more" open><summary>${K.t('cifa.grid')}</summary>
+          <div class="cifa-weeks">${weeks.map(wk => h`<div class="cifa-wk"><span class="small faint">${K.d.fmt(wk.ws, 'dm')}</span>${wk.days.map(d => { const fut = K.d.cmp(d, today) > 0; const pre = K.d.cmp(d, w.start) < 0;
+            return h`<button type="button" class="tk ${got[d] ? 'on' : ''} ${d === today ? 'td' : ''}" ${fut || pre ? K.raw('disabled') : ''} data-act="tick" data-arg="${key}|${d}" aria-pressed="${!!got[d]}" title="${K.d.fmt(d)}"><small>${K.d.WD[K.i18n.lang === 'or' ? 'or' : 'en'][K.d.parse(d).getDay()].slice(0, K.i18n.lang === 'or' ? 2 : 3)}</small>${K.digits(K.d.parse(d).getDate())}</button>`; })}</div>`)}</div>
+        </details>
+      </section>`}
+      <section class="sec">${K.ui.secH(K.t('cifa.bottles'))}
+        ${btl.length ? h`<div class="list">${btl.map(b => K.ui.li({ icon: 'bottle', tone: 'done', title: K.t('cifa.bottle', { n: b.n }), meta: K.d.fmt(b.d), act: 'cifaBottleDel', arg: `${c.id}|${k.id}|${b.n}`, trail: h`<span class="small faint">${K.t('cifa.removeBottle')}</span>` }))}</div>
+          <p class="small" style="margin:8px 0 0">${K.t('cifa.nextBottle', { d: K.d.fmt(K.d.addMonths(lastB.d, 6)) })}</p>` : h`<p class="small">${K.t('cifa.noBottle')}</p>`}
+        <form class="form k-card" data-form="cifaBottle" data-arg="${c.id}|${k.id}" style="margin-top:10px"><div class="frow">${K.ui.field({ name: 'date', type: 'date', label: K.t('cifa.bottleDate'), value: today, max: today, attrs: { min: k.dob } })}<div style="align-self:end">${K.ui.btn(K.t('cifa.addBottle'), { type: 'submit', size: 'sm', tone: 'ghost', icon: 'plus' })}</div></div></form>
+      </section>
+      <section class="sec">${K.ui.secH(K.t('cifa.rules'))}<div class="k-card" id="cifa-rules"><ol class="ul">${K.ill.IFA_RULES.map(x => h`<li>${K.L(x)}</li>`)}</ol><p style="margin:10px 0 0">${K.ui.say('#cifa-rules')}</p></div></section>
+    </div>` };
+});
+K.forms.cifaBottle = async (v, f) => {
+  const [cid, kid] = f.dataset.arg.split('|'); const c = K.card.load(cid); const k = c && K.card.findKid(c, kid); if (!k || !v.date) return;
+  k.ifa = k.ifa || { days: {}, bottles: {} }; k.ifa.bottles = k.ifa.bottles || {};
+  const n = Math.max(0, ...Object.keys(k.ifa.bottles).map(Number)) + 1; k.ifa.bottles[n] = v.date;
+  await K.store.save(c); K.ui.toast(K.t('saved')); K.refresh();
+};
+K.acts.cifaBottleDel = async (el) => {
+  const [cid, kid, n] = el.dataset.arg.split('|'); const c = K.card.load(cid); const k = c && K.card.findKid(c, kid); if (!k) return;
+  if (!(await K.ui.confirm(K.t('cifa.bottle', { n }) + ' · ' + K.t('cifa.removeBottle') + '?', { ok: K.t('btn.delete'), danger: true }))) return;
+  delete k.ifa.bottles[n]; await K.store.save(c); K.refresh();
+};
+
+K.child.addTile(30, (c, k) => {
+  const today = K.d.today(); const w = K.cifa.window(k);
+  if (K.d.cmp(today, w.end) >= 0) return null;
+  const href = K.child.url(c, k, '/ifa');
+  if (K.d.cmp(today, w.start) < 0) return { icon: 'drop', title: K.t('cifa.tile'), href, sub: K.t('cifa.starts', { d: K.d.fmt(w.start) }) };
+  const l4 = K.cifa.last4(k, today); const isDay = K.cifa.isDay(today); const got = (k.ifa && k.ifa.days) || {};
+  return { icon: 'drop', tone: isDay && !got[today] ? 'amber' : '', title: K.t('cifa.tile'), href,
+    sub: isDay && !got[today] ? K.t('cifa.todayIs') : K.t('cifa.last4', { n: l4.n, t: l4.t }) };
+});
+K.due.add((c, today) => {
+  const out = [];
+  if (!K.cifa.isDay(today)) return out;
+  K.card.kids(c).forEach(k => {
+    if (!k.dob) return; const w = K.cifa.window(k);
+    if (K.d.cmp(today, w.start) < 0 || K.d.cmp(today, w.end) >= 0) return;
+    if ((k.ifa && k.ifa.days || {})[today]) return;
+    out.push({ id: 'cifa' + k.id + today, kind: 'ifa', icon: 'drop', href: K.child.url(c, k, '/ifa'), who: K.child.label(k), date: today,
+      title: { en: `${K.child.label(k)}: IFA syrup today (1 ml)`, or: `${K.child.label(k)}: ଆଜି ଆଇ.ଏଫ୍.ଏ. ସିରପ୍ (୧ ମି.ଲି.)` } });
+  });
+  return out;
+});
+
+}
+/* ── modules/64-sick.js ── */
+{
+/* ============================================================================
+   modules/64-sick — when the child is sick: danger signs first, diarrhoea
+   (ORS + 14-day zinc tracker), pneumonia (signs + breath counter), fever,
+   and the Odisha card's warning against branding. Breath counter at
+   /tools/breath (optionally ?c=<card>&k=<child> to use the child's age).
+   Fast breathing cut-offs from IMNCI: ≥60 (<2 m), ≥50 (2–12 m), ≥40 (1–5 y).
+   ============================================================================ */
+const h = K.h;
+
+K.i18n.add({
+  'sick.title': { en: 'When the child is sick', or: 'ଶିଶୁ ଅସୁସ୍ଥ ହେଲେ' },
+  'sick.tile': { en: 'Sick child', or: 'ଅସୁସ୍ଥ ଶିଶୁ' },
+  'sick.tileSub': { en: 'Danger signs, diarrhoea, pneumonia, fever', or: 'ବିପଦ ଲକ୍ଷଣ, ତରଳ ଝାଡ଼ା, ନିମୋନିଆ, ଜ୍ୱର' },
+  'sick.first': { en: 'First, look for danger signs', or: 'ପ୍ରଥମେ ବିପଦ ଲକ୍ଷଣ ଦେଖନ୍ତୁ' },
+  'sick.call': { en: 'Call 108', or: '୧୦୮ କୁ ଫୋନ୍' }, 'sick.call102': { en: 'Call 102', or: '୧୦୨ କୁ ଫୋନ୍' },
+  'sick.diarr': { en: 'Diarrhoea', or: 'ତରଳ ଝାଡ଼ା' },
+  'sick.diarrTreat': { en: 'Treatment at home', or: 'ତରଳ ଝାଡ଼ାର ଚିକିତ୍ସା' },
+  'sick.diarrPrev': { en: 'Prevention', or: 'ତରଳ ଝାଡ଼ା ନ ହେବା ପାଇଁ' },
+  'sick.zincDose': { en: "Zinc for {name}: {dose} once a day for 14 days", or: '{name} ପାଇଁ ଜିଙ୍କ୍: ଦିନକୁ ଥରେ {dose}, ୧୪ ଦିନ' },
+  'sick.zincHalf': { en: '½ tablet (10 mg)', or: 'ଅଧା ବଟିକା (୧୦ ମି.ଗ୍ରା.)' }, 'sick.zincOne': { en: '1 tablet (20 mg)', or: 'ଗୋଟିଏ ବଟିକା (୨୦ ମି.ଗ୍ରା.)' },
+  'sick.zincYoung': { en: 'Under 2 months: no zinc at home — take the baby to a health facility.', or: '୨ ମାସରୁ କମ୍: ଘରେ ଜିଙ୍କ୍ ନୁହେଁ — ଶିଶୁକୁ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରକୁ ନିଅନ୍ତୁ।' },
+  'sick.zincStart': { en: 'Start the 14-day zinc record', or: '୧୪ ଦିନର ଜିଙ୍କ୍ ରେକର୍ଡ ଆରମ୍ଭ କରନ୍ତୁ' },
+  'sick.zincTrk': { en: 'Zinc (14 days)', or: 'ଜିଙ୍କ୍ (୧୪ ଦିନ)' },
+  'sick.zincStop': { en: 'Clear the zinc record', or: 'ଜିଙ୍କ୍ ରେକର୍ଡ ହଟାନ୍ତୁ' },
+  'sick.orsAmt': { en: 'How much ORS after each loose stool: under 2 years 50–100 ml (¼ to ½ cup); 2 years and older 100–200 ml (½ to 1 cup). Give slowly with a spoon.', or: 'ପ୍ରତ୍ୟେକ ତରଳ ଝାଡ଼ା ପରେ କେତେ ଓଆର୍ଏସ୍: ୨ ବର୍ଷରୁ କମ୍ ୫୦–୧୦୦ ମି.ଲି. (୧/୪ ରୁ ୧/୨ କପ୍); ୨ ବର୍ଷ ଓ ଅଧିକ ୧୦୦–୨୦୦ ମି.ଲି. (୧/୨ ରୁ ୧ କପ୍)। ଚାମଚରେ ଧୀରେ ଧୀରେ ଦିଅନ୍ତୁ।' },
+  'sick.pneu': { en: 'Pneumonia', or: 'ନିମୋନିଆ' },
+  'sick.pneuSigns': { en: 'Signs of pneumonia', or: 'ନିମୋନିଆ ଚିହ୍ନଟ କରିବା ପାଇଁ' },
+  'sick.pneuPrev': { en: 'Prevention', or: 'ନିମୋନିଆ ନ ହେବା ପାଇଁ' },
+  'sick.breathsBy': { en: 'Pneumonia can be picked up by counting breaths for one full minute while the child is calm:', or: 'ଶ୍ୱାସକ୍ରିୟାର ଗତିକୁ ଗଣି ନିମୋନିଆ ଚିହ୍ନଟ କରାଯାଇପାରେ:' },
+  'sick.countNow': { en: 'Count breaths now', or: 'ବର୍ତ୍ତମାନ ଶ୍ୱାସ ଗଣନ୍ତୁ' },
+  'sick.fever': { en: 'Fever', or: 'ଜ୍ୱର' },
+  'sick.fever1': { en: 'Give paracetamol drops or syrup as advised by the health worker, and sponge the body with a wet cloth.', or: 'ସ୍ୱାସ୍ଥ୍ୟକର୍ମୀଙ୍କ ପରାମର୍ଶ ଅନୁସାରେ ପାରାସିଟାମଲ୍ ଡ୍ରପ୍/ସିରପ୍ ଖୁଆନ୍ତୁ ଓ ଓଦା କନାରେ ଦେହକୁ ପୋଛନ୍ତୁ।' },
+  'sick.fever2': { en: 'In malaria areas, ask the ASHA for a malaria test (RDT) the same day for any fever.', or: 'ମ୍ୟାଲେରିଆ ଅଞ୍ଚଳରେ, ଯେକୌଣସି ଜ୍ୱର ହେଲେ ସେହି ଦିନ ଆଶାଙ୍କ ଠାରୁ ମ୍ୟାଲେରିଆ ପରୀକ୍ଷା (RDT) କରାନ୍ତୁ।' },
+  'sick.fever3': { en: 'Keep breastfeeding and giving food and fluids. Go to a health facility if fever is high, lasts more than 7 days, or comes with any danger sign.', or: 'ସ୍ତନ୍ୟପାନ, ଖାଦ୍ୟ ଓ ପାନୀୟ ଜାରି ରଖନ୍ତୁ। ପ୍ରବଳ ଜ୍ୱର, ୭ ଦିନରୁ ଅଧିକ ଜ୍ୱର, ବା କୌଣସି ବିପଦ ଲକ୍ଷଣ ଥିଲେ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରକୁ ଯାଆନ୍ତୁ।' },
+  'sick.feedSick': { en: 'During any illness, keep breastfeeding and offer food often; after the illness give one extra meal a day for two weeks.', or: 'ଅସୁସ୍ଥତା ସମୟରେ ସ୍ତନ୍ୟପାନ ଜାରି ରଖନ୍ତୁ ଓ ବାରମ୍ବାର ଖାଦ୍ୟ ଦିଅନ୍ତୁ; ଭଲ ହେବା ପରେ ଦୁଇ ସପ୍ତାହ ଦିନକୁ ଗୋଟିଏ ଅଧିକ ଖାଦ୍ୟ ଦିଅନ୍ତୁ।' },
+  /* breath counter */
+  'br.title': { en: 'Breath counter', or: 'ଶ୍ୱାସ ଗଣନା' },
+  'br.lede': { en: 'Count for one full minute while the child is calm or asleep. Watch the belly or chest rise.', or: 'ଶିଶୁ ଶାନ୍ତ ବା ଶୋଇଥିବା ବେଳେ ପୂରା ଏକ ମିନିଟ୍ ଗଣନ୍ତୁ। ପେଟ ବା ଛାତି ଉପରକୁ ଉଠିବା ଦେଖନ୍ତୁ।' },
+  'br.age': { en: "Child's age", or: 'ଶିଶୁର ବୟସ' },
+  'br.a1': { en: 'Under 2 months', or: '୨ ମାସରୁ କମ୍' }, 'br.a2': { en: '2–12 months', or: '୨–୧୨ ମାସ' }, 'br.a3': { en: '1–5 years', or: '୧–୫ ବର୍ଷ' },
+  'br.start': { en: 'Start 60 seconds', or: '୬୦ ସେକେଣ୍ଡ ଆରମ୍ଭ' },
+  'br.tap': { en: 'Tap for each breath', or: 'ପ୍ରତି ଶ୍ୱାସରେ ଛୁଅନ୍ତୁ' },
+  'br.stop': { en: 'Stop', or: 'ବନ୍ଦ' },
+  'br.again': { en: 'Count again', or: 'ପୁଣି ଗଣନ୍ତୁ' },
+  'br.orType': { en: 'Or type the number you counted', or: 'କିମ୍ବା ଗଣିଥିବା ସଂଖ୍ୟା ଲେଖନ୍ତୁ' },
+  'br.perMin': { en: 'breaths a minute', or: 'ଶ୍ୱାସ ପ୍ରତି ମିନିଟ୍' },
+  'br.fast': { en: 'Fast breathing ({n} — cut-off {c})', or: 'ଦ୍ରୁତ ଶ୍ୱାସ ({n} — ସୀମା {c})' },
+  'br.fastDo': { en: 'This child may have pneumonia. See the ASHA, ANM or doctor today. If the chest pulls in, or there is any danger sign, go to the hospital now (call 108).', or: 'ଶିଶୁର ନିମୋନିଆ ହୋଇପାରେ। ଆଜି ହିଁ ଆଶା, ଏ.ଏନ୍.ଏମ୍. ବା ଡାକ୍ତରଙ୍କୁ ଦେଖାନ୍ତୁ। ଛାତି ଭିତରକୁ ପଶୁଥିଲେ ବା କୌଣସି ବିପଦ ଲକ୍ଷଣ ଥିଲେ ଏବେ ହିଁ ଡାକ୍ତରଖାନା ଯାଆନ୍ତୁ (୧୦୮)।' },
+  'br.ok': { en: 'Not fast breathing ({n} — cut-off {c})', or: 'ଦ୍ରୁତ ଶ୍ୱାସ ନୁହେଁ ({n} — ସୀମା {c})' },
+  'br.okDo': { en: 'Keep watching. Count again if the child gets worse, and look for chest indrawing.', or: 'ନଜର ରଖନ୍ତୁ। ଶିଶୁ ଅଧିକ ଅସୁସ୍ଥ ହେଲେ ପୁଣି ଗଣନ୍ତୁ ଓ ଛାତି ଭିତରକୁ ପଶୁଛି କି ଦେଖନ୍ତୁ।' },
+  'br.indraw': { en: 'Chest indrawing (lower chest pulls in when breathing in) is a danger sign at any count.', or: 'ନିଃଶ୍ୱାସ ନେଲାବେଳେ ଛାତିର ତଳ ଭାଗ ଭିତରକୁ ପଶିବା ଯେକୌଣସି ଗଣନାରେ ବିପଦ ଲକ୍ଷଣ।' },
+  'br.secs': { en: '{s} s', or: '{s} ସେ.' },
+});
+
+K.sick = {};
+K.sick.ageM = (k) => (k && k.dob ? K.d.diff(k.dob, K.d.today()) / 30.4375 : null);
+const zincDose = (m) => (m < 2 ? null : m < 6 ? K.t('sick.zincHalf') : K.t('sick.zincOne'));
+const list = (arr, id) => h`<ul class="ill-list" ${id ? K.raw(`id="${id}"`) : ''}>${arr.map(x => h`<li>${x.icon ? K.ui.icon(x.icon, 'sm') : ''}<span>${K.L(x)}</span></li>`)}</ul>`;
+
+K.route('/card/:id/child/:kid/sick', ({ id, kid }) => {
+  const c = K.card.load(id); if (!c) return K.screens.notFound(); const k = K.card.findKid(c, kid); if (!k) return K.screens.notFound();
+  const m = K.sick.ageM(k); const set = m != null && m < 2 ? K.content.danger.newborn : K.content.danger.child;
+  const dose = m != null ? zincDose(m) : null; const z = k.zinc; const key = `${c.id}:${k.id}:zinc`;
+  return { title: K.t('sick.title'), sub: K.child.label(k), back: K.child.url(c, k).slice(1), tab: 'home',
+    html: h`<div class="wrap">${K.ui.phead(K.child.label(k) + (k.dob ? ' · ' + K.d.ageText(k.dob) : ''), K.t('sick.title'))}
+      <section class="k-card danger-box"><h2>${K.t('sick.first')}</h2><p class="small">${K.L(set.lead || set.title)}</p>
+        <ul class="ill-list">${set.items.map(x => h`<li>${K.ui.icon(x.icon || 'alert', 'sm')}<span>${K.L(x)}</span></li>`)}</ul>
+        <div class="btn-row">${K.ui.btn(K.t('sick.call'), { href: 'tel:108', tone: 'danger', icon: 'phone' })}${K.ui.btn(K.t('sick.call102'), { href: 'tel:102', tone: 'ghost', icon: 'ambulance' })}</div></section>
+      <section class="sec">${K.ui.secH(K.t('sick.diarr'))}
+        <h3 class="ill-h">${K.t('sick.diarrTreat')}</h3>${list(K.ill.DIARR_TREAT, 'ill-dt')}
+        <p class="small">${K.t('sick.orsAmt')}</p>
+        ${m != null ? (dose ? h`<div class="k-card"><b>${K.t('sick.zincDose', { name: K.child.label(k), dose })}</b>
+            ${z && z.start ? h`<div style="margin-top:10px">${K.tracker.render('trk-zinc', K.t('sick.zincTrk'), z, 14, z.start, { key })}</div><p style="margin:8px 0 0">${K.ui.btn(K.t('sick.zincStop'), { act: 'zincClear', arg: `${c.id}|${k.id}`, tone: 'quiet', size: 'sm', icon: 'trash' })}</p>`
+              : h`<p style="margin:10px 0 0">${K.ui.btn(K.t('sick.zincStart'), { act: 'zincStart', arg: `${c.id}|${k.id}`, tone: 'ghost', size: 'sm', icon: 'pill' })}</p>`}</div>`
+          : K.ui.callout('warn', '', K.t('sick.zincYoung'))) : ''}
+        <details class="acc" style="margin-top:10px"><summary>${K.t('sick.diarrPrev')}</summary><div class="acc-b">${list(K.ill.DIARR_PREVENT)}</div></details>
+        <p style="margin:10px 0 0">${K.ui.say('#ill-dt')}</p>
+      </section>
+      <section class="sec">${K.ui.secH(K.t('sick.pneu'))}
+        <h3 class="ill-h">${K.t('sick.pneuSigns')}</h3>${list(K.ill.PNEU_SIGNS, 'ill-ps')}
+        <p class="small">${K.t('sick.breathsBy')}</p><ul class="ul small">${K.ill.FAST_TEXT.map(x => h`<li>${K.L(x)}</li>`)}</ul>
+        <p>${K.ui.btn(K.t('sick.countNow'), { href: `#/tools/breath?c=${c.id}&k=${k.id}`, icon: 'timer' })}</p>
+        <details class="acc"><summary>${K.t('sick.pneuPrev')}</summary><div class="acc-b">${list(K.ill.PNEU_PREVENT)}</div></details>
+      </section>
+      <section class="sec">${K.ui.secH(K.t('sick.fever'))}<div class="k-card" id="ill-fv"><ul class="ul"><li>${K.t('sick.fever1')}</li><li>${K.t('sick.fever2')}</li><li>${K.t('sick.fever3')}</li></ul><p style="margin:10px 0 0">${K.ui.say('#ill-fv')}</p></div></section>
+      <section class="sec">${K.ui.callout('info', '', K.t('sick.feedSick'), 'bowl')}<p></p>${K.ui.callout('', '', K.L(K.ill.CONTACT), 'phone')}<p></p>${K.ui.callout('danger', '', K.L(K.feed.NO_BRAND))}</section>
+    </div>` };
+});
+K.acts.zincStart = async (el) => { const [cid, kid] = el.dataset.arg.split('|'); const c = K.card.load(cid); const k = c && K.card.findKid(c, kid); if (!k) return; k.zinc = { start: K.d.today(), days: {} }; await K.store.save(c); K.refresh(); };
+K.acts.zincClear = async (el) => { const [cid, kid] = el.dataset.arg.split('|'); const c = K.card.load(cid); const k = c && K.card.findKid(c, kid); if (!k) return; k.zinc = null; await K.store.save(c); K.refresh(); };
+
+K.child.addTile(50, (c, k) => {
+  const z = k.zinc; const zLive = z && z.start && K.d.diff(z.start, K.d.today()) < 14;
+  return { icon: 'alert', tone: 'red', title: K.t('sick.tile'), href: K.child.url(c, k, '/sick'),
+    sub: zLive ? `${K.t('sick.zincTrk')} · ${K.digits(Object.keys(z.days || {}).length)}/${K.digits(14)}` : K.t('sick.tileSub') };
+});
+K.due.add((c, today) => {
+  const out = [];
+  K.card.kids(c).forEach(k => { const z = k.zinc; if (!z || !z.start) return; const d = K.d.diff(z.start, today); if (d < 0 || d >= 14 || (z.days || {})[today]) return;
+    out.push({ id: 'zinc' + k.id, kind: 'med', icon: 'pill', href: K.child.url(c, k, '/sick'), who: K.child.label(k), date: today,
+      title: { en: `${K.child.label(k)}: zinc today (day ${d + 1} of 14)`, or: `${K.child.label(k)}: ଆଜି ଜିଙ୍କ୍ (୧୪ ମଧ୍ୟରୁ ${d + 1} ଦିନ)` } }); });
+  return out;
+});
+
+/* ---------------------------------------------------------------- breath counter */
+K.sick.timer = null;
+K.route('/tools/breath', (_, q) => {
+  const c = q.get('c') && K.card.load(q.get('c')); const k = c && K.card.findKid(c, q.get('k'));
+  const m = k ? K.sick.ageM(k) : null; const band = m == null ? '' : m < 2 ? 'a1' : m < 12 ? 'a2' : 'a3';
+  return { title: K.t('br.title'), sub: k ? K.child.label(k) : '', back: k ? K.child.url(c, k, '/sick').slice(1) : '/tools', tab: 'tools',
+    html: h`<div class="wrap">${K.ui.phead('', K.t('br.title'), K.t('br.lede'))}
+      <form class="form" data-form="breathCalc">
+        ${K.ui.choices({ name: 'age', label: K.t('br.age'), value: band, options: ['a1', 'a2', 'a3'].map(v => ({ v, l: K.t('br.' + v) })), live: 'breathAge' })}
+        <div class="br-box k-card">
+          <div class="br-ring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" class="br-bg"/><circle cx="60" cy="60" r="52" class="br-fg" id="br-arc" stroke-dasharray="326.7" stroke-dashoffset="0"/></svg>
+            <div class="br-mid"><b class="mono" id="br-count">0</b><span class="small" id="br-secs">${K.t('br.secs', { s: 60 })}</span></div></div>
+          <button type="button" class="btn primary lg block" data-act="breathGo" id="br-go">${K.ui.icon('timer')}<span>${K.t('br.start')}</span></button>
+          <button type="button" class="btn accent lg block br-tap" data-act="breathTap" id="br-tap" hidden><span>${K.t('br.tap')}</span></button>
+        </div>
+        ${K.ui.field({ name: 'n', id: 'br-n', type: 'number', label: K.t('br.orType'), unit: K.t('br.perMin'), attrs: { 'data-live': 'breathAge' } })}
+      </form>
+      <section id="br-result" aria-live="polite"></section>
+      <p class="small">${K.t('br.indraw')}</p>
+      <ul class="ul small">${K.ill.FAST_TEXT.map(x => h`<li>${K.L(x)}</li>`)}</ul>
+    </div>`,
+    mount() { K.sick.breath = { n: 0, running: false }; K.live.breathAge(); },
+  };
+});
+K.sick.result = () => {
+  const f = K.$('form[data-form="breathCalc"]'); if (!f) return; const v = K.formData(f); const box = K.$('#br-result'); if (!box) return;
+  const n = v.n; if (n == null || !v.age) { box.innerHTML = ''; return; }
+  const cut = { a1: 60, a2: 50, a3: 40 }[v.age]; const fast = n >= cut;
+  box.innerHTML = K.hv(fast ? K.ui.callout('danger', K.t('br.fast', { n, c: cut }), K.t('br.fastDo')) : K.ui.callout('', K.t('br.ok', { n, c: cut }), K.t('br.okDo'), 'check'));
+};
+K.live.breathAge = () => K.sick.result();
+K.acts.breathGo = () => {
+  const s = K.sick.breath = { n: 0, running: true, t0: Date.now() };
+  K.$('#br-go').hidden = true; K.$('#br-tap').hidden = false; K.$('#br-count').textContent = K.digits(0); K.$('#br-n').value = ''; K.$('#br-result').innerHTML = '';
+  clearInterval(K.sick.timer);
+  K.sick.timer = setInterval(() => {
+    const el = K.$('#br-secs'); if (!el) { clearInterval(K.sick.timer); return; }
+    const left = Math.max(0, 60 - Math.floor((Date.now() - s.t0) / 1000));
+    el.textContent = K.t('br.secs', { s: left }); K.$('#br-arc').setAttribute('stroke-dashoffset', String(326.7 * (1 - left / 60)));
+    if (left <= 0) { clearInterval(K.sick.timer); s.running = false; K.$('#br-tap').hidden = true; const g = K.$('#br-go'); g.hidden = false; g.querySelector('span').textContent = K.t('br.again');
+      K.$('#br-n').value = s.n; K.sick.result(); if (navigator.vibrate) navigator.vibrate(300); }
+  }, 250);
+};
+K.acts.breathTap = () => { const s = K.sick.breath; if (!s || !s.running) return; s.n++; K.$('#br-count').textContent = K.digits(s.n); };
+K.bus.on && K.bus.on('rendered', () => { if (!K.$('#br-secs')) clearInterval(K.sick.timer); });
 
 }
 /* ── modules/90-more.js ── */

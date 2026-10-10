@@ -171,7 +171,7 @@ K.route('/card/:id/child/:kid/vax', ({ id, kid }) => {
       <section class="sec">${K.ui.secH(K.t('vax.know'))}<div class="k-card" id="vax-know"><ul class="ul">${K.vax.KNOW.map(x => h`<li>${K.L(x)}</li>`)}</ul><p style="margin:10px 0 0">${K.ui.say('#vax-know')}</p></div></section>
       <section class="sec"><a class="k-card" href="https://uwin.mohfw.gov.in/" target="_blank" rel="noopener"><b>${K.t('vax.uwin')}</b><p class="small" style="margin:4px 0 0">${K.t('vax.uwinSub')}</p></a></section>
     </div>`,
-    mount() { if (location.hash.endsWith('#vita')) { const e = K.$('#vita'); e && e.scrollIntoView(); } },
+    mount() { if (K.anchor() === 'vita') { const e = K.$('#vita'); e && e.scrollIntoView(); } },
   };
 });
 
