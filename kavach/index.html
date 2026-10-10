@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="9ca8915e02">
+<html lang="en" data-build="0469c8169c">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -18,7 +18,7 @@
 <meta property="og:type" content="website">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+Oriya:wght@400;500;600;700&family=Noto+Serif+Oriya:wght@500;600&display=swap" rel="stylesheet">
@@ -806,6 +806,11 @@ details.feed-st>summary small{font-weight:400;color:var(--ink-soft);font-size:.8
   .wrap{max-width:none !important;padding:0 !important}
   .pr-page{border:0;border-radius:0;padding:0;font-size:10.5pt}
 }
+/* service-worker update banner */
+.upd-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--tab-h) + 14px + var(--safe-b));z-index:60;display:flex;align-items:center;gap:12px;
+  padding:10px 12px 10px 16px;border-radius:14px;background:var(--ink);color:var(--paper);box-shadow:var(--shadow);max-width:calc(100% - 32px);font-size:.9rem}
+.upd-bar .btn{flex:none}
+@media print{.upd-bar{display:none !important}}
 
 </style>
 </head>
@@ -929,8 +934,8 @@ details.feed-st>summary small{font-weight:400;color:var(--ink-soft);font-size:.8
    escapes interpolated values unless they are K.raw()/nested K.h results.
    ============================================================================ */
 const K = window.K = window.K || {};
-K.build = '9ca8915e02';
-K.builtAt = '2026-10-10T11:45:14.300Z';
+K.build = '0469c8169c';
+K.builtAt = '2026-10-10T11:51:56.738Z';
 
 class Raw { constructor(s){ this.s = s; } toString(){ return this.s; } }
 K.Raw = Raw;
@@ -1556,6 +1561,39 @@ K.speech = {
 /* <button class="say" data-act="say" data-arg="#selector"> reads that element's text */
 K.ui.say = (target, label) => K.h`<button type="button" class="say" data-act="say" data-arg="${target}" aria-pressed="false">${K.ui.icon('sound')}<span>${label || K.t('btn.listen')}</span></button>`;
 K.acts.say = (el) => { const t = document.querySelector(el.dataset.arg); if (t) K.speech.speak(t.innerText, el); };
+
+}
+/* ── core/07-migrate.js ── */
+{
+/* ============================================================================
+   core/07-migrate — bring older cards (and imported backups) up to the
+   current record shape so screens never meet a missing field. Runs on every
+   card loaded from storage or a backup file. Idempotent.
+   ============================================================================ */
+K.migrate = (c) => {
+  if (!c || typeof c !== 'object') return c;
+  const base = K.blank.card();
+  c.mother = Object.assign({}, base.mother, c.mother || {});
+  c.contacts = Object.assign({}, base.contacts, c.contacts || {});
+  c.pregnancies = (Array.isArray(c.pregnancies) ? c.pregnancies : []).map(p => {
+    const q = Object.assign(K.blank.pregnancy(), p || {});
+    ['ifa', 'calcium', 'ppIfa', 'ppCalcium'].forEach(k => { q[k] = Object.assign({ days: {} }, q[k] || {}); q[k].days = q[k].days || {}; });
+    q.anc = Array.isArray(q.anc) ? q.anc : []; q.pnc = Array.isArray(q.pnc) ? q.pnc : [];
+    ['hist', 'hrp', 'tests', 'td', 'birthPlan', 'fp'].forEach(k => { q[k] = q[k] || {}; });
+    // birth plan item "facility" (a tick) clashed with the facility name field — now "hospital"
+    if (q.birthPlan.facility === 1) { q.birthPlan.hospital = 1; q.birthPlan.facility = ''; }
+    return q;
+  });
+  c.children = (Array.isArray(c.children) ? c.children : []).map(k => {
+    const x = Object.assign(K.blank.child(), k || {});
+    x.ifa = Object.assign({ bottles: {}, days: {} }, x.ifa || {}); x.ifa.days = x.ifa.days || {}; x.ifa.bottles = x.ifa.bottles || {};
+    ['birth', 'vax', 'vitA', 'alb', 'dev'].forEach(f => { x[f] = x[f] || {}; });
+    ['growth', 'hbnc', 'hbyc', 'ill'].forEach(f => { x[f] = Array.isArray(x[f]) ? x[f] : []; });
+    return x;
+  });
+  if (c.v == null) c.v = 1;
+  return c;
+};
 
 }
 /* ── data/10-i18n-core.js ── */
@@ -6385,7 +6423,11 @@ K.route('/about', () => ({
         <li>WHO Child Growth Standards (2006): LMS tables from the WHO <span class="mono">anthro</span> package.</li>
         <li>Anemia Mukt Bharat operational guidelines (MoHFW, 2018); HBNC and HBYC guidelines (MoHFW).</li>
         <li>MAMATA-PMMVY, Department of Women & Child Development and Mission Shakti, Odisha (effective 1 April 2025).</li>
+        <li>Anaemia Mukt Bharat training module (treatment flowcharts) as published by NHM; Anaemia Mukt Bharat Abhiyaan guidelines revised June 2026 (not yet reflected in doses).</li>
+        <li>IMNCI (WHO / MoHFW): fast-breathing cut-offs, dehydration plans A–C, zinc.</li>
+        <li>Indian Academy of Pediatrics (2022): nutritional anaemia in children, Indian Pediatrics 59:782–801.</li>
       </ul></section>
+    <section class="sec">${K.ui.eyebrow(K.t('rev.title'))}<p class="small">${K.t('rev.sub')}</p>${K.ui.btn(K.t('rev.title'), { act: 'reviewCsv', tone: 'ghost', icon: 'download', size: 'sm' })}</section>
     <section class="sec">${K.ui.eyebrow(K.t('about.made'))}<p>${K.t('app.by')}</p></section>
     <p class="foot-note mono">${K.t('about.version')} ${K.build} · ${K.builtAt.slice(0, 10)} · ${K.db.mode()}</p>
   </div>`,
@@ -6884,6 +6926,57 @@ K.acts.loadSample = async () => {
 };
 
 }
+/* ── modules/96-review.js ── */
+{
+/* ============================================================================
+   modules/96-review — Odia review sheet: every bilingual string in the app
+   (UI dictionary and content) as a CSV for a reviewer to check the Odia,
+   with empty "status" and "comment" columns. UTF-8 with BOM so Excel opens
+   Odia correctly. Also the "new version ready" banner for the service worker.
+   ============================================================================ */
+const h = K.h;
+K.i18n.add({
+  'rev.title': { en: 'Odia review sheet (CSV)', or: 'ଓଡ଼ିଆ ସମୀକ୍ଷା ଶିଟ୍ (CSV)' },
+  'rev.sub': { en: 'Every English–Odia pair in the app, for a language reviewer', or: 'ଭାଷା ସମୀକ୍ଷକଙ୍କ ପାଇଁ ଆପ୍‌ର ସମସ୍ତ ଇଂରାଜୀ–ଓଡ଼ିଆ ଲେଖା' },
+  'rev.done': { en: '{n} strings exported', or: '{n}ଟି ଲେଖା ରପ୍ତାନି ହେଲା' },
+  'upd.ready': { en: 'A new version of the app is ready.', or: 'ଆପ୍‌ର ନୂଆ ସଂସ୍କରଣ ପ୍ରସ୍ତୁତ।' },
+  'upd.reload': { en: 'Reload', or: 'ପୁଣି ଖୋଲନ୍ତୁ' },
+});
+
+K.review = {};
+K.review.collect = () => {
+  const rows = []; const seen = new WeakSet();
+  const walk = (o, path) => {
+    if (!o || typeof o !== 'object' || seen.has(o)) return; seen.add(o);
+    if ((typeof o.en === 'string' || typeof o.or === 'string') && !Array.isArray(o)) rows.push({ path, en: o.en || '', or: o.or || '' });
+    Object.keys(o).forEach(k => { if (k === 'en' || k === 'or') return; const v = o[k]; if (v && typeof v === 'object') walk(v, path ? `${path}.${k}` : k); });
+  };
+  Object.keys(K.i18n.dict).sort().forEach(k => { const e = K.i18n.dict[k]; if (e && typeof e === 'object') rows.push({ path: 'ui:' + k, en: e.en || '', or: e.or || '' }); });
+  const content = { content: K.content, dev: K.dev && { BANDS: K.dev.BANDS, TEXT: K.dev.TEXT }, feed: K.feed && { STAGES: K.feed.STAGES, GENERAL: K.feed.GENERAL, NO_BRAND: K.feed.NO_BRAND, LEAD: K.feed.LEAD },
+    ill: K.ill, vax: K.vax && { VISITS: K.vax.VISITS, P: K.vax.P, FOUR: K.vax.FOUR, KNOW: K.vax.KNOW }, hrp: K.hrp && K.hrp.ITEMS, fp: K.fp && K.fp.METHODS,
+    help: K.help && { CALLS: K.help.CALLS, SCHEMES: K.help.SCHEMES }, hist: K.preg && K.preg.HIST, sx: K.anc && K.anc.SX, hbyc: K.hbyc && { CHECK: K.hbyc.CHECK, SERVE: K.hbyc.SERVE } };
+  Object.keys(content).forEach(k => walk(content[k], k));
+  // drop exact duplicates (same pair reused in several places), keep the first path
+  const out = []; const key = new Set();
+  rows.forEach(r => { const id = r.en + '\u0001' + r.or; if (key.has(id)) return; key.add(id); out.push(r); });
+  return out;
+};
+K.review.csv = (rows) => {
+  const q = (s) => '"' + String(s == null ? '' : s).replace(/"/g, '""') + '"';
+  return '﻿' + [['where', 'english', 'odia', 'status (ok / fix)', 'comment'].map(q).join(',')].concat(rows.map(r => [r.path, r.en, r.or, '', ''].map(q).join(','))).join('\r\n') + '\r\n';
+};
+K.acts.reviewCsv = () => { const rows = K.review.collect(); K.download(`kavach-odia-review-${K.build}.csv`, K.review.csv(rows), 'text/csv;charset=utf-8'); K.ui.toast(K.t('rev.done', { n: rows.length })); };
+
+/* service-worker update banner */
+K.ui.updateReady = () => {
+  if (K.$('#upd-bar')) return;
+  const b = document.createElement('div'); b.id = 'upd-bar'; b.className = 'upd-bar'; b.setAttribute('role', 'status');
+  b.innerHTML = K.hv(h`<span>${K.t('upd.ready')}</span>${K.ui.btn(K.t('upd.reload'), { act: 'reloadApp', size: 'sm' })}`);
+  document.body.appendChild(b);
+};
+K.acts.reloadApp = () => location.reload();
+
+}
 /* ── main.js ── */
 {
 /* ============================================================================
@@ -6896,7 +6989,11 @@ K.acts.loadSample = async () => {
   if (K.db.mode() !== 'idb') setTimeout(() => K.ui.toast(K.t('warn.storage'), 6000), 1200);
   K.bus.on('storage-warning', () => K.ui.toast(K.t('warn.storage'), 6000));
   K.bus.on('cards', () => K.ui.updateBadges());
-  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && !/^(localhost|127\.)/.test(location.hostname)) {
+  // no service worker on localhost while developing, unless localStorage "kavach.swdev" is set (for offline tests)
+  const isLocal = /^(localhost|127\.)/.test(location.hostname); let swDev = false; try { swDev = !!localStorage.getItem('kavach.swdev'); } catch (e) {}
+  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && (!isLocal || swDev)) {
+    const hadController = !!navigator.serviceWorker.controller; // first install is not an "update"
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadController) K.ui.updateReady(); });
     navigator.serviceWorker.register('sw.js').catch(err => console.warn('SW', err));
   }
   if (!K.settings.get('onboarded') && K.path() !== '/welcome') { history.replaceState(null, '', '#/welcome'); }

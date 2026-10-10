@@ -14,7 +14,7 @@ Each chunk ends with: build → Playwright check at phone size → BUILD-LOG ent
 | 7 | Learn & counsel library, flipbook mode, read-aloud | done |
 | 8 | Tools: EDD, vaccine due dates, z-score, anaemia + AMB doses, breath counter, ORS/zinc, IFA/albendazole doses, HRP quick screen, corrected age | done |
 | 9 | Entitlements & helplines (dated sources), Due tab across cards, print view, calendar export, sample family | done |
-| 10 | PWA (manifest, icons, service worker), QA, Odia review sheet, deploy notes, link from home page | next |
+| 10 | PWA (manifest, icons, service worker), QA, Odia review sheet, deploy notes, link from home page | done |
 
 ## Notes to carry forward
 - Odisha IFA syrup days for children: Tuesday + Friday (national card: Wednesday + Saturday) — setting `ifaDays`.

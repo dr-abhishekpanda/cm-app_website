@@ -91,7 +91,11 @@ K.route('/about', () => ({
         <li>WHO Child Growth Standards (2006): LMS tables from the WHO <span class="mono">anthro</span> package.</li>
         <li>Anemia Mukt Bharat operational guidelines (MoHFW, 2018); HBNC and HBYC guidelines (MoHFW).</li>
         <li>MAMATA-PMMVY, Department of Women & Child Development and Mission Shakti, Odisha (effective 1 April 2025).</li>
+        <li>Anaemia Mukt Bharat training module (treatment flowcharts) as published by NHM; Anaemia Mukt Bharat Abhiyaan guidelines revised June 2026 (not yet reflected in doses).</li>
+        <li>IMNCI (WHO / MoHFW): fast-breathing cut-offs, dehydration plans A–C, zinc.</li>
+        <li>Indian Academy of Pediatrics (2022): nutritional anaemia in children, Indian Pediatrics 59:782–801.</li>
       </ul></section>
+    <section class="sec">${K.ui.eyebrow(K.t('rev.title'))}<p class="small">${K.t('rev.sub')}</p>${K.ui.btn(K.t('rev.title'), { act: 'reviewCsv', tone: 'ghost', icon: 'download', size: 'sm' })}</section>
     <section class="sec">${K.ui.eyebrow(K.t('about.made'))}<p>${K.t('app.by')}</p></section>
     <p class="foot-note mono">${K.t('about.version')} ${K.build} · ${K.builtAt.slice(0, 10)} · ${K.db.mode()}</p>
   </div>`,

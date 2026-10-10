@@ -43,3 +43,10 @@
 - Sample family (`modules/95-sample.js`): mother at 26 weeks with moderate anaemia and a 14-month-old girl with full records; no phone numbers.
 - Fixed: birth-plan item key "facility" overwrote the hospital name (renamed to "hospital").
 - Checked in Chromium (English and Odia): sample load, Due tab and filters, .ics download (6 events, max line 64 octets), help accordions, print view on screen and in print media, PDF render.
+
+## 2026-10-10 · session 2 · chunk 10
+- PWA: `manifest.webmanifest` (standalone, theme teal, shortcuts to danger signs / Due / Tools), icons rendered from the Kavach mark (192, 512, maskable 512, Apple touch 180, SVG favicon), service worker with cache-first app shell refreshed in the background, cached Google Fonts, and a "new version ready — Reload" bar on update.
+- `K.migrate` fills fields added since v1 for stored cards and restored backups (and moves the old birth-plan "facility" tick to "hospital").
+- Odia review sheet: About → CSV of ~1,550 English–Odia pairs (UTF-8 with BOM, status and comment columns).
+- `DEPLOY.md`: what goes live, release steps, offline behaviour, review checklist. Site home page: the #CM-APP card now links to `/kavach/`.
+- Offline test (local server, Chromium): service worker active, shell cached, offline reload opens the sample card from IndexedDB and the Learn pages; migration check passed. Regression: all earlier flows (1–7) re-run without app errors.

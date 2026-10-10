@@ -1,0 +1,26 @@
+{
+  "name": "Maa 'o' Shishu Kavach · ମା' ଓ ଶିଶୁ କବଚ",
+  "short_name": "Kavach",
+  "description": "A digital Mother and Child Protection (MCP) card in Odia and English for families and health workers. Works offline; data stays on the phone. #CM-APP",
+  "id": "./",
+  "start_url": "./index.html#/",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F4F5F1",
+  "theme_color": "#0C5E4E",
+  "lang": "or",
+  "dir": "ltr",
+  "categories": ["health", "medical", "education"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ],
+  "shortcuts": [
+    { "name": "Danger signs", "short_name": "Danger", "url": "./index.html#/learn/danger" },
+    { "name": "Due list", "short_name": "Due", "url": "./index.html#/due" },
+    { "name": "Tools", "short_name": "Tools", "url": "./index.html#/tools" }
+  ]
+}
