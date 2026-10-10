@@ -24,3 +24,9 @@
 - Child overview now shows status tiles (development, feeding, IFA syrup, home visits, sick child).
 - Router: `#/path#anchor` links no longer break route matching (`K.anchor()`).
 - Checked in Chromium at 393×851 in English and Odia: 10-month girl (milestone ticks, warning sign → DEIC, HBYC 9-month visit marked sick → sick screen, zinc tracker, breath count 55 at 2–12 m → fast), 40-day preterm boy (newborn danger set, "too young" development note), IFA day switched to Wed/Sat → "IFA syrup today" on Home.
+
+## 2026-10-10 · session 2 · chunk 7
+- Learn library (`data/60-learn.js`, `modules/70-learn.js`): 12 topics (danger signs, care in pregnancy, birth and after, newborn care, breastfeeding and food, vaccines, growth, play and development, diarrhoea/pneumonia/fever, iron and anaemia, family planning, hygiene and malaria) built from content already in the app plus the Odisha card's anaemia do's and don'ts (p.43) and the national card's newborn-care list (p.7).
+- Reading mode with read-aloud per card; counselling flipbook (`#/learn/<topic>/flip/<n>`: one large card per screen, swipe, arrow keys, progress dots); search across all cards; danger-sign set pages with 108/102/104 buttons.
+- Odia written for the app (not on the card) is listed in the data-file headers for the review sheet.
+- Checked in Chromium at 393×851, English and Odia: hub, search ("zinc" → sick-child card), topic pages, flipbook next/arrow/swipe, danger sets.

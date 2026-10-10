@@ -11,8 +11,8 @@ Each chunk ends with: build → Playwright check at phone size → BUILD-LOG ent
 | 4 | Immunisation: UIP schedule engine with catch-up limits, tracker, Vitamin A + albendazole, AEFI advice, missed-dose list, FIC/CIC | done |
 | 5 | Growth: WHO LMS tables, z-scores, SVG charts (WFA, L/HFA, WFL/H, HCFA), MUAC/SAM, faltering | done |
 | 6 | Development & feeding: milestones + warning signs (2–3 m → 3 y), DEIC, parenting tips, feeding by age, HBYC, IFA syrup tracker, diarrhoea/pneumonia care, ROP reminder | done |
-| 7 | Learn & counsel library, flipbook mode, read-aloud | next |
-| 8 | Tools: EDD, vaccine due dates, z-score, anaemia + AMB doses, breath counter, ORS/zinc, IFA/albendazole doses, HRP quick screen, corrected age | |
+| 7 | Learn & counsel library, flipbook mode, read-aloud | done |
+| 8 | Tools: EDD, vaccine due dates, z-score, anaemia + AMB doses, breath counter, ORS/zinc, IFA/albendazole doses, HRP quick screen, corrected age | next |
 | 9 | Entitlements & helplines (dated sources), Due tab across cards, print view, calendar export, sample family | |
 | 10 | PWA (manifest, icons, service worker), QA, Odia review sheet, deploy notes, link from home page | |
 

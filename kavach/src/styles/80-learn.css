@@ -1,0 +1,38 @@
+/* ------------------------------------------------------------ learn ------- */
+.learn-q{margin:14px 0 4px}
+.learn-q input{padding-left:14px}
+.flip-cta{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;margin-bottom:14px;border-color:color-mix(in srgb,var(--primary) 35%,var(--line))}
+.flip-cta>.ic:first-child{width:36px;height:36px;padding:8px;border-radius:11px;background:var(--primary);color:#fff}
+.flip-cta b{display:block}
+.flip-cta small{display:block;color:var(--ink-faint);font-size:.8rem;margin-top:2px}
+.call-row{flex-wrap:wrap}
+.lcards{gap:12px}
+.lcard{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:16px}
+.lcard h2{font-size:1.15rem;margin:0 0 8px;line-height:1.25}
+.lcard .lc-lead{margin:0 0 10px;color:var(--ink-soft);font-size:.93rem}
+.lcard .lc-note{margin:6px 0 0;padding:10px 12px;border-radius:var(--r-sm);background:var(--paper-2);font-size:.88rem;color:var(--ink-soft)}
+.lcard .lc-say{margin:10px 0 0}
+.lcard .ill-list{margin-bottom:0}
+.lcard.danger{border-color:color-mix(in srgb,var(--danger) 40%,var(--line));background:color-mix(in srgb,var(--danger-tint) 55%,var(--card))}
+.lcard.danger h2{color:var(--danger)}
+.lcard.danger .ill-list .ic{color:var(--danger)}
+.lcard.warn{border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+.lcard.warn .ill-list .ic{color:var(--accent)}
+.lcard.info .ill-list .ic{color:var(--info)}
+.lcard.big h2{font-size:1.5rem}
+.lcard.big .ill-list{gap:14px}
+.lcard.big .ill-list li{font-size:1.14rem;line-height:1.45}
+.lcard.big .ill-list .ic{width:24px;height:24px}
+:lang(or) .lcard.big .ill-list li{font-size:1.1rem;line-height:1.6}
+
+/* flipbook: one card per screen */
+.flip{display:flex;flex-direction:column;min-height:calc(100dvh - var(--top-h));padding:12px var(--gutter) calc(12px + var(--safe-b));max-width:var(--maxw);margin:0 auto}
+.flip-dots{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin:4px 0 12px}
+.flip-dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.flip-dots i.past{background:color-mix(in srgb,var(--primary) 45%,var(--line))}
+.flip-dots i.on{background:var(--primary);width:20px;border-radius:5px}
+.flip-card{flex:1;touch-action:pan-y}
+.flip-card .lcard{min-height:100%;box-shadow:var(--shadow)}
+.flip-bar{position:sticky;bottom:0;display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;padding:12px 0 calc(4px + var(--safe-b));background:linear-gradient(to top,var(--paper) 70%,transparent)}
+.flip-bar .btn{justify-content:center}
+.flip-bar>.btn:last-child{justify-self:end}

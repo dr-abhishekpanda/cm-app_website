@@ -1,6 +1,6 @@
 /* ============================================================================
    modules/61-feed — what to feed at this age (data/51-feed), read aloud;
-   other ages folded. Also the general-information route /learn/feeding.
+   other ages folded. The same content is the "feeding" topic in the Learn library.
    ============================================================================ */
 const h = K.h;
 
@@ -37,8 +37,6 @@ K.route('/card/:id/child/:kid/feed', ({ id, kid }) => {
   return { title: K.t('feed.title'), sub: K.child.label(k), back: K.child.url(c, k).slice(1), tab: 'home',
     html: h`<div class="wrap">${K.ui.phead(K.child.label(k) + (k.dob ? ' · ' + K.d.ageText(k.dob) : ''), K.t('feed.title'))}${feedPage(k)}</div>` };
 });
-K.route('/learn/feeding', () => ({ title: K.t('feed.title'), back: '/learn', tab: 'learn',
-  html: h`<div class="wrap">${K.ui.phead('', K.t('feed.title'))}${feedPage(null)}</div>` }));
 
 K.child.addTile(20, (c, k) => {
   const st = K.feed.stageFor(K.feed.ageM(k));

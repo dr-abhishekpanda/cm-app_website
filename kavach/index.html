@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="092ddae4da">
+<html lang="en" data-build="622fdcd246">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -728,6 +728,46 @@ details.feed-st>summary small{font-weight:400;color:var(--ink-soft);font-size:.8
 .br-mid b{font-size:3rem;line-height:1;color:var(--ink)}
 .br-tap{min-height:120px;font-size:1.2rem;touch-action:manipulation;user-select:none;-webkit-user-select:none}
 
+/* ── styles/80-learn.css ── */
+/* ------------------------------------------------------------ learn ------- */
+.learn-q{margin:14px 0 4px}
+.learn-q input{padding-left:14px}
+.flip-cta{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;margin-bottom:14px;border-color:color-mix(in srgb,var(--primary) 35%,var(--line))}
+.flip-cta>.ic:first-child{width:36px;height:36px;padding:8px;border-radius:11px;background:var(--primary);color:#fff}
+.flip-cta b{display:block}
+.flip-cta small{display:block;color:var(--ink-faint);font-size:.8rem;margin-top:2px}
+.call-row{flex-wrap:wrap}
+.lcards{gap:12px}
+.lcard{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:16px}
+.lcard h2{font-size:1.15rem;margin:0 0 8px;line-height:1.25}
+.lcard .lc-lead{margin:0 0 10px;color:var(--ink-soft);font-size:.93rem}
+.lcard .lc-note{margin:6px 0 0;padding:10px 12px;border-radius:var(--r-sm);background:var(--paper-2);font-size:.88rem;color:var(--ink-soft)}
+.lcard .lc-say{margin:10px 0 0}
+.lcard .ill-list{margin-bottom:0}
+.lcard.danger{border-color:color-mix(in srgb,var(--danger) 40%,var(--line));background:color-mix(in srgb,var(--danger-tint) 55%,var(--card))}
+.lcard.danger h2{color:var(--danger)}
+.lcard.danger .ill-list .ic{color:var(--danger)}
+.lcard.warn{border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+.lcard.warn .ill-list .ic{color:var(--accent)}
+.lcard.info .ill-list .ic{color:var(--info)}
+.lcard.big h2{font-size:1.5rem}
+.lcard.big .ill-list{gap:14px}
+.lcard.big .ill-list li{font-size:1.14rem;line-height:1.45}
+.lcard.big .ill-list .ic{width:24px;height:24px}
+:lang(or) .lcard.big .ill-list li{font-size:1.1rem;line-height:1.6}
+
+/* flipbook: one card per screen */
+.flip{display:flex;flex-direction:column;min-height:calc(100dvh - var(--top-h));padding:12px var(--gutter) calc(12px + var(--safe-b));max-width:var(--maxw);margin:0 auto}
+.flip-dots{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin:4px 0 12px}
+.flip-dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.flip-dots i.past{background:color-mix(in srgb,var(--primary) 45%,var(--line))}
+.flip-dots i.on{background:var(--primary);width:20px;border-radius:5px}
+.flip-card{flex:1;touch-action:pan-y}
+.flip-card .lcard{min-height:100%;box-shadow:var(--shadow)}
+.flip-bar{position:sticky;bottom:0;display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;padding:12px 0 calc(4px + var(--safe-b));background:linear-gradient(to top,var(--paper) 70%,transparent)}
+.flip-bar .btn{justify-content:center}
+.flip-bar>.btn:last-child{justify-self:end}
+
 </style>
 </head>
 <body>
@@ -850,8 +890,8 @@ details.feed-st>summary small{font-weight:400;color:var(--ink-soft);font-size:.8
    escapes interpolated values unless they are K.raw()/nested K.h results.
    ============================================================================ */
 const K = window.K = window.K || {};
-K.build = '092ddae4da';
-K.builtAt = '2026-10-10T11:19:31.570Z';
+K.build = '622fdcd246';
+K.builtAt = '2026-10-10T11:27:26.251Z';
 
 class Raw { constructor(s){ this.s = s; } toString(){ return this.s; } }
 K.Raw = Raw;
@@ -2217,6 +2257,74 @@ K.ill.IFA_RULES = [
   { en: 'One 50 ml bottle lasts 6 months. When it is finished, ask your ASHA/ANM for a new bottle.', or: 'ଗୋଟିଏ ୫୦ ମି.ଲି. ଆଇ.ଏଫ୍.ଏ ସିରପ୍ ବୋତଲ ୬ ମାସ ଯାଇଥାଏ। ଏହା ସରିବା ମାତ୍ରେ ନିଜ ଆଶା/ଏ.ଏନ୍.ଏମ୍. ଦିଦିଙ୍କୁ ନୂଆ ବୋତଲ ମାଗନ୍ତୁ।' },
   { en: 'Tick each dose after giving it.', or: 'ଗୋଟିଏ ଆଇ.ଏଫ୍.ଏ ସିରପ୍ ଦେବା ପରେ ଗୋଟିଏ ଚିହ୍ନ ଲଗାନ୍ତୁ।' },
   { en: 'If there is any problem after the syrup, contact your ANM at once.', or: 'ଯଦି ସିରପ୍ ଖାଇବା ପରେ କୌଣସି ସମସ୍ୟା ହୋଇଥାଏ, ତୁରନ୍ତ ନିଜ ଏ.ଏନ୍.ଏମ୍. ଦିଦିଙ୍କୁ ଯୋଗାଯୋଗ କରନ୍ତୁ।' },
+];
+
+}
+/* ── data/60-learn.js ── */
+{
+/* ============================================================================
+   data/60-learn — extra counselling content for the Learn library.
+   anaemia: Odisha MCP card V-2023-24 p.43 (Odia; English translated here).
+   newbornCare: national MCP card 2018 p.7 "Care of newborn" (Odia written
+   for the app — flagged for review). ancBasics: Odisha p.3 and the SUMAN
+   service guarantee (p.45). hygiene: Odisha pp.9 and 43.
+   ============================================================================ */
+K.content = K.content || {};
+K.content.anaemia = {
+  dos: [
+    { icon: 'bowl', en: 'Anaemia comes from too little iron and other nutrients. Eat green leafy vegetables (khada, koshala, methi, palak, drumstick leaves), ragi (mandia), jaggery, chuda, fish, meat, eggs, dal and soybean.', or: 'ଲୌହସାର, ପୁଷ୍ଟିସାର ଓ ଅନ୍ୟାନ୍ୟ ଖାଦ୍ୟସାର ଅଭାବରୁ ରକ୍ତହୀନତା ହୋଇଥାଏ। ରକ୍ତହୀନତାରୁ ରକ୍ଷା ପାଇବା ପାଇଁ ଖାଦ୍ୟରେ ଖଡ଼ା, କୋଶଳା, ମେଥି, ପାଳଙ୍ଗ, ସଜନା ଇତ୍ୟାଦି ଶାଗ, ମାଣ୍ଡିଆ, ଗୁଡ଼, ଚୂଡ଼ା, ମାଛ, ମାଂସ, ଅଣ୍ଡା, ଡାଲି ଜାତୀୟ ଖାଦ୍ୟ, ସୋୟାବିନ ଇତ୍ୟାଦି ଖାଆନ୍ତୁ।' },
+    { icon: 'sun', en: 'To absorb iron, eat fruits rich in vitamin C with meals: lemon, orange, tomato, guava, amla.', or: 'ଲୌହସାର ଶରୀରରେ ମିଶାଇବା ପାଇଁ ଖାଦ୍ୟ ସହିତ ଭିଟାମିନ୍-ସି ଯୁକ୍ତ ଖାଦ୍ୟ ଯଥା ଲେମ୍ବୁ, କମଳା, ଟମାଟୋ, ପିଜୁଳି, ଅଁଳା ଇତ୍ୟାଦି ଫଳ ଖାଆନ୍ତୁ।' },
+    { icon: 'house', en: 'Do not go out barefoot to defecate in the open. Use a toilet.', or: 'ଖାଲି ପାଦରେ ବାହାରକୁ ଶୌଚ ଯାଆନ୍ତୁ ନାହିଁ। ପାଇଖାନା ବ୍ୟବହାର କରନ୍ତୁ।' },
+    { icon: 'net', en: 'Sleep under an insecticide-treated bed net.', or: 'ଔଷଧ ବୁଡ଼ା ମଶାରୀ ଟାଣି ଶୁଅନ୍ତୁ।' },
+    { icon: 'pill', en: 'Deworming tablets twice a year (February and August) for children aged 1–19 years and women aged 20–24 years.', or: '୧ ବର୍ଷରୁ ୧୯ ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ ପିଲା ଓ ୨୦ ବର୍ଷରୁ ୨୪ ବର୍ଷ ପ୍ରଜନନକ୍ଷମ ମହିଳାମାନଙ୍କୁ ବର୍ଷକୁ ଦୁଇଥର କୃମିନାଶକ ଔଷଧ ଖାଇବାକୁ ଦିଅନ୍ତୁ। (ଫେବୃଆରୀ ଓ ଅଗଷ୍ଟ)' },
+    { icon: 'pill', en: 'Take iron and folic acid (IFA) tablets or syrup regularly.', or: 'ଲୌହସାର ଓ ଫୋଲିକ ଏସିଡ୍ ବଟିକା / ସିରପ୍ ନିୟମିତ ଖାଆନ୍ତୁ।' },
+    { icon: 'water', en: 'Drink clean water. Keep your hands clean.', or: 'ପରିଷ୍କାର ପାଣି ପିଅନ୍ତୁ। ହାତକୁ ସଫା ରଖନ୍ତୁ।' },
+    { icon: 'water', en: 'Drink lemon water after the IFA tablet.', or: 'ଲୌହସାର ଓ ଫୋଲିକ୍ ଏସିଡ୍ ବଟିକା ଖାଇବା ପରେ ଲେମ୍ବୁ ପାଣି ପିଅନ୍ତୁ।' },
+  ],
+  donts: [
+    { icon: 'x', en: 'Do not drink tea or coffee with meals — keep at least 1 hour between food and tea or coffee.', or: 'ଖାଦ୍ୟ ସହିତ ଚା ଓ କଫି ପିଅନ୍ତୁ ନାହିଁ (ଖାଦ୍ୟ, ଚା ଓ କଫି ପିଇବା ମଧ୍ୟରେ ଅତି କମ୍‌ରେ ୧ ଘଣ୍ଟାର ବ୍ୟବଧାନ ରଖନ୍ତୁ)।' },
+    { icon: 'x', en: 'Do not take calcium tablets with IFA tablets — keep at least 2 hours between them.', or: 'ଲୌହସାର ଓ ଫୋଲିକ ଏସିଡ୍ ବଟିକା ସହିତ କ୍ୟାଲସିୟମ୍ ବଟିକା ଖାଆନ୍ତୁ ନାହିଁ (ଏହି ଦୁଇଟି ବଟିକା ଖାଇବାର ବ୍ୟବଧାନ ଅତି କମ୍‌ରେ ୨ ଘଣ୍ଟା ରହିବା ଉଚିତ୍)।' },
+    { icon: 'x', en: 'Do not drink soft drinks.', or: 'ମୃଦୁ ପାନୀୟ ପିଅନ୍ତୁ ନାହିଁ।' },
+  ],
+};
+K.content.newbornCare = [
+  { icon: 'sun', en: 'Keep the baby warm: skin-to-skin with the mother, covered head, hands and feet.', or: 'ଶିଶୁକୁ ଉଷୁମ ରଖନ୍ତୁ: ମା’ଙ୍କ ଛାତିରେ ଲଗାଇ ରଖନ୍ତୁ, ମୁଣ୍ଡ, ହାତ ଓ ପାଦ ଘୋଡ଼ାଇ ରଖନ୍ତୁ।' },
+  { icon: 'heart', en: 'Start breastfeeding within 1 hour of birth.', or: 'ଜନ୍ମର ୧ ଘଣ୍ଟା ମଧ୍ୟରେ ସ୍ତନ୍ୟପାନ ଆରମ୍ଭ କରନ୍ତୁ।' },
+  { icon: 'heart', en: "Feed the baby only mother's milk.", or: 'ଶିଶୁକୁ କେବଳ ମା’ କ୍ଷୀର ଦିଅନ୍ତୁ।' },
+  { icon: 'water', en: 'Do not bathe the baby for the first 48 hours.', or: 'ପ୍ରଥମ ୪୮ ଘଣ୍ଟା ଶିଶୁକୁ ଗାଧୋଇବେ ନାହିଁ।' },
+  { icon: 'shield', en: 'Keep the cord clean and dry. Put nothing on it.', or: 'ନାଭିକୁ ସଫା ଓ ଶୁଖିଲା ରଖନ୍ତୁ। ନାଭିରେ କିଛି ଲଗାନ୍ତୁ ନାହିଁ।' },
+  { icon: 'users', en: 'Keep the baby away from sick people.', or: 'ଅସୁସ୍ଥ ଲୋକଙ୍କଠାରୁ ଶିଶୁକୁ ଦୂରରେ ରଖନ୍ତୁ।' },
+  { icon: 'scale', en: 'Special care if the baby weighed less than 2.5 kg at birth — talk to the ANM.', or: 'ଜନ୍ମ ସମୟରେ ଓଜନ ୨.୫ କି.ଗ୍ରା.ରୁ କମ୍ ଥିଲେ ବିଶେଷ ଯତ୍ନ ଆବଶ୍ୟକ — ଏ.ଏନ୍.ଏମ୍.ଙ୍କ ସହ କଥା ହୁଅନ୍ତୁ।' },
+];
+K.content.hbnc = [
+  { icon: 'house', en: 'The ASHA visits a newborn at home on days 3, 7, 14, 21, 28 and 42 (and on day 1 after a home birth) to check for danger signs.', or: 'ନିର୍ଦ୍ଦେଶାବଳୀ ଅନୁଯାୟୀ ଜନ୍ମର ୧ମ ଦିନ (କେବଳ ଘରେ ଜନ୍ମ ହୋଇଥିବା ଶିଶୁମାନଙ୍କ ପାଇଁ), ୩ୟ, ୭ମ, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନରେ ଆଶାକର୍ମୀମାନେ ଗୃହ ପରିଦର୍ଶନ କରି ନବଜାତକଙ୍କର ସ୍ୱାସ୍ଥ୍ୟଗତ ବିପଦର ଲକ୍ଷଣ ଚିହ୍ନଟ କରିବେ।' },
+  { icon: 'hospital', en: 'After discharge from an SNCU or NBSU, the same visits are counted from the day of discharge.', or: 'ଏସ୍.ଏନ୍.ସି.ୟୁ. ବା ଏନ୍.ବି.ଏସ୍.ୟୁ.ରୁ ଡିସ୍‌ଚାର୍ଜ ହେଲେ ଡିସ୍‌ଚାର୍ଜର ୧ମ, ୩ୟ, ୭ମ, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନରେ ଗୃହ ପରିଦର୍ଶନ ହେବ।' },
+  { icon: 'scale', en: 'Babies under 2.5 kg get three extra visits.', or: '୨.୫ କି.ଗ୍ରା.ରୁ କମ୍ ଓଜନର ଶିଶୁଙ୍କ ପାଇଁ ତିନୋଟି ଅଧିକ ପରିଦର୍ଶନ।' },
+  { icon: 'eye', en: 'Babies born before 34 weeks or under 2 kg need an eye check for ROP by 1 month of age.', or: 'ଗର୍ଭଧାରଣ ଠାରୁ ୩୪ ସପ୍ତାହ ପୂରଣ ହେବା ପୂର୍ବରୁ ଜନ୍ମ ହୋଇଥିବା ବା ଜନ୍ମ ସମୟରେ ୨ କି.ଗ୍ରା.ରୁ କମ୍ ଓଜନ ଥିବା ଶିଶୁଙ୍କର ଏକ ମାସ ବୟସରେ ଚକ୍ଷୁ ପରୀକ୍ଷା (RoP Screening) ଆବଶ୍ୟକ।' },
+];
+K.content.ancBasics = [
+  { icon: 'calendar', en: 'Register the pregnancy early, in the first 3 months, with your ANM or ASHA.', or: 'ପ୍ରଥମ ୩ ମାସ ମଧ୍ୟରେ ଏ.ଏନ୍.ଏମ୍. ବା ଆଶାଙ୍କ ପାଖରେ ଗର୍ଭ ପଞ୍ଜୀକରଣ କରନ୍ତୁ।' },
+  { icon: 'hospital', en: 'At least 4 check-ups (ANC), with one in the first 3 months.', or: 'ଅତିକମ୍‌ରେ ୪ଟି ଗର୍ଭାବସ୍ଥାର ପରୀକ୍ଷା (ଏ.ଏନ୍.ସି.), ପ୍ରଥମ ତ୍ରୟମାସରେ ଗୋଟିଏ ସହିତ।' },
+  { icon: 'user', en: 'In the 2nd or 3rd trimester, see a doctor at least once at the PMSMA clinic on the 9th of the month.', or: 'ଗର୍ଭାବସ୍ଥାର ଦ୍ୱିତୀୟ/ତୃତୀୟ ତ୍ରୟମାସିକ ମଧ୍ୟରେ ଅତିକମ୍‌ରେ ଥରେ ଗର୍ଭାବସ୍ଥାର ପରୀକ୍ଷା ଜଣେ ଡାକ୍ତରଙ୍କ ଦ୍ୱାରା ମାସର ୯ ତାରିଖରେ ହେଉଥିବା ପ୍ରଧାନମନ୍ତ୍ରୀ ସୁରକ୍ଷିତ ମାତୃତ୍ୱ ଅଭିଯାନରେ ନିଶ୍ଚିତ କରାନ୍ତୁ।' },
+  { icon: 'pulse', en: 'At each check-up: weight, blood pressure, haemoglobin, urine test and abdominal check.', or: 'ପ୍ରତ୍ୟେକ ପରୀକ୍ଷାରେ: ଓଜନ, ରକ୍ତଚାପ, ହିମୋଗ୍ଲୋବିନ୍, ପରିସ୍ରା ପରୀକ୍ଷା ଓ ପେଟ ପରୀକ୍ଷା।' },
+  { icon: 'drop', en: 'Blood tests once: blood group, HIV, syphilis, hepatitis B and blood sugar (OGTT); an ultrasound as advised.', or: 'ଥରେ ରକ୍ତ ପରୀକ୍ଷା: ରକ୍ତ ଗ୍ରୁପ୍, ଏଚ୍.ଆଇ.ଭି., ସିଫିଲିସ୍, ହେପାଟାଇଟିସ୍ ବି ଓ ରକ୍ତରେ ଶର୍କରା (OGTT); ପରାମର୍ଶ ଅନୁସାରେ ଅଲ୍ଟ୍ରାସାଉଣ୍ଡ।' },
+  { icon: 'heart', en: 'All check-ups, tests, medicines, delivery and transport are free at government hospitals.', or: 'ସରକାରୀ ଡାକ୍ତରଖାନାରେ ସମସ୍ତ ପରୀକ୍ଷା, ଔଷଧ, ପ୍ରସବ ଓ ଯାତାୟାତ ମାଗଣା।' },
+];
+K.content.hygiene = [
+  { icon: 'hand', en: 'Wash hands with soap and water: before cooking, before eating and feeding the child, after the toilet and after cleaning the child.', or: 'ଖାଦ୍ୟ ତିଆରି କରିବା ପୂର୍ବରୁ, ଶିଶୁକୁ ଖୁଆଇବା ପୂର୍ବରୁ, ମଳତ୍ୟାଗ କରିବା ପରେ ଏବଂ ଶିଶୁର ମଳ ସଫା କରିବା ପରେ ଦୁଇ ହାତକୁ ଭଲ ଭାବେ ସାବୁନ ଲଗାଇ ଧୁଅନ୍ତୁ।' },
+  { icon: 'water', en: 'Keep drinking water clean and covered.', or: 'ପାନୀୟ ଜଳକୁ ସଫା, ସୁରକ୍ଷିତ ଏବଂ ଢାଙ୍କୁଣି ଥିବା ପାତ୍ରରେ ଘୋଡ଼ାଇ ରଖନ୍ତୁ।' },
+  { icon: 'house', en: 'Always use a toilet; do not defecate in the open.', or: 'ସବୁ ସମୟରେ ପାଇଖାନା ବ୍ୟବହାର କରନ୍ତୁ ଏବଂ ଖୋଲାରେ ଶୌଚ କରନ୍ତୁ ନାହିଁ।' },
+  { icon: 'net', en: 'Mother and child should sleep under an insecticide-treated bed net every night.', or: "ମାରାତ୍ମକ ମ୍ୟାଲେରିଆରୁ ରକ୍ଷା ପାଇବା ପାଇଁ ମା' ଓ ଶିଶୁ ନିୟମିତ ଔଷଧବୁଡ଼ା ମଶାରୀ ଟାଣି ଶୁଅନ୍ତୁ।" },
+  { icon: 'temp', en: 'Any fever in a malaria area: get a malaria test (RDT) from the ASHA the same day.', or: 'ମ୍ୟାଲେରିଆ ଅଞ୍ଚଳରେ, ଯେକୌଣସି ଜ୍ୱର ହେଲେ ସେହି ଦିନ ଆଶାଙ୍କ ଠାରୁ ମ୍ୟାଲେରିଆ ପରୀକ୍ଷା (RDT) କରାନ୍ତୁ।' },
+  { icon: 'house', en: 'Cook on an LPG stove so that there is no smoke in the house.', or: 'ରୋଷେଇ କରିବା ପାଇଁ ଏଲ୍‌ପିଜି ଗ୍ୟାସ୍ ବ୍ୟବହାର କରନ୍ତୁ। ତା ଦ୍ୱାରା ଘରେ ଧୁଆଁ ହୋଇନଥାଏ।' },
+];
+K.content.afterBirth = [
+  { icon: 'hospital', en: 'Stay at least 48 hours in the hospital after delivery.', or: 'ପ୍ରସବ ପରେ ଅତିକମ୍‌ରେ ୪୮ ଘଣ୍ଟା ପର୍ଯ୍ୟନ୍ତ ଡାକ୍ତରଖାନାରେ ରୁହନ୍ତୁ।' },
+  { icon: 'pill', en: 'Take one IFA tablet and two calcium tablets every day for at least 6 months after delivery.', or: 'ପ୍ରସବ ପରେ ଅତି କମ୍‌ରେ ୬ ମାସ ପର୍ଯ୍ୟନ୍ତ ପ୍ରତିଦିନ ଗୋଟିଏ ଆଇ.ଏଫ୍.ଏ. ବଟିକା ଓ ଦୁଇଟି କ୍ୟାଲସିୟମ୍ ବଟିକା ଖାଆନ୍ତୁ।' },
+  { icon: 'house', en: 'The ASHA will visit you and the baby at home on days 3, 7, 14, 21, 28 and 42 after delivery.', or: 'ଆଶା ଦିଦି ପ୍ରସବ ପରେ ୩, ୭, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନରେ ମା’ ଓ ଶିଶୁଙ୍କୁ ଘରେ ଦେଖିବେ।' },
+  { icon: 'bowl', en: 'Eat one extra meal a day while breastfeeding, drink enough water and rest well.', or: 'ସ୍ତନ୍ୟପାନ ସମୟରେ ଦିନକୁ ଗୋଟିଏ ଅଧିକ ଖାଦ୍ୟ ଖାଆନ୍ତୁ, ଯଥେଷ୍ଟ ପାଣି ପିଅନ୍ତୁ ଓ ଭଲ ଭାବେ ବିଶ୍ରାମ ନିଅନ୍ତୁ।' },
+  { icon: 'heart', en: 'Keep the baby with you and breastfeed often, day and night.', or: 'ଶିଶୁକୁ ପାଖରେ ରଖନ୍ତୁ ଓ ଦିନ ରାତି ବାରମ୍ବାର ସ୍ତନ୍ୟପାନ କରାନ୍ତୁ।' },
+  { icon: 'users', en: 'Choose a family planning method before 6 weeks after delivery.', or: 'ପ୍ରସବର ୬ ସପ୍ତାହ ପୂର୍ବରୁ ଗୋଟିଏ ପରିବାର ନିୟୋଜନ ପଦ୍ଧତି ବାଛନ୍ତୁ।' },
 ];
 
 }
@@ -5124,7 +5232,7 @@ K.summary.add((c) => K.card.kids(c).filter(k => k.dob).map(k => { const cur = K.
 {
 /* ============================================================================
    modules/61-feed — what to feed at this age (data/51-feed), read aloud;
-   other ages folded. Also the general-information route /learn/feeding.
+   other ages folded. The same content is the "feeding" topic in the Learn library.
    ============================================================================ */
 const h = K.h;
 
@@ -5161,8 +5269,6 @@ K.route('/card/:id/child/:kid/feed', ({ id, kid }) => {
   return { title: K.t('feed.title'), sub: K.child.label(k), back: K.child.url(c, k).slice(1), tab: 'home',
     html: h`<div class="wrap">${K.ui.phead(K.child.label(k) + (k.dob ? ' · ' + K.d.ageText(k.dob) : ''), K.t('feed.title'))}${feedPage(k)}</div>` };
 });
-K.route('/learn/feeding', () => ({ title: K.t('feed.title'), back: '/learn', tab: 'learn',
-  html: h`<div class="wrap">${K.ui.phead('', K.t('feed.title'))}${feedPage(null)}</div>` }));
 
 K.child.addTile(20, (c, k) => {
   const st = K.feed.stageFor(K.feed.ageM(k));
@@ -5581,6 +5687,225 @@ K.acts.breathGo = () => {
 };
 K.acts.breathTap = () => { const s = K.sick.breath; if (!s || !s.running) return; s.n++; K.$('#br-count').textContent = K.digits(s.n); };
 K.bus.on && K.bus.on('rendered', () => { if (!K.$('#br-secs')) clearInterval(K.sick.timer); });
+
+}
+/* ── modules/70-learn.js ── */
+{
+/* ============================================================================
+   modules/70-learn — Learn & counsel library: topics built from the card
+   content already in the app (danger signs, pregnancy, newborn, feeding,
+   vaccines, growth, development, sick child, IFA/anaemia, family planning,
+   hygiene). Reading mode per topic, a full-screen flipbook for counselling
+   (one card at a time, swipe or arrows, read aloud), and search.
+   Cards: { t, lead?, items: [{en, or, icon?}], note?, tone? } — items are
+   bilingual objects, so dictionary entries (K.i18n.dict[key]) can be reused.
+   ============================================================================ */
+const h = K.h;
+
+K.i18n.add({
+  'learn.title': { en: 'Learn & counsel', or: 'ଜାଣନ୍ତୁ ଓ ପରାମର୍ଶ' },
+  'learn.lede': { en: 'Messages from the MCP card to read, listen to, or show during counselling.', or: 'MCP କାର୍ଡର ବାର୍ତ୍ତା — ପଢ଼ନ୍ତୁ, ଶୁଣନ୍ତୁ, ବା ପରାମର୍ଶ ସମୟରେ ଦେଖାନ୍ତୁ।' },
+  'learn.search': { en: 'Search topics', or: 'ବିଷୟ ଖୋଜନ୍ତୁ' },
+  'learn.noHit': { en: 'Nothing found. Try another word.', or: 'କିଛି ମିଳିଲା ନାହିଁ। ଅନ୍ୟ ଶବ୍ଦ ଚେଷ୍ଟା କରନ୍ତୁ।' },
+  'learn.g.preg': { en: 'Pregnancy and birth', or: 'ଗର୍ଭାବସ୍ଥା ଓ ପ୍ରସବ' },
+  'learn.g.child': { en: 'Newborn and child', or: 'ନବଜାତ ଶିଶୁ ଓ ପିଲା' },
+  'learn.g.family': { en: 'Family and home', or: 'ପରିବାର ଓ ଘର' },
+  'learn.flip': { en: 'Counsel with cards', or: 'କାର୍ଡ ଦେଖାଇ ପରାମର୍ଶ' },
+  'learn.flipSub': { en: 'One card at a time, large text — swipe or use the arrows', or: 'ଗୋଟିଏ ଗୋଟିଏ କାର୍ଡ, ବଡ଼ ଅକ୍ଷର — ସ୍ୱାଇପ୍ କରନ୍ତୁ ବା ତୀର ଦବାନ୍ତୁ' },
+  'learn.cards': { en: '{n} cards', or: '{n}ଟି କାର୍ଡ' },
+  'learn.prev': { en: 'Previous', or: 'ପୂର୍ବ' }, 'learn.next': { en: 'Next', or: 'ପରବର୍ତ୍ତୀ' }, 'learn.done': { en: 'Done', or: 'ସମାପ୍ତ' },
+  'learn.close': { en: 'Close', or: 'ବନ୍ଦ କରନ୍ତୁ' },
+  'learn.of': { en: '{i} of {n}', or: '{n} ମଧ୍ୟରୁ {i}' },
+  'learn.call': { en: 'Emergency numbers', or: 'ଜରୁରୀକାଳୀନ ନମ୍ବର' },
+  'learn.c108': { en: '108 Ambulance', or: '୧୦୮ ଆମ୍ବୁଲାନ୍ସ' }, 'learn.c102': { en: '102 Janani Express', or: '୧୦୨ ଜନନୀ ଏକ୍ସପ୍ରେସ୍' }, 'learn.c104': { en: '104 Health helpline', or: '୧୦୪ ସ୍ୱାସ୍ଥ୍ୟ ହେଲ୍ପଲାଇନ୍' },
+  'learn.dangerSub': { en: 'When to go to hospital at once', or: 'କେବେ ତୁରନ୍ତ ଡାକ୍ତରଖାନା ଯିବେ' },
+  /* topic names */
+  'lt.danger': { en: 'Danger signs', or: 'ବିପଦ ଲକ୍ଷଣ' },
+  'lt.preg': { en: 'Care in pregnancy', or: 'ଗର୍ଭାବସ୍ଥାରେ ଯତ୍ନ' }, 'lt.pregSub': { en: 'Check-ups, tablets, food, anaemia', or: 'ପରୀକ୍ଷା, ବଟିକା, ଖାଦ୍ୟ, ରକ୍ତହୀନତା' },
+  'lt.birth': { en: 'Birth and after', or: 'ପ୍ରସବ ଓ ପ୍ରସବ ପରେ' }, 'lt.birthSub': { en: 'Birth plan, home birth, care of the mother', or: 'ପ୍ରସବ ଯୋଜନା, ଘରେ ପ୍ରସବ, ମା’ଙ୍କ ଯତ୍ନ' },
+  'lc.after': { en: 'After delivery — care of the mother', or: 'ପ୍ରସବ ପରେ ମା’ଙ୍କ ଯତ୍ନ' },
+  'lt.newborn': { en: 'Newborn care', or: 'ନବଜାତ ଶିଶୁର ଯତ୍ନ' }, 'lt.newbornSub': { en: 'Warmth, breastfeeding, cord, home visits', or: 'ଉଷୁମତା, ସ୍ତନ୍ୟପାନ, ନାଭି, ଗୃହ ପରିଦର୍ଶନ' },
+  'lt.feeding': { en: 'Breastfeeding and food', or: 'ସ୍ତନ୍ୟପାନ ଓ ଖାଦ୍ୟ' }, 'lt.feedingSub': { en: 'What to feed at each age', or: 'କେଉଁ ବୟସରେ କ’ଣ ଖୁଆଇବେ' },
+  'lt.vax': { en: 'Vaccines', or: 'ଟୀକାକରଣ' }, 'lt.vaxSub': { en: 'Schedule and what to expect', or: 'ସୂଚୀ ଓ ଜାଣିବା କଥା' },
+  'lt.growth': { en: 'Growth', or: 'ଶାରୀରିକ ବୃଦ୍ଧି' }, 'lt.growthSub': { en: 'Monthly weighing and the growth chart', or: 'ମାସିକ ଓଜନ ଓ ବୃଦ୍ଧି ଚାର୍ଟ' },
+  'lt.dev': { en: 'Play and development', or: 'ଖେଳ ଓ ବିକାଶ' }, 'lt.devSub': { en: 'Parenting tips for each age', or: 'ପ୍ରତି ବୟସ ପାଇଁ ଲାଳନପାଳନ ସୂଚନା' },
+  'lt.sick': { en: 'Diarrhoea, pneumonia, fever', or: 'ତରଳ ଝାଡ଼ା, ନିମୋନିଆ, ଜ୍ୱର' }, 'lt.sickSub': { en: 'Prevention and care at home', or: 'ପ୍ରତିରୋଧ ଓ ଘରେ ଯତ୍ନ' },
+  'lt.anaemia': { en: 'Iron and anaemia', or: 'ଲୌହସାର ଓ ରକ୍ତହୀନତା' }, 'lt.anaemiaSub': { en: 'Food, IFA, deworming', or: 'ଖାଦ୍ୟ, ଆଇ.ଏଫ୍.ଏ., କୃମିନାଶକ' },
+  'lt.fp': { en: 'Family planning', or: 'ପରିବାର ନିୟୋଜନ' }, 'lt.fpSub': { en: 'Spacing and permanent methods', or: 'ବ୍ୟବଧାନ ଓ ସ୍ଥାୟୀ ପଦ୍ଧତି' },
+  'lt.hygiene': { en: 'Hygiene and malaria', or: 'ପରିଷ୍କାର ପରିଚ୍ଛନ୍ନତା ଓ ମ୍ୟାଲେରିଆ' }, 'lt.hygieneSub': { en: 'Handwashing, water, toilets, bed nets', or: 'ହାତ ଧୋଇବା, ପାଣି, ପାଇଖାନା, ମଶାରୀ' },
+  /* card titles */
+  'lc.anc': { en: 'Check-ups in pregnancy', or: 'ଗର୍ଭାବସ୍ଥାର ପରୀକ୍ଷା' },
+  'lc.tabs': { en: 'Injections and tablets', or: 'ଟୀକା ଓ ବଟିକା' },
+  'lc.care': { en: 'Food and rest', or: 'ଖାଦ୍ୟ ଓ ବିଶ୍ରାମ' },
+  'lc.anDo': { en: 'To prevent anaemia — do', or: 'ରକ୍ତହୀନତାରୁ ରକ୍ଷା ପାଇବା ପାଇଁ' },
+  'lc.anDont': { en: 'To prevent anaemia — do not', or: 'ରକ୍ତହୀନତାରୁ ରକ୍ଷା ପାଇବା ପାଇଁ କ’ଣ କରିବା ନାହିଁ' },
+  'lc.plan': { en: 'Plan for the birth', or: 'ପ୍ରସବ ପାଇଁ ଯୋଜନା' },
+  'lc.home': { en: 'If the birth happens at home', or: 'ଯଦି ଘରେ ପ୍ରସବ ହୁଏ' },
+  'lc.homeNote': { en: 'It is safest to give birth in a health facility with a skilled birth attendant.', or: 'ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରରେ ଦକ୍ଷ ସ୍ୱାସ୍ଥ୍ୟକର୍ମୀଙ୍କ ଦ୍ୱାରା ପ୍ରସବ ସବୁଠାରୁ ନିରାପଦ।' },
+  'lc.nbRemember': { en: 'Care of the newborn — remember', or: 'ନବଜାତ ଶିଶୁର ଯତ୍ନ — ମନେରଖନ୍ତୁ' },
+  'lc.hbnc': { en: 'Home visits for the newborn', or: 'ନବଜାତ ଶିଶୁ ପାଇଁ ଗୃହ ପରିଦର୍ଶନ' },
+  'lc.vaxSched': { en: 'Vaccine schedule', or: 'ଟୀକାକରଣ ସୂଚୀ' },
+  'lc.grWeigh': { en: 'Weigh every month', or: 'ପ୍ରତି ମାସ ଓଜନ' },
+  'lc.grZones': { en: 'Reading the weight chart', or: 'ଓଜନ ଚାର୍ଟ ବୁଝିବା' },
+  'lc.grSam': { en: 'Severe malnutrition', or: 'ଅତିଶୟ ପୁଷ୍ଟିହୀନତା' },
+  'lc.diarrPrev': { en: 'Preventing diarrhoea', or: 'ତରଳ ଝାଡ଼ା ନ ହେବା ପାଇଁ' },
+  'lc.diarrTreat': { en: 'Treating diarrhoea at home', or: 'ତରଳ ଝାଡ଼ାର ଚିକିତ୍ସା' },
+  'lc.pneuSigns': { en: 'Signs of pneumonia', or: 'ନିମୋନିଆ ଚିହ୍ନଟ' },
+  'lc.pneuPrev': { en: 'Preventing pneumonia', or: 'ନିମୋନିଆ ନ ହେବା ପାଇଁ' },
+  'lc.fever': { en: 'Fever', or: 'ଜ୍ୱର' },
+  'lc.ifaKids': { en: 'IFA syrup for children (6 months – 5 years)', or: 'ଶିଶୁଙ୍କ ପାଇଁ ଆଇ.ଏଫ୍.ଏ. ସିରପ୍ (୬ ମାସ – ୫ ବର୍ଷ)' },
+  'lc.fpSpacing': { en: 'Methods for spacing', or: 'ବ୍ୟବଧାନ ପଦ୍ଧତି' },
+  'lc.fpPerm': { en: 'If the family is complete', or: 'ଯଦି ପରିବାର ସମ୍ପୂର୍ଣ୍ଣ' },
+  'lc.hyg': { en: 'Clean hands, clean water, bed nets', or: 'ସଫା ହାତ, ସଫା ପାଣି, ମଶାରୀ' },
+});
+
+K.learn = {};
+const D = () => K.content.danger;
+const dict = (key) => K.i18n.dict[key];
+const dangerCard = (s) => ({ t: D()[s].title, lead: D()[s].lead, items: D()[s].items, tone: s === 'go' ? 'info' : 'danger', set: s });
+K.learn.TOPICS = [
+  { k: 'danger', icon: 'alert', tone: 'red', group: 'top', sub: 'learn.dangerSub', cards: () => ['preg', 'labour', 'post', 'newborn', 'child', 'go'].filter(s => D()[s]).map(dangerCard) },
+  { k: 'preg', icon: 'mother', group: 'preg', cards: () => [
+    { t: dict('lc.anc'), items: K.content.ancBasics },
+    { t: dict('lc.tabs'), items: [Object.assign({ icon: 'syringe' }, dict('td.rule')), Object.assign({ icon: 'pill' }, dict('ifa.rule')), Object.assign({ icon: 'pill' }, dict('ca.rule')), Object.assign({ icon: 'pill' }, dict('alb.rule'))] },
+    { t: dict('lc.care'), items: K.content.pregCare },
+    { t: dict('lc.anDo'), items: K.content.anaemia.dos },
+    { t: dict('lc.anDont'), items: K.content.anaemia.donts, tone: 'warn' },
+    dangerCard('preg'),
+  ] },
+  { k: 'birth', icon: 'hospital', group: 'preg', cards: () => [
+    { t: dict('lc.plan'), items: K.content.birthPlan.map(x => Object.assign({ icon: 'check' }, x)) },
+    { t: dict('lc.home'), items: K.content.homeKit.map(x => Object.assign({ icon: 'check' }, x)), note: dict('lc.homeNote') },
+    dangerCard('labour'),
+    { t: dict('lc.after'), items: K.content.afterBirth },
+    dangerCard('post'),
+  ] },
+  { k: 'newborn', icon: 'baby', group: 'child', cards: () => [
+    { t: dict('lc.nbRemember'), items: K.content.newbornCare },
+    { t: K.feed.STAGES[0].head, items: K.feed.STAGES[0].items.slice(0, 5).map(x => Object.assign({ icon: 'heart' }, x)) },
+    { t: dict('child.lbw'), items: [Object.assign({ icon: 'heart' }, dict('child.lbwCare'))] },
+    { t: dict('lc.hbnc'), items: K.content.hbnc },
+    dangerCard('newborn'),
+  ] },
+  { k: 'feeding', icon: 'bowl', group: 'child', cards: () => K.feed.STAGES.map(st => ({ t: st.name, lead: st.head, amount: st.amount, items: st.items.map(x => Object.assign({ icon: st.icon }, x)) }))
+    .concat([{ t: dict('feed.general'), items: K.feed.GENERAL.map(x => Object.assign({ icon: 'check' }, x)) }, { t: dict('lt.feeding'), items: [Object.assign({ icon: 'alert' }, K.feed.NO_BRAND)], tone: 'danger' }]) },
+  { k: 'vax', icon: 'syringe', group: 'child', cards: () => [
+    { t: dict('lc.vaxSched'), items: K.vax.VISITS.map(v => { const codes = K.vax.LIST.filter(i => i.v === v.k).map(i => i.code + (i.je ? '*' : '')).concat(v.k === 'm9' ? ['Vit-A 1'] : v.k === 'm16' ? ['Vit-A 2'] : []).join(', ');
+      return { icon: 'syringe', en: `${v.name.en}: ${codes}`, or: `${v.name.or}: ${codes}` }; }), note: { en: '* JE only in selected districts.', or: '* ଜେ.ଇ. କେବଳ ନିର୍ଦ୍ଦିଷ୍ଟ ଜିଲ୍ଲାରେ।' } },
+    { t: dict('vax.four'), items: K.vax.FOUR.map(x => Object.assign({ icon: x.icon }, x.t)) },
+    { t: dict('vax.know'), items: K.vax.KNOW.map(x => Object.assign({ icon: 'info' }, x)) },
+  ] },
+  { k: 'growth', icon: 'scale', group: 'child', cards: () => [
+    { t: dict('lc.grWeigh'), items: [Object.assign({ icon: 'scale' }, dict('gr.monthly')), Object.assign({ icon: 'chart' }, dict('gr.curve.up')), Object.assign({ icon: 'chart' }, dict('gr.curve.flat')), Object.assign({ icon: 'alert' }, dict('gr.curve.down'))] },
+    { t: dict('lc.grZones'), items: [Object.assign({ icon: 'check' }, dict('gr.zone.n')), Object.assign({ icon: 'alert' }, dict('gr.zone.m')), Object.assign({ icon: 'alert' }, dict('gr.zone.s'))], note: dict('gr.adv.m') },
+    { t: dict('lc.grSam'), items: [Object.assign({ icon: 'ruler' }, dict('gr.muacNote')), Object.assign({ icon: 'hand' }, dict('gr.oedema')), Object.assign({ icon: 'hospital' }, dict('gr.samDo'))], tone: 'danger' },
+  ] },
+  { k: 'dev', icon: 'star', group: 'child', cards: () => K.dev.BANDS.map(b => ({ t: b.name, items: b.tips.map(x => Object.assign({ icon: 'heart' }, x)) }))
+    .concat([{ t: K.dev.TEXT.deic, items: [Object.assign({ icon: 'hospital' }, K.dev.TEXT.deicBody)], lead: K.dev.TEXT.warnLead }]) },
+  { k: 'sick', icon: 'temp', group: 'child', cards: () => [
+    { t: dict('lc.diarrTreat'), items: K.ill.DIARR_TREAT },
+    { t: dict('lc.diarrPrev'), items: K.ill.DIARR_PREVENT },
+    { t: dict('lc.pneuSigns'), items: K.ill.PNEU_SIGNS.concat(K.ill.FAST_TEXT.map(x => Object.assign({ icon: 'timer' }, x))), note: K.ill.CONTACT },
+    { t: dict('lc.pneuPrev'), items: K.ill.PNEU_PREVENT },
+    { t: dict('lc.fever'), items: [Object.assign({ icon: 'temp' }, dict('sick.fever1')), Object.assign({ icon: 'drop' }, dict('sick.fever2')), Object.assign({ icon: 'hospital' }, dict('sick.fever3'))] },
+    dangerCard('child'),
+  ] },
+  { k: 'anaemia', icon: 'drop', group: 'family', cards: () => [
+    { t: dict('lc.anDo'), items: K.content.anaemia.dos },
+    { t: dict('lc.anDont'), items: K.content.anaemia.donts, tone: 'warn' },
+    { t: dict('lc.ifaKids'), items: K.ill.IFA_RULES.map(x => Object.assign({ icon: 'drop' }, x)) },
+  ] },
+  { k: 'fp', icon: 'users', group: 'family', cards: () => [
+    { t: dict('lc.fpSpacing'), lead: dict('fp.lede'), items: K.fp.METHODS.filter(m => m.group === 'spacing').map(m => ({ icon: m.icon, en: `${m.name.en} — ${m.when.en}`, or: `${m.name.or} — ${m.when.or}` })) },
+    { t: dict('lc.fpPerm'), items: K.fp.METHODS.filter(m => m.group === 'permanent').map(m => ({ icon: m.icon, en: `${m.name.en}: ${m.what.en}`, or: `${m.name.or}: ${m.what.or}` })) },
+  ] },
+  { k: 'hygiene', icon: 'hand', group: 'family', cards: () => [{ t: dict('lc.hyg'), items: K.content.hygiene }] },
+];
+K.learn.topic = (k) => K.learn.TOPICS.find(t => t.k === k);
+K.learn.title = (t) => K.t('lt.' + t.k);
+K.learn.sub = (t) => (t.sub ? K.t(t.sub) : K.t('lt.' + t.k + 'Sub'));
+
+/* one card as HTML (reading mode or flipbook) */
+K.learn.card = (cd, id, o = {}) => h`<article class="lcard ${cd.tone || ''} ${o.big ? 'big' : ''}" id="${id}">
+  <h2>${K.L(cd.t)}</h2>${cd.lead ? h`<p class="lc-lead">${K.L(cd.lead)}</p>` : ''}
+  ${cd.amount ? h`<div class="feed-amt">${K.ui.icon('bowl', 'sm')}<span>${K.L(cd.amount)}</span></div>` : ''}
+  <ul class="ill-list">${(cd.items || []).map(x => h`<li>${K.ui.icon(x.icon || 'check', 'sm')}<span>${K.L(x)}</span></li>`)}</ul>
+  ${cd.note ? h`<p class="lc-note">${K.L(cd.note)}</p>` : ''}
+  ${o.say !== false ? h`<p class="lc-say">${K.ui.say('#' + id)}</p>` : ''}
+</article>`;
+const callRow = () => h`<div class="btn-row call-row">${K.ui.btn(K.t('learn.c108'), { href: 'tel:108', tone: 'danger', icon: 'ambulance', size: 'sm' })}${K.ui.btn(K.t('learn.c102'), { href: 'tel:102', tone: 'ghost', icon: 'phone', size: 'sm' })}${K.ui.btn(K.t('learn.c104'), { href: 'tel:104', tone: 'ghost', icon: 'phone', size: 'sm' })}</div>`;
+
+/* ---------------------------------------------------------------- hub */
+K.route('/learn', () => {
+  const tile = (t) => h`<a class="tile" href="#/learn/${t.k}"><span class="ti-ic ${t.tone || ''}">${K.ui.icon(t.icon)}</span><b>${K.learn.title(t)}</b><small>${K.learn.sub(t)}</small></a>`;
+  const group = (g) => h`<section class="sec">${K.ui.secH(K.t('learn.g.' + g))}<div class="tiles">${K.learn.TOPICS.filter(t => t.group === g).map(tile)}</div></section>`;
+  return { title: K.t('learn.title'), tab: 'learn',
+    html: h`<div class="wrap">${K.ui.phead('', K.t('learn.title'), K.t('learn.lede'))}
+      <a class="danger-tile" href="#/learn/danger">${K.ui.icon('alert')}<span><b>${K.t('lt.danger')}</b><small>${K.t('learn.dangerSub')}</small></span>${K.ui.icon('chev')}</a>
+      <div class="learn-q">${K.ui.field({ name: 'q', type: 'search', ph: K.t('learn.search'), attrs: { 'data-live': 'learnSearch', 'aria-label': K.t('learn.search'), autocomplete: 'off' } })}</div>
+      <div id="learn-hits"></div>
+      <div id="learn-groups">${['preg', 'child', 'family'].map(group)}</div>
+    </div>` };
+});
+K.live.learnSearch = K.debounce((el) => {
+  const q = (el.value || '').trim().toLowerCase(); const box = K.$('#learn-hits'); const groups = K.$('#learn-groups'); if (!box) return;
+  if (q.length < 2) { box.innerHTML = ''; groups.hidden = false; return; }
+  const hits = [];
+  K.learn.TOPICS.forEach(t => t.cards().forEach((cd, i) => {
+    const text = [K.L(cd.t), cd.lead ? K.L(cd.lead) : '', ...(cd.items || []).map(x => K.L(x))].join(' ').toLowerCase();
+    if (text.includes(q) || K.learn.title(t).toLowerCase().includes(q)) hits.push({ t, cd, i });
+  }));
+  groups.hidden = true;
+  box.innerHTML = K.hv(hits.length ? h`<div class="list">${hits.slice(0, 30).map(x => K.ui.li({ href: `#/learn/${x.t.k}#lc-${x.i}`, icon: x.t.icon, tone: x.t.tone === 'red' ? 'red' : '', title: K.L(x.cd.t), meta: K.learn.title(x.t) }))}</div>` : K.ui.empty('search', K.t('learn.noHit')));
+}, 200);
+
+/* ---------------------------------------------------------------- topic page (reading mode) */
+K.route('/learn/:topic', ({ topic }) => {
+  const t = K.learn.topic(topic); if (!t) return K.screens.notFound();
+  const cards = t.cards();
+  return { title: K.learn.title(t), back: '/learn', tab: 'learn',
+    html: h`<div class="wrap">${K.ui.phead(K.t('learn.title'), K.learn.title(t), t.k === 'danger' ? '' : K.learn.sub(t))}
+      <a class="k-card flip-cta" href="#/learn/${t.k}/flip/0">${K.ui.icon('play')}<span><b>${K.t('learn.flip')}</b><small>${K.t('learn.flipSub')} · ${K.t('learn.cards', { n: cards.length })}</small></span>${K.ui.icon('chev', 'sm')}</a>
+      ${t.k === 'danger' ? h`<section class="sec">${K.ui.secH(K.t('learn.call'))}${callRow()}</section>` : ''}
+      <div class="stack lcards">${cards.map((cd, i) => K.learn.card(cd, 'lc-' + i))}</div>
+    </div>`,
+    mount() { const a = K.anchor(); if (a) { const e = document.getElementById(a); e && e.scrollIntoView(); } } };
+});
+/* a single danger set, e.g. #/learn/danger/newborn */
+K.route('/learn/danger/:set', ({ set }) => {
+  const d = D()[set]; if (!d) return K.screens.notFound();
+  const i = K.learn.topic('danger').cards().findIndex(c => c.set === set);
+  return { title: K.L(d.title), back: '/learn/danger', tab: 'learn',
+    html: h`<div class="wrap">${K.learn.card(dangerCard(set), 'lc-d', { big: true })}<p></p>${callRow()}<p></p>${K.learn.card(dangerCard('go'), 'lc-go')}
+      <p style="margin-top:14px">${K.ui.btn(K.t('learn.flip'), { href: `#/learn/danger/flip/${Math.max(0, i)}`, tone: 'ghost', icon: 'play' })}</p></div>` };
+});
+
+/* ---------------------------------------------------------------- flipbook */
+K.route('/learn/:topic/flip/:i', ({ topic, i }) => {
+  const t = K.learn.topic(topic); if (!t) return K.screens.notFound();
+  const cards = t.cards(); const n = cards.length; i = K.clamp(parseInt(i, 10) || 0, 0, n - 1);
+  const cd = cards[i];
+  return { title: K.learn.title(t), sub: K.t('learn.of', { i: i + 1, n }), back: `/learn/${t.k}`, tab: 'learn', noTabs: true,
+    html: h`<div class="flip" data-topic="${t.k}" data-i="${i}" data-n="${n}">
+      <div class="flip-dots" aria-hidden="true">${cards.map((_, j) => h`<i class="${j === i ? 'on' : j < i ? 'past' : ''}"></i>`)}</div>
+      <div class="flip-card">${K.learn.card(cd, 'flip-c', { big: true, say: false })}</div>
+      <div class="flip-bar">
+        ${K.ui.btn(K.t('learn.prev'), { act: 'flipGo', arg: String(i - 1), tone: 'ghost', icon: 'back', disabled: i === 0 })}
+        ${K.ui.say('#flip-c')}
+        ${i < n - 1 ? K.ui.btn(K.t('learn.next'), { act: 'flipGo', arg: String(i + 1), arrow: true }) : K.ui.btn(K.t('learn.done'), { href: `#/learn/${t.k}`, icon: 'check' })}
+      </div>
+    </div>`,
+    mount(root) {
+      const card = K.$('.flip-card', root); let x0 = null, y0 = null;
+      card.addEventListener('touchstart', (e) => { const p = e.touches[0]; x0 = p.clientX; y0 = p.clientY; }, { passive: true });
+      card.addEventListener('touchend', (e) => { if (x0 == null) return; const p = e.changedTouches[0]; const dx = p.clientX - x0, dy = p.clientY - y0; x0 = null;
+        if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) K.learn.flipTo(i + (dx < 0 ? 1 : -1)); }, { passive: true });
+    } };
+});
+K.learn.flipTo = (j) => { const f = K.$('.flip'); if (!f) return; const n = +f.dataset.n; if (j < 0 || j >= n) return; K.go(`/learn/${f.dataset.topic}/flip/${j}`, { replace: true }); };
+K.acts.flipGo = (el) => K.learn.flipTo(+el.dataset.arg);
+document.addEventListener('keydown', (e) => { const f = K.$('.flip'); if (!f || e.target.closest('input,textarea,select')) return;
+  if (e.key === 'ArrowRight') K.learn.flipTo(+f.dataset.i + 1); else if (e.key === 'ArrowLeft') K.learn.flipTo(+f.dataset.i - 1); });
 
 }
 /* ── modules/90-more.js ── */
