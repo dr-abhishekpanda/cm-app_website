@@ -123,11 +123,11 @@ K.child.addTile(40, (c, k) => {
   return { icon: 'house', tone: nx && nx.st === 'overdue' ? 'amber' : '', title: K.t('hbyc.tile'), href: K.child.url(c, k, '/hbyc'),
     sub: `${K.t('hbyc.done', { n: list.filter(x => x.r).length, t: list.length })}${nx ? ' · ' + K.t('hbyc.visit', { m: nx.m }) + ' ' + K.d.fmt(nx.date, 'dm') : ''}` };
 });
-K.due.add((c, today) => {
-  const out = [];
+K.due.add((c, today, horizon) => {
+  const out = []; const H = Math.max(7, horizon || 0);
   K.card.kids(c).forEach(k => {
     if (!k.dob || K.d.age(k.dob, today).months >= 18) return;
-    K.hbyc.list(k, today).filter(x => x.st === 'due' || x.st === 'overdue' || (x.st === 'upcoming' && K.d.diff(today, x.date) <= 7)).forEach(x => out.push({
+    K.hbyc.list(k, today).filter(x => x.st === 'due' || x.st === 'overdue' || (x.st === 'upcoming' && K.d.diff(today, x.date) <= H)).forEach(x => out.push({
       id: 'hbyc' + k.id + x.m, kind: 'visit', icon: 'house', href: K.child.url(c, k, '/hbyc/' + x.m), who: K.child.label(k), date: x.date, status: x.st === 'overdue' ? 'overdue' : undefined,
       title: { en: `${K.child.label(k)}: ASHA home visit (${x.m} months)`, or: `${K.child.label(k)}: ଆଶାଙ୍କ ଗୃହ ପରିଦର୍ଶନ (${x.m} ମାସ)` } }));
   });

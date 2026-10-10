@@ -288,8 +288,8 @@ K.child.cardBits.push((c, k) => {
 });
 
 /* ---------------------------------------------------------------- due items */
-K.due.add((c, today) => {
-  const out = [];
+K.due.add((c, today, horizon) => {
+  const out = []; const H = Math.max(45, horizon || 0), HV = Math.max(30, horizon || 0);
   K.card.kids(c).forEach(k => {
     if (!k.dob) return;
     const st = K.vax.state(k, today);
@@ -297,11 +297,11 @@ K.due.add((c, today) => {
     const href = K.child.url(c, k, '/vax');
     if (over.length) out.push({ id: 'vaxo' + k.id, kind: 'vax', icon: 'syringe', href, who: K.child.label(k), status: 'overdue', date: over.map(s => s.due).sort()[0],
       title: { en: `${K.child.label(k)}: overdue vaccines ${over.map(s => s.it.code).join(', ')}`, or: `${K.child.label(k)}: ବିଳମ୍ବ ଟୀକା ${over.map(s => s.it.code).join(', ')}` } });
-    const soon = Object.values(st).filter(s => s.st === 'due' || (s.st === 'upcoming' && K.d.diff(today, s.due) <= 45));
+    const soon = Object.values(st).filter(s => s.st === 'due' || (s.st === 'upcoming' && K.d.diff(today, s.due) <= H));
     const groups = {}; soon.forEach(s => { (groups[s.due] = groups[s.due] || []).push(s); });
     Object.entries(groups).forEach(([d, list]) => out.push({ id: 'vax' + k.id + d, kind: 'vax', icon: 'syringe', href, who: K.child.label(k), date: d,
       title: { en: `${K.child.label(k)}: ${list.map(s => s.it.code).join(', ')}`, or: `${K.child.label(k)}: ${list.map(s => s.it.code).join(', ')} ଟୀକା` } }));
-    const va = K.vax.vitaState(k, today).find(x => x.st === 'due' || x.st === 'overdue' || (x.st === 'upcoming' && K.d.diff(today, x.due) <= 30));
+    const va = K.vax.vitaState(k, today).find(x => x.st === 'due' || x.st === 'overdue' || (x.st === 'upcoming' && K.d.diff(today, x.due) <= HV));
     if (va) out.push({ id: 'vita' + k.id, kind: 'vax', icon: 'drop', href: href + '#vita', who: K.child.label(k), date: va.due, status: va.st === 'overdue' ? 'overdue' : undefined,
       title: { en: `${K.child.label(k)}: ${va.v.code}${va.v.alb ? ' + albendazole' : ''}`, or: `${K.child.label(k)}: ${va.v.code}${va.v.alb ? ' + କୃମିନାଶକ' : ''}` } });
   });

@@ -310,7 +310,7 @@ K.acts.ancDelete = async (el) => {
 };
 
 /* ---------------------------------------------------------------- due items */
-K.due.add((c, today) => {
+K.due.add((c, today, horizon) => {
   const p = K.card.activePreg(c); if (!p || !K.preg.edd(p)) return [];
   const out = []; const g = K.preg.ga(p, today); const url = K.preg.url(c, p);
   const sched = K.anc.schedule(p, today);
@@ -321,6 +321,7 @@ K.due.add((c, today) => {
   const pm = K.anc.nextPmsma(p, today);
   if (pm && K.d.diff(today, pm) <= 31) out.push({ id: 'pmsma', kind: 'anc', icon: 'hospital', href: url, title: { en: 'PMSMA doctor check-up (9th)', or: 'PMSMA ଡାକ୍ତରୀ ପରୀକ୍ଷା (୯ ତାରିଖ)' }, date: pm });
   const e = K.preg.edd(p);
+  if (horizon >= 60 && g && g.days <= 280 && K.d.diff(today, e) <= horizon) out.push({ id: 'edd' + p.id, kind: 'anc', icon: 'star', href: url, title: { en: 'Expected date of delivery', or: 'ସମ୍ଭାବ୍ୟ ପ୍ରସବ ତାରିଖ' }, date: e });
   if (g && g.days > 287) out.push({ id: 'postdate', kind: 'danger', icon: 'alert', href: url, title: { en: 'Past the expected date by more than 7 days — see a doctor today', or: 'ସମ୍ଭାବ୍ୟ ପ୍ରସବ ତାରିଖରୁ ୭ ଦିନରୁ ଅଧିକ ବିତିଗଲାଣି — ଆଜି ଡାକ୍ତରଙ୍କୁ ଦେଖାନ୍ତୁ' }, date: K.d.addDays(e, 7), status: 'overdue' });
   return out;
 });

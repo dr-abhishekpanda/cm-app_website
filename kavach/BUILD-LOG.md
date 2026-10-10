@@ -35,3 +35,11 @@
 - Tools tab (`modules/80-tools.js`): EDD and weeks (LMP / ultrasound / known EDD, key dates incl. next PMSMA), high-risk quick check (the card's HRP list, nothing saved), anaemia (WHO cut-offs by group, AMB treatment by group and weight band, severe-anaemia referral by gestation, iron cautions in thalassaemia / sickle cell), vaccine due dates from a date of birth, growth z-scores (same engine as the card), corrected age, ORS/zinc with the IMNCI dehydration check (Plan B volume from weight), IFA and deworming doses by age.
 - `K.growth.resultHtml` takes `{ stats }` so the z-score tool can show its own table.
 - Checked in Chromium (English and Odia) with worked examples: LMP −168 d → 24w0d; scan 12w3d 70 days ago → EDD matches scan + 193 d; pregnant Hb 8.5 → moderate, 2 tablets; Hb 6.2 at 36 weeks → admit; 6–59 m Hb 9.5 at 9 kg → 1 ml, at 12 kg → 1.5 ml; 5–9 y 20 kg → 60 mg/day; girl 10 m 6.05 kg 66 cm → WAZ −2.85, WLZ −2.15 (MAM); 32-week baby at 120 days → corrected 64 days; 9 kg with some dehydration → 680 ml over 4 h.
+
+## 2026-10-10 · session 2 · chunk 9
+- Due tab (`modules/92-due.js`): all cards, grouped overdue / today / 7 days / 30 days / 90 days, filters (pregnancy, children, vaccines); providers now receive a horizon so long lists include upcoming vaccines, HBYC visits and the EDD. Calendar export: RFC 5545 .ics, all-day events with a reminder the evening before, lines folded at 73 octets (Odia-safe).
+- Helplines and schemes (`modules/93-help.js`): call list, local contacts from the cards, JSSK, JSY, MAMATA-PMMVY, PMSMA/e-PMSMA, SUMAN, ₹500 drop-back, NRC, RBSK/DEIC, Kilkari, family-planning incentives — each with its source and checked date. PMMVY helpline updated to 1515.
+- Print view (`modules/94-print.js`): A4 summary of a card (mother, contacts, pregnancy with ANC table, children with vaccines given, pending doses, last weight); print CSS hides the app chrome.
+- Sample family (`modules/95-sample.js`): mother at 26 weeks with moderate anaemia and a 14-month-old girl with full records; no phone numbers.
+- Fixed: birth-plan item key "facility" overwrote the hospital name (renamed to "hospital").
+- Checked in Chromium (English and Odia): sample load, Due tab and filters, .ics download (6 events, max line 64 octets), help accordions, print view on screen and in print media, PDF render.

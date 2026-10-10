@@ -13,8 +13,8 @@ Each chunk ends with: build → Playwright check at phone size → BUILD-LOG ent
 | 6 | Development & feeding: milestones + warning signs (2–3 m → 3 y), DEIC, parenting tips, feeding by age, HBYC, IFA syrup tracker, diarrhoea/pneumonia care, ROP reminder | done |
 | 7 | Learn & counsel library, flipbook mode, read-aloud | done |
 | 8 | Tools: EDD, vaccine due dates, z-score, anaemia + AMB doses, breath counter, ORS/zinc, IFA/albendazole doses, HRP quick screen, corrected age | done |
-| 9 | Entitlements & helplines (dated sources), Due tab across cards, print view, calendar export, sample family | next |
-| 10 | PWA (manifest, icons, service worker), QA, Odia review sheet, deploy notes, link from home page | |
+| 9 | Entitlements & helplines (dated sources), Due tab across cards, print view, calendar export, sample family | done |
+| 10 | PWA (manifest, icons, service worker), QA, Odia review sheet, deploy notes, link from home page | next |
 
 ## Notes to carry forward
 - Odisha IFA syrup days for children: Tuesday + Friday (national card: Wednesday + Saturday) — setting `ifaDays`.
@@ -26,4 +26,5 @@ Each chunk ends with: build → Playwright check at phone size → BUILD-LOG ent
 - Fast breathing uses IMNCI cut-offs "or more" (≥60 / ≥50 / ≥40); both cards print "more than".
 - 24-month warning sign 1: Odia print says "cannot stand steady while pulling a toy"; app uses the national meaning "does not walk steadily" — flagged for the Odia review.
 - Anaemia tool: AMB treatment flowcharts from the AMB training module (NHM, as published by NHM Himachal Pradesh) and Vikaspedia's AMB page: 6–59 m by weight band 1 / 1.5 / 2 ml IFA syrup daily × 2 months; 5–9 y 3 mg/kg/day × 2 months; 10–19 y 2 tablets daily × 3 months; pregnancy mild/moderate 2 tablets daily, recheck at 1 month; severe → FRU/DH (IV iron ≤34 weeks; admit >34 weeks or Hb <5). The AMB Abhiyaan guidelines were revised on 30 June 2026 (7×7×7, low-birth-weight babies added); the dose tables there were not available to check — the tool carries a notice. Recheck when the PDF is reachable.
-- Helplines: 108 ambulance, 102 Janani Express (pregnancy, up to 42 days postpartum, sick infants up to 1 year), 104 health helpline (Odisha, 24×7), 14416 Tele-MANAS, 14408 PMMVY.
+- Helplines: 108 ambulance, 102 Janani Express (pregnancy, up to 42 days postpartum, sick infants up to 1 year), 104 health helpline (Odisha, 24×7), 14416 Tele-MANAS, 14423 Kilkari re-listen (Odisha card p.46), 1515 POSHAN/PMMVY (replaced 14408 from 1 Nov 2025 — AIR News, 24 Oct 2025), 181 women, 1098 child, 112 emergency.
+- Birth-plan checklist key renamed facility → hospital (it clashed with the facility-name field).

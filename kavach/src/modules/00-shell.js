@@ -38,16 +38,17 @@ K.summary = { providers: [], add(fn) { this.providers.push(fn); } };
 K.due = {
   providers: [],
   add(fn) { this.providers.push(fn); },
-  forCard(card, today) {
+  /* horizon (days) lets providers with narrow "due soon" windows also list later items (Due tab, calendar file) */
+  forCard(card, today, horizon) {
     today = today || K.d.today();
     const out = [];
-    this.providers.forEach(p => { try { (p(card, today) || []).forEach(it => out.push(Object.assign({ cardId: card.id }, it))); } catch (e) { console.error(e); } });
+    this.providers.forEach(p => { try { (p(card, today, horizon || 0) || []).forEach(it => out.push(Object.assign({ cardId: card.id }, it))); } catch (e) { console.error(e); } });
     out.forEach(it => { const n = K.d.diff(today, it.date); it.days = n; it.status = it.status || (n < 0 ? 'overdue' : n <= 7 ? 'due' : 'upcoming'); });
     return out.sort((a, b) => (a.status === 'overdue' ? 0 : 1) - (b.status === 'overdue' ? 0 : 1) || K.d.cmp(a.date, b.date));
   },
   all(horizon = 30) {
     const t = K.d.today(); const out = [];
-    K.store.list().forEach(c => this.forCard(c, t).forEach(it => { if (it.days <= horizon) out.push(it); }));
+    K.store.list().forEach(c => this.forCard(c, t, horizon).forEach(it => { if (it.days <= horizon) out.push(it); }));
     return out.sort((a, b) => (a.status === 'overdue' ? 0 : 1) - (b.status === 'overdue' ? 0 : 1) || K.d.cmp(a.date, b.date));
   },
   label(it) { return it.status === 'overdue' ? K.t('st.overdue') : it.days === 0 ? K.t('rel.today') : K.d.rel(it.date); },

@@ -71,7 +71,7 @@ K.content.pregCare = [
 ];
 K.content.birthPlan = [
   { k: 'contact', en: 'Stay in touch with your ASHA, ANM and Anganwadi worker', or: 'ଆଶାକର୍ମୀ, ମହିଳା ସ୍ୱାସ୍ଥ୍ୟକର୍ମୀ ଓ ଅଙ୍ଗନୱାଡ଼ି କର୍ମୀଙ୍କ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ' },
-  { k: 'facility', en: 'Choose the hospital for delivery in advance', or: 'ପ୍ରସବ କରାଇବା ପାଇଁ ଆଗରୁ ଡାକ୍ତରଖାନା ଚିହ୍ନଟ କରି ରଖନ୍ତୁ' },
+  { k: 'hospital', en: 'Choose the hospital for delivery in advance', or: 'ପ୍ରସବ କରାଇବା ପାଇଁ ଆଗରୁ ଡାକ୍ତରଖାନା ଚିହ୍ନଟ କରି ରଖନ୍ତୁ' },
   { k: 'transport', en: 'Arrange transport in advance (102 / 108 are free)', or: 'ପ୍ରସବ ପୂର୍ବରୁ ଗମନାଗମନର ବ୍ୟବସ୍ଥା କରନ୍ତୁ (୧୦୨ / ୧୦୮ ମାଗଣା)' },
   { k: 'jsy', en: 'Register for JSY and MAMATA-PMMVY with the ASHA / AWW', or: 'ଆଶା / ଅଙ୍ଗନୱାଡ଼ି କର୍ମୀଙ୍କ ମାଧ୍ୟମରେ JSY ଓ ମମତା-PMMVY ରେ ପଞ୍ଜୀକରଣ କରନ୍ତୁ' },
   { k: 'money', en: 'Keep some money aside for an emergency', or: 'ଜରୁରୀକାଳୀନ ପାଇଁ କିଛି ଟଙ୍କା ରଖନ୍ତୁ' },

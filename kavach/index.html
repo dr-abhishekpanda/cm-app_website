@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="bcf73aa700">
+<html lang="en" data-build="9ca8915e02">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -778,6 +778,35 @@ details.feed-st>summary small{font-weight:400;color:var(--ink-soft);font-size:.8
 .table tr.tv-h td{background:var(--paper-2);padding-top:8px;padding-bottom:8px}
 #tan [data-show][hidden],#tedd [data-b][hidden]{display:none}
 
+/* --------------------------------------------------------- help / due ----- */
+.call-n{font-size:1.15rem;letter-spacing:.02em}
+
+/* ------------------------------------------------------------ print view -- */
+.pr-tools{margin-bottom:14px}
+.pr-page{background:#fff;color:#000;border:1px solid var(--line);border-radius:var(--r);padding:16px;font-size:.88rem;line-height:1.4}
+.pr-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;border-bottom:2px solid #000;padding-bottom:8px;margin-bottom:10px}
+.pr-h b{display:block;font-family:var(--font-display);font-size:1.15rem}
+.pr-h span{font-size:.8rem}
+.pr-sec{margin:0 0 14px;break-inside:avoid}
+.pr-sec h2{font-size:1rem;margin:0 0 6px;padding-bottom:3px;border-bottom:1px solid #999}
+.pr-sec h3{font-size:.86rem;margin:10px 0 4px}
+.pr-kv,.pr-tbl{width:100%;border-collapse:collapse}
+.pr-kv th{text-align:left;font-weight:600;width:34%;padding:3px 8px 3px 0;vertical-align:top}
+.pr-kv td{padding:3px 0;vertical-align:top}
+.pr-tbl th,.pr-tbl td{border:1px solid #bbb;padding:3px 5px;text-align:left;font-size:.8rem}
+.pr-tbl th{background:#f0f0f0}
+.pr-vax{display:flex;flex-wrap:wrap;gap:4px 12px;margin:0}
+.pr-vax span{white-space:nowrap}
+.pr-f{border-top:1px solid #999;margin-top:12px;padding-top:6px;font-size:.74rem;color:#333}
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff !important}
+  .topbar,#tabbar,.no-print,.grid-bg,.grain,#toast,#sheet-root{display:none !important}
+  #view{padding:0 !important;margin:0 !important}
+  .wrap{max-width:none !important;padding:0 !important}
+  .pr-page{border:0;border-radius:0;padding:0;font-size:10.5pt}
+}
+
 </style>
 </head>
 <body>
@@ -900,8 +929,8 @@ details.feed-st>summary small{font-weight:400;color:var(--ink-soft);font-size:.8
    escapes interpolated values unless they are K.raw()/nested K.h results.
    ============================================================================ */
 const K = window.K = window.K || {};
-K.build = 'bcf73aa700';
-K.builtAt = '2026-10-10T11:36:55.455Z';
+K.build = '9ca8915e02';
+K.builtAt = '2026-10-10T11:45:14.300Z';
 
 class Raw { constructor(s){ this.s = s; } toString(){ return this.s; } }
 K.Raw = Raw;
@@ -2380,16 +2409,17 @@ K.summary = { providers: [], add(fn) { this.providers.push(fn); } };
 K.due = {
   providers: [],
   add(fn) { this.providers.push(fn); },
-  forCard(card, today) {
+  /* horizon (days) lets providers with narrow "due soon" windows also list later items (Due tab, calendar file) */
+  forCard(card, today, horizon) {
     today = today || K.d.today();
     const out = [];
-    this.providers.forEach(p => { try { (p(card, today) || []).forEach(it => out.push(Object.assign({ cardId: card.id }, it))); } catch (e) { console.error(e); } });
+    this.providers.forEach(p => { try { (p(card, today, horizon || 0) || []).forEach(it => out.push(Object.assign({ cardId: card.id }, it))); } catch (e) { console.error(e); } });
     out.forEach(it => { const n = K.d.diff(today, it.date); it.days = n; it.status = it.status || (n < 0 ? 'overdue' : n <= 7 ? 'due' : 'upcoming'); });
     return out.sort((a, b) => (a.status === 'overdue' ? 0 : 1) - (b.status === 'overdue' ? 0 : 1) || K.d.cmp(a.date, b.date));
   },
   all(horizon = 30) {
     const t = K.d.today(); const out = [];
-    K.store.list().forEach(c => this.forCard(c, t).forEach(it => { if (it.days <= horizon) out.push(it); }));
+    K.store.list().forEach(c => this.forCard(c, t, horizon).forEach(it => { if (it.days <= horizon) out.push(it); }));
     return out.sort((a, b) => (a.status === 'overdue' ? 0 : 1) - (b.status === 'overdue' ? 0 : 1) || K.d.cmp(a.date, b.date));
   },
   label(it) { return it.status === 'overdue' ? K.t('st.overdue') : it.days === 0 ? K.t('rel.today') : K.d.rel(it.date); },
@@ -3338,7 +3368,7 @@ K.acts.ancDelete = async (el) => {
 };
 
 /* ---------------------------------------------------------------- due items */
-K.due.add((c, today) => {
+K.due.add((c, today, horizon) => {
   const p = K.card.activePreg(c); if (!p || !K.preg.edd(p)) return [];
   const out = []; const g = K.preg.ga(p, today); const url = K.preg.url(c, p);
   const sched = K.anc.schedule(p, today);
@@ -3349,6 +3379,7 @@ K.due.add((c, today) => {
   const pm = K.anc.nextPmsma(p, today);
   if (pm && K.d.diff(today, pm) <= 31) out.push({ id: 'pmsma', kind: 'anc', icon: 'hospital', href: url, title: { en: 'PMSMA doctor check-up (9th)', or: 'PMSMA ଡାକ୍ତରୀ ପରୀକ୍ଷା (୯ ତାରିଖ)' }, date: pm });
   const e = K.preg.edd(p);
+  if (horizon >= 60 && g && g.days <= 280 && K.d.diff(today, e) <= horizon) out.push({ id: 'edd' + p.id, kind: 'anc', icon: 'star', href: url, title: { en: 'Expected date of delivery', or: 'ସମ୍ଭାବ୍ୟ ପ୍ରସବ ତାରିଖ' }, date: e });
   if (g && g.days > 287) out.push({ id: 'postdate', kind: 'danger', icon: 'alert', href: url, title: { en: 'Past the expected date by more than 7 days — see a doctor today', or: 'ସମ୍ଭାବ୍ୟ ପ୍ରସବ ତାରିଖରୁ ୭ ଦିନରୁ ଅଧିକ ବିତିଗଲାଣି — ଆଜି ଡାକ୍ତରଙ୍କୁ ଦେଖାନ୍ତୁ' }, date: K.d.addDays(e, 7), status: 'overdue' });
   return out;
 });
@@ -3590,7 +3621,7 @@ K.content.pregCare = [
 ];
 K.content.birthPlan = [
   { k: 'contact', en: 'Stay in touch with your ASHA, ANM and Anganwadi worker', or: 'ଆଶାକର୍ମୀ, ମହିଳା ସ୍ୱାସ୍ଥ୍ୟକର୍ମୀ ଓ ଅଙ୍ଗନୱାଡ଼ି କର୍ମୀଙ୍କ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ' },
-  { k: 'facility', en: 'Choose the hospital for delivery in advance', or: 'ପ୍ରସବ କରାଇବା ପାଇଁ ଆଗରୁ ଡାକ୍ତରଖାନା ଚିହ୍ନଟ କରି ରଖନ୍ତୁ' },
+  { k: 'hospital', en: 'Choose the hospital for delivery in advance', or: 'ପ୍ରସବ କରାଇବା ପାଇଁ ଆଗରୁ ଡାକ୍ତରଖାନା ଚିହ୍ନଟ କରି ରଖନ୍ତୁ' },
   { k: 'transport', en: 'Arrange transport in advance (102 / 108 are free)', or: 'ପ୍ରସବ ପୂର୍ବରୁ ଗମନାଗମନର ବ୍ୟବସ୍ଥା କରନ୍ତୁ (୧୦୨ / ୧୦୮ ମାଗଣା)' },
   { k: 'jsy', en: 'Register for JSY and MAMATA-PMMVY with the ASHA / AWW', or: 'ଆଶା / ଅଙ୍ଗନୱାଡ଼ି କର୍ମୀଙ୍କ ମାଧ୍ୟମରେ JSY ଓ ମମତା-PMMVY ରେ ପଞ୍ଜୀକରଣ କରନ୍ତୁ' },
   { k: 'money', en: 'Keep some money aside for an emergency', or: 'ଜରୁରୀକାଳୀନ ପାଇଁ କିଛି ଟଙ୍କା ରଖନ୍ତୁ' },
@@ -4743,8 +4774,8 @@ K.child.cardBits.push((c, k) => {
 });
 
 /* ---------------------------------------------------------------- due items */
-K.due.add((c, today) => {
-  const out = [];
+K.due.add((c, today, horizon) => {
+  const out = []; const H = Math.max(45, horizon || 0), HV = Math.max(30, horizon || 0);
   K.card.kids(c).forEach(k => {
     if (!k.dob) return;
     const st = K.vax.state(k, today);
@@ -4752,11 +4783,11 @@ K.due.add((c, today) => {
     const href = K.child.url(c, k, '/vax');
     if (over.length) out.push({ id: 'vaxo' + k.id, kind: 'vax', icon: 'syringe', href, who: K.child.label(k), status: 'overdue', date: over.map(s => s.due).sort()[0],
       title: { en: `${K.child.label(k)}: overdue vaccines ${over.map(s => s.it.code).join(', ')}`, or: `${K.child.label(k)}: ବିଳମ୍ବ ଟୀକା ${over.map(s => s.it.code).join(', ')}` } });
-    const soon = Object.values(st).filter(s => s.st === 'due' || (s.st === 'upcoming' && K.d.diff(today, s.due) <= 45));
+    const soon = Object.values(st).filter(s => s.st === 'due' || (s.st === 'upcoming' && K.d.diff(today, s.due) <= H));
     const groups = {}; soon.forEach(s => { (groups[s.due] = groups[s.due] || []).push(s); });
     Object.entries(groups).forEach(([d, list]) => out.push({ id: 'vax' + k.id + d, kind: 'vax', icon: 'syringe', href, who: K.child.label(k), date: d,
       title: { en: `${K.child.label(k)}: ${list.map(s => s.it.code).join(', ')}`, or: `${K.child.label(k)}: ${list.map(s => s.it.code).join(', ')} ଟୀକା` } }));
-    const va = K.vax.vitaState(k, today).find(x => x.st === 'due' || x.st === 'overdue' || (x.st === 'upcoming' && K.d.diff(today, x.due) <= 30));
+    const va = K.vax.vitaState(k, today).find(x => x.st === 'due' || x.st === 'overdue' || (x.st === 'upcoming' && K.d.diff(today, x.due) <= HV));
     if (va) out.push({ id: 'vita' + k.id, kind: 'vax', icon: 'drop', href: href + '#vita', who: K.child.label(k), date: va.due, status: va.st === 'overdue' ? 'overdue' : undefined,
       title: { en: `${K.child.label(k)}: ${va.v.code}${va.v.alb ? ' + albendazole' : ''}`, or: `${K.child.label(k)}: ${va.v.code}${va.v.alb ? ' + କୃମିନାଶକ' : ''}` } });
   });
@@ -5413,11 +5444,11 @@ K.child.addTile(40, (c, k) => {
   return { icon: 'house', tone: nx && nx.st === 'overdue' ? 'amber' : '', title: K.t('hbyc.tile'), href: K.child.url(c, k, '/hbyc'),
     sub: `${K.t('hbyc.done', { n: list.filter(x => x.r).length, t: list.length })}${nx ? ' · ' + K.t('hbyc.visit', { m: nx.m }) + ' ' + K.d.fmt(nx.date, 'dm') : ''}` };
 });
-K.due.add((c, today) => {
-  const out = [];
+K.due.add((c, today, horizon) => {
+  const out = []; const H = Math.max(7, horizon || 0);
   K.card.kids(c).forEach(k => {
     if (!k.dob || K.d.age(k.dob, today).months >= 18) return;
-    K.hbyc.list(k, today).filter(x => x.st === 'due' || x.st === 'overdue' || (x.st === 'upcoming' && K.d.diff(today, x.date) <= 7)).forEach(x => out.push({
+    K.hbyc.list(k, today).filter(x => x.st === 'due' || x.st === 'overdue' || (x.st === 'upcoming' && K.d.diff(today, x.date) <= H)).forEach(x => out.push({
       id: 'hbyc' + k.id + x.m, kind: 'visit', icon: 'house', href: K.child.url(c, k, '/hbyc/' + x.m), who: K.child.label(k), date: x.date, status: x.st === 'overdue' ? 'overdue' : undefined,
       title: { en: `${K.child.label(k)}: ASHA home visit (${x.m} months)`, or: `${K.child.label(k)}: ଆଶାଙ୍କ ଗୃହ ପରିଦର୍ଶନ (${x.m} ମାସ)` } }));
   });
@@ -6507,6 +6538,350 @@ K.acts.shareCard = async (el) => {
     <div class="btn-row">${K.ui.btn(K.t('sum.copy'), { act: 'copySummary', icon: 'check' })}${K.ui.btn(K.t('bk.cardFile'), { act: 'cardFile', arg: c.id, tone: 'ghost', icon: 'download' })}</div>`);
 };
 K.acts.copySummary = async () => { const t = K.$('#sum-txt'); try { await navigator.clipboard.writeText(t.value); } catch (e) { t.select(); document.execCommand && document.execCommand('copy'); } K.ui.toast(K.t('sum.copied')); };
+
+}
+/* ── modules/92-due.js ── */
+{
+/* ============================================================================
+   modules/92-due — the Due tab: everything due across all cards on this
+   phone (from the K.due providers), grouped by urgency and filterable, plus a
+   calendar file (.ics, RFC 5545) with all-day reminders for the next 90 days.
+   ============================================================================ */
+const h = K.h;
+
+K.i18n.add({
+  'due.title': { en: 'Due', or: 'ବାକି ସେବା' },
+  'due.lede': { en: 'What is due across all the family cards on this phone.', or: 'ଏହି ଫୋନର ସମସ୍ତ ପରିବାର କାର୍ଡରେ ବାକି ଥିବା ସେବା।' },
+  'due.g.over': { en: 'Overdue', or: 'ବିଳମ୍ବ ହୋଇଛି' }, 'due.g.today': { en: 'Today', or: 'ଆଜି' }, 'due.g.week': { en: 'Next 7 days', or: 'ଆସନ୍ତା ୭ ଦିନ' },
+  'due.g.month': { en: 'Next 30 days', or: 'ଆସନ୍ତା ୩୦ ଦିନ' }, 'due.g.later': { en: 'Later (up to 90 days)', or: 'ପରେ (୯୦ ଦିନ ପର୍ଯ୍ୟନ୍ତ)' },
+  'due.f.all': { en: 'All', or: 'ସବୁ' }, 'due.f.preg': { en: 'Pregnancy', or: 'ଗର୍ଭାବସ୍ଥା' }, 'due.f.child': { en: 'Children', or: 'ଶିଶୁ' }, 'due.f.vax': { en: 'Vaccines', or: 'ଟୀକା' },
+  'due.none': { en: 'Nothing due in the next 90 days.', or: 'ଆସନ୍ତା ୯୦ ଦିନରେ କିଛି ବାକି ନାହିଁ।' },
+  'due.noCards': { en: 'No family card yet. Due dates appear here once a card has a pregnancy or a child.', or: 'ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ପରିବାର କାର୍ଡ ନାହିଁ। କାର୍ଡରେ ଗର୍ଭାବସ୍ଥା ବା ଶିଶୁ ଯୋଗ ହେଲେ ତାରିଖ ଏଠାରେ ଦେଖାଯିବ।' },
+  'due.ics': { en: 'Add reminders to the phone calendar', or: 'ଫୋନ୍ କ୍ୟାଲେଣ୍ଡରରେ ସ୍ମାରକ ଯୋଗ କରନ୍ତୁ' },
+  'due.icsSub': { en: 'Saves a calendar file (.ics) for the next 90 days; open it to add the dates.', or: 'ଆସନ୍ତା ୯୦ ଦିନ ପାଇଁ କ୍ୟାଲେଣ୍ଡର ଫାଇଲ୍ (.ics) ସେଭ୍ ହେବ; ଖୋଲି ତାରିଖ ଯୋଗ କରନ୍ତୁ।' },
+  'due.icsNone': { en: 'Nothing to add.', or: 'ଯୋଗ କରିବାକୁ କିଛି ନାହିଁ।' },
+  'due.count': { en: '{n} items', or: '{n}ଟି' }, 'due.count1': { en: '1 item', or: '୧ଟି' },
+});
+
+K.due.kindOf = (it) => (/\/preg\//.test(it.href || '') ? 'preg' : /\/child\//.test(it.href || '') ? 'child' : 'other');
+K.due.groupOf = (it) => (it.status === 'overdue' || it.days < 0 ? 'over' : it.days === 0 ? 'today' : it.days <= 7 ? 'week' : it.days <= 30 ? 'month' : 'later');
+K.due.row = (it, showWho) => {
+  const c = K.store.card(it.cardId); const who = c ? c.mother.name || '–' : '';
+  return K.ui.li({ href: it.href, icon: it.icon || 'bell', tone: it.status === 'overdue' ? 'red' : it.status === 'due' ? 'amber' : 'ink',
+    title: K.L(it.title), meta: [showWho ? who : '', K.d.fmt(it.date, 'dm')].filter(Boolean).join(' · '), trail: K.ui.pill(K.due.label(it), K.due.tone(it)) });
+};
+
+K.route('/due', (_, q) => {
+  const cards = K.store.list(); const f = q.get('f') || 'all';
+  const all = K.due.all(90).filter(it => f === 'all' || (f === 'vax' ? it.kind === 'vax' : K.due.kindOf(it) === f));
+  const groups = ['over', 'today', 'week', 'month', 'later'];
+  const showWho = cards.length > 1 || K.settings.isHcp();
+  const tabs = ['all', 'preg', 'child', 'vax'].map(k => ({ k, l: K.t('due.f.' + k), href: k === 'all' ? '#/due' : '#/due?f=' + k }));
+  return { title: K.t('due.title'), tab: 'due',
+    html: h`<div class="wrap">${K.ui.phead('', K.t('due.title'), K.t('due.lede'))}
+      ${!cards.length ? K.ui.empty('bell', K.t('due.noCards'), K.ui.btn(K.t('home.newCard'), { href: '#/card/new', icon: 'plus' })) : h`
+      ${K.ui.seg(tabs, f)}
+      ${all.length ? groups.map(g => { const items = all.filter(it => K.due.groupOf(it) === g); if (!items.length) return '';
+        return h`<section class="sec">${K.ui.secH(K.t('due.g.' + g) + ' · ' + (items.length === 1 ? K.t('due.count1') : K.t('due.count', { n: items.length })))}<div class="list">${items.map(it => K.due.row(it, showWho))}</div></section>`; })
+        : h`<div style="margin-top:16px">${K.ui.empty('check', K.t('due.none'))}</div>`}
+      <section class="sec"><button type="button" class="k-card flip-cta" data-act="dueIcs" style="width:100%;text-align:left">${K.ui.icon('calendar')}<span><b>${K.t('due.ics')}</b><small>${K.t('due.icsSub')}</small></span>${K.ui.icon('download', 'sm')}</button></section>`}
+    </div>` };
+});
+
+/* ---------------------------------------------------------------- calendar file */
+K.ics = {};
+const enc = new TextEncoder();
+K.ics.esc = (s) => String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+/* fold lines at 73 octets, never splitting a character (RFC 5545 §3.1) */
+K.ics.fold = (line) => { const out = []; let cur = '', bytes = 0; for (const ch of line) { const b = enc.encode(ch).length; if (bytes + b > 73) { out.push(cur); cur = ' ' + ch; bytes = 1 + b; } else { cur += ch; bytes += b; } } out.push(cur); return out.join('\r\n'); };
+K.ics.date = (iso) => iso.replace(/-/g, '');
+K.ics.build = (items) => {
+  const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+Z$/, 'Z');
+  const L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Maa o Shishu Kavach//MCP card//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'X-WR-CALNAME:' + K.ics.esc(K.t('app.name'))];
+  const today = K.d.today();
+  items.forEach(it => {
+    const d = K.d.cmp(it.date, today) < 0 ? today : it.date; const c = K.store.card(it.cardId); const title = K.L(it.title);
+    L.push('BEGIN:VEVENT', 'UID:' + K.ics.esc(`${it.cardId}-${it.id}-${d}@kavach`), 'DTSTAMP:' + stamp, 'DTSTART;VALUE=DATE:' + K.ics.date(d), 'DTEND;VALUE=DATE:' + K.ics.date(K.d.addDays(d, 1)),
+      'SUMMARY:' + K.ics.esc(title), 'DESCRIPTION:' + K.ics.esc(`${c ? c.mother.name + ' · ' : ''}${K.t('app.name')}`), 'TRANSP:TRANSPARENT',
+      'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + K.ics.esc(title), 'TRIGGER:-PT15H', 'END:VALARM', 'END:VEVENT');
+  });
+  L.push('END:VCALENDAR');
+  return L.map(K.ics.fold).join('\r\n') + '\r\n';
+};
+K.acts.dueIcs = () => {
+  const items = K.due.all(90);
+  if (!items.length) { K.ui.toast(K.t('due.icsNone')); return; }
+  K.download(`kavach-reminders-${K.d.today()}.ics`, K.ics.build(items), 'text/calendar;charset=utf-8');
+};
+
+}
+/* ── modules/93-help.js ── */
+{
+/* ============================================================================
+   modules/93-help — helplines and entitlements, each with its source and the
+   date it was last checked. Amounts change: keep the "checked" dates honest.
+   Sources: national MCP card 2018 p.1 (JSY, JSSK, PMSMA); Odisha MCP card
+   V-2023-24 pp.43–46 (JSY amounts, e-PMSMA travel, NRC, ₹500 drop-back, SUMAN,
+   Kilkari); WCD Odisha MAMATA-PMMVY page (checked 9 Oct 2026); AIR News
+   24 Oct 2025 (POSHAN / PMMVY helpline 1515 replaced 14408 from 1 Nov 2025).
+   ============================================================================ */
+const h = K.h;
+
+K.i18n.add({
+  'help.title': { en: 'Helplines and schemes', or: 'ହେଲ୍ପଲାଇନ୍ ଓ ଯୋଜନା' },
+  'help.lede': { en: 'Free numbers to call, and what every mother and child is entitled to.', or: 'ମାଗଣା ଫୋନ୍ ନମ୍ବର, ଓ ପ୍ରତ୍ୟେକ ମା’ ଓ ଶିଶୁଙ୍କ ପ୍ରାପ୍ୟ ସୁବିଧା।' },
+  'help.calls': { en: 'Call for help', or: 'ସାହାଯ୍ୟ ପାଇଁ ଫୋନ୍ କରନ୍ତୁ' },
+  'help.local': { en: 'Your local contacts', or: 'ଆପଣଙ୍କ ସ୍ଥାନୀୟ ଯୋଗାଯୋଗ' },
+  'help.localNone': { en: 'Add the ASHA, ANM and Anganwadi worker numbers on a family card to see them here.', or: 'ଏଠାରେ ଦେଖିବା ପାଇଁ ପରିବାର କାର୍ଡରେ ଆଶା, ଏ.ଏନ୍.ଏମ୍. ଓ ଅଙ୍ଗନୱାଡ଼ି କର୍ମୀଙ୍କ ନମ୍ବର ଯୋଗ କରନ୍ତୁ।' },
+  'help.schemes': { en: 'Your entitlements', or: 'ଆପଣଙ୍କ ପ୍ରାପ୍ୟ ସୁବିଧା' },
+  'help.checked': { en: 'Source: {s} · checked {d}', or: 'ଉତ୍ସ: {s} · ଯାଞ୍ଚ {d}' },
+  'help.note': { en: 'Amounts and rules change. Confirm with your ASHA, Anganwadi worker or ANM before you apply.', or: 'ରାଶି ଓ ନିୟମ ବଦଳେ। ଆବେଦନ ପୂର୍ବରୁ ଆଶା, ଅଙ୍ଗନୱାଡ଼ି କର୍ମୀ ବା ଏ.ଏନ୍.ଏମ୍.ଙ୍କ ଠାରୁ ନିଶ୍ଚିତ କରନ୍ତୁ।' },
+  'help.notGovt': { en: 'This app is not an official government app. It helps you use the government MCP card and services.', or: 'ଏହା ସରକାରୀ ଆପ୍ ନୁହେଁ। ଏହା ସରକାରୀ MCP କାର୍ଡ ଓ ସେବା ବ୍ୟବହାରରେ ସାହାଯ୍ୟ କରେ।' },
+});
+
+K.help = {};
+K.help.CALLS = [
+  { n: '108', icon: 'ambulance', tone: 'danger', t: { en: 'Ambulance — any emergency', or: 'ଆମ୍ବୁଲାନ୍ସ — ଯେକୌଣସି ଜରୁରୀ ଅବସ୍ଥା' } },
+  { n: '102', icon: 'ambulance', t: { en: 'Janani Express — pregnant women, mothers up to 42 days after delivery, sick infants up to 1 year', or: 'ଜନନୀ ଏକ୍ସପ୍ରେସ୍ — ଗର୍ଭବତୀ, ପ୍ରସବର ୪୨ ଦିନ ପର୍ଯ୍ୟନ୍ତ ମା’, ୧ ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ ଅସୁସ୍ଥ ଶିଶୁ' } },
+  { n: '104', icon: 'phone', t: { en: 'Health helpline, 24 hours — advice and complaints', or: 'ସ୍ୱାସ୍ଥ୍ୟ ହେଲ୍ପଲାଇନ୍, ୨୪ ଘଣ୍ଟା — ପରାମର୍ଶ ଓ ଅଭିଯୋଗ' } },
+  { n: '14416', icon: 'heart', t: { en: 'Tele-MANAS — feeling low, worried or not coping (free, 24 hours)', or: 'ଟେଲି-ମାନସ — ମନ ଦୁଃଖ, ଚିନ୍ତା ବା ଅସହାୟ ଲାଗିଲେ (ମାଗଣା, ୨୪ ଘଣ୍ଟା)' } },
+  { n: '14423', icon: 'sound', t: { en: 'Kilkari — listen again to the weekly health messages (from the registered mobile)', or: 'କିଲକାରୀ — ସାପ୍ତାହିକ ସ୍ୱାସ୍ଥ୍ୟ ବାର୍ତ୍ତା ପୁଣି ଶୁଣନ୍ତୁ (ପଞ୍ଜୀକୃତ ମୋବାଇଲ୍‌ରୁ)' } },
+  { n: '1515', icon: 'phone', t: { en: 'POSHAN and PMMVY (MAMATA) helpline', or: 'ପୋଷଣ ଓ PMMVY (ମମତା) ହେଲ୍ପଲାଇନ୍' } },
+  { n: '181', icon: 'users', t: { en: 'Women helpline', or: 'ମହିଳା ହେଲ୍ପଲାଇନ୍' } },
+  { n: '1098', icon: 'baby', t: { en: 'Child helpline', or: 'ଶିଶୁ ହେଲ୍ପଲାଇନ୍' } },
+  { n: '112', icon: 'shield', t: { en: 'Police and all emergencies', or: 'ପୋଲିସ୍ ଓ ସମସ୍ତ ଜରୁରୀ ଅବସ୍ଥା' } },
+];
+const S = (en, or) => ({ en, or });
+K.help.SCHEMES = [
+  { k: 'jssk', icon: 'hospital', t: S('Free care at government hospitals (JSSK)', 'ସରକାରୀ ଡାକ୍ତରଖାନାରେ ମାଗଣା ସେବା (JSSK)'),
+    items: [S('Free and cashless delivery, including caesarean section', 'ଅସ୍ତ୍ରୋପଚାର ସହିତ ସମ୍ପୂର୍ଣ୍ଣ ମାଗଣାରେ ପ୍ରସବ'), S('Free medicines, tests (blood, urine, ultrasound) and blood', 'ମାଗଣା ଔଷଧ, ପରୀକ୍ଷା (ରକ୍ତ, ପରିସ୍ରା, ଅଲ୍ଟ୍ରାସାଉଣ୍ଡ) ଓ ରକ୍ତ'),
+      S('Free food during the stay: up to 3 days after a normal delivery, 7 days after a caesarean', 'ରହିବା ସମୟରେ ମାଗଣା ଖାଦ୍ୟ: ସ୍ୱାଭାବିକ ପ୍ରସବ ପରେ ୩ ଦିନ, ଅସ୍ତ୍ରୋପଚାର ପରେ ୭ ଦିନ ପର୍ଯ୍ୟନ୍ତ'),
+      S('Free transport from home to hospital, between hospitals, and back home', 'ଘରୁ ଡାକ୍ତରଖାନା, ଡାକ୍ତରଖାନା ମଧ୍ୟରେ ଓ ଘରକୁ ଫେରିବା ମାଗଣା ଯାତାୟାତ'),
+      S('Sick babies up to 1 year: free treatment, medicines, tests, blood and transport', '୧ ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ ଅସୁସ୍ଥ ଶିଶୁ: ମାଗଣା ଚିକିତ୍ସା, ଔଷଧ, ପରୀକ୍ଷା, ରକ୍ତ ଓ ଯାତାୟାତ'), S('No user charges of any kind', 'କୌଣସି ପ୍ରକାର ଶୁଳ୍କ ନାହିଁ')],
+    src: 'National MCP card 2018, p.1', d: '2026-10-10' },
+  { k: 'jsy', icon: 'star', t: S('Janani Suraksha Yojana (JSY)', 'ଜନନୀ ସୁରକ୍ଷା ଯୋଜନା (JSY)'),
+    items: [S('Cash for giving birth in a government hospital or a JSY-accredited private hospital: ₹1,400 in rural areas, ₹1,000 in urban areas, paid into the bank account (DBT)', 'ସରକାରୀ ଡାକ୍ତରଖାନା ବା JSY ସ୍ୱୀକୃତିପ୍ରାପ୍ତ ବେସରକାରୀ ଡାକ୍ତରଖାନାରେ ପ୍ରସବ କଲେ ପ୍ରୋତ୍ସାହନ ରାଶି: ଗ୍ରାମାଞ୍ଚଳ ପାଇଁ ୧୪୦୦ ଟଙ୍କା ଓ ସହରାଞ୍ଚଳ ପାଇଁ ୧୦୦୦ ଟଙ୍କା, ଡି.ବି.ଟି. ମାଧ୍ୟମରେ ବ୍ୟାଙ୍କ ଆକାଉଣ୍ଟରେ')],
+    src: 'Odisha MCP card V-2023-24, p.43', d: '2026-10-10' },
+  { k: 'mamata', icon: 'mother', t: S('MAMATA–PMMVY (Odisha)', 'ମମତା–PMMVY (ଓଡ଼ିଶା)'),
+    items: [S('From 1 April 2025: ₹6,000 after registering the pregnancy at the Anganwadi centre and at least one check-up within 6 months of the last period', '୧ ଏପ୍ରିଲ୍ ୨୦୨୫ ରୁ: ଅଙ୍ଗନୱାଡ଼ି କେନ୍ଦ୍ରରେ ଗର୍ଭ ପଞ୍ଜୀକରଣ ଓ ଶେଷ ଋତୁସ୍ରାବର ୬ ମାସ ମଧ୍ୟରେ ଅତି କମ୍‌ରେ ଗୋଟିଏ ପରୀକ୍ଷା ପରେ ୬,୦୦୦ ଟଙ୍କା'),
+      S('Second instalment after birth registration and the baby’s vaccines up to 14 weeks: ₹4,000 for a boy, ₹6,000 for a girl', 'ଜନ୍ମ ପଞ୍ଜୀକରଣ ଓ ଶିଶୁର ୧୪ ସପ୍ତାହ ପର୍ଯ୍ୟନ୍ତ ଟୀକା ପରେ ଦ୍ୱିତୀୟ କିସ୍ତି: ପୁଅ ପାଇଁ ୪,୦୦୦ ଟଙ୍କା, ଝିଅ ପାଇଁ ୬,୦୦୦ ଟଙ୍କା'),
+      S('For up to two live births; women of PVTG communities for all births until 31 March 2029', 'ଦୁଇଟି ଜୀବିତ ସନ୍ତାନ ପର୍ଯ୍ୟନ୍ତ; PVTG ସମ୍ପ୍ରଦାୟର ମହିଳାଙ୍କ ପାଇଁ ୩୧ ମାର୍ଚ୍ଚ ୨୦୨୯ ପର୍ଯ୍ୟନ୍ତ ସମସ୍ତ ଜନ୍ମ'),
+      S('Apply through the Anganwadi worker. Documents asked for include Aadhaar, a bank or post-office account, the MCP card and ABHA ID — this app does not store Aadhaar or bank details.', 'ଅଙ୍ଗନୱାଡ଼ି କର୍ମୀଙ୍କ ମାଧ୍ୟମରେ ଆବେଦନ କରନ୍ତୁ। ଆଧାର, ବ୍ୟାଙ୍କ ବା ଡାକଘର ଆକାଉଣ୍ଟ, MCP କାର୍ଡ ଓ ABHA ID ଆବଶ୍ୟକ — ଏହି ଆପ୍ ଆଧାର ବା ବ୍ୟାଙ୍କ ବିବରଣୀ ରଖେ ନାହିଁ।')],
+    src: 'WCD Odisha, MAMATA-PMMVY page (wcd.odisha.gov.in)', d: '2026-10-09' },
+  { k: 'pmsma', icon: 'user', t: S('PMSMA and e-PMSMA', 'PMSMA ଓ e-PMSMA'),
+    items: [S('A free check-up by a doctor on the 9th of every month (the 10th if the 9th is a Sunday), at least once in the 2nd or 3rd trimester', 'ପ୍ରତି ମାସ ୯ ତାରିଖରେ (ରବିବାର ହେଲେ ୧୦ ତାରିଖ) ଡାକ୍ତରଙ୍କ ଦ୍ୱାରା ମାଗଣା ପରୀକ୍ଷା, ଦ୍ୱିତୀୟ ବା ତୃତୀୟ ତ୍ରୟମାସରେ ଅତି କମ୍‌ରେ ଥରେ'),
+      S('High-risk pregnancies found under e-PMSMA get ₹100 for travel for each specialist check-up at a government hospital, for up to three check-ups (Odisha)', 'E-PMSMA ଅଧୀନରେ ଚିହ୍ନଟ ବିପଦସଙ୍କୁଳ ଗର୍ଭବତୀଙ୍କୁ ସରକାରୀ ଡାକ୍ତରଖାନାରେ ବିଶେଷଜ୍ଞ ଚେକଅପ୍ ପାଇଁ ଯାତାୟାତ ଖର୍ଚ୍ଚ ବାବଦକୁ ୧୦୦ ଟଙ୍କା ଲେଖାଏଁ, ତିନୋଟି ଚେକଅପ୍ ପର୍ଯ୍ୟନ୍ତ (ଓଡ଼ିଶା)')],
+    src: 'National MCP card 2018, p.1; Odisha MCP card V-2023-24, p.43', d: '2026-10-10' },
+  { k: 'suman', icon: 'shield', t: S('SUMAN — assured services', 'ସୁମନ୍ — ସୁନିଶ୍ଚିତ ସେବା'),
+    items: [S('At least 4 check-ups in pregnancy, IFA tablets, Td injections and all tests, free', 'ଅତିକମ୍‌ରେ ୪ଟି ଗର୍ଭାବସ୍ଥାର ପରୀକ୍ଷା, ଆଇରନ୍ ଫଲିକ୍ ଏସିଡ୍ ବଟିକା, ଟିଡି ଇଞ୍ଜେକ୍‌ସନ୍ ଏବଂ ଗର୍ଭାବସ୍ଥାର ସମସ୍ତ ପରୀକ୍ଷା ମାଗଣା'),
+      S('Six home visits for the newborn', 'ନବଜାତ ଶିଶୁର ଯତ୍ନ ନିମନ୍ତେ ୬ ଥର ଗୃହ ପରିଦର୍ଶନ'),
+      S('Reaching a health centre within 1 hour in an emergency, and a free ride home after the 48-hour stay', 'ଯେକୌଣସି ଜରୁରୀ ପରିସ୍ଥିତିରେ ୧ ଘଣ୍ଟା ଭିତରେ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରରେ ପହଞ୍ଚାଇବା ଏବଂ ୪୮ ଘଣ୍ଟା ରହିବା ପରେ ଘରେ ପହଞ୍ଚାଇବାର ନିଶ୍ଚିତ ଆଶ୍ୱାସନା'),
+      S('Respectful care with privacy and dignity; free care for sick newborns; birth certificate from the hospital', 'ସମ୍ମାନ, ଏକାନ୍ତତା ଏବଂ ସ୍ୱାଭିମାନର ସହିତ ସେବା; ଅସୁସ୍ଥ ନବଜାତ ଶିଶୁଙ୍କୁ ମାଗଣା ସେବା; ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରରୁ ଜନ୍ମ ପ୍ରମାଣପତ୍ର'),
+      S('Complaints are heard through the call centre (104) and web portal', 'କଲ୍ ସେଣ୍ଟର / ସହାୟତା କେନ୍ଦ୍ର ଏବଂ ୱେବ୍ ପୋର୍ଟାଲ ଯୋଗେ ଅଭିଯୋଗ ଶୁଣାଣି')],
+    src: 'Odisha MCP card V-2023-24, p.45', d: '2026-10-10' },
+  { k: 'dropback', icon: 'ambulance', t: S('₹500 for the trip home', 'ଘରକୁ ଫେରିବା ପାଇଁ ୫୦୦ ଟଙ୍କା'),
+    items: [S('Mothers after delivery, and sick babies up to 1 year discharged from hospital (IPD, NRC, NBSU or SNCU), get ₹500 for travel home, paid by DBT (Odisha)', 'ପ୍ରସୂତୀ ମହିଳା ଓ ଜନ୍ମରୁ ୧ ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ ଡାକ୍ତରଖାନାରେ ଭର୍ତ୍ତି (ଆଇ.ପି.ଡି./ଏନ୍.ଆର୍.ସି./ଏନ୍.ବି.ଏସ୍.ୟୁ./ଏସ୍.ଏନ୍.ସି.ୟୁ.) ଅସୁସ୍ଥ ଶିଶୁଙ୍କ ଘରକୁ ଫେରିବା ପାଇଁ ୫୦୦ ଟଙ୍କା ଡି.ବି.ଟି. ମାଧ୍ୟମରେ')],
+    src: 'Odisha MCP card V-2023-24, p.43', d: '2026-10-10' },
+  { k: 'nrc', icon: 'scale', t: S('Nutrition Rehabilitation Centre (NRC)', 'ପୁଷ୍ଟି ପୁନର୍ବାସ କେନ୍ଦ୍ର (NRC)'),
+    items: [S('Free treatment for children with severe acute malnutrition', 'ଅତିଶୟ ପୁଷ୍ଟିହୀନ ଶିଶୁଙ୍କ ପାଇଁ ମାଗଣା ଚିକିତ୍ସା'),
+      S('The mother or caregiver staying with the child gets ₹100 a day for lost wages, ₹100 for travel at discharge, and ₹300 for four follow-up visits (Odisha)', 'NRC ରେ ପିଲା ସହିତ ରହୁଥିବା ମା’/ଯତ୍ନକାରୀଙ୍କୁ ପ୍ରତିଦିନ ମଜୁରୀ ଭରଣା ବାବଦକୁ ୧୦୦ ଟଙ୍କା, ଡିସଚାର୍ଜ ସମୟରେ ଯାତାୟାତ ବାବଦକୁ ୧୦୦ ଟଙ୍କା ଓ ୪ଥର ଫଲୋଅପ୍ ପାଇଁ ୩୦୦ ଟଙ୍କା (ଓଡ଼ିଶା)')],
+    src: 'Odisha MCP card V-2023-24, p.43', d: '2026-10-10' },
+  { k: 'rbsk', icon: 'star', t: S('RBSK and DEIC', 'RBSK ଓ ଡି.ଇ.ଆଇ.ସି.'),
+    items: [S('Free screening of children for birth defects, deficiencies, diseases and developmental delay by mobile health teams and at Anganwadi centres and schools', 'ମୋବାଇଲ୍ ସ୍ୱାସ୍ଥ୍ୟ ଦଳ ଦ୍ୱାରା ଅଙ୍ଗନୱାଡ଼ି ଓ ବିଦ୍ୟାଳୟରେ ଜନ୍ମଗତ ତ୍ରୁଟି, ପୁଷ୍ଟି ଅଭାବ, ରୋଗ ଓ ବିଳମ୍ବିତ ବିକାଶ ପାଇଁ ମାଗଣା ଯାଞ୍ଚ'),
+      Object.assign({}, K.dev.TEXT.deicBody)],
+    src: 'Odisha MCP card V-2023-24, p.10', d: '2026-10-10' },
+  { k: 'kilkari', icon: 'sound', t: S('Kilkari voice messages', 'କିଲକାରୀ ସ୍ୱର ବାର୍ତ୍ତା'),
+    items: [S('Free weekly calls about mother and child health from 0124-4588000, from the 4th month of pregnancy until the baby is 1 year old', '୦୧୨୪୪୫୮୮୦୦୦ ନମ୍ବରରୁ ପ୍ରତି ସପ୍ତାହରେ ମାତୃ ଓ ଶିଶୁ ସ୍ୱାସ୍ଥ୍ୟ ସମ୍ବନ୍ଧିତ ସୂଚନା (ଗର୍ଭାବସ୍ଥାର ଚତୁର୍ଥ ମାସରୁ ଶିଶୁକୁ ଏକ ବର୍ଷ ହେବା ପର୍ଯ୍ୟନ୍ତ)'),
+      S('Missed a call? Dial 14423 (toll-free) from the registered mobile to hear it again', 'କଲ୍ ଉଠାଇ ନ ପାରିଲେ ପଞ୍ଜୀକୃତ ମୋବାଇଲ୍‌ରୁ ୧୪୪୨୩ (ଟୋଲ୍ ଫ୍ରି) ଡାଏଲ୍ କରି ପୁନର୍ବାର ଶୁଣନ୍ତୁ')],
+    src: 'Odisha MCP card V-2023-24, p.46', d: '2026-10-10' },
+  { k: 'fp', icon: 'users', t: S('Family planning incentives', 'ପରିବାର ନିୟୋଜନ ପ୍ରୋତ୍ସାହନ'),
+    items: [S('PPIUCD ₹300; Antara injection ₹100 per dose; female sterilisation ₹2,200 after delivery or ₹1,400 interval; male sterilisation (NSV) ₹2,000 — amounts as printed on the Odisha card', 'ପ୍ରସବ ପରବର୍ତ୍ତୀ ଆଇ ୟୁ ସି ଡି ୩୦୦ ଟଙ୍କା; ଅନ୍ତରା ଇଞ୍ଜେକସନ୍ ପ୍ରତି ମାତ୍ରା ୧୦୦ ଟଙ୍କା; ମହିଳା ବନ୍ଧ୍ୟାକରଣ ପ୍ରସବ ପରେ ୨,୨୦୦ ଟଙ୍କା ବା ଅନ୍ତର୍ବର୍ତ୍ତୀ ୧,୪୦୦ ଟଙ୍କା; ପୁରୁଷ ବନ୍ଧ୍ୟାକରଣ (NSV) ୨,୦୦୦ ଟଙ୍କା — ଓଡ଼ିଶା କାର୍ଡ ଅନୁସାରେ')],
+    src: 'Odisha MCP card V-2023-24, p.42', d: '2026-10-10' },
+];
+
+K.route('/help', () => {
+  // local contacts from the family cards (deduplicated by number)
+  const seen = new Set(); const local = [];
+  K.store.list().forEach(c => { const ct = c.contacts || {};
+    [['asha', 'ashaPhone', 'ASHA'], ['anm', 'anmPhone', 'ANM'], ['aww', 'awwPhone', 'AWW'], ['deliveryPoint', 'deliveryPhone', ''], ['fru', 'fruPhone', 'FRU'], ['referral1', 'referral1Phone', '']].forEach(([n, p, role]) => {
+      const num = (ct[p] || '').replace(/\s+/g, ''); if (!num || seen.has(num)) return; seen.add(num); local.push({ name: ct[n] || role, role, num }); }); });
+  return { title: K.t('help.title'), tab: 'home', back: '/',
+    html: h`<div class="wrap">${K.ui.phead('', K.t('help.title'), K.t('help.lede'))}
+      <section class="sec">${K.ui.secH(K.t('help.calls'))}<div class="list">${K.help.CALLS.map(x => h`<a class="li" href="tel:${x.n}"><span class="lead ${x.tone === 'danger' ? 'red' : ''}">${K.ui.icon(x.icon)}</span><span class="body"><span class="t"><b class="mono call-n">${K.digits(x.n)}</b></span><span class="m">${K.L(x.t)}</span></span><span class="trail">${K.ui.icon('phone', 'sm')}</span></a>`)}</div></section>
+      <section class="sec">${K.ui.secH(K.t('help.local'))}${local.length ? h`<div class="list">${local.map(x => h`<a class="li" href="tel:${x.num}"><span class="lead">${K.ui.icon('user')}</span><span class="body"><span class="t">${x.name}</span><span class="m mono">${x.role ? x.role + ' · ' : ''}${x.num}</span></span><span class="trail">${K.ui.icon('phone', 'sm')}</span></a>`)}</div>` : h`<p class="small">${K.t('help.localNone')}</p>`}</section>
+      <section class="sec">${K.ui.secH(K.t('help.schemes'))}<p class="small">${K.t('help.note')}</p>
+        <div class="stack">${K.help.SCHEMES.map(sc => h`<details class="acc" id="sch-${sc.k}"><summary>${K.ui.icon(sc.icon, 'sm')}<span>${K.L(sc.t)}</span></summary><div class="acc-b">
+          <ul class="ill-list">${sc.items.map(x => h`<li>${K.ui.icon('check', 'sm')}<span>${K.L(x)}</span></li>`)}</ul>
+          <p class="small faint" style="margin:8px 0 0">${K.t('help.checked', { s: sc.src, d: K.d.fmt(sc.d) })}</p></div></details>`)}</div></section>
+      <p class="small faint">${K.t('help.notGovt')}</p>
+    </div>`,
+    mount() { const a = K.anchor(); if (a) { const e = document.getElementById(a); if (e) { e.open = true; e.scrollIntoView(); } } } };
+});
+
+}
+/* ── modules/94-print.js ── */
+{
+/* ============================================================================
+   modules/94-print — printable summary of one family card (A4, black on
+   white) for the paper file, a referral, or "Save as PDF". Uses the same
+   records and engines as the screens; nothing new is stored.
+   ============================================================================ */
+const h = K.h;
+
+K.i18n.add({
+  'pr.title': { en: 'Print / save as PDF', or: 'ପ୍ରିଣ୍ଟ / PDF ସେଭ୍' },
+  'pr.do': { en: 'Print or save as PDF', or: 'ପ୍ରିଣ୍ଟ କରନ୍ତୁ ବା PDF ସେଭ୍ କରନ୍ତୁ' },
+  'pr.hint': { en: 'In the print window choose "Save as PDF" to keep a file, or send it to a printer.', or: 'ପ୍ରିଣ୍ଟ ୱିଣ୍ଡୋରେ ଫାଇଲ୍ ରଖିବା ପାଇଁ “Save as PDF” ବାଛନ୍ତୁ, ବା ପ୍ରିଣ୍ଟରକୁ ପଠାନ୍ତୁ।' },
+  'pr.head': { en: 'Mother and child card — summary', or: 'ମା’ ଓ ଶିଶୁ କାର୍ଡ — ସାରାଂଶ' },
+  'pr.printed': { en: 'Printed on {d} from Maa ’o’ Shishu Kavach (not an official government record). Keep with the MCP card.', or: '{d} ରେ ମା’ ଓ ଶିଶୁ କବଚରୁ ଛପା (ସରକାରୀ ରେକର୍ଡ ନୁହେଁ)। MCP କାର୍ଡ ସହ ରଖନ୍ତୁ।' },
+  'pr.mother': { en: 'Mother', or: 'ମା’' }, 'pr.contacts': { en: 'Contacts', or: 'ଯୋଗାଯୋଗ' },
+  'pr.preg': { en: 'Pregnancy', or: 'ଗର୍ଭାବସ୍ଥା' }, 'pr.anc': { en: 'Check-ups', or: 'ଗର୍ଭାବସ୍ଥାର ପରୀକ୍ଷା' },
+  'pr.child': { en: 'Child', or: 'ଶିଶୁ' }, 'pr.vaxGiven': { en: 'Vaccines given', or: 'ଦିଆଯାଇଥିବା ଟୀକା' }, 'pr.vaxNext': { en: 'Due or overdue', or: 'ବାକି / ବିଳମ୍ବ' },
+  'pr.growth': { en: 'Last weight', or: 'ଶେଷ ଓଜନ' }, 'pr.none': { en: 'None recorded', or: 'ଲେଖାଯାଇନାହିଁ' },
+  'pr.tabs': { en: 'Tablets', or: 'ବଟିକା' }, 'pr.tests': { en: 'Tests', or: 'ପରୀକ୍ଷା' },
+  'pr.risk': { en: 'High-risk', or: 'ବିପଦସଙ୍କୁଳ' }, 'pr.noRisk': { en: 'No high-risk condition recorded', or: 'କୌଣସି ବିପଦସଙ୍କୁଳ ଅବସ୍ଥା ଲେଖାଯାଇନାହିଁ' },
+  'pr.delivery': { en: 'Delivery', or: 'ପ୍ରସବ' },
+});
+
+const row = (k, v) => (v == null || v === '' ? '' : h`<tr><th>${k}</th><td>${v}</td></tr>`);
+const val = (x) => (x == null || x === '' ? '–' : x);
+
+function motherBlock(c) {
+  const m = c.mother || {}; const ct = c.contacts || {}; const age = K.card.motherAge(c);
+  return h`<section class="pr-sec"><h2>${K.t('pr.mother')}</h2><table class="pr-kv"><tbody>
+    ${row(K.t('m.name'), m.name)}${row(K.t('m.age'), age != null ? K.digits(age) : '')}${row(K.t('m.husband'), m.husband)}
+    ${row(K.t('m.village'), [m.village, m.block, m.district].filter(Boolean).join(', '))}${row(K.t('m.phone'), m.phone)}
+    ${row('RCH ID', m.rchId)}${row('ABHA', m.abhaId)}${row(K.t('test.bloodGroup'), m.bloodGroup)}${row(K.t('m.height'), m.height ? K.n(m.height, 1) + ' ' + K.t('u.cm') : '')}
+  </tbody></table>
+  <h3>${K.t('pr.contacts')}</h3><table class="pr-kv"><tbody>
+    ${row('ASHA', [ct.asha, ct.ashaPhone].filter(Boolean).join(' · '))}${row('ANM', [ct.anm, ct.anmPhone].filter(Boolean).join(' · '))}${row('AWW', [ct.aww, ct.awwPhone, ct.awc].filter(Boolean).join(' · '))}
+    ${row(K.t('c.dp'), [ct.deliveryPoint, ct.deliveryPhone].filter(Boolean).join(' · '))}${row('FRU', [ct.fru, ct.fruPhone].filter(Boolean).join(' · '))}
+  </tbody></table></section>`;
+}
+
+function pregBlock(c, p) {
+  const e = K.preg.edd(p); const g = K.preg.isActive(p) ? K.preg.ga(p) : null; const risk = K.preg.risk(p, c) || { high: false, reasons: [] };
+  const td = p.td || {}; const t = p.tests || {}; const count = (o) => Object.keys((o && o.days) || {}).filter(d => o.days[d]).length;
+  const anc = (p.anc || []).slice().sort(K.by('date'));
+  return h`<section class="pr-sec"><h2>${K.t('pr.preg')}${p.delivery ? '' : g ? ' · ' + K.preg.gaText(g) : ''}</h2>
+    <table class="pr-kv"><tbody>
+      ${row('LMP', p.lmp ? K.d.fmt(p.lmp) : '')}${row('EDD', e ? K.d.fmt(e) : '')}
+      ${row('G / P / A / L', [p.gravida, p.para, p.abortions, p.living].map(val).join(' / '))}
+      ${row(K.t('pr.risk'), risk.high ? risk.reasons.map(x => K.L(x.it)).join('; ') : K.t('pr.noRisk'))}
+      ${row('Td', [td.td1 && 'Td-1 ' + K.d.fmt(td.td1), td.td2 && 'Td-2 ' + K.d.fmt(td.td2), td.booster && 'Td-B ' + K.d.fmt(td.booster)].filter(Boolean).join(' · '))}
+      ${row(K.t('pr.tabs'), `IFA ${K.digits(count(p.ifa))} · Ca ${K.digits(count(p.calcium))}${p.albendazole ? ' · Alb ' + K.d.fmt(p.albendazole) : ''}`)}
+      ${row(K.t('pr.tests'), [t.bloodGroup && t.bloodGroup, ['hiv', 'syphilis', 'hbsag', 'malaria'].filter(k => t[k] && t[k] !== 'nd').map(k => `${K.t('test.' + k).split(' (')[0]}: ${K.t('res.' + t[k])}`).join(', '), t.ogtt != null && t.ogtt !== '' ? `OGTT ${t.ogtt}` : ''].filter(Boolean).join(' · '))}
+    </tbody></table>
+    ${anc.length ? h`<h3>${K.t('pr.anc')}</h3><table class="pr-tbl"><thead><tr><th>${K.t('date')}</th><th>GA</th><th>${K.t('u.kg')}</th><th>BP</th><th>Hb</th><th>Alb/Sug</th><th>FH</th><th>FHR</th></tr></thead><tbody>
+      ${anc.map(a => { const ga = e ? K.preg.ga(p, a.date) : null; return h`<tr><td>${K.d.fmt(a.date, 'tbl')}</td><td>${ga ? K.preg.gaShort(ga) : '–'}</td><td>${val(a.weight)}</td><td>${a.bpSys ? K.digits(`${a.bpSys}/${a.bpDia || '–'}`) : '–'}</td><td>${val(a.hb)}</td><td>${[a.urineAlb, a.urineSugar].map(val).join('/')}</td><td>${val(a.fh)}</td><td>${val(a.fhr)}</td></tr>`; })}
+    </tbody></table>` : ''}
+    ${p.delivery ? h`<h3>${K.t('pr.delivery')}</h3><p>${K.d.fmt(p.delivery.date, 'long')}${p.delivery.place ? ' · ' + K.t('del.place.' + p.delivery.place) : ''}${p.delivery.facility ? ' · ' + p.delivery.facility : ''}</p>` : ''}
+  </section>`;
+}
+
+function childBlock(c, k) {
+  if (!k.dob) return '';
+  const st = K.vax.state(k); const given = Object.values(st).filter(s => s.st === 'given').sort((a, b) => K.d.cmp(a.date, b.date));
+  const pend = Object.values(st).filter(s => s.st === 'overdue' || s.st === 'due');
+  const m = K.growth.latest(k); const r = m ? K.growth.assess(k, m) : null; const hl = r ? K.growth.headline(r) : null;
+  return h`<section class="pr-sec"><h2>${K.t('pr.child')}: ${K.child.label(k)}</h2>
+    <table class="pr-kv"><tbody>
+      ${row(K.t('child.dob'), `${K.d.fmt(k.dob, 'long')} · ${K.d.ageText(k.dob)}`)}${row(K.t('child.sex'), k.sex ? K.t('sex.' + k.sex) : '')}
+      ${row(K.t('child.bw'), k.birthWeight != null ? K.n(k.birthWeight, 2) + ' ' + K.t('u.kg') : '')}${row(K.t('child.ga'), k.gaWeeks != null ? K.digits(k.gaWeeks) : '')}
+      ${row('RCH ID', k.rchId)}
+      ${row(K.t('pr.growth'), m ? `${K.n(m.wt, 2)} ${K.t('u.kg')}${m.ht ? ' · ' + K.n(m.ht, 1) + ' ' + K.t('u.cm') : ''} (${K.d.fmt(m.date)})${hl ? ' · ' + hl.t : ''}${r && r.waz != null ? ` · WAZ ${K.digits(r.waz.toFixed(1))}` : ''}` : K.t('pr.none'))}
+      ${row(K.t('vita.title'), Object.keys(k.vitA || {}).sort((a, b) => a - b).map(n => `Vit-A ${n}: ${K.d.fmt(k.vitA[n])}`).join(' · '))}
+      ${row(K.t('pr.vaxNext'), pend.map(s => `${s.it.code} (${K.d.fmt(s.due)})`).join(', '))}
+      ${K.dev && K.dev.anyWarn(k) ? row(K.t('dev.title'), K.t('dev.warnSeen') + ((k.dev || {}).deic ? ' · ' + K.t('dev.deicDone', { d: K.d.fmt(k.dev.deic) }) : '')) : ''}
+    </tbody></table>
+    <h3>${K.t('pr.vaxGiven')}</h3>${given.length ? h`<p class="pr-vax">${given.map(s => h`<span>${s.it.code} <b>${K.d.fmt(s.date, 'tbl')}</b></span>`)}</p>` : h`<p>${K.t('pr.none')}</p>`}
+  </section>`;
+}
+
+K.route('/print/:id', ({ id }) => {
+  const c = K.card.load(id); if (!c) return K.screens.notFound();
+  const pregs = (c.pregnancies || []).slice().sort(K.by('createdAt', -1)).slice(0, 2);
+  return { title: K.t('pr.title'), sub: c.mother.name, back: `/card/${id}`, tab: 'home', noTabs: true,
+    html: h`<div class="wrap pr-wrap">
+      <div class="pr-tools no-print">${K.ui.btn(K.t('pr.do'), { act: 'printNow', icon: 'print', block: true })}<p class="small">${K.t('pr.hint')}</p></div>
+      <article class="pr-page">
+        <header class="pr-h"><div><b>${K.t('app.name')}</b><span>${K.t('pr.head')}</span></div><span class="mono">${K.d.fmt(K.d.today())}</span></header>
+        ${motherBlock(c)}
+        ${pregs.map(p => pregBlock(c, p))}
+        ${K.card.kids(c).map(k => childBlock(c, k))}
+        <footer class="pr-f">${K.t('pr.printed', { d: K.d.fmt(K.d.today(), 'long') })}</footer>
+      </article></div>` };
+});
+K.acts.printNow = () => window.print();
+
+}
+/* ── modules/95-sample.js ── */
+{
+/* ============================================================================
+   modules/95-sample — a made-up family for training and demonstrations:
+   a mother 26 weeks pregnant (moderate anaemia, short birth interval) with a
+   14-month-old girl (vaccines, Vitamin A, growth, IFA syrup, HBYC, milestones).
+   No phone numbers, so no real person can be dialled. Marked sample: true.
+   ============================================================================ */
+K.i18n.add({
+  'sample.added': { en: 'Sample family added', or: 'ନମୁନା ପରିବାର ଯୋଗ ହେଲା' },
+  'sample.exists': { en: 'The sample family is already on this phone', or: 'ନମୁନା ପରିବାର ଆଗରୁ ଏହି ଫୋନରେ ଅଛି' },
+});
+
+K.sample = {};
+K.sample.build = (today) => {
+  today = today || K.d.today(); const D = (n) => K.d.addDays(today, n);
+  const c = K.blank.card(); c.sample = true;
+  Object.assign(c.mother, { name: 'Sunita Kujur', age: 26, husband: 'Ramesh Kujur', village: 'Kutra', block: 'Kutra', district: 'Sundargarh', bloodGroup: 'B+', height: 150, sickle: 'AA', mamata: 1 });
+  Object.assign(c.contacts, { asha: 'Basanti Ekka', anm: 'Sarojini Toppo', aww: 'Malati Xalxo', awc: 'Kutra-3', deliveryPoint: 'CHC Kutra', fru: 'District HQ Hospital, Sundargarh', mamataDivas: 'Every 2nd Wednesday' });
+
+  /* the child: 14 months old */
+  const k = K.blank.child();
+  Object.assign(k, { name: 'Rina', sex: 'f', dob: K.d.addMonths(today, -14), birthWeight: 2.7, gaWeeks: 39 });
+  k.birth = { cried: 1, bf: '1h', colostrum: 1, vitk: 1, sncu: 0 };
+  const at = (w) => K.d.addDays(k.dob, w);
+  const give = (ids, d) => ids.forEach(id => { k.vax[id] = { date: d, place: 'session' }; });
+  give(['BCG', 'OPV0', 'HepB0'], k.dob);
+  give(['OPV1', 'Penta1', 'Rota1', 'fIPV1', 'PCV1'], at(44));
+  give(['OPV2', 'Penta2', 'Rota2'], at(72));
+  give(['OPV3', 'Penta3', 'Rota3', 'fIPV2', 'PCV2'], at(101));
+  const m9 = K.d.addMonths(k.dob, 9); give(['MR1', 'fIPV3', 'PCVB'], K.d.addDays(m9, 6)); k.vitA[1] = K.d.addDays(m9, 6);
+  const wts = [2.7, 3.6, 4.6, 5.4, 6.0, 6.5, 6.9, 7.2, 7.5, 7.7, 7.9, 8.1, 8.2, 8.3];
+  k.growth = wts.map((w, i) => ({ id: K.uid('g'), date: K.d.addDays(K.d.addMonths(k.dob, i), i ? 3 : 0), wt: w, ht: i === 13 ? 72.5 : i === 9 ? 69 : null, pos: 'L', muac: i === 13 ? 13.4 : null, hc: null, oedema: 0 }))
+    .filter(g => K.d.cmp(g.date, today) <= 0);
+  // IFA syrup: bottle at 6 months, most doses in the last 8 weeks ticked
+  k.ifa = { bottles: { 1: K.d.addMonths(k.dob, 6) }, days: {} };
+  K.cifa.daysIn(D(-56), D(-1)).forEach((d, i) => { if (i % 5 !== 3) k.ifa.days[d] = 1; });
+  k.ifa.start = Object.keys(k.ifa.days).sort()[0];
+  k.hbyc = [3, 6, 9, 12].map(m => ({ id: K.uid('hb'), m, date: K.d.addDays(K.d.addMonths(k.dob, m), 2),
+    ans: Object.assign({ sick: 0, bf: 1, wt: 1, delay: 0, imm: 1, orsHome: 1, cHw: 1, cPar: 1, cFp: 1, ors: m >= 6 ? 1 : 0 }, m >= 6 ? { ifaHome: 1, cCf: 1, ifa: 1 } : { cEbf: 1 }, m >= 9 ? { mr: 1, vita: 1 } : {}), notes: '' }));
+  k.dev = { m9: { can: { 0: at(250), 1: at(250), 2: at(255), 3: at(262), 4: at(262) }, warn: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, date: K.d.addMonths(k.dob, 9) },
+    m12: { can: { 0: at(330), 1: at(334), 2: at(350), 4: at(360) }, warn: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }, date: K.d.addDays(K.d.addMonths(k.dob, 12), 4) } };
+
+  /* the pregnancy: 26 weeks */
+  const p = K.blank.pregnancy();
+  Object.assign(p, { lmp: D(-182), gravida: 2, para: 1, abortions: 0, living: 1, prevPlace: 'inst', lastChildDob: k.dob, village: 'no' });
+  const lmp = p.lmp; const W = (w, d = 0) => K.d.addDays(lmp, w * 7 + d);
+  p.anc = [
+    { id: K.uid('a'), date: W(10, 2), place: 'sc', by: 'anm', weight: 48, bpSys: 110, bpDia: 70, hb: 10.2, urineAlb: 'nil', urineSugar: 'nil', pallor: 0, jaundice: 0, oedema: 'none', tdDose: 'td1', sx: [] },
+    { id: K.uid('a'), date: W(18, 1), place: 'pmsma', by: 'doc', weight: 50.5, bpSys: 112, bpDia: 74, hb: 9.6, urineAlb: 'nil', urineSugar: 'nil', fh: 18, fhr: 142, pallor: 1, jaundice: 0, oedema: 'none', sx: [] },
+    { id: K.uid('a'), date: W(24, 3), place: 'mamata', by: 'anm', weight: 52, bpSys: 118, bpDia: 76, hb: 9.4, urineAlb: 'nil', urineSugar: 'nil', fh: 24, fhr: 140, fm: 'normal', pallor: 1, jaundice: 0, oedema: 'none', sx: [] },
+  ];
+  p.td = { td1: W(10, 2), td2: W(14, 4) };
+  p.albendazole = W(16, 0);
+  p.tests = { bloodGroup: 'B+', hiv: 'neg', hivDate: W(10, 2), syphilis: 'neg', syphilisDate: W(10, 2), hbsag: 'neg', hbsagDate: W(10, 2), malaria: 'neg', malariaDate: W(18, 1), ogtt: 118, ogttDate: W(24, 3) };
+  const tick = (o, from) => { let d = from; let i = 0; while (K.d.cmp(d, today) < 0) { if (i % 7 !== 5) o.days[d] = 1; d = K.d.addDays(d, 1); i++; } o.start = from; };
+  tick(p.ifa, W(14)); tick(p.calcium, W(14));
+  p.birthPlan = { facility: 'CHC Kutra', vehicle: '102', contact: 1, hospital: 1, transport: 1, jsy: 1 };
+
+  k.pregId = '';
+  c.pregnancies.push(p); c.children.push(k);
+  return c;
+};
+K.acts.loadSample = async () => {
+  if (K.store.list().some(c => c.sample)) { K.ui.toast(K.t('sample.exists')); const c = K.store.list().find(x => x.sample); K.go(`/card/${c.id}`); return; }
+  const c = K.sample.build(); await K.store.save(c); K.ui.toast(K.t('sample.added')); K.go(`/card/${c.id}`);
+};
 
 }
 /* ── main.js ── */
