@@ -1,32 +1,66 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-<!-- ============================================================
-     SEO / SOCIAL  —  EDIT the domain once you have it
-     ============================================================ -->
+<!--
+  Homepage of https://dr-abhishekpanda-cm.app/
+  BEFORE MERGING: search this file for "[INSERT:" and fill in or delete every placeholder.
+  They are styled in amber (class "ph") so they are easy to spot on the preview.
+-->
 <title>Dr. Abhishek Panda — Community Medicine, GMCH Sundargarh</title>
 <meta name="author" content="Dr. Abhishek Panda" />
-<meta name="description" content="Personal site of Dr. Abhishek Panda — Assistant Professor of Community Medicine at GMCH Sundargarh. Research, teaching, writing, and open web tools in epidemiology and public health." />
+<meta name="description" content="Dr. Abhishek Panda, Assistant Professor of Community Medicine at GMCH Sundargarh, Odisha. Teaching, research, talks and free #CM-APP web tools for epidemiology, biostatistics and public health." />
+<link rel="canonical" href="https://dr-abhishekpanda-cm.app/" />
 <meta property="og:type" content="website" />
+<meta property="og:site_name" content="Dr. Abhishek Panda" />
+<meta property="og:locale" content="en_IN" />
 <meta property="og:title" content="Dr. Abhishek Panda — Community Medicine, GMCH Sundargarh" />
-<meta property="og:description" content="Research, teaching, talks, writing, and open tools in community medicine and public health." />
-<!-- EDIT: og:url + og:image once your domain is live -->
-<meta property="og:url" content="https://your-domain.com/" />
+<meta property="og:description" content="Teaching, research, talks and free #CM-APP web tools in community medicine and public health, from Sundargarh, Odisha." />
+<meta property="og:url" content="https://dr-abhishekpanda-cm.app/" />
+<meta property="og:image" content="https://dr-abhishekpanda-cm.app/assets/abhishek-640.jpg" />
+<meta property="og:image:width" content="640" />
+<meta property="og:image:height" content="640" />
+<meta property="og:image:alt" content="Portrait of Dr. Abhishek Panda" />
 <meta name="twitter:card" content="summary" />
 <meta name="theme-color" content="#0C5E4E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230C5E4E'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Georgia,serif' font-size='27' font-weight='600' fill='%23F4F5F1'%3EAP%3C/text%3E%3C/svg%3E" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Abhishek Panda",
+  "honorificPrefix": "Dr.",
+  "jobTitle": "Assistant Professor of Community Medicine",
+  "worksFor": {
+    "@type": "CollegeOrUniversity",
+    "name": "Government Medical College & Hospital, Sundargarh",
+    "address": { "@type": "PostalAddress", "addressLocality": "Sundargarh", "addressRegion": "Odisha", "addressCountry": "IN" }
+  },
+  "alumniOf": [
+    { "@type": "CollegeOrUniversity", "name": "SCB Medical College, Cuttack" },
+    { "@type": "CollegeOrUniversity", "name": "MKCG Medical College, Berhampur" }
+  ],
+  "url": "https://dr-abhishekpanda-cm.app/",
+  "image": "https://dr-abhishekpanda-cm.app/assets/abhishek-640.jpg",
+  "email": "mailto:support@dr-abhishekpanda-cm.app",
+  "knowsAbout": ["Community medicine", "Epidemiology", "Biostatistics", "Public health", "Medical education", "Digital health"]
+}
+</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
+<!-- content is hidden for the scroll reveal only when JavaScript runs -->
+<script>document.documentElement.classList.add('js')</script>
+
 <style>
 /* ============================================================
-   DESIGN TOKENS
-   Concept: "the epidemiologist's worksheet" — ink on graph paper,
-   a deep clinical teal as the primary voice, one warm signal accent.
+   DESIGN TOKENS  (The Epidemiologist's Worksheet, EWS v1.0)
+   Ink on graph paper, a deep clinical teal as the primary voice,
+   one warm signal accent.
    ============================================================ */
 :root{
   --paper:#F4F5F1;
@@ -87,6 +121,11 @@ body{
 a{color:inherit}
 img{max-width:100%;display:block}
 
+/* placeholder still to be filled in (visible on purpose; remove before going live) */
+.ph{font-family:var(--font-mono);font-size:.84em;font-weight:500;font-style:normal;letter-spacing:0;text-transform:none;
+  color:var(--accent);background:var(--accent-tint);border:1px dashed var(--accent);border-radius:5px;
+  padding:1px 6px;overflow-wrap:anywhere}
+
 /* ============================================================
    LAYOUT UTILITIES
    ============================================================ */
@@ -110,15 +149,9 @@ img{max-width:100%;display:block}
 .sec-head h2{
   font-family:var(--font-display);font-weight:500;
   font-size:clamp(1.9rem,4vw,2.7rem);line-height:1.02;
-  letter-spacing:-.018em;margin:0;
+  letter-spacing:-.018em;margin:0;text-wrap:balance;
 }
-.sec-link{
-  font-family:var(--font-mono);font-size:.78rem;text-transform:uppercase;
-  letter-spacing:.1em;color:var(--ink-soft);text-decoration:none;
-  white-space:nowrap;border-bottom:1px solid transparent;padding-bottom:2px;
-  transition:color .2s, border-color .2s;
-}
-.sec-link:hover{color:var(--primary);border-color:var(--primary)}
+.sec-intro{color:var(--ink-soft);max-width:62ch;margin:-18px 0 36px}
 
 /* ============================================================
    NAV
@@ -169,6 +202,7 @@ img{max-width:100%;display:block}
    ============================================================ */
 .hero{padding-block:clamp(48px,8vw,92px) clamp(56px,8vw,104px)}
 .hero .wrap{display:grid;grid-template-columns:1.32fr .88fr;gap:clamp(36px,5vw,72px);align-items:center}
+.hero .wrap > *{min-width:0}
 .hero-eyebrow{
   display:inline-flex;align-items:center;gap:9px;
   font-family:var(--font-mono);font-size:.74rem;letter-spacing:.08em;
@@ -176,7 +210,7 @@ img{max-width:100%;display:block}
   border:1px solid var(--line);background:var(--card);
   padding:7px 13px;border-radius:100px;
 }
-.hero-eyebrow .pin{width:7px;height:7px;border-radius:50%;background:var(--accent);
+.hero-eyebrow .pin{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;
   box-shadow:0 0 0 4px var(--accent-tint)}
 .hero h1{
   font-family:var(--font-display);font-weight:500;
@@ -193,9 +227,10 @@ img{max-width:100%;display:block}
   font-weight:600;font-size:.92rem;padding:12px 20px;border-radius:100px;
   border:1.5px solid transparent;cursor:pointer;transition:transform .15s,background .2s,border-color .2s,color .2s;
 }
+.btn:active{transform:translateY(1px)}
 .btn .arw{transition:transform .2s}
 .btn:hover .arw{transform:translateX(3px)}
-.btn-primary{background:var(--primary);color:#F4F5F1;border-color:var(--primary)}
+.btn-primary{background:var(--primary);color:var(--paper);border-color:var(--primary)}
 .btn-primary:hover{background:var(--primary-deep);border-color:var(--primary-deep)}
 .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
 .btn-ghost:hover{border-color:var(--ink)}
@@ -204,7 +239,7 @@ img{max-width:100%;display:block}
 .creds .cred{display:inline-flex;align-items:center;gap:7px;color:var(--ink-soft);
   background:var(--card);border:1px solid var(--line);border-radius:7px;padding:6px 10px}
 .creds .cred b{color:var(--ink);font-weight:600}
-.creds .cred .dot{width:5px;height:5px;border-radius:50%;background:var(--primary)}
+.creds .cred .dot{width:5px;height:5px;border-radius:50%;background:var(--primary);flex:none}
 
 /* ---- portrait + epi-curve signature card ---- */
 .id-card{
@@ -214,20 +249,15 @@ img{max-width:100%;display:block}
   box-shadow:0 1px 0 var(--line), 0 26px 50px -34px rgba(8,73,60,.4);
 }
 .id-card::before{ /* corner registration mark */
-  content:"";position:absolute;top:11px;right:11px;width:14px;height:14px;
+  content:"";position:absolute;top:11px;right:11px;width:14px;height:14px;z-index:1;
   border-top:1.5px solid var(--ink-faint);border-right:1.5px solid var(--ink-faint);opacity:.5;
 }
 .portrait{
-  aspect-ratio:1/1;border-radius:10px;overflow:hidden;
-  background:
-    radial-gradient(120% 120% at 30% 20%, rgba(12,94,78,.16), transparent 60%),
-    var(--paper);
-  border:1px solid var(--line);display:grid;place-items:center;
+  aspect-ratio:1/1;max-width:100%;border-radius:10px;overflow:hidden;
+  background:var(--paper);border:1px solid var(--line);
 }
-/* EDIT: drop in a real photo — replace the .monogram span below with:
-   <img src="assets/abhishek.jpg" alt="Dr. Abhishek Panda" style="width:100%;height:100%;object-fit:cover"> */
-.monogram{font-family:var(--font-display);font-weight:500;font-size:clamp(3.4rem,9vw,5rem);
-  color:var(--primary);letter-spacing:.02em}
+/* multiply turns the photo's white studio background into the paper tone */
+.portrait img{width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply}
 .id-figure{margin:14px 2px 0}
 .id-figure svg{width:100%;height:auto;display:block}
 .id-cap{display:flex;justify-content:space-between;align-items:center;margin-top:10px;
@@ -236,7 +266,7 @@ img{max-width:100%;display:block}
 
 /* epi-curve draw-on-load */
 .epi-line{fill:none;stroke:var(--primary);stroke-width:2.2;stroke-linecap:round;
-  pathLength:1;stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.7s .5s cubic-bezier(.5,0,.2,1) forwards}
+  stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.7s .5s cubic-bezier(.5,0,.2,1) forwards}
 .epi-area{fill:var(--primary);opacity:0;animation:fadein .9s 1.6s ease forwards}
 .epi-pt{opacity:0;animation:pop .5s 1.7s cubic-bezier(.2,1.4,.4,1) forwards;transform-origin:center}
 .epi-axis{stroke:var(--line);stroke-width:1}
@@ -249,9 +279,11 @@ img{max-width:100%;display:block}
    ABOUT
    ============================================================ */
 .about-grid{display:grid;grid-template-columns:1.5fr .9fr;gap:clamp(32px,5vw,60px);align-items:start}
+.about-grid > *{min-width:0}
 .lede{font-family:var(--font-display);font-weight:400;font-size:clamp(1.18rem,2vw,1.5rem);
   line-height:1.42;letter-spacing:-.01em;color:var(--ink);margin:0 0 22px}
-.about-body p{color:var(--ink-soft);margin:0 0 16px;max-width:60ch}
+.about-body p{color:var(--ink-soft);margin:0 0 16px;max-width:62ch}
+.about-body .lede{color:var(--ink)}
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
 .tag{font-family:var(--font-mono);font-size:.74rem;color:var(--ink-soft);
   border:1px solid var(--line);border-radius:100px;padding:6px 13px;background:var(--card);
@@ -262,19 +294,20 @@ img{max-width:100%;display:block}
 .glance .g-head{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
   color:var(--ink-faint);padding:14px 18px;border-bottom:1px solid var(--line-soft);background:var(--paper-2)}
 .glance dl{margin:0;padding:6px 18px 14px}
-.glance .row{display:flex;justify-content:space-between;gap:16px;padding:11px 0;
+.glance .row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;
   border-bottom:1px dashed var(--line-soft)}
 .glance .row:last-child{border-bottom:0}
-.glance dt{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-faint)}
-.glance dd{margin:0;font-weight:600;font-size:.92rem;text-align:right;color:var(--ink)}
+.glance dt{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-faint);flex:none}
+.glance dd{margin:0;font-weight:600;font-size:.92rem;text-align:right;color:var(--ink);min-width:0}
 
 /* ============================================================
-   RESEARCH (publication list)
+   RESEARCH (publication list) + TALKS (same list style)
    ============================================================ */
 .pubs{list-style:none;margin:0;padding:0;counter-reset:pub}
 .pub{display:grid;grid-template-columns:auto 1fr;gap:22px;padding:24px 0;
   border-top:1px solid var(--line-soft);position:relative}
 .pub:first-child{border-top:0}
+.pub > *{min-width:0}
 .pub .meta{display:flex;flex-direction:column;gap:6px;min-width:64px}
 .pub .idx{font-family:var(--font-mono);font-size:.74rem;color:var(--accent);font-weight:600}
 .pub .idx::before{content:"["counter(pub,decimal-leading-zero)"]";counter-increment:pub}
@@ -287,13 +320,16 @@ img{max-width:100%;display:block}
 .pub .auth em{color:var(--ink);font-style:italic}
 .pub .topic{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;
   color:var(--ink-faint);border:1px solid var(--line);border-radius:6px;padding:4px 9px;display:inline-block}
+.talks .pub h3{margin-bottom:8px}
+.talks .pub .auth{margin:0}
 
 /* ============================================================
-   CARD GRIDS  (teaching, apps, writing)
+   CARD GRIDS  (teaching, tools)
    ============================================================ */
 .cards{display:grid;gap:18px}
 .cards.cols-2{grid-template-columns:repeat(2,1fr)}
 .cards.cols-3{grid-template-columns:repeat(3,1fr)}
+.cards > *{min-width:0}
 
 .card{
   background:var(--card);border:1px solid var(--line);border-radius:var(--r);
@@ -311,38 +347,36 @@ a.card:hover{transform:translateY(-3px);border-color:var(--primary);
 .card .go .arw{transition:transform .2s}
 a.card:hover .go .arw{transform:translateX(3px)}
 .card .pill{align-self:flex-start;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--accent);background:var(--accent-tint);border-radius:6px;padding:4px 9px}
+  text-transform:uppercase;color:var(--ink-soft);background:var(--paper-2);border-radius:6px;padding:4px 9px}
+.card .pill.live{color:var(--primary);background:rgba(12,94,78,.1)}
 
-/* writing rows */
-.posts{display:grid;gap:0}
-.post{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:start;
-  padding:24px 0;border-top:1px solid var(--line-soft);text-decoration:none;color:inherit;
-  transition:padding-left .2s}
-.post:first-child{border-top:0}
-.post:hover{padding-left:8px}
-.post .pk{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--ink-faint);margin-bottom:9px;display:flex;gap:10px;align-items:center}
-.post .pk .cat{color:var(--primary)}
-.post h3{margin:0 0 6px;font-family:var(--font-display);font-weight:500;font-size:1.3rem;letter-spacing:-.012em;line-height:1.2}
-.post p{margin:0;color:var(--ink-soft);font-size:.94rem;max-width:64ch}
-.post .read{font-family:var(--font-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;
-  color:var(--primary);white-space:nowrap;padding-top:30px;display:inline-flex;gap:6px;align-items:center}
-.post:hover .read .arw{transform:translateX(3px)}
-.read .arw{transition:transform .2s}
+/* the tool that is online now */
+.card.feature{grid-column:1 / -1;border-color:var(--primary);padding:28px 26px 24px;gap:12px}
+.card.feature h3{font-size:clamp(1.4rem,2.6vw,1.75rem)}
+.card.feature p{font-size:.98rem;max-width:68ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--font-mono);font-size:.72rem;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:7px;padding:5px 9px;background:var(--paper)}
+.chip b{color:var(--primary);font-weight:600}
+.workshop{grid-column:1 / -1;margin:16px 0 -4px}
+.workshop h3{margin:0 0 4px;font-family:var(--font-display);font-weight:500;font-size:1.26rem;letter-spacing:-.01em}
+.workshop p{margin:0;color:var(--ink-soft);font-size:.92rem}
 
 /* ============================================================
    CONTACT
    ============================================================ */
 .contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(32px,5vw,64px);align-items:center}
+.contact-grid > *{min-width:0}
 .contact-lede{font-family:var(--font-display);font-weight:400;font-size:clamp(1.5rem,3.4vw,2.3rem);
-  line-height:1.16;letter-spacing:-.02em;margin:0 0 24px}
+  line-height:1.16;letter-spacing:-.02em;margin:0 0 24px;text-wrap:balance}
 .contact-lede em{font-style:italic;color:var(--primary)}
 .contact-info{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:6px 22px}
-.contact-info .row{display:flex;justify-content:space-between;gap:18px;align-items:center;
+.contact-info .row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 18px;align-items:baseline;
   padding:16px 0;border-bottom:1px dashed var(--line-soft)}
 .contact-info .row:last-child{border-bottom:0}
 .contact-info .lbl{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
-.contact-info a,.contact-info span.val{font-weight:600;font-size:.94rem;color:var(--ink);text-decoration:none;text-align:right}
+.contact-info a,.contact-info span.val{font-weight:600;font-size:.94rem;color:var(--ink);text-decoration:none;
+  text-align:right;min-width:0;overflow-wrap:anywhere;margin-left:auto}
 .contact-info a:hover{color:var(--primary)}
 
 /* ============================================================
@@ -352,7 +386,7 @@ a.card:hover .go .arw{transform:translateX(3px)}
 .foot .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-start}
 .foot .f-brand b{font-family:var(--font-display);font-weight:600;font-size:1.05rem;color:var(--ink)}
 .foot .f-brand p{margin:8px 0 0;font-size:.85rem;max-width:34ch}
-.foot nav{display:flex;gap:18px;flex-wrap:wrap}
+.foot nav{display:flex;gap:10px 18px;flex-wrap:wrap}
 .foot nav a{font-size:.86rem;text-decoration:none;color:var(--ink-soft)}
 .foot nav a:hover{color:var(--primary)}
 .foot .colophon{width:100%;border-top:1px dashed var(--line-soft);margin-top:30px;padding-top:18px;
@@ -360,12 +394,12 @@ a.card:hover .go .arw{transform:translateX(3px)}
   font-family:var(--font-mono);font-size:.7rem;letter-spacing:.04em;color:var(--ink-faint)}
 
 /* ============================================================
-   MOTION / REVEAL
+   MOTION / REVEAL  (only when JavaScript runs)
    ============================================================ */
-.reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
-.reveal.in{opacity:1;transform:none}
-[data-stagger] > *{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
-[data-stagger].in > *{opacity:1;transform:none}
+.js .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.js .reveal.in{opacity:1;transform:none}
+.js [data-stagger] > *{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+.js [data-stagger].in > *{opacity:1;transform:none}
 
 /* ============================================================
    RESPONSIVE
@@ -386,19 +420,18 @@ a.card:hover .go .arw{transform:translateX(3px)}
     transform:translateY(-12px);opacity:0;pointer-events:none;transition:transform .22s,opacity .22s;
   }
   .nav-links.open{transform:none;opacity:1;pointer-events:auto}
-  .nav-links a{padding:13px 6px;font-size:1rem;border-radius:8px}
-  .nav-links a + a{border-top:1px solid var(--line-soft)}
+  .nav-links a{display:block;padding:13px 6px;font-size:1rem;border-radius:8px}
+  .nav-links li + li a{border-top:1px solid var(--line-soft)}
 }
 @media (max-width:560px){
   .cards.cols-2,.cards.cols-3{grid-template-columns:1fr}
   .pub{grid-template-columns:1fr;gap:10px}
-  .post{grid-template-columns:1fr}
-  .post .read{padding-top:8px}
   .sec-head{margin-bottom:28px}
+  .card.feature{padding:24px 20px 22px}
 }
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.001ms !important;animation-delay:0s !important;transition:none !important}
-  .reveal,[data-stagger] > *{opacity:1;transform:none}
+  .js .reveal,.js [data-stagger] > *{opacity:1;transform:none}
   .epi-line{stroke-dashoffset:0}.epi-area{opacity:.08}.epi-pt{opacity:1}
 }
 :focus-visible{outline:2.5px solid var(--primary);outline-offset:3px;border-radius:3px}
@@ -413,19 +446,17 @@ a.card:hover .go .arw{transform:translateX(3px)}
 <!-- ============================ NAV ============================ -->
 <header class="nav">
   <div class="wrap">
-    <a class="brand" href="#home" aria-label="Dr. Abhishek Panda — home">
+    <a class="brand" href="#home" aria-label="Dr. Abhishek Panda, home">
       <span class="mono-mark">AP</span>
       <span><b>Abhishek Panda</b><small>MD · Community Medicine</small></span>
     </a>
     <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
     <ul class="nav-links" id="nav-links">
-      <li><a href="#home">Home</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#research">Research</a></li>
       <li><a href="#teaching">Teaching</a></li>
       <li><a href="#talks">Talks</a></li>
       <li><a href="#apps" class="tool">#CM-APP</a></li>
-      <li><a href="#writing">Writing</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </div>
@@ -439,26 +470,25 @@ a.card:hover .go .arw{transform:translateX(3px)}
       <span class="hero-eyebrow reveal"><span class="pin"></span>Government Medical College &amp; Hospital · Sundargarh, Odisha</span>
       <h1 class="reveal">Dr. Abhishek<br><em>Panda</em></h1>
       <p class="role reveal">Assistant Professor, Department of Community Medicine</p>
-      <p class="thesis reveal">Community physician, educator, and researcher working where epidemiology meets everyday clinical care — building the evidence, the teaching, and the tools that public health needs in a tribal district.</p>
+      <p class="thesis reveal">Community physician in a tribal-majority mining district of western Odisha. I teach epidemiology and biostatistics, coordinate national health programmes, and build free web tools that make good public health practice easier to use.</p>
       <div class="cta-row reveal">
-        <a class="btn btn-primary" href="#research">Read the research <span class="arw">→</span></a>
-        <a class="btn btn-ghost" href="#apps">Open tools <span class="arw">→</span></a>
+        <a class="btn btn-primary" href="#apps">Explore the tools <span class="arw">→</span></a>
+        <a class="btn btn-ghost" href="#contact">Get in touch <span class="arw">→</span></a>
       </div>
       <div class="creds reveal">
-        <span class="cred"><span class="dot"></span><b>MBBS</b> SCB Medical College</span>
-        <span class="cred"><span class="dot"></span><b>MD</b> Community Medicine · MKCG</span>
-        <span class="cred"><span class="dot"></span><b>PGDM</b> Applied Epidemiology · NIHFW</span>
+        <span class="cred"><span class="dot"></span><b>MBBS</b> SCB Medical College, Cuttack</span>
+        <span class="cred"><span class="dot"></span><b>MD</b> Community Medicine · MKCG, Berhampur</span>
+        <span class="cred"><span class="dot"></span><b>PGDM</b> Applied Epidemiology · NIHFW (pursuing)</span>
       </div>
     </div>
 
     <!-- portrait + epi-curve signature -->
     <div class="id-card reveal">
       <div class="portrait">
-        <!-- EDIT: replace this monogram with your photo (see note in <style>) -->
-        <span class="monogram">AP</span>
+        <img src="assets/abhishek-640.jpg" width="640" height="640" alt="Dr. Abhishek Panda" />
       </div>
       <div class="id-figure" aria-hidden="true">
-        <svg viewBox="0 0 320 84" role="img" aria-label="Stylised epidemic curve">
+        <svg viewBox="0 0 320 84">
           <line class="epi-axis" x1="6" y1="70" x2="314" y2="70"/>
           <g class="epi-tick">
             <line x1="40" y1="70" x2="40" y2="74"/><line x1="100" y1="70" x2="100" y2="74"/>
@@ -481,16 +511,19 @@ a.card:hover .go .arw{transform:translateX(3px)}
     <p class="eyebrow reveal">About</p>
     <div class="about-grid">
       <div class="about-body reveal">
-        <p class="lede">I teach and practise community medicine at GMCH Sundargarh — a tribal-majority district in western Odisha where the public-health questions are immediate.</p>
-        <p>Sickle cell disease, vector-borne illness, maternal and child health, and the occupational risks of a mining economy aren't abstractions here; they're the work. My job sits across three tracks — undergraduate teaching under the competency-based (CBME) curriculum, field- and facility-based research, and a growing set of open, web-based tools for medical educators and district programme staff.</p>
-        <p>Most of what I build starts from a real classroom or clinic problem: a statistic students keep misreading, a coding task that slows down residents, a calculation a colleague needs for a dissertation. I'm trained in community medicine (MD) and applied epidemiology, and I care most about making good public-health practice a little more usable on the ground.</p>
+        <p class="lede">I teach and practise community medicine at GMCH Sundargarh. The district is tribal-majority, depends on mining and carries a heavy sickle cell burden, so the public health questions here are immediate.</p>
+        <p>Malaria, filariasis, tuberculosis, maternal and child health and the occupational risks of mining fill the daily work. I teach epidemiology and biostatistics to Phase I–III MBBS students under the competency-based curriculum, and coordinate the college's work in NTEP, NVBDCP, RMNCAH+N and immunisation. I also serve as a master trainer and resource person for national health programme trainings.</p>
+        <p>At the college I sit on the Medical Education Unit and the Medical Research Unit. A growing share of my time goes to digital health and AI fluency: helping doctors, teachers and students use AI tools well and check what those tools produce.</p>
+        <p>The #CM-APP tools on this site come from the same place. Each began with a real classroom or clinic problem, such as a statistic students keep misreading or a calculation a colleague needs for a dissertation.</p>
         <div class="tags" aria-label="Focus areas">
           <span class="tag">Tuberculosis · NTEP</span>
-          <span class="tag">Vector-borne disease</span>
+          <span class="tag">Vector-borne disease · NVBDCP</span>
+          <span class="tag">Sickle cell disease</span>
           <span class="tag">Tribal &amp; rural health</span>
           <span class="tag">Maternal &amp; child health</span>
           <span class="tag">Occupational health</span>
           <span class="tag">Medical education · CBME</span>
+          <span class="tag">Digital health &amp; AI</span>
           <span class="tag">Biostatistics &amp; epidemiology</span>
         </div>
       </div>
@@ -501,8 +534,10 @@ a.card:hover .go .arw{transform:translateX(3px)}
           <div class="row"><dt>Role</dt><dd>Assistant Professor</dd></div>
           <div class="row"><dt>Department</dt><dd>Community Medicine</dd></div>
           <div class="row"><dt>Institution</dt><dd>GMCH, Sundargarh</dd></div>
-          <div class="row"><dt>District</dt><dd>Sundargarh, Odisha</dd></div>
-          <div class="row"><dt>Training</dt><dd>MD · PGDM (Epi)</dd></div>
+          <div class="row"><dt>Degrees</dt><dd>MBBS · MD</dd></div>
+          <div class="row"><dt>Pursuing</dt><dd>PGDM-AE, NIHFW</dd></div>
+          <div class="row"><dt>College units</dt><dd>MEU · MRU</dd></div>
+          <div class="row"><dt>Award</dt><dd>Best Paper, APCRICON 2018</dd></div>
         </dl>
       </aside>
     </div>
@@ -515,42 +550,45 @@ a.card:hover .go .arw{transform:translateX(3px)}
     <p class="eyebrow reveal">Selected publications</p>
     <div class="sec-head reveal">
       <h2>Research</h2>
-      <!-- EDIT: link to your full publication list / Google Scholar -->
-      <a class="sec-link" href="#contact">All publications →</a>
+      <!-- When the Google Scholar profile is ready, add:
+           <a class="sec-link" href="SCHOLAR-URL">All publications →</a> -->
     </div>
+    <p class="sec-intro reveal">My research follows the district's public health problems: vector-borne disease and filariasis elimination, tuberculosis, sickle cell disease, maternal and child health, and how doctors and students use AI.</p>
 
-    <!-- EDIT each entry: title link → real DOI/URL -->
+    <!-- Final form of each entry (Vancouver style):
+         <h3><a href="https://doi.org/10.xxxx/xxxxx">Article title</a></h3>
+         <p class="auth">Authors as printed. <em>Journal</em>. Year;Volume(Issue):pages.</p> -->
     <ol class="pubs">
       <li class="pub reveal">
-        <div class="meta"><span class="idx"></span><span class="yr">2024</span></div>
+        <div class="meta"><span class="idx"></span><span class="yr"><span class="ph">[INSERT: year]</span></span></div>
         <div>
-          <h3><a href="#">Burden and determinants of hypertension among adults in a tribal block of Sundargarh district, Odisha</a></h3>
-          <p class="auth">Panda A, et al. — <em>Indian Journal of Community Medicine</em></p>
-          <span class="topic">Non-communicable disease</span>
+          <h3><span class="ph">[INSERT: title of peer-reviewed article 1, linked to its DOI]</span></h3>
+          <p class="auth"><span class="ph">[INSERT: authors as printed]</span>, <em><span class="ph">[INSERT: journal]</span></em></p>
+          <span class="topic"><span class="ph">[INSERT: topic]</span></span>
         </div>
       </li>
       <li class="pub reveal">
-        <div class="meta"><span class="idx"></span><span class="yr">2023</span></div>
+        <div class="meta"><span class="idx"></span><span class="yr"><span class="ph">[INSERT: year]</span></span></div>
         <div>
-          <h3><a href="#">Antenatal care utilisation and birth preparedness in rural Odisha: a mixed-methods study</a></h3>
-          <p class="auth">Panda A, Sahoo S, Mishra R — <em>Journal of Family Medicine and Primary Care</em></p>
-          <span class="topic">Maternal &amp; child health</span>
+          <h3><span class="ph">[INSERT: title of peer-reviewed article 2, linked to its DOI]</span></h3>
+          <p class="auth"><span class="ph">[INSERT: authors as printed]</span>, <em><span class="ph">[INSERT: journal]</span></em></p>
+          <span class="topic"><span class="ph">[INSERT: topic]</span></span>
         </div>
       </li>
       <li class="pub reveal">
-        <div class="meta"><span class="idx"></span><span class="yr">2023</span></div>
+        <div class="meta"><span class="idx"></span><span class="yr"><span class="ph">[INSERT: year]</span></span></div>
         <div>
-          <h3><a href="#">Bridging the classroom and the field: a competency-based approach to teaching community medicine</a></h3>
-          <p class="auth">Panda A — <em>Indian Journal of Public Health</em></p>
-          <span class="topic">Medical education</span>
+          <h3><span class="ph">[INSERT: title of peer-reviewed article 3, linked to its DOI]</span></h3>
+          <p class="auth"><span class="ph">[INSERT: authors as printed]</span>, <em><span class="ph">[INSERT: journal]</span></em></p>
+          <span class="topic"><span class="ph">[INSERT: topic]</span></span>
         </div>
       </li>
       <li class="pub reveal">
-        <div class="meta"><span class="idx"></span><span class="yr">2022</span></div>
+        <div class="meta"><span class="idx"></span><span class="yr">In press</span></div>
         <div>
-          <h3><a href="#">Health-seeking behaviour for febrile illness in a tribal community of western Odisha</a></h3>
-          <p class="auth">Panda A, Behera D — <em>BMC Public Health</em></p>
-          <span class="topic">Health systems</span>
+          <h3><span class="ph">[INSERT: book chapter title]</span></h3>
+          <p class="auth">In: <span class="ph">[INSERT: book title, editors, publisher]</span></p>
+          <span class="topic">Book chapter</span>
         </div>
       </li>
     </ol>
@@ -562,26 +600,36 @@ a.card:hover .go .arw{transform:translateX(3px)}
   <div class="wrap">
     <p class="eyebrow reveal">In the classroom &amp; the field</p>
     <div class="sec-head reveal"><h2>Teaching</h2></div>
-    <div class="cards cols-2" data-stagger>
+    <div class="cards cols-3" data-stagger>
       <div class="card">
-        <span class="k">Phase II &amp; III MBBS</span>
-        <h3>Undergraduate community medicine</h3>
-        <p>Lectures, small-group work, and field postings across epidemiology, biostatistics, and the national health programmes — mapped to competency-based outcomes.</p>
+        <span class="k">Phase I–III MBBS</span>
+        <h3>Undergraduate Community Medicine</h3>
+        <p>Lectures, small-group teaching, the Family Adoption Programme and field postings in epidemiology, biostatistics and the national health programmes, mapped to CBME competencies.</p>
       </div>
       <div class="card">
         <span class="k">Method</span>
-        <h3>Epidemiology &amp; study design</h3>
-        <p>Measures of association, screening-test evaluation, and reading routine health data — taught with district-grounded, worked examples rather than textbook abstractions.</p>
-      </div>
-      <div class="card">
-        <span class="k">Curriculum</span>
-        <h3>Competency-based education (CBME)</h3>
-        <p>Linking classroom sessions and field experience to defined competencies, alignment matrices, and assessment that actually reflects them.</p>
+        <h3>Epidemiology &amp; Biostatistics</h3>
+        <p>Study design, measures of association, screening test evaluation and reading routine data from HMIS and NFHS, taught with worked examples from Sundargarh.</p>
       </div>
       <div class="card">
         <span class="k">Programmes</span>
-        <h3>National health programmes</h3>
-        <p>RMNCAH+N, NTEP, vector-borne disease control and more — taught from policy down to what it looks like at a sub-centre.</p>
+        <h3>National Health Programmes</h3>
+        <p>Coordinates NTEP, NVBDCP, RMNCAH+N and immunisation activities at the college, and trains programme staff as a master trainer and resource person.</p>
+      </div>
+      <div class="card">
+        <span class="k">Faculty development</span>
+        <h3>Medical Education</h3>
+        <p>Member of the Medical Education Unit. Course coordinator and resource faculty for the NMC Basic Course in Medical Education at GMCH Sundargarh in April 2026.</p>
+      </div>
+      <div class="card">
+        <span class="k">Digital health</span>
+        <h3>AI Fluency for Healthcare Professionals</h3>
+        <p>Sessions for doctors, teachers and students on using AI tools in teaching, assessment and research, and on checking their output. Runs the Digital &amp; AI Fluency Clinic for Healthcare Professionals, a WhatsApp learning group.</p>
+      </div>
+      <div class="card">
+        <span class="k">Research support</span>
+        <h3>Research Methods &amp; Mentoring</h3>
+        <p>Help with protocols, sample size and analysis for postgraduate theses and faculty research, as a member of the Medical Research Unit.</p>
       </div>
     </div>
   </div>
@@ -591,42 +639,62 @@ a.card:hover .go .arw{transform:translateX(3px)}
 <section id="talks" class="section">
   <div class="wrap">
     <p class="eyebrow reveal">Talks &amp; training</p>
-    <div class="sec-head reveal"><h2>As a resource person</h2></div>
-    <!-- EDIT: update / add your own sessions -->
-    <ol class="pubs">
+    <div class="sec-head reveal"><h2>As a Resource Person</h2></div>
+    <ol class="pubs talks">
       <li class="pub reveal">
         <div class="meta"><span class="yr">2026</span></div>
         <div>
-          <h3 style="margin-bottom:8px">World No Tobacco Day — district observance &amp; awareness competition</h3>
-          <p class="auth">Organiser &amp; speaker — GMCH Sundargarh</p>
+          <h3>Cross-Examining the Machine: Building AI Fluency for FMT Experts</h3>
+          <p class="auth">Invited online lecture · AFMTE Gujarat, Monthly Faculty Lecture Series</p>
         </div>
       </li>
       <li class="pub reveal">
         <div class="meta"><span class="yr">2026</span></div>
         <div>
-          <h3 style="margin-bottom:8px">HPV vaccination — operational planning, multi-stakeholder session</h3>
-          <p class="auth">Resource person — District health programme</p>
+          <h3>World No Tobacco Day: district observance and awareness competition</h3>
+          <p class="auth">Organiser and speaker · GMCH Sundargarh</p>
+        </div>
+      </li>
+      <li class="pub reveal">
+        <div class="meta"><span class="yr">2026</span></div>
+        <div>
+          <h3>Basic Course in Medical Education (NMC)</h3>
+          <p class="auth">Course coordinator and resource faculty · GMCH Sundargarh, April 2026</p>
+        </div>
+      </li>
+      <li class="pub reveal">
+        <div class="meta"><span class="yr">2026</span></div>
+        <div>
+          <h3>HPV vaccination: operational planning, multi-stakeholder session</h3>
+          <p class="auth">Resource person · District health programme</p>
+        </div>
+      </li>
+      <li class="pub reveal">
+        <div class="meta"><span class="yr"><span class="ph">[INSERT: year]</span></span></div>
+        <div>
+          <h3>Heat-related illness: sensitisation for healthcare professionals</h3>
+          <p class="auth">Resource person · Sundargarh district (NPCCHH) <span class="ph">[INSERT: confirm it was delivered, or delete]</span></p>
         </div>
       </li>
       <li class="pub reveal">
         <div class="meta"><span class="yr">2025</span></div>
         <div>
-          <h3 style="margin-bottom:8px">CHO refresher training — Leprosy / NLEP module</h3>
-          <p class="auth">Facilitator — Community Health Officers</p>
+          <h3>CHO refresher training: leprosy (NLEP) module</h3>
+          <p class="auth">Facilitator · Community Health Officers</p>
         </div>
       </li>
       <li class="pub reveal">
         <div class="meta"><span class="yr">2025</span></div>
         <div>
-          <h3 style="margin-bottom:8px">Malaria &amp; dengue — sensitisation for private practitioners</h3>
-          <p class="auth">Speaker — Vector-borne disease programme</p>
+          <h3>Malaria and dengue: sensitisation for private practitioners</h3>
+          <p class="auth">Speaker · Vector-borne disease programme</p>
         </div>
       </li>
       <li class="pub reveal">
         <div class="meta"><span class="yr">2025</span></div>
         <div>
-          <h3 style="margin-bottom:8px">Biomedical waste management — staff training</h3>
-          <p class="auth">Facilitator — GMCH Sundargarh</p>
+          <h3>Biomedical waste management: staff training</h3>
+          <p class="auth">Facilitator · GMCH Sundargarh</p>
         </div>
       </li>
     </ol>
@@ -636,90 +704,62 @@ a.card:hover .go .arw{transform:translateX(3px)}
 <!-- ============================ #CM-APP ============================ -->
 <section id="apps" class="section">
   <div class="wrap">
-    <p class="eyebrow reveal">#CM-APP Series · open tools <span class="muted">— free to use</span></p>
+    <p class="eyebrow reveal"><span>#CM-APP series · open tools · <span class="muted">free to use</span></span></p>
     <div class="sec-head reveal">
-      <h2>Tools I build</h2>
+      <h2>Tools I Build</h2>
     </div>
-    <p class="reveal" style="color:var(--ink-soft);max-width:60ch;margin:-18px 0 36px">
-      A growing set of single-file web tools for medical educators, residents, and district programme staff — each one started from a real teaching or clinic problem.
-    </p>
+    <p class="sec-intro reveal">Single-file web tools for medical students, teachers, residents and programme staff. Each one started from a real teaching or clinic problem.</p>
 
-    <!-- EDIT each href → the live URL once you host the tool -->
     <div class="cards cols-3" data-stagger>
-      <a class="card" href="#">
+      <a class="card feature" href="/imnci/">
+        <span class="pill live">Online now · Child health</span>
+        <h3>IMNCI Case Assistant</h3>
+        <p>Digital IMNCI case recording forms for Medical Officers, for the sick young infant and the sick child. It classifies each case and lists the treatment from the MoHFW IMNCI Chart Booklet (2023), keeps a follow-up register and exports Excel and PDF.</p>
+        <div class="chips">
+          <span class="chip"><b>v1.1</b> October 2026</span>
+          <span class="chip"><b>44</b> booklet classifications</span>
+          <span class="chip"><b>Offline</b> after the first visit</span>
+          <span class="chip"><b>No sign-in</b> cases stay on the device</span>
+        </div>
+        <span class="go">Open the tool <span class="arw">→</span></span>
+      </a>
+
+      <div class="workshop">
+        <h3>In the Workshop</h3>
+        <p>Built, but not on this site yet.</p>
+      </div>
+      <!-- When a tool goes online, change its <div class="card"> to <a class="card" href="/tool-folder/">
+           and add <span class="go">Open the tool <span class="arw">→</span></span> -->
+      <div class="card">
         <span class="pill">Biostatistics</span>
         <h3>Not-Only-p-Value Calculator</h3>
-        <p>A guided 12-test statistical wizard with a full computation engine — for dissertations and manuscripts.</p>
-        <span class="go">Open <span class="arw">→</span></span>
-      </a>
-      <a class="card" href="#">
+        <p>A guided 12-test statistical wizard with a full computation engine, for dissertations and manuscripts.</p>
+      </div>
+      <div class="card">
         <span class="pill">AI tool</span>
         <h3>Biostatistician Chatbot</h3>
-        <p>Reads your Excel or Word file and walks the analysis with you, worksheet by worksheet.</p>
-        <span class="go">Open <span class="arw">→</span></span>
-      </a>
-      <a class="card" href="#">
+        <p>Reads your Excel or Word file and works through the analysis with you, sheet by sheet.</p>
+      </div>
+      <div class="card">
         <span class="pill">Calculator</span>
         <h3>R×C p-Value Calculator</h3>
-        <p>Contingency-table testing, including the Fisher–Freeman–Halton exact test, on mobile.</p>
-        <span class="go">Open <span class="arw">→</span></span>
-      </a>
-      <a class="card" href="#">
+        <p>Contingency-table testing, including the Fisher–Freeman–Halton exact test, built for phones.</p>
+      </div>
+      <div class="card">
         <span class="pill">Reference</span>
         <h3>ICD-10 Coding Assistant</h3>
-        <p>WHO ICD-10 lookup and coding help built for faculty and residents.</p>
-        <span class="go">Open <span class="arw">→</span></span>
-      </a>
-      <a class="card" href="#">
+        <p>WHO ICD-10 (Version 2019) lookup and coding help for faculty and residents.</p>
+      </div>
+      <div class="card">
         <span class="pill">Education</span>
         <h3>PSM Quiz Arena</h3>
-        <p>Gamified, AI-generated MCQ practice across community-medicine topics.</p>
-        <span class="go">Open <span class="arw">→</span></span>
-      </a>
-      <a class="card" href="#">
+        <p>Gamified, AI-generated MCQ practice across community medicine topics.</p>
+      </div>
+      <div class="card">
         <span class="pill">MCH</span>
         <h3>Child–Mother App</h3>
-        <p>The MCP card, digitised: WHO growth curves, the immunisation schedule, and developmental milestones.</p>
-        <span class="go">Open <span class="arw">→</span></span>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ============================ WRITING ============================ -->
-<section id="writing" class="section">
-  <div class="wrap">
-    <p class="eyebrow reveal">From the notebook</p>
-    <div class="sec-head reveal">
-      <h2>Writing</h2>
-      <!-- EDIT: link to your blog index if you add one -->
-      <a class="sec-link" href="#">All posts →</a>
-    </div>
-    <div class="posts">
-      <a class="post reveal" href="#">
-        <div>
-          <div class="pk"><span class="cat">Public health</span><span>·</span><span>27 June 2026</span></div>
-          <h3>How to read routine health data without fooling yourself</h3>
-          <p>Routine health information systems are powerful — and easy to misread. A short guide for students on what these numbers actually mean.</p>
-        </div>
-        <span class="read">Read <span class="arw">→</span></span>
-      </a>
-      <a class="post reveal" href="#">
-        <div>
-          <div class="pk"><span class="cat">Medical education</span><span>·</span><span>19 June 2026</span></div>
-          <h3>Why community medicine belongs in every clinic</h3>
-          <p>A short note for clinicians on why the population perspective matters even in one-on-one care.</p>
-        </div>
-        <span class="read">Read <span class="arw">→</span></span>
-      </a>
-      <a class="post reveal" href="#">
-        <div>
-          <div class="pk"><span class="cat">Research notes</span><span>·</span><span>4 June 2026</span></div>
-          <h3>NCD screening in rural Odisha — what we're learning</h3>
-          <p>Notes from operationalising population-based NCD screening through sub-centres and Health &amp; Wellness Centres in Sundargarh.</p>
-        </div>
-        <span class="read">Read <span class="arw">→</span></span>
-      </a>
+        <p>The MCP card, digitised: WHO growth curves, the immunisation schedule and developmental milestones.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -731,15 +771,18 @@ a.card:hover .go .arw{transform:translateX(3px)}
     <div class="contact-grid">
       <div class="reveal">
         <p class="contact-lede">Happy to talk research, teaching, or anything in <em>public health</em>.</p>
-        <!-- EDIT: set your real email below (both places) -->
-        <a class="btn btn-primary" href="mailto:you@your-domain.com">Send an email <span class="arw">→</span></a>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="mailto:support@dr-abhishekpanda-cm.app">Send an email <span class="arw">→</span></a>
+          <a class="btn btn-ghost" href="https://wa.me/917008909595" target="_blank" rel="noopener">Message on WhatsApp <span class="arw">→</span></a>
+        </div>
       </div>
       <div class="contact-info reveal">
-        <div class="row"><span class="lbl">Email</span><a href="mailto:you@your-domain.com">you@your-domain.com</a></div>
-        <div class="row"><span class="lbl">Institution</span><span class="val">GMCH, Sundargarh, Odisha</span></div>
-        <!-- EDIT: add your real profile links, or delete rows you don't use -->
-        <div class="row"><span class="lbl">Scholar</span><a href="#">Google Scholar →</a></div>
-        <div class="row"><span class="lbl">ORCID</span><a href="#">orcid.org →</a></div>
+        <div class="row"><span class="lbl">Email</span><a href="mailto:support@dr-abhishekpanda-cm.app">support@dr-abhishekpanda-cm.app</a></div>
+        <div class="row"><span class="lbl">WhatsApp</span><a href="https://wa.me/917008909595" target="_blank" rel="noopener">(+91) 700-890-9595</a></div>
+        <div class="row"><span class="lbl">Institution</span><span class="val">GMCH Sundargarh, Odisha</span></div>
+        <!-- Fill in both links, or delete the rows you do not use -->
+        <div class="row"><span class="lbl">Scholar</span><span class="val"><span class="ph">[INSERT: Google Scholar link]</span></span></div>
+        <div class="row"><span class="lbl">ORCID</span><span class="val"><span class="ph">[INSERT: ORCID link]</span></span></div>
       </div>
     </div>
   </div>
@@ -756,12 +799,13 @@ a.card:hover .go .arw{transform:translateX(3px)}
     <nav aria-label="Footer">
       <a href="#about">About</a>
       <a href="#research">Research</a>
+      <a href="#teaching">Teaching</a>
+      <a href="#talks">Talks</a>
       <a href="#apps">#CM-APP</a>
-      <a href="#writing">Writing</a>
       <a href="#contact">Contact</a>
     </nav>
     <div class="colophon">
-      <span>© 2026 Dr. Abhishek Panda — all views are my own.</span>
+      <span>© 2026 Dr. Abhishek Panda. All views are my own.</span>
       <span>Set in Fraunces &amp; IBM Plex.</span>
     </div>
   </div>
@@ -780,10 +824,14 @@ links.addEventListener('click', e => {
 });
 
 /* ---- reveal on scroll ---- */
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(en => { if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
-}, { threshold:0.12, rootMargin:'0px 0px -8% 0px' });
-document.querySelectorAll('.reveal,[data-stagger]').forEach(el => io.observe(el));
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => { if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { threshold:0.12, rootMargin:'0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal,[data-stagger]').forEach(el => io.observe(el));
+} else {
+  document.querySelectorAll('.reveal,[data-stagger]').forEach(el => el.classList.add('in'));
+}
 
 /* stagger children of [data-stagger] */
 document.querySelectorAll('[data-stagger]').forEach(group => {
@@ -791,19 +839,21 @@ document.querySelectorAll('[data-stagger]').forEach(group => {
 });
 
 /* ---- active nav link on scroll (scroll-spy) ---- */
-const navMap = {};
-document.querySelectorAll('.nav-links a').forEach(a => {
-  const id = a.getAttribute('href').slice(1); if(id) navMap[id] = a;
-});
-const spy = new IntersectionObserver((entries) => {
-  entries.forEach(en => {
-    if (en.isIntersecting){
-      Object.values(navMap).forEach(a => a.classList.remove('active'));
-      const a = navMap[en.target.id]; if(a) a.classList.add('active');
-    }
+if ('IntersectionObserver' in window) {
+  const navMap = {};
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    const id = a.getAttribute('href').slice(1); if(id) navMap[id] = a;
   });
-}, { rootMargin:'-45% 0px -50% 0px' });
-document.querySelectorAll('main section[id]').forEach(s => spy.observe(s));
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting){
+        Object.values(navMap).forEach(a => a.classList.remove('active'));
+        const a = navMap[en.target.id]; if(a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin:'-45% 0px -50% 0px' });
+  document.querySelectorAll('main section[id]').forEach(s => spy.observe(s));
+}
 </script>
 </body>
 </html>
