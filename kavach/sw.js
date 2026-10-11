@@ -1,8 +1,8 @@
-/* Maa 'o' Shishu Kavach — service worker (build 10713057fd)
+/* Maa 'o' Shishu Kavach — service worker (build 5c8873b17d)
    App shell: cache first, refreshed in the background, so the app opens with
    no network. Google Fonts: cached on first use. Card data never passes
    through here — it lives in IndexedDB on the phone. */
-const VERSION = 'kavach-10713057fd';
+const VERSION = 'kavach-5c8873b17d';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icons/favicon.svg', './icons/icon-192.png', './icons/icon-512.png', './icons/maskable-512.png', './icons/apple-touch-icon.png'];
 const FONTS = 'kavach-fonts-v1';
 

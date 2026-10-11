@@ -13,9 +13,10 @@
    child stayed on Penta. DPT and OPV boosters: at least 6 months after the
    3rd dose (`gapM`). `win` = end of the NIS window (9–12 m, 16–24 m, 5–6 y):
    a dose is 'due' until then and 'overdue' after.
-   fIPV-3 at 9 months (added 2023). HPV: one dose of Gardasil-4 for girls aged
-   14 — national drive from 28 Feb 2026, then on routine immunisation days
-   (PIB, 28 Feb 2026). No schedule change in PIB's 17 Mar 2026 UIP summary.
+   fIPV-3 at 9 months (added 2023). HPV: one dose (0.5 ml IM, upper arm) of
+   Gardasil-4 for girls aged 14, free, with parental consent — 90-day national
+   drive from 28 Feb 2026, then on routine immunisation days (PIB releases
+   PRID 2234009 and 2241066, both 28 Feb 2026; re-checked 12 Oct 2026).
    Ages: d = days, w = weeks, m = months, y = years from date of birth.
    ============================================================================ */
 K.vax = K.vax || {};
