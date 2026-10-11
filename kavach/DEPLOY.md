@@ -1,6 +1,6 @@
 # Deploying Maa 'o' Shishu Kavach
 
-The app is one HTML file plus a service worker, a manifest and four icons, all inside `kavach/`. Cloudflare Pages serves the repository as it is, so there is no build step on the host: whatever is committed is what goes live.
+The app is one HTML file plus a service worker, a manifest and four icons, all inside `kavach/`. Cloudflare (Workers Builds, project `cm-app-website`) serves the repository's static files from `main`, so there is no build step on the host: whatever is committed and merged is what goes live. Builds of non-production branches (such as `feature/kavach`) fail on Cloudflare at present, so there is no automatic branch preview; review the app from the Claude review link or a local server instead.
 
 ## What goes live
 
@@ -20,7 +20,7 @@ Live address after merge: `https://dr-abhishekpanda-cm.app/kavach/`
 3. Merge `feature/kavach` into the branch Cloudflare Pages publishes (usually `main`). The site updates within a minute or two.
 4. Phones that already have the app get the new version the next time they open it online; a small "new version ready — Reload" bar appears.
 
-Cloudflare Pages already sends `Cache-Control: public, max-age=0, must-revalidate` for these files, so no `_headers` rule is needed. If a CDN or another host is used later, serve `sw.js` and `index.html` with `no-cache`.
+After the first deploy, check the response headers of `/kavach/sw.js` and `/kavach/index.html` (browser dev tools → Network): they should not be cached for long (`max-age=0` or `no-cache`), or phones will be slow to see updates. If they are, add a `_headers` file with `Cache-Control: no-cache` for those two paths.
 
 ## Offline and data
 
@@ -31,6 +31,7 @@ Cloudflare Pages already sends `Cache-Control: public, max-age=0, must-revalidat
 ## Before wider use
 
 - **Odia review:** About → "Odia review sheet (CSV)" exports every English–Odia pair (about 1,580 rows) with empty status and comment columns. Text taken from the Odisha MCP card V-2023-24 is marked in the data-file headers; lines written for the app (newborn-care list, feeding headings, tool texts, the October 2026 audit fixes) need a native reviewer most.
+- **Home visits:** the app follows SSBSK (June 2026) by default. Districts still on HBNC + HBYC can switch in Settings → "ASHA home-visit schedule"; tell users which one your district uses.
 - **Clinical review:** an independent audit (October 2026) found 24 issues, all fixed in chunk 11. What still needs a clinician's eye is listed under "Notes to carry forward" in `ROADMAP.md`: feeding amounts, fast-breathing cut-offs, the JE catch-up interval (national footnote vs the Odisha deck), the gestation split for severe anaemia in the AMB 2026 flowchart, and one 24-month warning sign.
 - **Amounts and helplines:** each scheme on the Helplines page shows its source and the date it was checked; re-check them at least every six months.
 - The app says plainly that it is not an official government app and shows no government emblem; keep it that way.

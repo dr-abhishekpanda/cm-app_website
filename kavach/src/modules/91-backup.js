@@ -35,7 +35,7 @@ K.backup = {
     const media = (await K.db.all('media') || []).filter(m => cards.some(c => c.id === m.cardId));
     const s = K.settings.data;
     return { app: 'kavach', format: 1, exportedAt: new Date().toISOString(), build: K.build, cards, media,
-      settings: cardIds ? undefined : { lang: s.lang, mode: s.mode, district: s.district, jeArea: s.jeArea, ifaDays: s.ifaDays, odiaNum: s.odiaNum } };
+      settings: cardIds ? undefined : { lang: s.lang, mode: s.mode, district: s.district, jeArea: s.jeArea, ifaDays: s.ifaDays, visitPlan: s.visitPlan, odiaNum: s.odiaNum } };
   },
   fileName(cardName) { return `kavach-${cardName ? String(cardName).replace(/[^\w଀-୿]+/g, '-').slice(0, 30) + '-' : 'backup-'}${K.d.today()}.json`; },
   async file(cardIds, name) { const data = await this.build(cardIds); return new File([JSON.stringify(data)], this.fileName(name), { type: 'application/json' }); },

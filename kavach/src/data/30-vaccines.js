@@ -13,7 +13,9 @@
    child stayed on Penta. DPT and OPV boosters: at least 6 months after the
    3rd dose (`gapM`). `win` = end of the NIS window (9–12 m, 16–24 m, 5–6 y):
    a dose is 'due' until then and 'overdue' after.
-   fIPV-3 at 9 months (added 2023). HPV single dose for girls at 14 (2026).
+   fIPV-3 at 9 months (added 2023). HPV: one dose of Gardasil-4 for girls aged
+   14 — national drive from 28 Feb 2026, then on routine immunisation days
+   (PIB, 28 Feb 2026). No schedule change in PIB's 17 Mar 2026 UIP summary.
    Ages: d = days, w = weeks, m = months, y = years from date of birth.
    ============================================================================ */
 K.vax = K.vax || {};
@@ -74,7 +76,7 @@ K.vax.LIST = [
   { id: 'DPTB1', code: 'DPT booster-1', v: 'm16', due: { m: 16 }, win: { m: 24 }, upto: { y: 7 }, prev: 'DPT3', prevAlt: 'Penta3', gapM: 6, p: P.dpt, how: '0.5 ml · IM · anterolateral mid-thigh' },
   { id: 'DPTB2', code: 'DPT booster-2', v: 'y5', due: { y: 5 }, win: { y: 6 }, upto: { y: 7 }, prev: 'DPTB1', gap: 168, p: P.dpt, how: '0.5 ml · IM · upper arm' },
   { id: 'Td10', code: 'Td-10', v: 'y10', due: { y: 10 }, p: P.td, how: '0.5 ml · IM · upper arm' },
-  { id: 'HPV', code: 'HPV', v: 'y14', due: { y: 14 }, win: { y: 15 }, upto: { y: 15 }, sex: 'f', campaign: 1, p: P.hpv, how: 'Single dose · IM · upper arm' },
+  { id: 'HPV', code: 'HPV', v: 'y14', due: { y: 14 }, win: { y: 15 }, upto: { y: 15 }, sex: 'f', campaign: 1, p: P.hpv, how: '0.5 ml · IM · upper arm (deltoid) · single dose' },
   { id: 'Td16', code: 'Td-16', v: 'y16', due: { y: 16 }, p: P.td, how: '0.5 ml · IM · upper arm' },
 ];
 /* Vitamin A: 1 lakh IU at 9 m, then 2 lakh IU every 6 months to 5 years (9 doses).

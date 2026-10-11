@@ -39,7 +39,7 @@ K.i18n.add({
   'vax.dueOn': { en: 'Due {d}', or: '{d} ରେ ଦେବାକୁ' },
   'vax.upto': { en: 'Can be given until {d}', or: '{d} ପର୍ଯ୍ୟନ୍ତ ଦିଆଯାଇପାରିବ' },
   'vax.jeOnly': { en: 'Only in selected districts', or: 'କେବଳ ନିର୍ଦ୍ଦିଷ୍ଟ ଜିଲ୍ଲାରେ' },
-  'vax.hpvNote': { en: 'Single dose for girls at 14 years, free at government facilities (from 2026).', or: '୧୪ ବର୍ଷ ବୟସର ଝିଅମାନଙ୍କ ପାଇଁ ଗୋଟିଏ ମାତ୍ରା, ସରକାରୀ ସ୍ୱାସ୍ଥ୍ୟକେନ୍ଦ୍ରରେ ମାଗଣା (୨୦୨୬ ଠାରୁ)।' },
+  'vax.hpvNote': { en: 'Single dose for girls aged 14, free at government health facilities. The national drive began on 28 February 2026; after it, the vaccine stays available on routine immunisation days.', or: '୧୪ ବର୍ଷ ବୟସର ଝିଅମାନଙ୍କ ପାଇଁ ଗୋଟିଏ ମାତ୍ରା, ସରକାରୀ ସ୍ୱାସ୍ଥ୍ୟକେନ୍ଦ୍ରରେ ମାଗଣା। ଜାତୀୟ ଅଭିଯାନ ୨୮ ଫେବୃଆରୀ ୨୦୨୬ ରେ ଆରମ୍ଭ ହୋଇଛି; ତା\'ପରେ ନିୟମିତ ଟୀକାକରଣ ଦିବସରେ ମିଳିବ।' },
   'vax.altDpt': { en: 'Too late for Penta at this age — DPT is given in its place.', or: 'ଏହି ବୟସରେ ପେଣ୍ଟା ଦିଆଯାଏ ନାହିଁ — ତା ବଦଳରେ ଡି.ପି.ଟି. ଦିଆଯାଏ।' },
   'vax.dptFor': { en: 'In place of {x}', or: '{x} ବଦଳରେ' },
   'vax.notAfter1': { en: 'Not started after 1 year in the government programme.', or: 'ସରକାରୀ କାର୍ଯ୍ୟକ୍ରମରେ ୧ ବର୍ଷ ପରେ ଆରମ୍ଭ କରାଯାଏ ନାହିଁ।' },

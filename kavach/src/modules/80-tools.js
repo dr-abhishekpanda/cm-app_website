@@ -87,14 +87,14 @@ K.i18n.add({
   'an.refer': { en: 'Severe anaemia: refer urgently to the FRU / district hospital.', or: 'ଗୁରୁତର ରକ୍ତହୀନତା: ତୁରନ୍ତ FRU / ଜିଲ୍ଲା ଚିକିତ୍ସାଳୟକୁ ପଠାନ୍ତୁ।' },
   'an.mo': { en: 'Treatment as advised by the medical officer; look for the cause.', or: 'ଚିକିତ୍ସକଙ୍କ ପରାମର୍ଶ ଅନୁସାରେ ଚିକିତ୍ସା; କାରଣ ଖୋଜନ୍ତୁ।' },
   'an.prev': { en: 'Keep up the preventive dose: {x}', or: 'ପ୍ରତିଷେଧକ ମାତ୍ରା ଜାରି ରଖନ୍ତୁ: {x}' },
-  'an.sickle': { en: 'Iron is withheld in thalassaemia major and after repeated blood transfusions. Sickle cell disease and thalassaemia need the doctor’s plan — injectable iron for severe anaemia is not used in them.', or: 'ଥାଲାସେମିଆ ମେଜର ଓ ବାରମ୍ବାର ରକ୍ତ ନେଇଥିଲେ ଲୌହସାର ଦିଆଯାଏ ନାହିଁ। ସିକଲ୍ ସେଲ୍ ରୋଗ ଓ ଥାଲାସେମିଆରେ ଡାକ୍ତରଙ୍କ ପରାମର୍ଶ ଆବଶ୍ୟକ — ଗୁରୁତର ରକ୍ତହୀନତାର ଇଞ୍ଜେକସନ୍ ଲୌହସାର ଏମାନଙ୍କ ପାଇଁ ନୁହେଁ।' },
+  'an.sickle': { en: 'Iron is withheld in thalassaemia major and after repeated blood transfusions. Sickle cell disease and thalassaemia need the doctor\'s plan — injectable iron for severe anaemia is not used in them.', or: 'ଥାଲାସେମିଆ ମେଜର ଓ ବାରମ୍ବାର ରକ୍ତ ନେଇଥିଲେ ଲୌହସାର ଦିଆଯାଏ ନାହିଁ। ସିକଲ୍ ସେଲ୍ ରୋଗ ଓ ଥାଲାସେମିଆରେ ଡାକ୍ତରଙ୍କ ପରାମର୍ଶ ଆବଶ୍ୟକ — ଗୁରୁତର ରକ୍ତହୀନତାର ଇଞ୍ଜେକସନ୍ ଲୌହସାର ଏମାନଙ୍କ ପାଇଁ ନୁହେଁ।' },
   'an.acute': { en: 'Do not give iron during an acute illness (fever, diarrhoea, pneumonia); restart after recovery.', or: 'ଜ୍ୱର, ତରଳ ଝାଡ଼ା, ନିମୋନିଆ ଭଳି ଅସୁସ୍ଥତା ସମୟରେ ଲୌହସାର ଦିଅନ୍ତୁ ନାହିଁ; ଭଲ ହେବା ପରେ ପୁଣି ଆରମ୍ଭ କରନ୍ତୁ।' },
   'an.v2026': { en: 'Cut-offs and doses follow the revised Anaemia Mukt Bharat Abhiyaan guidelines (MoHFW, June 2026), which use the WHO 2024 Hb cut-offs. Follow your district\'s instructions where they differ.', or: 'ମାନ ଓ ମାତ୍ରା ସଂଶୋଧିତ ଆନେମିଆ ମୁକ୍ତ ଭାରତ ଅଭିଯାନ ନିର୍ଦ୍ଦେଶାବଳୀ (ସ୍ୱାସ୍ଥ୍ୟ ମନ୍ତ୍ରଣାଳୟ, ଜୁନ୍ ୨୦୨୬) ଅନୁସାରେ, ଯାହା WHO ୨୦୨୪ ହିମୋଗ୍ଲୋବିନ୍ ମାନ ବ୍ୟବହାର କରେ। ଜିଲ୍ଲାର ନିର୍ଦ୍ଦେଶ ଭିନ୍ନ ହେଲେ ତାହା ମାନନ୍ତୁ।' },
   /* vaccine dates */
   'tv.dob': { en: 'Date of birth', or: 'ଜନ୍ମ ତାରିଖ' }, 'tv.sex': { en: 'Sex', or: 'ଲିଙ୍ଗ' }, 'tv.je': { en: 'JE vaccine given in this district', or: 'ଏହି ଜିଲ୍ଲାରେ ଜେ.ଇ. ଟୀକା ଦିଆଯାଏ' },
   'tv.due': { en: 'Due', or: 'ଦେବା ତାରିଖ' }, 'tv.until': { en: 'Until', or: 'ପର୍ଯ୍ୟନ୍ତ' },
   'tv.age': { en: 'Age today: {a}', or: 'ଆଜି ବୟସ: {a}' },
-  'tv.note': { en: 'Use the child’s card to record doses — this tool only lists dates. Babies born early are vaccinated by their actual date of birth.', or: 'ଟୀକା ଲେଖିବା ପାଇଁ ଶିଶୁର କାର୍ଡ ବ୍ୟବହାର କରନ୍ତୁ — ଏଠାରେ କେବଳ ତାରିଖ। ସମୟ ପୂର୍ବରୁ ଜନ୍ମିତ ଶିଶୁଙ୍କୁ ପ୍ରକୃତ ଜନ୍ମ ତାରିଖ ଅନୁସାରେ ଟୀକା ଦିଆଯାଏ।' },
+  'tv.note': { en: 'Use the child\'s card to record doses — this tool only lists dates. Babies born early are vaccinated by their actual date of birth.', or: 'ଟୀକା ଲେଖିବା ପାଇଁ ଶିଶୁର କାର୍ଡ ବ୍ୟବହାର କରନ୍ତୁ — ଏଠାରେ କେବଳ ତାରିଖ। ସମୟ ପୂର୍ବରୁ ଜନ୍ମିତ ଶିଶୁଙ୍କୁ ପ୍ରକୃତ ଜନ୍ମ ତାରିଖ ଅନୁସାରେ ଟୀକା ଦିଆଯାଏ।' },
   /* z-scores */
   'tz.date': { en: 'Date measured', or: 'ମାପ ତାରିଖ' }, 'tz.ga': { en: 'Weeks of pregnancy at birth (if born early)', or: 'ଜନ୍ମ ସମୟରେ ଗର୍ଭର ସପ୍ତାହ (ସମୟ ପୂର୍ବରୁ ଜନ୍ମ ହେଲେ)' },
   'tz.need': { en: 'Enter sex, date of birth and at least one measurement.', or: 'ଲିଙ୍ଗ, ଜନ୍ମ ତାରିଖ ଓ ଅତି କମ୍‌ରେ ଗୋଟିଏ ମାପ ଦିଅନ୍ତୁ।' },
@@ -156,7 +156,7 @@ K.route('/tools/edd', () => page('edd', h`<form class="form" data-form="noop" id
       ${K.ui.field({ name: 'lmp2', type: 'date', label: T('edd.lmpOpt'), max: K.d.today(), attrs: { 'data-live': 'tEdd' } })}
       <p class="small faint" style="margin:0">${T('edd.usgNote')}</p></div>
     <div class="fgroup" data-b="edd" hidden>${K.ui.field({ name: 'edd', type: 'date', label: T('edd.edd'), attrs: { 'data-live': 'tEdd' } })}</div>
-  </form>${resBox()}${src('Naegele\'s rule (LMP + 280 days); ACOG Committee Opinion 700 (2017) for scan versus LMP dating; ANC schedule and PMSMA (9th of every month) as on the MCP card.')}`, { mount() { K.live.tEdd(); } }));
+  </form>${resBox()}${src('Naegele\'s rule (LMP + 280 days); ACOG Committee Opinion 700 (2017, reaffirmed 2025) for scan versus LMP dating; ANC schedule and PMSMA (9th of every month) as on the MCP card.')}`, { mount() { K.live.tEdd(); } }));
 K.forms.noop = () => {};
 K.live.tEdd = K.debounce(() => {
   const f = K.$('#tedd'); if (!f) return; const v = K.formData(f); const b = v.basis || 'lmp';

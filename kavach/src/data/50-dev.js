@@ -52,7 +52,7 @@ K.dev.BANDS = [
       { en: 'Likes to look at self in a mirror', or: 'ନିଜର ଛବି ଦର୍ପଣରେ ଦେଖିବାକୁ ଭଲ ପାଉଛି' },
     ],
     tips: [
-      { en: 'Talk with the baby; copy the baby’s sounds and praise the baby for copying yours.', or: 'ନିଜ ଶିଶୁ ସାଙ୍ଗେ କଥାବାର୍ତ୍ତା ହୁଅନ୍ତୁ; ତା’ଙ୍କ ପରି ଶବ୍ଦ କରନ୍ତୁ ଓ ସିଏ ଆପଣଙ୍କ ପରି ଶବ୍ଦ ବାହାର କରିଲେ ତାକୁ ଉତ୍ସାହିତ କରନ୍ତୁ।' },
+      { en: 'Talk with the baby; copy the baby\'s sounds and praise the baby for copying yours.', or: 'ନିଜ ଶିଶୁ ସାଙ୍ଗେ କଥାବାର୍ତ୍ତା ହୁଅନ୍ତୁ; ତା’ଙ୍କ ପରି ଶବ୍ଦ କରନ୍ତୁ ଓ ସିଏ ଆପଣଙ୍କ ପରି ଶବ୍ଦ ବାହାର କରିଲେ ତାକୁ ଉତ୍ସାହିତ କରନ୍ତୁ।' },
       { en: 'Put interesting things on the floor for the baby to reach out and explore.', or: 'ଭୁଇଁରେ ବିଭିନ୍ନ ରୋଚକ ଆକର୍ଷକ ବସ୍ତୁ ସଜାଇ ରଖନ୍ତୁ ଯାହା ଦେଖି ଶିଶୁ ସେଗୁଡ଼ିକ ଧରିବାକୁ ଚାହିଁବ ବା ସେସବୁ ଜିନିଷଗୁଡ଼ିକ କ’ଣ ତାହା ନିଜେ ବୁଝିବାକୁ ଚାହିଁବ।' },
       { en: 'Take the baby outdoors and show the world outside.', or: 'ଶିଶୁକୁ ଘର ବାହାରକୁ ନେଇ ବାହାର ଦୁନିଆର ବସ୍ତୁଗୁଡ଼ିକ ସହିତ ପରିଚିତ କରାନ୍ତୁ।' },
       { en: 'Babies suck their fingers and thumb for comfort. This is not a worry; do not stop it early.', or: 'ଶିଶୁମାନେ ନିଜ ମନ ବୁଝାଇବା ପାଇଁ ନିଜ ଆଙ୍ଗୁଠି ବା ବୁଢ଼ା ଆଙ୍ଗୁଠିକୁ ଚୁଚୁମି ଥା’ନ୍ତି। ଏହା କୌଣସି ଚିନ୍ତାର ବିଷୟ ନୁହେଁ। ଏହା ନିର୍ଦ୍ଦିଷ୍ଟ ସମୟ ଆଗରୁ ବନ୍ଦ କରନ୍ତୁ ନାହିଁ।' },
@@ -77,9 +77,9 @@ K.dev.BANDS = [
       { en: 'Responds when the name is called', or: 'ଶିଶୁଟିର ନା’ ଡାକିଲେ ଶୁଣୁଛି' },
     ],
     tips: [
-      { en: 'Let the baby drop, bang and throw things again and again. Respond to the baby’s noises gently and patiently.', or: 'ଶିଶୁଟିକୁ ତା’ ଖେଳନା ବା ଜିନିଷଗୁଡ଼ିକୁ ବାରମ୍ବାର ପକେଇବାକୁ, ବାଡ଼େଇବାକୁ ବା ଫିଙ୍ଗିବାକୁ ଦିଅନ୍ତୁ। ଶିଶୁଟି କରୁଥିବା ଶବ୍ଦଗୁଡ଼ିକୁ ଧୀରସ୍ଥିର ଭାବେ ଏବଂ କୋମଳ ଭାବେ ଉତ୍ତର ଦିଅନ୍ତୁ।' },
+      { en: 'Let the baby drop, bang and throw things again and again. Respond to the baby\'s noises gently and patiently.', or: 'ଶିଶୁଟିକୁ ତା’ ଖେଳନା ବା ଜିନିଷଗୁଡ଼ିକୁ ବାରମ୍ବାର ପକେଇବାକୁ, ବାଡ଼େଇବାକୁ ବା ଫିଙ୍ଗିବାକୁ ଦିଅନ୍ତୁ। ଶିଶୁଟି କରୁଥିବା ଶବ୍ଦଗୁଡ଼ିକୁ ଧୀରସ୍ଥିର ଭାବେ ଏବଂ କୋମଳ ଭାବେ ଉତ୍ତର ଦିଅନ୍ତୁ।' },
       { en: 'Give clean, safe household utensils to play with and explore.', or: 'ଶିଶୁକୁ ଘରେ ବ୍ୟବହାର କରୁଥିବା ସଫା ଏବଂ ସୁରକ୍ଷିତ ବାସନକୁସନ ଖେଳିବା ପାଇଁ ଏବଂ ଅନୁସନ୍ଧାନ କରିବା ପାଇଁ ଦିଅନ୍ତୁ।' },
-      { en: 'Play peek-a-boo. Hide the baby’s favourite toy under a cloth or box and see if the baby finds it.', or: 'ଶିଶୁ ସହିତ ଲୁଚକାଳି ଖେଳନ୍ତୁ। ଶିଶୁର ପ୍ରିୟ ଖେଳଣାଟିକୁ ଗୋଟିଏ କପଡ଼ା ବା ବାକ୍ସ ତଳେ ଲୁଚାଇ ଦେଖନ୍ତୁ। ଶିଶୁଟି ଖୋଜି ପାରୁଛି କି ନାହିଁ।' },
+      { en: 'Play peek-a-boo. Hide the baby\'s favourite toy under a cloth or box and see if the baby finds it.', or: 'ଶିଶୁ ସହିତ ଲୁଚକାଳି ଖେଳନ୍ତୁ। ଶିଶୁର ପ୍ରିୟ ଖେଳଣାଟିକୁ ଗୋଟିଏ କପଡ଼ା ବା ବାକ୍ସ ତଳେ ଲୁଚାଇ ଦେଖନ୍ତୁ। ଶିଶୁଟି ଖୋଜି ପାରୁଛି କି ନାହିଁ।' },
     ],
     warn: [
       { en: 'Cannot roll over', or: 'କଡ଼ ଲେଉଟାଇ ପାରୁନାହିଁ' },

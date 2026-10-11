@@ -24,7 +24,7 @@ K.i18n.add({
   'learn.close': { en: 'Close', or: 'ବନ୍ଦ କରନ୍ତୁ' },
   'learn.of': { en: '{i} of {n}', or: '{n} ମଧ୍ୟରୁ {i}' },
   'learn.call': { en: 'Emergency numbers', or: 'ଜରୁରୀକାଳୀନ ନମ୍ବର' },
-  'learn.c108': { en: '108 Ambulance', or: '୧୦୮ ଆମ୍ବୁଲାନ୍ସ' }, 'learn.c102': { en: '102 Janani Express', or: '୧୦୨ ଜନନୀ ଏକ୍ସପ୍ରେସ୍' }, 'learn.c104': { en: '104 Health helpline', or: '୧୦୪ ସ୍ୱାସ୍ଥ୍ୟ ହେଲ୍ପଲାଇନ୍' },
+  'learn.c108': { en: '108 Ambulance', or: '୧୦୮ ଆମ୍ବୁଲାନ୍ସ' }, 'learn.c104': { en: '104 Health helpline', or: '୧୦୪ ସ୍ୱାସ୍ଥ୍ୟ ହେଲ୍ପଲାଇନ୍' },
   'learn.dangerSub': { en: 'When to go to hospital at once', or: 'କେବେ ତୁରନ୍ତ ଡାକ୍ତରଖାନା ଯିବେ' },
   /* topic names */
   'lt.danger': { en: 'Danger signs', or: 'ବିପଦ ଲକ୍ଷଣ' },
@@ -91,7 +91,7 @@ K.learn.TOPICS = [
     { t: dict('lc.nbRemember'), items: K.content.newbornCare },
     { t: K.feed.STAGES[0].head, items: K.feed.STAGES[0].items.slice(0, 5).map(x => Object.assign({ icon: 'heart' }, x)) },
     { t: dict('child.lbw'), items: [Object.assign({ icon: 'heart' }, dict('child.lbwCare'))] },
-    { t: dict('lc.hbnc'), items: K.content.hbnc },
+    { t: dict('lc.hbnc'), items: K.visits.plan() === 'ssbsk' ? K.content.visitsSsbsk.concat(K.content.hbnc.slice(3)) : K.content.hbnc },
     dangerCard('newborn'),
   ] },
   { k: 'feeding', icon: 'bowl', group: 'child', cards: () => K.feed.STAGES.map(st => ({ t: st.name, lead: st.head, amount: st.amount, items: st.items.map(x => Object.assign({ icon: st.icon }, x)) }))
@@ -140,7 +140,7 @@ K.learn.card = (cd, id, o = {}) => h`<article class="lcard ${cd.tone || ''} ${o.
   ${cd.note ? h`<p class="lc-note">${K.L(cd.note)}</p>` : ''}
   ${o.say !== false ? h`<p class="lc-say">${K.ui.say('#' + id)}</p>` : ''}
 </article>`;
-const callRow = () => h`<div class="btn-row call-row">${K.ui.btn(K.t('learn.c108'), { href: 'tel:108', tone: 'danger', icon: 'ambulance', size: 'sm' })}${K.ui.btn(K.t('learn.c102'), { href: 'tel:102', tone: 'ghost', icon: 'phone', size: 'sm' })}${K.ui.btn(K.t('learn.c104'), { href: 'tel:104', tone: 'ghost', icon: 'phone', size: 'sm' })}</div>`;
+const callRow = () => h`<div class="btn-row call-row">${K.ui.btn(K.t('learn.c108'), { href: 'tel:108', tone: 'danger', icon: 'ambulance', size: 'sm' })}${K.ui.btn(K.t('learn.c104'), { href: 'tel:104', tone: 'ghost', icon: 'phone', size: 'sm' })}</div>`;
 
 /* ---------------------------------------------------------------- hub */
 K.route('/learn', () => {

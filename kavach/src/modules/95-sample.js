@@ -54,7 +54,7 @@ K.sample.build = (today) => {
   p.tests = { bloodGroup: 'B+', hiv: 'neg', hivDate: W(10, 2), syphilis: 'neg', syphilisDate: W(10, 2), hbsag: 'neg', hbsagDate: W(10, 2), malaria: 'neg', malariaDate: W(18, 1), ogtt: 118, ogttDate: W(24, 3) };
   const tick = (o, from) => { let d = from; let i = 0; while (K.d.cmp(d, today) < 0) { if (i % 7 !== 5) o.days[d] = 1; d = K.d.addDays(d, 1); i++; } o.start = from; };
   tick(p.ifa, W(14)); tick(p.calcium, W(14));
-  p.birthPlan = { facility: 'CHC Kutra', vehicle: '102', contact: 1, hospital: 1, transport: 1, jsy: 1 };
+  p.birthPlan = { facility: 'CHC Kutra', vehicle: '108', contact: 1, hospital: 1, transport: 1, jsy: 1 };
 
   k.pregId = '';
   c.pregnancies.push(p); c.children.push(k);

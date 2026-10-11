@@ -10,7 +10,7 @@ K.i18n.add({
   'pr.do': { en: 'Print or save as PDF', or: 'ପ୍ରିଣ୍ଟ କରନ୍ତୁ ବା PDF ସେଭ୍ କରନ୍ତୁ' },
   'pr.hint': { en: 'In the print window choose "Save as PDF" to keep a file, or send it to a printer.', or: 'ପ୍ରିଣ୍ଟ ୱିଣ୍ଡୋରେ ଫାଇଲ୍ ରଖିବା ପାଇଁ “Save as PDF” ବାଛନ୍ତୁ, ବା ପ୍ରିଣ୍ଟରକୁ ପଠାନ୍ତୁ।' },
   'pr.head': { en: 'Mother and child card — summary', or: 'ମା’ ଓ ଶିଶୁ କାର୍ଡ — ସାରାଂଶ' },
-  'pr.printed': { en: 'Printed on {d} from Maa ’o’ Shishu Kavach (not an official government record). Keep with the MCP card.', or: '{d} ରେ ମା’ ଓ ଶିଶୁ କବଚରୁ ଛପା (ସରକାରୀ ରେକର୍ଡ ନୁହେଁ)। MCP କାର୍ଡ ସହ ରଖନ୍ତୁ।' },
+  'pr.printed': { en: 'Printed on {d} from Maa \'o\' Shishu Kavach (not an official government record). Keep with the MCP card.', or: '{d} ରେ ମା’ ଓ ଶିଶୁ କବଚରୁ ଛପା (ସରକାରୀ ରେକର୍ଡ ନୁହେଁ)। MCP କାର୍ଡ ସହ ରଖନ୍ତୁ।' },
   'pr.mother': { en: 'Mother', or: 'ମା’' }, 'pr.contacts': { en: 'Contacts', or: 'ଯୋଗାଯୋଗ' },
   'pr.preg': { en: 'Pregnancy', or: 'ଗର୍ଭାବସ୍ଥା' }, 'pr.anc': { en: 'Check-ups', or: 'ଗର୍ଭାବସ୍ଥାର ପରୀକ୍ଷା' },
   'pr.child': { en: 'Child', or: 'ଶିଶୁ' }, 'pr.vaxGiven': { en: 'Vaccines given', or: 'ଦିଆଯାଇଥିବା ଟୀକା' }, 'pr.vaxNext': { en: 'Due or overdue', or: 'ବାକି / ବିଳମ୍ବ' },

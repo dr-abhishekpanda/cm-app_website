@@ -14,6 +14,7 @@ K.settings = {
     district: '',
     jeArea: false,         // JE vaccine given in this district
     ifaDays: [2, 5],       // Odisha: IFA syrup on Tuesday + Friday (0=Sun)
+    visitPlan: 'ssbsk',    // ASHA home visits: 'ssbsk' (SSBSK 2026) | 'hbnc' (HBNC + HBYC, Odisha card)
     lastBackup: null,
     speechRate: 0.92,
     pinHash: null,

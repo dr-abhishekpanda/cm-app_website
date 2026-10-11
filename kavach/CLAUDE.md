@@ -1,6 +1,6 @@
 # Maa 'o' Shishu Kavach — working notes for Claude
 
-Digital Mother & Child Protection (MCP) Card, Odia + English. #CM-APP by Dr. Abhishek Panda (Community Medicine, GMCH Sundargarh). Served at `/kavach/` on dr-abhishekpanda-cm.app (Cloudflare Pages, this repo).
+Digital Mother & Child Protection (MCP) Card, Odia + English. #CM-APP by Dr. Abhishek Panda (Community Medicine, GMCH Sundargarh). Served at `/kavach/` on dr-abhishekpanda-cm.app (Cloudflare Workers Builds, project `cm-app-website`, from `main`; builds of other branches currently fail, so there is no branch preview).
 
 ## Resume a session
 1. Read `ROADMAP.md` (what is done / next) and the last entry of `BUILD-LOG.md`.
@@ -30,7 +30,8 @@ Digital Mother & Child Protection (MCP) Card, Odia + English. #CM-APP by Dr. Abh
 - Immunisation = UIP National Immunization Schedule incl. fIPV-3 at 9 m; NIS limits and windows; late starters get DPT in place of Penta (`for`/`prevAlt` in data/30-vaccines). See ROADMAP notes.
 - Growth = WHO 2006 standards, restricted z beyond ±3 SD for weight-based indicators, length/height switch at 731 days (±0.7 cm), corrected age for preterm under 2 years, no grade before term-equivalent age, WHZ only to 5 years.
 - Fast breathing = IMNCI ≥60 / ≥50 / ≥40 (under 2 months = danger sign); dehydration = IMNCI/WHO 2005 with danger-sign override.
-- Postnatal = mother from delivery; SNCU/NBSU graduates days 1–42 after discharge (Odisha card p.10).
+- Home visits = `data/53-visits` (setting `visitPlan`): SSBSK 2026 by default (newborn 3/7/14/42, +day 1 home birth; at-risk 1/3/5/7/10/14/21/28/42; child 3–36 months), or HBNC + HBYC as on the Odisha card. Mother counted from delivery; SNCU/NBSU graduates from discharge.
+- Ambulance = 108 (Odisha merged 102 into 108 in 2021); don't reintroduce 102.
 - EDD = LMP + 280, scan replaces LMP only beyond ACOG CO 700 limits (`K.preg.datingRule`).
 
 ## Rules from the owner

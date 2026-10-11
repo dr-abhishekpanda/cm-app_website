@@ -12,7 +12,7 @@ K.i18n.add({
   'sick.tile': { en: 'Sick child', or: 'ଅସୁସ୍ଥ ଶିଶୁ' },
   'sick.tileSub': { en: 'Danger signs, diarrhoea, pneumonia, fever', or: 'ବିପଦ ଲକ୍ଷଣ, ତରଳ ଝାଡ଼ା, ନିମୋନିଆ, ଜ୍ୱର' },
   'sick.first': { en: 'First, look for danger signs', or: 'ପ୍ରଥମେ ବିପଦ ଲକ୍ଷଣ ଦେଖନ୍ତୁ' },
-  'sick.call': { en: 'Call 108', or: '୧୦୮ କୁ ଫୋନ୍' }, 'sick.call102': { en: 'Call 102', or: '୧୦୨ କୁ ଫୋନ୍' },
+  'sick.call': { en: 'Call 108', or: '୧୦୮ କୁ ଫୋନ୍' }, 'sick.call104': { en: '104 for advice', or: 'ପରାମର୍ଶ ପାଇଁ ୧୦୪' },
   'sick.diarr': { en: 'Diarrhoea', or: 'ତରଳ ଝାଡ଼ା' },
   'sick.diarrTreat': { en: 'Treatment at home', or: 'ତରଳ ଝାଡ଼ାର ଚିକିତ୍ସା' },
   'sick.diarrPrev': { en: 'Prevention', or: 'ତରଳ ଝାଡ଼ା ନ ହେବା ପାଇଁ' },
@@ -47,7 +47,7 @@ K.i18n.add({
   'br.fast': { en: 'Fast breathing ({n} — cut-off {c})', or: 'ଦ୍ରୁତ ଶ୍ୱାସ ({n} — ସୀମା {c})' },
   'br.fastDo': { en: 'This child may have pneumonia. Contact the ASHA or ANM now for treatment. If the chest pulls in, or there is any danger sign, go to the hospital at once (call 108).', or: 'ଶିଶୁର ନିମୋନିଆ ହୋଇପାରେ। ଚିକିତ୍ସା ପାଇଁ ଏବେ ହିଁ ଆଶା ବା ଏ.ଏନ୍.ଏମ୍.ଙ୍କ ସହ ଯୋଗାଯୋଗ କରନ୍ତୁ। ଛାତି ଭିତରକୁ ପଶୁଥିଲେ ବା କୌଣସି ବିପଦ ଲକ୍ଷଣ ଥିଲେ ତୁରନ୍ତ ଡାକ୍ତରଖାନା ଯାଆନ୍ତୁ (୧୦୮)।' },
   /* national MCP card 2018 p.7: a newborn breathing 60 or more is a danger sign — contact the health worker immediately */
-  'br.fastYoung': { en: 'In a baby under 2 months, fast breathing is a danger sign. Contact the ASHA or ANM immediately and take the baby to the hospital (call 108 or 102). Keep the baby warm and breastfeeding on the way.', or: '୨ ମାସରୁ କମ୍ ଶିଶୁରେ ଦ୍ରୁତ ଶ୍ୱାସ ବିପଦ ଲକ୍ଷଣ। ତୁରନ୍ତ ଆଶା ବା ଏ.ଏନ୍.ଏମ୍.ଙ୍କ ସହ ଯୋଗାଯୋଗ କରି ଶିଶୁକୁ ଡାକ୍ତରଖାନା ନିଅନ୍ତୁ (୧୦୮ ବା ୧୦୨ କୁ ଫୋନ୍ କରନ୍ତୁ)। ବାଟରେ ଶିଶୁକୁ ଉଷୁମ ରଖି ସ୍ତନ୍ୟପାନ କରାନ୍ତୁ।' },
+  'br.fastYoung': { en: 'In a baby under 2 months, fast breathing is a danger sign. Contact the ASHA or ANM immediately and take the baby to the hospital (call 108). Keep the baby warm and breastfeeding on the way.', or: '୨ ମାସରୁ କମ୍ ଶିଶୁରେ ଦ୍ରୁତ ଶ୍ୱାସ ବିପଦ ଲକ୍ଷଣ। ତୁରନ୍ତ ଆଶା ବା ଏ.ଏନ୍.ଏମ୍.ଙ୍କ ସହ ଯୋଗାଯୋଗ କରି ଶିଶୁକୁ ଡାକ୍ତରଖାନା ନିଅନ୍ତୁ (୧୦୮ କୁ ଫୋନ୍ କରନ୍ତୁ)। ବାଟରେ ଶିଶୁକୁ ଉଷୁମ ରଖି ସ୍ତନ୍ୟପାନ କରାନ୍ତୁ।' },
   'br.ok': { en: 'Not fast breathing ({n} — cut-off {c})', or: 'ଦ୍ରୁତ ଶ୍ୱାସ ନୁହେଁ ({n} — ସୀମା {c})' },
   'br.okDo': { en: 'Keep watching. Count again if the child gets worse, and look for chest indrawing.', or: 'ନଜର ରଖନ୍ତୁ। ଶିଶୁ ଅଧିକ ଅସୁସ୍ଥ ହେଲେ ପୁଣି ଗଣନ୍ତୁ ଓ ଛାତି ଭିତରକୁ ପଶୁଛି କି ଦେଖନ୍ତୁ।' },
   'br.indraw': { en: 'Chest indrawing (lower chest pulls in when breathing in) is a danger sign at any count.', or: 'ନିଃଶ୍ୱାସ ନେଲାବେଳେ ଛାତିର ତଳ ଭାଗ ଭିତରକୁ ପଶିବା ଯେକୌଣସି ଗଣନାରେ ବିପଦ ଲକ୍ଷଣ।' },
@@ -67,7 +67,7 @@ K.route('/card/:id/child/:kid/sick', ({ id, kid }) => {
     html: h`<div class="wrap">${K.ui.phead(K.child.label(k) + (k.dob ? ' · ' + K.d.ageText(k.dob) : ''), K.t('sick.title'))}
       <section class="k-card danger-box"><h2>${K.t('sick.first')}</h2><p class="small">${K.L(set.lead || set.title)}</p>
         <ul class="ill-list">${set.items.map(x => h`<li>${K.ui.icon(x.icon || 'alert', 'sm')}<span>${K.L(x)}</span></li>`)}</ul>
-        <div class="btn-row">${K.ui.btn(K.t('sick.call'), { href: 'tel:108', tone: 'danger', icon: 'phone' })}${K.ui.btn(K.t('sick.call102'), { href: 'tel:102', tone: 'ghost', icon: 'ambulance' })}</div></section>
+        <div class="btn-row">${K.ui.btn(K.t('sick.call'), { href: 'tel:108', tone: 'danger', icon: 'phone' })}${K.ui.btn(K.t('sick.call104'), { href: 'tel:104', tone: 'ghost', icon: 'phone' })}</div></section>
       <section class="sec">${K.ui.secH(K.t('sick.diarr'))}
         <h3 class="ill-h">${K.t('sick.diarrTreat')}</h3>${list(K.ill.DIARR_TREAT, 'ill-dt')}
         <p class="small">${K.t('sick.orsAmt')}</p>

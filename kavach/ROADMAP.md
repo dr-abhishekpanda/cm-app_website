@@ -16,6 +16,7 @@ Each chunk ends with: build → Playwright check at phone size → BUILD-LOG ent
 | 9 | Entitlements & helplines (dated sources), Due tab across cards, print view, calendar export, sample family | done |
 | 10 | PWA (manifest, icons, service worker), QA, Odia review sheet, deploy notes, link from home page | done |
 | 11 | Independent clinical audit and fixes: DPT catch-up, ORS danger signs, AMB June 2026, SNCU visit schedule, preterm growth, NIS windows, dating rule | done |
+| 12 | Source review against latest versions: SSBSK 2026 home visits (HBNC/HBYC kept as a setting), 108 replaces 102 in Odisha, HPV drive note, ACOG reaffirmation, English quotes, full route sweep | done |
 
 ## Notes to carry forward
 - Odisha IFA syrup days for children: Tuesday + Friday (national card: Wednesday + Saturday) — setting `ifaDays`.
@@ -34,5 +35,12 @@ Each chunk ends with: build → Playwright check at phone size → BUILD-LOG ent
 - Growth: no WHO grade before term-equivalent age (preterm, corrected age < 0); WHZ and SAM-by-WHZ only to 5 years.
 - EDD: scan replaces LMP dating only beyond the ACOG Committee Opinion 700 (2017) limits (5 / 7 / 10 / 14 / 21 days by gestation at the scan).
 - Independent clinical audit (11 Oct 2026): 24 findings (2 high, 10 medium, 12 low), all addressed in chunk 11 — see BUILD-LOG.
+- Source review (11 Oct 2026), latest versions checked:
+  - National MCP card: still the 2018 revision (UNICEF IEC flipbook uploaded Aug 2023 refers to the 2018 revisions); no newer card found. Odisha card: V-2023-24 is the newest found.
+  - SSBSK (Samagra Shishu Bal Swasthya Karyakram), launched 29 June 2026 (The Tribune, Manorama Yearbook); Operational Guidelines 2026 read from the nurturing-care.org copy (the nhm.gov.in PDFs could not be fetched). It merges HBNC and HBYC from birth to 36 months: healthy newborn day 3, 7, 14, 42 (+ within 24 h for home births); at-risk newborn day 1, 3, 5, 7, 10, 14, 21, 28, 42 with a facility check within 8 days; young child 3, 6, 9, 12, 18, 24, 30, 36 months. Default in the app; Settings → "ASHA home-visit schedule" switches back to HBNC + HBYC as on the Odisha card. The guideline text is ambiguous on whether at-risk days count from birth or from discharge: the app counts from birth for babies at home (first visit day 3 after a facility birth) and from discharge for SNCU/NBSU graduates.
+  - Ambulance: Odisha merged 102 into 108 on 30 June 2021 (OdishaTV); the Odisha card cover reads "108 / 108 – Janani Express". The app now shows 108 only.
+  - HPV: PIB 28 Feb 2026 — one dose of Gardasil-4 for girls aged 14 at government facilities; a 3-month drive, then on routine immunisation days. PIB 17 Mar 2026: no other UIP schedule change; indigenous Td from Feb 2026.
+  - ACOG Committee Opinion 700 reaffirmed in 2025 (Harvard RMF OB Guideline 7, 2026, cites it); thresholds unchanged.
+  - No newer versions found for: Immunization Handbook for MOs (2017), IMNCI chart booklet, national GDM guideline (2018), JSY amounts, the Odisha card's FP, NRC, drop-back and e-PMSMA amounts (kept as printed on the card with their checked dates).
 - Helplines: 108 ambulance, 102 Janani Express (pregnancy, up to 42 days postpartum, sick infants up to 1 year), 104 health helpline (Odisha, 24×7), 14416 Tele-MANAS, 14423 Kilkari re-listen (Odisha card p.46), 1515 POSHAN/PMMVY (replaced 14408 from 1 Nov 2025 — AIR News, 24 Oct 2025), 181 women, 1098 child, 112 emergency.
 - Birth-plan checklist key renamed facility → hospital (it clashed with the facility-name field).

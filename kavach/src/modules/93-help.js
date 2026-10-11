@@ -4,7 +4,9 @@
    Sources: national MCP card 2018 p.1 (JSY, JSSK, PMSMA); Odisha MCP card
    V-2023-24 pp.43–46 (JSY amounts, e-PMSMA travel, NRC, ₹500 drop-back, SUMAN,
    Kilkari); WCD Odisha MAMATA-PMMVY page (checked 9 Oct 2026); AIR News
-   24 Oct 2025 (POSHAN / PMMVY helpline 1515 replaced 14408 from 1 Nov 2025).
+   24 Oct 2025 (POSHAN / PMMVY helpline 1515 replaced 14408 from 1 Nov 2025);
+   OdishaTV 30 Jun 2021 and the Odisha card cover ("108 / 108 – Janani Express"):
+   Odisha merged the 102 Janani Express line into 108.
    ============================================================================ */
 const h = K.h;
 
@@ -22,8 +24,7 @@ K.i18n.add({
 
 K.help = {};
 K.help.CALLS = [
-  { n: '108', icon: 'ambulance', tone: 'danger', t: { en: 'Ambulance — any emergency', or: 'ଆମ୍ବୁଲାନ୍ସ — ଯେକୌଣସି ଜରୁରୀ ଅବସ୍ଥା' } },
-  { n: '102', icon: 'ambulance', t: { en: 'Janani Express — pregnant women, mothers up to 42 days after delivery, sick infants up to 1 year', or: 'ଜନନୀ ଏକ୍ସପ୍ରେସ୍ — ଗର୍ଭବତୀ, ପ୍ରସବର ୪୨ ଦିନ ପର୍ଯ୍ୟନ୍ତ ମା’, ୧ ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ ଅସୁସ୍ଥ ଶିଶୁ' } },
+  { n: '108', icon: 'ambulance', tone: 'danger', t: { en: 'Free ambulance for any emergency — also Janani Express for pregnant women, mothers up to 42 days after delivery and sick infants (in Odisha, 102 is now part of 108)', or: 'ଯେକୌଣସି ଜରୁରୀ ଅବସ୍ଥାରେ ମାଗଣା ଆମ୍ବୁଲାନ୍ସ — ଗର୍ଭବତୀ, ପ୍ରସବର ୪୨ ଦିନ ପର୍ଯ୍ୟନ୍ତ ମା\' ଓ ଅସୁସ୍ଥ ଶିଶୁଙ୍କ ପାଇଁ ଜନନୀ ଏକ୍ସପ୍ରେସ୍ ମଧ୍ୟ (ଓଡ଼ିଶାରେ ୧୦୨ ଏବେ ୧୦୮ ର ଅଂଶ)' } },
   { n: '104', icon: 'phone', t: { en: 'Health helpline, 24 hours — advice and complaints', or: 'ସ୍ୱାସ୍ଥ୍ୟ ହେଲ୍ପଲାଇନ୍, ୨୪ ଘଣ୍ଟା — ପରାମର୍ଶ ଓ ଅଭିଯୋଗ' } },
   { n: '14416', icon: 'heart', t: { en: 'Tele-MANAS — feeling low, worried or not coping (free, 24 hours)', or: 'ଟେଲି-ମାନସ — ମନ ଦୁଃଖ, ଚିନ୍ତା ବା ଅସହାୟ ଲାଗିଲେ (ମାଗଣା, ୨୪ ଘଣ୍ଟା)' } },
   { n: '14423', icon: 'sound', t: { en: 'Kilkari — listen again to the weekly health messages (from the registered mobile)', or: 'କିଲକାରୀ — ସାପ୍ତାହିକ ସ୍ୱାସ୍ଥ୍ୟ ବାର୍ତ୍ତା ପୁଣି ଶୁଣନ୍ତୁ (ପଞ୍ଜୀକୃତ ମୋବାଇଲ୍‌ରୁ)' } },
@@ -45,7 +46,7 @@ K.help.SCHEMES = [
     src: 'Odisha MCP card V-2023-24, p.43', d: '2026-10-10' },
   { k: 'mamata', icon: 'mother', t: S('MAMATA–PMMVY (Odisha)', 'ମମତା–PMMVY (ଓଡ଼ିଶା)'),
     items: [S('From 1 April 2025: ₹6,000 after registering the pregnancy at the Anganwadi centre and at least one check-up within 6 months of the last period', '୧ ଏପ୍ରିଲ୍ ୨୦୨୫ ରୁ: ଅଙ୍ଗନୱାଡ଼ି କେନ୍ଦ୍ରରେ ଗର୍ଭ ପଞ୍ଜୀକରଣ ଓ ଶେଷ ଋତୁସ୍ରାବର ୬ ମାସ ମଧ୍ୟରେ ଅତି କମ୍‌ରେ ଗୋଟିଏ ପରୀକ୍ଷା ପରେ ୬,୦୦୦ ଟଙ୍କା'),
-      S('Second instalment after birth registration and the baby’s vaccines up to 14 weeks: ₹4,000 for a boy, ₹6,000 for a girl', 'ଜନ୍ମ ପଞ୍ଜୀକରଣ ଓ ଶିଶୁର ୧୪ ସପ୍ତାହ ପର୍ଯ୍ୟନ୍ତ ଟୀକା ପରେ ଦ୍ୱିତୀୟ କିସ୍ତି: ପୁଅ ପାଇଁ ୪,୦୦୦ ଟଙ୍କା, ଝିଅ ପାଇଁ ୬,୦୦୦ ଟଙ୍କା'),
+      S('Second instalment after birth registration and the baby\'s vaccines up to 14 weeks: ₹4,000 for a boy, ₹6,000 for a girl', 'ଜନ୍ମ ପଞ୍ଜୀକରଣ ଓ ଶିଶୁର ୧୪ ସପ୍ତାହ ପର୍ଯ୍ୟନ୍ତ ଟୀକା ପରେ ଦ୍ୱିତୀୟ କିସ୍ତି: ପୁଅ ପାଇଁ ୪,୦୦୦ ଟଙ୍କା, ଝିଅ ପାଇଁ ୬,୦୦୦ ଟଙ୍କା'),
       S('For up to two live births; women of PVTG communities for all births until 31 March 2029', 'ଦୁଇଟି ଜୀବିତ ସନ୍ତାନ ପର୍ଯ୍ୟନ୍ତ; PVTG ସମ୍ପ୍ରଦାୟର ମହିଳାଙ୍କ ପାଇଁ ୩୧ ମାର୍ଚ୍ଚ ୨୦୨୯ ପର୍ଯ୍ୟନ୍ତ ସମସ୍ତ ଜନ୍ମ'),
       S('Apply through the Anganwadi worker. Documents asked for include Aadhaar, a bank or post-office account, the MCP card and ABHA ID — this app does not store Aadhaar or bank details.', 'ଅଙ୍ଗନୱାଡ଼ି କର୍ମୀଙ୍କ ମାଧ୍ୟମରେ ଆବେଦନ କରନ୍ତୁ। ଆଧାର, ବ୍ୟାଙ୍କ ବା ଡାକଘର ଆକାଉଣ୍ଟ, MCP କାର୍ଡ ଓ ABHA ID ଆବଶ୍ୟକ — ଏହି ଆପ୍ ଆଧାର ବା ବ୍ୟାଙ୍କ ବିବରଣୀ ରଖେ ନାହିଁ।')],
     src: 'WCD Odisha, MAMATA-PMMVY page (wcd.odisha.gov.in)', d: '2026-10-09' },

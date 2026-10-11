@@ -62,6 +62,7 @@ K.route('/settings', () => {
         <div class="field"><span class="lbl">${K.t('set.ifaDays')}</span>
           <div class="choices">${[[2, 5], [3, 6]].map(p => h`<label class="choice"><input type="radio" name="ifaDays" value="${p.join(',')}" ${String(s.ifaDays) === p.join(',') ? K.raw('checked') : ''} data-live="setIfaDays"><span>${K.d.WD[K.i18n.lang === 'or' ? 'or' : 'en'][p[0]]} + ${K.d.WD[K.i18n.lang === 'or' ? 'or' : 'en'][p[1]]}</span></label>`)}</div>
           <span class="hint">${K.t('set.ifaDaysSub')}</span></div>
+        ${K.ui.choices({ name: 'visitPlan', label: K.t('set.plan'), value: s.visitPlan === 'hbnc' ? 'hbnc' : 'ssbsk', options: ['ssbsk', 'hbnc'].map(v => ({ v, l: K.t('set.plan.' + v) })), live: 'setPlan', hint: K.t('set.planSub') })}
         <div class="field"><label for="sp-rate">${K.t('set.speech')}</label>
           <input id="sp-rate" type="range" min="0.6" max="1.3" step="0.05" value="${rate}" data-live="setRate"></div>
       </div>
@@ -74,6 +75,7 @@ K.live.setBool = (el) => { K.settings.set(el.name, el.checked); if (el.name === 
 K.live.setText = K.debounce((el) => { K.settings.set(el.name, el.value.trim()); }, 400);
 K.live.setIfaDays = (el) => { K.settings.set('ifaDays', el.value.split(',').map(Number)); };
 K.live.setRate = (el) => { K.settings.set('speechRate', +el.value); };
+K.live.setPlan = (el) => { K.settings.set('visitPlan', el.value); K.ui.toast(K.t('saved')); };
 
 K.route('/about', () => ({
   title: K.t('about.title'), back: '/more', tab: 'more',
@@ -92,7 +94,10 @@ K.route('/about', () => ({
         <li>Anaemia Mukt Bharat Abhiyaan operational guidelines (MoHFW, June 2026): WHO 2024 haemoglobin cut-offs, treatment and prevention doses, deworming. HBNC and HBYC guidelines (MoHFW).</li>
         <li>MAMATA-PMMVY, Department of Women & Child Development and Mission Shakti, Odisha (effective 1 April 2025).</li>
         <li>IMNCI (WHO / MoHFW) and WHO Treatment of Diarrhoea (2005): fast-breathing cut-offs, danger signs, dehydration plans A–C, zinc.</li>
-        <li>ACOG Committee Opinion 700 (2017): when an ultrasound replaces the LMP for dating.</li>
+        <li>ACOG Committee Opinion 700 (2017, reaffirmed 2025): when an ultrasound replaces the LMP for dating.</li>
+        <li>Samagra Shishu Bal Swasthya Karyakram (SSBSK) operational guidelines, MoHFW, 2026 (launched 29 June 2026): home visits for newborns and children up to 3 years. HBNC and HBYC as printed on the Odisha card remain available in Settings.</li>
+        <li>PIB, 28 February 2026: nationwide HPV vaccination for girls aged 14 (single dose), continuing on routine immunisation days after the drive.</li>
+        <li>Government of Odisha, June 2021: the 102 and 108 ambulance lines merged into 108 (OdishaTV, 30 June 2021; Odisha card cover "108 / 108 – Janani Express").</li>
         <li>Indian Academy of Pediatrics (2022): nutritional anaemia in children, Indian Pediatrics 59:782–801.</li>
       </ul></section>
     <section class="sec">${K.ui.eyebrow(K.t('rev.title'))}<p class="small">${K.t('rev.sub')}</p>${K.ui.btn(K.t('rev.title'), { act: 'reviewCsv', tone: 'ghost', icon: 'download', size: 'sm' })}</section>

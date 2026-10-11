@@ -96,6 +96,7 @@ function childForm(c, k, isNew) {
       ${K.ui.choices({ name: 'bf', label: K.t('child.bf'), value: b.bf, options: ['1h', '24h', 'late'].map(v => ({ v, l: K.t('bf.' + v), tone: v === 'late' ? 'warn' : '' })) })}
       ${K.ui.yn({ name: 'colostrum', q: K.t('child.colostrum'), value: b.colostrum, pos: true })}
       ${K.ui.yn({ name: 'vitk', q: K.t('child.vitk'), value: b.vitk, pos: true })}
+      ${K.ui.yn({ name: 'extraCare', q: K.t('child.extraCare'), value: b.extraCare })}
       ${K.ui.yn({ name: 'sncu', q: K.t('child.sncu'), value: b.sncu })}
       ${F('sncuDischarge', K.t('child.sncuDis'), { type: 'date', max: K.d.today(), value: b.sncuDischarge })}
     </fieldset>
@@ -143,7 +144,7 @@ K.forms.childSave = async (v, f) => {
   Object.assign(k, { name: v.name || '', sex: v.sex || '', dob: v.dob, birthWeight: bw != null ? K.round(bw, 3) : null, gaWeeks: v.gaWeeks != null ? v.gaWeeks : null,
     birthRegNo: v.birthRegNo || '', rchId: v.rchId != null ? String(v.rchId) : '', abhaId: v.abhaId || '' });
   k.birth = Object.assign(k.birth || {}, { cried: v.cried == null ? null : +v.cried, resus: v.resus == null ? null : +v.resus, bf: v.bf || '', colostrum: v.colostrum == null ? null : +v.colostrum,
-    vitk: v.vitk == null ? null : +v.vitk, sncu: v.sncu == null ? null : +v.sncu, sncuDischarge: v.sncuDischarge || '' });
+    vitk: v.vitk == null ? null : +v.vitk, extraCare: v.extraCare == null ? null : +v.extraCare, sncu: v.sncu == null ? null : +v.sncu, sncuDischarge: v.sncuDischarge || '' });
   if (K.child._photo) { k.photoThumb = K.child._photo; K.child._photo = null; }
   await K.store.save(c); K.ui.toast(K.t('saved')); K.go(K.child.url(c, k).slice(1), { replace: isNew });
 };

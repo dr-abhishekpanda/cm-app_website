@@ -25,7 +25,7 @@ K.content.danger = {
   },
   labour: {
     title: { en: 'Danger signs during labour', or: 'ପ୍ରସବ ସମୟରେ ବିପଦ ଲକ୍ଷଣ' },
-    lead: { en: 'Go to the hospital immediately. Call 108 or 102 for free transport.', or: 'ତୁରନ୍ତ ଡାକ୍ତରଖାନା ଯାଆନ୍ତୁ। ମାଗଣା ଯାତାୟାତ ପାଇଁ ୧୦୮ ବା ୧୦୨ କୁ ଫୋନ୍ କରନ୍ତୁ।' },
+    lead: { en: 'Go to the hospital immediately. Call 108 for a free ambulance.', or: 'ତୁରନ୍ତ ଡାକ୍ତରଖାନା ଯାଆନ୍ତୁ। ମାଗଣା ଆମ୍ବୁଲାନ୍ସ ପାଇଁ ୧୦୮ କୁ ଫୋନ୍ କରନ୍ତୁ।' },
     items: [
       { k: 'long', icon: 'clock', en: 'Labour pains for more than 12 hours', or: 'ପ୍ରସବ ଯନ୍ତ୍ରଣା ୧୨ ଘଣ୍ଟାରୁ ଅଧିକ ହେବା' },
       { k: 'water', icon: 'drop', en: 'Water bag bursts without labour pains', or: 'ପ୍ରସବ ଯନ୍ତ୍ରଣା ପୂର୍ବରୁ ଗର୍ଭାଶୟର ପାଣି ଥଳି ଫାଟିଯିବା ବା ଦେହରୁ ପାଣି ଯିବା' },
@@ -89,7 +89,7 @@ K.content.danger = {
   go: {
     title: { en: 'On the way to hospital', or: 'ଡାକ୍ତରଖାନା ଯିବା ବାଟରେ' },
     items: [
-      { en: 'Call 108 (ambulance) or 102 (Janani Express). Both are free.', or: '୧୦୮ (ଆମ୍ବୁଲାନ୍ସ) ବା ୧୦୨ (ଜନନୀ ଏକ୍ସପ୍ରେସ୍) କୁ ଫୋନ୍ କରନ୍ତୁ। ଦୁହେଁ ମାଗଣା।' },
+      { en: 'Call 108 for a free ambulance. In Odisha, Janani Express for pregnant women and sick babies also comes on 108.', or: 'ମାଗଣା ଆମ୍ବୁଲାନ୍ସ ପାଇଁ ୧୦୮ କୁ ଫୋନ୍ କରନ୍ତୁ। ଓଡ଼ିଶାରେ ଗର୍ଭବତୀ ଓ ଅସୁସ୍ଥ ଶିଶୁଙ୍କ ପାଇଁ ଜନନୀ ଏକ୍ସପ୍ରେସ୍ ମଧ୍ୟ ୧୦୮ ରେ ମିଳେ।' },
       { en: 'Carry this MCP card and any reports.', or: 'MCP କାର୍ଡ ଓ ସମସ୍ତ ରିପୋର୍ଟ ସାଙ୍ଗରେ ନିଅନ୍ତୁ।' },
       { en: 'Keep the baby warm, skin-to-skin with the mother, and keep breastfeeding if the baby can feed.', or: 'ଶିଶୁକୁ ଉଷୁମ ରଖନ୍ତୁ, ମା\'ଙ୍କ ଛାତିରେ ଲଗାଇ ରଖନ୍ତୁ, ଖାଇପାରିଲେ ସ୍ତନ୍ୟପାନ ଜାରି ରଖନ୍ତୁ।' },
       { en: 'If the child has fits, lay the child on the side with the head a little lower; do not put anything in the mouth.', or: 'ପିଲାକୁ ବାତ ମାରିଲେ, କଡ଼ ଲେଉଟାଇ ଶୁଆଇ ମୁଣ୍ଡ ଟିକେ ତଳକୁ ରଖନ୍ତୁ; ପାଟିରେ କିଛି ଦିଅନ୍ତୁ ନାହିଁ।' },

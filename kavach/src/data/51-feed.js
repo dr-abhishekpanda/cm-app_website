@@ -22,7 +22,7 @@ K.feed.STAGES = [
       { en: 'No honey, no other milk, no water, and nothing from a bottle or bowl.', or: 'ମହୁ, ଅନ୍ୟ କ୍ଷୀର, ପାଣି ବା ବୋତଲ / ଗିନାରେ କିଛି ଦିଅନ୍ତୁ ନାହିଁ।' },
       { en: 'Breastfeed whenever the baby wants, day and night. Frequent feeding makes more milk. Do not forget night feeds.', or: 'ଶିଶୁଟିକୁ ଦିନ ଓ ରାତି ଯେତେବେଳେ ଚାହିଁବ ସ୍ତନ୍ୟପାନ କରାନ୍ତୁ। ବାରମ୍ବାର ସ୍ତନ୍ୟପାନ କରାଇବା ଦ୍ୱାରା ମା’ର ଅଧିକ କ୍ଷୀର କ୍ଷରଣ ହୋଇଥାଏ। ରାତିରେ ସ୍ତନ୍ୟପାନ କରାଇବାକୁ ଭୁଲନ୍ତୁ ନାହିଁ।' },
       { en: "While feeding, hold the baby close to your body, look into the baby's eyes, smile and talk. Do not rock the baby while feeding.", or: 'ସ୍ତନ୍ୟପାନ କରାଇବା ସମୟରେ ନିଜ ଦେହ ସହିତ ଶିଶୁକୁ ଲଗାଇ ରଖନ୍ତୁ ଏବଂ ଶିଶୁର ଆଖି ସହିତ ଆଖି ମିଳାଇ ହସନ୍ତୁ, କଥା କୁହନ୍ତୁ। ସ୍ତନ୍ୟପାନ କରାଇବା ସମୟରେ ଶିଶୁକୁ ଝୁଲାନ୍ତୁ ନାହିଁ।' },
-      { en: 'Good attachment: most of the dark part around the nipple is inside the baby’s mouth, and more of it shows above the mouth than below.', or: 'ସ୍ତନର ଅଗ୍ରଭାଗରେ ଥିବା କଳା ଅଂଶର ଅଧିକ ଭାଗ ପାଟି ଭିତରେ ରହିଛି ଏବଂ କଳା ଅଂଶର ତଳ ଭାଗଠାରୁ ଉପର ଭାଗ ଅଧିକ ଦେଖାଯାଉଛି।' },
+      { en: 'Good attachment: most of the dark part around the nipple is inside the baby\'s mouth, and more of it shows above the mouth than below.', or: 'ସ୍ତନର ଅଗ୍ରଭାଗରେ ଥିବା କଳା ଅଂଶର ଅଧିକ ଭାଗ ପାଟି ଭିତରେ ରହିଛି ଏବଂ କଳା ଅଂଶର ତଳ ଭାଗଠାରୁ ଉପର ଭାଗ ଅଧିକ ଦେଖାଯାଉଛି।' },
       { en: 'Even when the baby is ill, give only breast milk until 6 months.', or: 'ଶିଶୁକୁ ଅସୁସ୍ଥତା ସମୟରେ ମଧ୍ୟ ୬ ମାସ ପର୍ଯ୍ୟନ୍ତ କେବଳ ସ୍ତନ୍ୟପାନ କରାନ୍ତୁ।' },
       { en: 'Breastfeeding makes children brighter.', or: 'ସ୍ତନ୍ୟପାନ ଶିଶୁକୁ ବୁଦ୍ଧିଆ କରାଏ।' },
       { en: 'Any difficulty with breastfeeding: talk to your ASHA, Anganwadi worker or ANM.', or: 'ସ୍ତନ୍ୟପାନ କରାଇବାରେ କୌଣସି ଅସୁବିଧା ହେଲେ ନିଜ ଅଞ୍ଚଳରେ ଥିବା ଆଶା, ଅଙ୍ଗନୱାଡ଼ି କର୍ମୀ ଓ ସ୍ୱାସ୍ଥ୍ୟକର୍ମୀ ସହିତ ସଂପର୍କ କରନ୍ତୁ।' },

@@ -1,10 +1,11 @@
 /* ============================================================================
    modules/25-delivery — delivery record, postnatal (PNC/HBNC) home visits
    for mother and newborn, postpartum IFA/calcium.
-   HBNC schedule (Odisha MCP V-2023-24 p.10; HBNC guidelines): ASHA visits
-   mother and newborn on days 3, 7, 14, 21, 28, 42 after delivery (plus day 1
-   for births at home), day 1 = day of birth. A baby admitted to SNCU/NBSU has
-   its own visits on days 1, 3, 7, 14, 21, 28 and 42 after discharge (day 1 =
+   Visit days come from data/53-visits (SSBSK 2026 by default, or HBNC as on
+   the Odisha card): the ASHA visits mother and the babies at home on the
+   newborn days counted from delivery (day 1 = day of birth); an SSBSK
+   'at-risk' baby at home moves the joint visits to the at-risk days. A baby
+   admitted to SNCU/NBSU has its own visits counted from discharge (day 1 =
    day of discharge); the mother's checks stay counted from delivery.
    ============================================================================ */
 const h = K.h;
@@ -46,13 +47,12 @@ K.i18n.add({
   'pnc.visit': { en: 'Home visit · day {n}', or: 'ଗୃହ ପରିଦର୍ଶନ · {n} ଦିନ' },
   'pnc.mother': { en: "Mother's check", or: "ମା'ଙ୍କ ପ୍ରସବ ପରବର୍ତ୍ତୀ ଆକଳନ" },
   'pnc.baby': { en: 'Newborn check', or: 'ନବଜାତ ଶିଶୁର ଆକଳନ' },
-  'pnc.rule': { en: 'The ASHA visits on days 3, 7, 14, 21, 28 and 42 after delivery (also day 1 if born at home). Stay 48 hours in hospital after delivery.', or: 'ପ୍ରସବ ପରେ ଆଶାକର୍ମୀ ୩ୟ, ୭ମ, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନରେ ଗୃହ ପରିଦର୍ଶନ କରିବେ (ଘରେ ଜନ୍ମ ହୋଇଥିଲେ ୧ମ ଦିନ ମଧ୍ୟ)। ପ୍ରସବ ପରେ ୪୮ ଘଣ୍ଟା ଡାକ୍ତରଖାନାରେ ରୁହନ୍ତୁ।' },
   'pnc.save': { en: 'Save visit', or: 'ପରିଦର୍ଶନ ସେଭ୍ କରନ୍ତୁ' },
   'pnc.ppTabs': { en: 'Iron and calcium after delivery', or: 'ପ୍ରସବ ପରେ ଲୌହ ଓ କ୍ୟାଲସିୟମ୍' },
   'pnc.ppRule': { en: 'Take one IFA tablet and two calcium tablets every day for 6 months after delivery.', or: 'ପ୍ରସବ ପରଠାରୁ ୬ ମାସ ପର୍ଯ୍ୟନ୍ତ ଗୋଟିଏ IFA ଏବଂ ଦୁଇଟି କ୍ୟାଲସିୟମ୍ ବଟିକା ନିଶ୍ଚିତ ଖାଆନ୍ତୁ।' },
   'pnc.result': { en: 'What this visit shows', or: 'ଏହି ପରିଦର୍ଶନରୁ କ\'ଣ ଜଣାପଡ଼ିଲା' },
   'pnc.sncuVisits': { en: '{b}: visits after SNCU / NBSU discharge', or: '{b}: SNCU / NBSU ଡିସ୍‌ଚାର୍ଜ ପରେ ଗୃହ ପରିଦର୍ଶନ' },
-  'pnc.sncuRule': { en: 'A baby who was admitted to the SNCU / NBSU is visited by the ASHA on days 1, 3, 7, 14, 21, 28 and 42 after discharge.', or: 'SNCU / NBSU ରେ ଭର୍ତ୍ତି ହୋଇଥିବା ଶିଶୁଙ୍କୁ ଆଶାକର୍ମୀ ଡିସ୍‌ଚାର୍ଜର ୧ମ, ୩ୟ, ୭ମ, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନରେ ଗୃହ ପରିଦର୍ଶନ କରିବେ।' },
+  'pnc.riskKids': { en: '{b} needs extra care, so the visits follow the extra-care days.', or: '{b}ଙ୍କୁ ଅଧିକ ଯତ୍ନ ଆବଶ୍ୟକ, ତେଣୁ ପରିଦର୍ଶନ ଅଧିକ ଯତ୍ନ ଦିନ ଅନୁସାରେ।' },
   'pnc.sncuNoDis': { en: 'Add the discharge date in the baby\'s birth details to see these visits.', or: 'ଏହି ପରିଦର୍ଶନ ଦେଖିବା ପାଇଁ ଶିଶୁର ଜନ୍ମ ବିବରଣୀରେ ଡିସ୍‌ଚାର୍ଜ ତାରିଖ ଦିଅନ୍ତୁ।' },
   'pnc.visitSncu': { en: 'Visit after discharge · day {n}', or: 'ଡିସ୍‌ଚାର୍ଜ ପରେ ପରିଦର୍ଶନ · {n} ଦିନ' },
   // mother checks (Odisha p.6 list)
@@ -83,25 +83,28 @@ K.i18n.add({
   'pb.cord': { en: 'Cord stump', or: 'ନାଭି' }, 'cord.dry': { en: 'Dry, clean', or: 'ଶୁଖିଲା, ପରିଷ୍କାର' }, 'cord.red': { en: 'Red or with pus', or: 'ଲାଲ ବା ପୂଜ' },
   'pb.pustules': { en: 'Pus-filled boils on skin', or: 'ଚର୍ମରେ ପୂଜଥିବା ଫୋଟକା' }, 'pb.eyes': { en: 'Sticky or red eyes', or: 'ଆଖିରୁ ପିଚୁଟି ବା ଲାଲ ଆଖି' },
   'pb.kmc': { en: 'Kept warm (skin-to-skin if small)', or: 'ଉଷୁମ ରଖାଯାଇଛି (ଛୋଟ ଶିଶୁ ହେଲେ ଛାତିରେ ଲଗାଇ)' },
+  'child.extraCare': { en: 'Needs extra care at home: birth defect, or not able to breastfeed', or: 'ଘରେ ଅଧିକ ଯତ୍ନ ଆବଶ୍ୟକ: ଜନ୍ମଗତ ତ୍ରୁଟି, ବା ସ୍ତନ୍ୟପାନ କରିପାରୁନାହିଁ' },
   'tool.breath': { en: 'Count breaths with the timer', or: 'ଟାଇମର୍ ସହ ଶ୍ୱାସ ଗଣନ୍ତୁ' },
 });
 
 K.pnc = {};
-K.pnc.days = (p) => { const d = p.delivery || {}; return (d.place === 'inst' ? [3, 7, 14, 21, 28, 42] : [1, 3, 7, 14, 21, 28, 42]); };
-K.pnc.SNCU_DAYS = [1, 3, 7, 14, 21, 28, 42];
 K.pnc.isSncu = (k) => !!(k && k.birth && +k.birth.sncu === 1);
 K.pnc.homeKids = (p, c) => (c.children || []).filter(k => k.pregId === p.id && !K.pnc.isSncu(k)); // seen at the joint visits
 K.pnc.sncuKids = (p, c) => (c.children || []).filter(k => k.pregId === p.id && K.pnc.isSncu(k));
+K.pnc.riskKids = (p, c) => (K.visits.get().atRisk ? K.pnc.homeKids(p, c).filter(K.visits.atRisk) : []);
+/* plan days, plus any day already recorded (so visits kept under the other plan still show) */
+const withDone = (days, done) => [...new Set(days.concat(done.map(Number)))].sort((a, b) => a - b);
+K.pnc.days = (p, c) => withDone(K.visits.newbornDays((p.delivery || {}).place || 'inst', c ? K.pnc.riskKids(p, c).length > 0 : false), (p.pnc || []).map(x => x.day));
 const visitSt = (v, date, today) => { const lag = K.d.diff(date, today); return v ? 'done' : lag < 0 ? 'upcoming' : lag <= 2 ? 'due' : 'overdue'; };
 /* mother (with the babies at home): day 1 = day of delivery */
 K.pnc.schedule = (p, c, today) => {
   today = today || K.d.today(); if (!p.delivery || !p.delivery.date) return [];
-  return K.pnc.days(p).map(n => { const date = K.d.addDays(p.delivery.date, n - 1); const v = (p.pnc || []).find(x => x.day === n); return { n, date, v, st: visitSt(v, date, today) }; });
+  return K.pnc.days(p, c).map(n => { const date = K.d.addDays(p.delivery.date, n - 1); const v = (p.pnc || []).find(x => x.day === n); return { n, date, v, st: visitSt(v, date, today) }; });
 };
 /* SNCU / NBSU graduate: day 1 = day of discharge; its records carry sncu: 1 */
 K.pnc.kidSchedule = (k, today) => {
   today = today || K.d.today(); const base = K.pnc.isSncu(k) && k.birth.sncuDischarge; if (!base) return [];
-  return K.pnc.SNCU_DAYS.map(n => { const date = K.d.addDays(base, n - 1); const v = (k.hbnc || []).find(x => x.day === n && x.sncu); return { n, date, v, st: visitSt(v, date, today) }; });
+  return withDone(K.visits.get().sncu, (k.hbnc || []).filter(x => x.sncu).map(x => x.day)).map(n => { const date = K.d.addDays(base, n - 1); const v = (k.hbnc || []).find(x => x.day === n && x.sncu); return { n, date, v, st: visitSt(v, date, today) }; });
 };
 
 /* flags */
@@ -162,6 +165,7 @@ K.route('/card/:id/preg/:pid/delivery', ({ id, pid }) => {
       ${K.ui.yn({ name: pre + 'vitk', q: K.t('child.vitk'), value: b.vitk, pos: true })}
       ${K.ui.choices({ name: pre + 'bf', label: K.t('child.bf'), value: b.bf, options: ['1h', '24h', 'late'].map(v => ({ v, l: K.t('bf.' + v), tone: v === 'late' ? 'warn' : '' })) })}
       ${K.ui.yn({ name: pre + 'colostrum', q: K.t('child.colostrum'), value: b.colostrum, pos: true })}
+      ${K.ui.yn({ name: pre + 'extraCare', q: K.t('child.extraCare'), value: b.extraCare != null ? b.extraCare : (kid && kid.birth ? kid.birth.extraCare : null) })}
     </fieldset>`; };
   return {
     title: K.t('del.title'), sub: c.mother.name, back: K.preg.url(c, p).slice(1), tab: 'home',
@@ -204,12 +208,12 @@ K.forms.delSave = async (v, f) => {
     const g = (k) => v[`b${i}_${k}`];
     let wt = g('wt'); if (wt != null && wt > 20) wt = wt / 1000;
     const b = { outcome: g('outcome') || 'live', sex: g('sex') || '', wt: wt != null ? K.round(wt, 3) : null, cried: g('cried') == null ? null : +g('cried'), resus: g('resus') == null ? null : +g('resus'),
-      vitk: g('vitk') == null ? null : +g('vitk'), bf: g('bf') || '', colostrum: g('colostrum') == null ? null : +g('colostrum'), childId: (prev[i - 1] || {}).childId || null };
+      vitk: g('vitk') == null ? null : +g('vitk'), bf: g('bf') || '', colostrum: g('colostrum') == null ? null : +g('colostrum'), extraCare: g('extraCare') == null ? null : +g('extraCare'), childId: (prev[i - 1] || {}).childId || null };
     if (b.outcome === 'live') {
       let k = b.childId ? K.card.findKid(c, b.childId) : null;
       if (!k) { k = K.blank.child(); c.children.push(k); b.childId = k.id; }
       Object.assign(k, { pregId: p.id, dob: d.date, sex: b.sex, birthWeight: b.wt, gaWeeks: d.gaWeeks, name: g('name') || k.name || '' });
-      k.birth = Object.assign(k.birth || {}, { cried: b.cried, resus: b.resus, vitk: b.vitk, bf: b.bf, colostrum: b.colostrum, place: d.place });
+      k.birth = Object.assign(k.birth || {}, { cried: b.cried, resus: b.resus, vitk: b.vitk, bf: b.bf, colostrum: b.colostrum, extraCare: b.extraCare, place: d.place });
     } else if (b.childId) { c.children = c.children.filter(x => x.id !== b.childId); b.childId = null; }
     d.babies.push(b);
   }
@@ -240,10 +244,10 @@ K.route('/card/:id/preg/:pid/pnc', ({ id, pid }) => {
       </dl><p style="margin:10px 0 0">${K.ui.btn(K.t('del.edit'), { href: K.preg.url(c, p, '/delivery'), tone: 'quiet', size: 'sm', icon: 'edit' })}</p></div>
       ${kids.length ? h`<div class="cards-list" style="margin-top:10px">${kids.map(k => K.child.summaryCard(c, k))}</div>` : ''}
       <section class="sec" style="margin-top:18px">${K.ui.secH(K.t(K.pnc.homeKids(p, c).length ? 'pnc.visits' : 'pnc.visitsMother'))}
-        <p class="small">${K.t('pnc.rule')}</p>
+        <p class="small">${K.visits.text('pnc')}</p>${K.pnc.riskKids(p, c).length ? h`<p class="small"><b>${K.t('pnc.riskKids', { b: K.pnc.riskKids(p, c).map(K.child.label).join(', ') })}</b> ${K.visits.text('risk')}</p>` : ''}
         <div class="list">${sch.map(s => visitLi(s, K.preg.url(c, p, '/pnc/' + s.n)))}</div></section>
       ${K.pnc.sncuKids(p, c).map(k => { const ks = K.pnc.kidSchedule(k);
-        return h`<section class="sec">${K.ui.secH(K.t('pnc.sncuVisits', { b: K.child.label(k) }))}<p class="small">${K.t('pnc.sncuRule')}</p>
+        return h`<section class="sec">${K.ui.secH(K.t('pnc.sncuVisits', { b: K.child.label(k) }))}<p class="small">${K.visits.text('sncu')}</p>
           ${ks.length ? h`<div class="list">${ks.map(s => visitLi(s, K.preg.url(c, p, '/pnc/' + s.n + '?k=' + k.id)))}</div>`
             : K.ui.callout('warn', '', h`${K.t('pnc.sncuNoDis')} <a href="${K.child.url(c, k, '/edit')}">${K.t('child.edit')}</a>`)}</section>`; })}
       <section class="sec">${K.ui.secH(K.t('pnc.ppTabs'))}<p class="small">${K.t('pnc.ppRule')}</p>

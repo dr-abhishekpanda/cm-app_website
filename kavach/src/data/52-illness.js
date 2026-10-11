@@ -9,10 +9,10 @@
    ============================================================================ */
 K.ill = K.ill || {};
 K.ill.DIARR_PREVENT = [
-  { icon: 'hand', en: 'Wash both hands with soap before preparing food, before feeding the child, after using the toilet and after cleaning the child’s stool. Follow the right way of handwashing.', or: 'ଖାଦ୍ୟ ତିଆରି କରିବା ପୂର୍ବରୁ, ଶିଶୁକୁ ଖୁଆଇବା ପୂର୍ବରୁ, ମଳତ୍ୟାଗ କରିବା ପରେ ଏବଂ ଶିଶୁର ମଳ ସଫା କରିବା ପରେ ଦୁଇ ହାତକୁ ଭଲ ଭାବେ ସାବୁନ ଲଗାଇ ଧୁଅନ୍ତୁ। ହାତ ଧୋଇବାର ସଠିକ୍ ପ୍ରଣାଳୀ ଅନୁସରଣ କରନ୍ତୁ।' },
+  { icon: 'hand', en: 'Wash both hands with soap before preparing food, before feeding the child, after using the toilet and after cleaning the child\'s stool. Follow the right way of handwashing.', or: 'ଖାଦ୍ୟ ତିଆରି କରିବା ପୂର୍ବରୁ, ଶିଶୁକୁ ଖୁଆଇବା ପୂର୍ବରୁ, ମଳତ୍ୟାଗ କରିବା ପରେ ଏବଂ ଶିଶୁର ମଳ ସଫା କରିବା ପରେ ଦୁଇ ହାତକୁ ଭଲ ଭାବେ ସାବୁନ ଲଗାଇ ଧୁଅନ୍ତୁ। ହାତ ଧୋଇବାର ସଠିକ୍ ପ୍ରଣାଳୀ ଅନୁସରଣ କରନ୍ତୁ।' },
   { icon: 'water', en: 'Keep drinking water clean and safe, in a covered container.', or: 'ପାନୀୟ ଜଳକୁ ସଫା, ସୁରକ୍ଷିତ ଏବଂ ଢାଙ୍କୁଣି ଥିବା ପାତ୍ରରେ ଘୋଡ଼ାଇ ରଖନ୍ତୁ।' },
   { icon: 'house', en: "Keep the child's surroundings clean and wash the child's hands often.", or: 'ଶିଶୁଟିର ପରିବେଶକୁ ସଫା ଓ ସ୍ୱଚ୍ଛ ରଖନ୍ତୁ ଏବଂ ଶିଶୁଟିର ହାତକୁ ବାରମ୍ବାର ଧୁଅନ୍ତୁ।' },
-  { icon: 'shield', en: 'Always use a toilet; do not defecate in the open. Dispose of the child’s stool safely.', or: 'ସବୁ ସମୟରେ ପାଇଖାନା ବ୍ୟବହାର କରନ୍ତୁ ଏବଂ ଖୋଲାରେ ଶୌଚ କରନ୍ତୁ ନାହିଁ।' },
+  { icon: 'shield', en: 'Always use a toilet; do not defecate in the open. Dispose of the child\'s stool safely.', or: 'ସବୁ ସମୟରେ ପାଇଖାନା ବ୍ୟବହାର କରନ୍ତୁ ଏବଂ ଖୋଲାରେ ଶୌଚ କରନ୍ତୁ ନାହିଁ।' },
   { icon: 'syringe', en: 'Rotavirus vaccine (6, 10 and 14 weeks) protects against severe diarrhoea.', or: 'ରୋଟାଭାଇରସ୍ ଟୀକା (୬, ୧୦ ଓ ୧୪ ସପ୍ତାହ) ଗୁରୁତର ତରଳ ଝାଡ଼ାରୁ ସୁରକ୍ଷା ଦିଏ।' },
 ];
 K.ill.DIARR_TREAT = [

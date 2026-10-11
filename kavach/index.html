@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="264f6b928f">
+<html lang="en" data-build="421ff0133c">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -935,8 +935,8 @@ details.feed-st>summary small{font-weight:400;color:var(--ink-soft);font-size:.8
    escapes interpolated values unless they are K.raw()/nested K.h results.
    ============================================================================ */
 const K = window.K = window.K || {};
-K.build = '264f6b928f';
-K.builtAt = '2026-10-11T07:40:42.738Z';
+K.build = '421ff0133c';
+K.builtAt = '2026-10-11T11:51:09.100Z';
 
 class Raw { constructor(s){ this.s = s; } toString(){ return this.s; } }
 K.Raw = Raw;
@@ -1154,6 +1154,7 @@ K.settings = {
     district: '',
     jeArea: false,         // JE vaccine given in this district
     ifaDays: [2, 5],       // Odisha: IFA syrup on Tuesday + Friday (0=Sun)
+    visitPlan: 'ssbsk',    // ASHA home visits: 'ssbsk' (SSBSK 2026) | 'hbnc' (HBNC + HBYC, Odisha card)
     lastBackup: null,
     speechRate: 0.92,
     pinHash: null,
@@ -1718,7 +1719,7 @@ K.i18n.add({
   'home.danger': { en: 'Danger signs', or: 'ବିପଦ ଲକ୍ଷଣ' },
   'home.dangerSub': { en: 'When to go to hospital at once', or: 'କେବେ ତୁରନ୍ତ ଡାକ୍ତରଖାନା ଯିବେ' },
   'home.help': { en: 'Helplines & schemes', or: 'ହେଲ୍ପଲାଇନ୍ ଓ ଯୋଜନା' },
-  'home.helpSub': { en: '108 · 102 · 104 and your benefits', or: '୧୦୮ · ୧୦୨ · ୧୦୪ ଓ ଆପଣଙ୍କ ସୁବିଧା' },
+  'home.helpSub': { en: '108 · 104 and your benefits', or: '୧୦୮ · ୧୦୪ ଓ ଆପଣଙ୍କ ସୁବିଧା' },
   'home.learn': { en: 'Learn & counsel', or: 'ଶିଖନ୍ତୁ ଓ ପରାମର୍ଶ' },
   'home.learnSub': { en: 'Pregnancy, newborn, feeding, growth', or: 'ଗର୍ଭାବସ୍ଥା, ନବଜାତ, ଖାଦ୍ୟ, ବୃଦ୍ଧି' },
   'home.tools': { en: 'Calculators', or: 'ଗଣନା ଉପକରଣ' },
@@ -1749,6 +1750,9 @@ K.i18n.add({
   'set.jeSub': { en: 'Japanese Encephalitis vaccine is given only in selected districts. Ask your ANM.', or: 'ଜାପାନିଜ୍ ଏନ୍‌ସେଫାଲାଇଟିସ୍ ଟୀକା କେବଳ କିଛି ଜିଲ୍ଲାରେ ଦିଆଯାଏ। ଏ.ଏନ୍.ଏମ୍.ଙ୍କୁ ପଚାରନ୍ତୁ।' },
   'set.ifaDays': { en: 'IFA syrup days for children', or: 'ଶିଶୁଙ୍କ ପାଇଁ ଆଇ.ଏଫ୍.ଏ. ସିରପ୍ ଦିନ' },
   'set.ifaDaysSub': { en: 'Odisha: Tuesday and Friday. National card: Wednesday and Saturday.', or: 'ଓଡ଼ିଶା: ମଙ୍ଗଳବାର ଓ ଶୁକ୍ରବାର। ଜାତୀୟ କାର୍ଡ: ବୁଧବାର ଓ ଶନିବାର।' },
+  'set.plan': { en: 'ASHA home-visit schedule', or: 'ଆଶାଙ୍କ ଗୃହ ପରିଦର୍ଶନ ସୂଚୀ' },
+  'set.plan.ssbsk': { en: 'SSBSK (2026)', or: 'SSBSK (୨୦୨୬)' }, 'set.plan.hbnc': { en: 'HBNC + HBYC (Odisha card)', or: 'HBNC + HBYC (ଓଡ଼ିଶା କାର୍ଡ)' },
+  'set.planSub': { en: 'SSBSK joined HBNC and HBYC in June 2026 (newborn visits on days 3, 7, 14, 42; child visits to 3 years). Choose HBNC + HBYC until your district starts SSBSK.', or: 'ଜୁନ୍ ୨୦୨୬ ରେ SSBSK, HBNC ଓ HBYC କୁ ଯୋଡ଼ିଛି (ନବଜାତ ଶିଶୁ ପରିଦର୍ଶନ ୩ୟ, ୭ମ, ୧୪ ଓ ୪୨ ଦିନ; ପିଲାଙ୍କ ପରିଦର୍ଶନ ୩ ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ)। ଆପଣଙ୍କ ଜିଲ୍ଲାରେ SSBSK ଆରମ୍ଭ ନ ହେବା ପର୍ଯ୍ୟନ୍ତ HBNC + HBYC ବାଛନ୍ତୁ।' },
   'set.speech': { en: 'Read-aloud speed', or: 'ପଢ଼ି ଶୁଣାଇବା ଗତି' },
   'set.hcpOn': { en: 'Health-worker mode is on', or: 'ସ୍ୱାସ୍ଥ୍ୟକର୍ମୀ ମୋଡ୍ ଚାଲୁ ଅଛି' },
   'mode.family': { en: 'Mother / family', or: "ମା' / ପରିବାର" },
@@ -1785,7 +1789,7 @@ K.content.danger = {
   },
   labour: {
     title: { en: 'Danger signs during labour', or: 'ପ୍ରସବ ସମୟରେ ବିପଦ ଲକ୍ଷଣ' },
-    lead: { en: 'Go to the hospital immediately. Call 108 or 102 for free transport.', or: 'ତୁରନ୍ତ ଡାକ୍ତରଖାନା ଯାଆନ୍ତୁ। ମାଗଣା ଯାତାୟାତ ପାଇଁ ୧୦୮ ବା ୧୦୨ କୁ ଫୋନ୍ କରନ୍ତୁ।' },
+    lead: { en: 'Go to the hospital immediately. Call 108 for a free ambulance.', or: 'ତୁରନ୍ତ ଡାକ୍ତରଖାନା ଯାଆନ୍ତୁ। ମାଗଣା ଆମ୍ବୁଲାନ୍ସ ପାଇଁ ୧୦୮ କୁ ଫୋନ୍ କରନ୍ତୁ।' },
     items: [
       { k: 'long', icon: 'clock', en: 'Labour pains for more than 12 hours', or: 'ପ୍ରସବ ଯନ୍ତ୍ରଣା ୧୨ ଘଣ୍ଟାରୁ ଅଧିକ ହେବା' },
       { k: 'water', icon: 'drop', en: 'Water bag bursts without labour pains', or: 'ପ୍ରସବ ଯନ୍ତ୍ରଣା ପୂର୍ବରୁ ଗର୍ଭାଶୟର ପାଣି ଥଳି ଫାଟିଯିବା ବା ଦେହରୁ ପାଣି ଯିବା' },
@@ -1849,7 +1853,7 @@ K.content.danger = {
   go: {
     title: { en: 'On the way to hospital', or: 'ଡାକ୍ତରଖାନା ଯିବା ବାଟରେ' },
     items: [
-      { en: 'Call 108 (ambulance) or 102 (Janani Express). Both are free.', or: '୧୦୮ (ଆମ୍ବୁଲାନ୍ସ) ବା ୧୦୨ (ଜନନୀ ଏକ୍ସପ୍ରେସ୍) କୁ ଫୋନ୍ କରନ୍ତୁ। ଦୁହେଁ ମାଗଣା।' },
+      { en: 'Call 108 for a free ambulance. In Odisha, Janani Express for pregnant women and sick babies also comes on 108.', or: 'ମାଗଣା ଆମ୍ବୁଲାନ୍ସ ପାଇଁ ୧୦୮ କୁ ଫୋନ୍ କରନ୍ତୁ। ଓଡ଼ିଶାରେ ଗର୍ଭବତୀ ଓ ଅସୁସ୍ଥ ଶିଶୁଙ୍କ ପାଇଁ ଜନନୀ ଏକ୍ସପ୍ରେସ୍ ମଧ୍ୟ ୧୦୮ ରେ ମିଳେ।' },
       { en: 'Carry this MCP card and any reports.', or: 'MCP କାର୍ଡ ଓ ସମସ୍ତ ରିପୋର୍ଟ ସାଙ୍ଗରେ ନିଅନ୍ତୁ।' },
       { en: 'Keep the baby warm, skin-to-skin with the mother, and keep breastfeeding if the baby can feed.', or: 'ଶିଶୁକୁ ଉଷୁମ ରଖନ୍ତୁ, ମା\'ଙ୍କ ଛାତିରେ ଲଗାଇ ରଖନ୍ତୁ, ଖାଇପାରିଲେ ସ୍ତନ୍ୟପାନ ଜାରି ରଖନ୍ତୁ।' },
       { en: 'If the child has fits, lay the child on the side with the head a little lower; do not put anything in the mouth.', or: 'ପିଲାକୁ ବାତ ମାରିଲେ, କଡ଼ ଲେଉଟାଇ ଶୁଆଇ ମୁଣ୍ଡ ଟିକେ ତଳକୁ ରଖନ୍ତୁ; ପାଟିରେ କିଛି ଦିଅନ୍ତୁ ନାହିଁ।' },
@@ -1876,7 +1880,9 @@ K.content.danger = {
    child stayed on Penta. DPT and OPV boosters: at least 6 months after the
    3rd dose (`gapM`). `win` = end of the NIS window (9–12 m, 16–24 m, 5–6 y):
    a dose is 'due' until then and 'overdue' after.
-   fIPV-3 at 9 months (added 2023). HPV single dose for girls at 14 (2026).
+   fIPV-3 at 9 months (added 2023). HPV: one dose of Gardasil-4 for girls aged
+   14 — national drive from 28 Feb 2026, then on routine immunisation days
+   (PIB, 28 Feb 2026). No schedule change in PIB's 17 Mar 2026 UIP summary.
    Ages: d = days, w = weeks, m = months, y = years from date of birth.
    ============================================================================ */
 K.vax = K.vax || {};
@@ -1937,7 +1943,7 @@ K.vax.LIST = [
   { id: 'DPTB1', code: 'DPT booster-1', v: 'm16', due: { m: 16 }, win: { m: 24 }, upto: { y: 7 }, prev: 'DPT3', prevAlt: 'Penta3', gapM: 6, p: P.dpt, how: '0.5 ml · IM · anterolateral mid-thigh' },
   { id: 'DPTB2', code: 'DPT booster-2', v: 'y5', due: { y: 5 }, win: { y: 6 }, upto: { y: 7 }, prev: 'DPTB1', gap: 168, p: P.dpt, how: '0.5 ml · IM · upper arm' },
   { id: 'Td10', code: 'Td-10', v: 'y10', due: { y: 10 }, p: P.td, how: '0.5 ml · IM · upper arm' },
-  { id: 'HPV', code: 'HPV', v: 'y14', due: { y: 14 }, win: { y: 15 }, upto: { y: 15 }, sex: 'f', campaign: 1, p: P.hpv, how: 'Single dose · IM · upper arm' },
+  { id: 'HPV', code: 'HPV', v: 'y14', due: { y: 14 }, win: { y: 15 }, upto: { y: 15 }, sex: 'f', campaign: 1, p: P.hpv, how: '0.5 ml · IM · upper arm (deltoid) · single dose' },
   { id: 'Td16', code: 'Td-16', v: 'y16', due: { y: 16 }, p: P.td, how: '0.5 ml · IM · upper arm' },
 ];
 /* Vitamin A: 1 lakh IU at 9 m, then 2 lakh IU every 6 months to 5 years (9 doses).
@@ -2059,7 +2065,7 @@ K.dev.BANDS = [
       { en: 'Likes to look at self in a mirror', or: 'ନିଜର ଛବି ଦର୍ପଣରେ ଦେଖିବାକୁ ଭଲ ପାଉଛି' },
     ],
     tips: [
-      { en: 'Talk with the baby; copy the baby’s sounds and praise the baby for copying yours.', or: 'ନିଜ ଶିଶୁ ସାଙ୍ଗେ କଥାବାର୍ତ୍ତା ହୁଅନ୍ତୁ; ତା’ଙ୍କ ପରି ଶବ୍ଦ କରନ୍ତୁ ଓ ସିଏ ଆପଣଙ୍କ ପରି ଶବ୍ଦ ବାହାର କରିଲେ ତାକୁ ଉତ୍ସାହିତ କରନ୍ତୁ।' },
+      { en: 'Talk with the baby; copy the baby\'s sounds and praise the baby for copying yours.', or: 'ନିଜ ଶିଶୁ ସାଙ୍ଗେ କଥାବାର୍ତ୍ତା ହୁଅନ୍ତୁ; ତା’ଙ୍କ ପରି ଶବ୍ଦ କରନ୍ତୁ ଓ ସିଏ ଆପଣଙ୍କ ପରି ଶବ୍ଦ ବାହାର କରିଲେ ତାକୁ ଉତ୍ସାହିତ କରନ୍ତୁ।' },
       { en: 'Put interesting things on the floor for the baby to reach out and explore.', or: 'ଭୁଇଁରେ ବିଭିନ୍ନ ରୋଚକ ଆକର୍ଷକ ବସ୍ତୁ ସଜାଇ ରଖନ୍ତୁ ଯାହା ଦେଖି ଶିଶୁ ସେଗୁଡ଼ିକ ଧରିବାକୁ ଚାହିଁବ ବା ସେସବୁ ଜିନିଷଗୁଡ଼ିକ କ’ଣ ତାହା ନିଜେ ବୁଝିବାକୁ ଚାହିଁବ।' },
       { en: 'Take the baby outdoors and show the world outside.', or: 'ଶିଶୁକୁ ଘର ବାହାରକୁ ନେଇ ବାହାର ଦୁନିଆର ବସ୍ତୁଗୁଡ଼ିକ ସହିତ ପରିଚିତ କରାନ୍ତୁ।' },
       { en: 'Babies suck their fingers and thumb for comfort. This is not a worry; do not stop it early.', or: 'ଶିଶୁମାନେ ନିଜ ମନ ବୁଝାଇବା ପାଇଁ ନିଜ ଆଙ୍ଗୁଠି ବା ବୁଢ଼ା ଆଙ୍ଗୁଠିକୁ ଚୁଚୁମି ଥା’ନ୍ତି। ଏହା କୌଣସି ଚିନ୍ତାର ବିଷୟ ନୁହେଁ। ଏହା ନିର୍ଦ୍ଦିଷ୍ଟ ସମୟ ଆଗରୁ ବନ୍ଦ କରନ୍ତୁ ନାହିଁ।' },
@@ -2084,9 +2090,9 @@ K.dev.BANDS = [
       { en: 'Responds when the name is called', or: 'ଶିଶୁଟିର ନା’ ଡାକିଲେ ଶୁଣୁଛି' },
     ],
     tips: [
-      { en: 'Let the baby drop, bang and throw things again and again. Respond to the baby’s noises gently and patiently.', or: 'ଶିଶୁଟିକୁ ତା’ ଖେଳନା ବା ଜିନିଷଗୁଡ଼ିକୁ ବାରମ୍ବାର ପକେଇବାକୁ, ବାଡ଼େଇବାକୁ ବା ଫିଙ୍ଗିବାକୁ ଦିଅନ୍ତୁ। ଶିଶୁଟି କରୁଥିବା ଶବ୍ଦଗୁଡ଼ିକୁ ଧୀରସ୍ଥିର ଭାବେ ଏବଂ କୋମଳ ଭାବେ ଉତ୍ତର ଦିଅନ୍ତୁ।' },
+      { en: 'Let the baby drop, bang and throw things again and again. Respond to the baby\'s noises gently and patiently.', or: 'ଶିଶୁଟିକୁ ତା’ ଖେଳନା ବା ଜିନିଷଗୁଡ଼ିକୁ ବାରମ୍ବାର ପକେଇବାକୁ, ବାଡ଼େଇବାକୁ ବା ଫିଙ୍ଗିବାକୁ ଦିଅନ୍ତୁ। ଶିଶୁଟି କରୁଥିବା ଶବ୍ଦଗୁଡ଼ିକୁ ଧୀରସ୍ଥିର ଭାବେ ଏବଂ କୋମଳ ଭାବେ ଉତ୍ତର ଦିଅନ୍ତୁ।' },
       { en: 'Give clean, safe household utensils to play with and explore.', or: 'ଶିଶୁକୁ ଘରେ ବ୍ୟବହାର କରୁଥିବା ସଫା ଏବଂ ସୁରକ୍ଷିତ ବାସନକୁସନ ଖେଳିବା ପାଇଁ ଏବଂ ଅନୁସନ୍ଧାନ କରିବା ପାଇଁ ଦିଅନ୍ତୁ।' },
-      { en: 'Play peek-a-boo. Hide the baby’s favourite toy under a cloth or box and see if the baby finds it.', or: 'ଶିଶୁ ସହିତ ଲୁଚକାଳି ଖେଳନ୍ତୁ। ଶିଶୁର ପ୍ରିୟ ଖେଳଣାଟିକୁ ଗୋଟିଏ କପଡ଼ା ବା ବାକ୍ସ ତଳେ ଲୁଚାଇ ଦେଖନ୍ତୁ। ଶିଶୁଟି ଖୋଜି ପାରୁଛି କି ନାହିଁ।' },
+      { en: 'Play peek-a-boo. Hide the baby\'s favourite toy under a cloth or box and see if the baby finds it.', or: 'ଶିଶୁ ସହିତ ଲୁଚକାଳି ଖେଳନ୍ତୁ। ଶିଶୁର ପ୍ରିୟ ଖେଳଣାଟିକୁ ଗୋଟିଏ କପଡ଼ା ବା ବାକ୍ସ ତଳେ ଲୁଚାଇ ଦେଖନ୍ତୁ। ଶିଶୁଟି ଖୋଜି ପାରୁଛି କି ନାହିଁ।' },
     ],
     warn: [
       { en: 'Cannot roll over', or: 'କଡ଼ ଲେଉଟାଇ ପାରୁନାହିଁ' },
@@ -2225,7 +2231,7 @@ K.feed.STAGES = [
       { en: 'No honey, no other milk, no water, and nothing from a bottle or bowl.', or: 'ମହୁ, ଅନ୍ୟ କ୍ଷୀର, ପାଣି ବା ବୋତଲ / ଗିନାରେ କିଛି ଦିଅନ୍ତୁ ନାହିଁ।' },
       { en: 'Breastfeed whenever the baby wants, day and night. Frequent feeding makes more milk. Do not forget night feeds.', or: 'ଶିଶୁଟିକୁ ଦିନ ଓ ରାତି ଯେତେବେଳେ ଚାହିଁବ ସ୍ତନ୍ୟପାନ କରାନ୍ତୁ। ବାରମ୍ବାର ସ୍ତନ୍ୟପାନ କରାଇବା ଦ୍ୱାରା ମା’ର ଅଧିକ କ୍ଷୀର କ୍ଷରଣ ହୋଇଥାଏ। ରାତିରେ ସ୍ତନ୍ୟପାନ କରାଇବାକୁ ଭୁଲନ୍ତୁ ନାହିଁ।' },
       { en: "While feeding, hold the baby close to your body, look into the baby's eyes, smile and talk. Do not rock the baby while feeding.", or: 'ସ୍ତନ୍ୟପାନ କରାଇବା ସମୟରେ ନିଜ ଦେହ ସହିତ ଶିଶୁକୁ ଲଗାଇ ରଖନ୍ତୁ ଏବଂ ଶିଶୁର ଆଖି ସହିତ ଆଖି ମିଳାଇ ହସନ୍ତୁ, କଥା କୁହନ୍ତୁ। ସ୍ତନ୍ୟପାନ କରାଇବା ସମୟରେ ଶିଶୁକୁ ଝୁଲାନ୍ତୁ ନାହିଁ।' },
-      { en: 'Good attachment: most of the dark part around the nipple is inside the baby’s mouth, and more of it shows above the mouth than below.', or: 'ସ୍ତନର ଅଗ୍ରଭାଗରେ ଥିବା କଳା ଅଂଶର ଅଧିକ ଭାଗ ପାଟି ଭିତରେ ରହିଛି ଏବଂ କଳା ଅଂଶର ତଳ ଭାଗଠାରୁ ଉପର ଭାଗ ଅଧିକ ଦେଖାଯାଉଛି।' },
+      { en: 'Good attachment: most of the dark part around the nipple is inside the baby\'s mouth, and more of it shows above the mouth than below.', or: 'ସ୍ତନର ଅଗ୍ରଭାଗରେ ଥିବା କଳା ଅଂଶର ଅଧିକ ଭାଗ ପାଟି ଭିତରେ ରହିଛି ଏବଂ କଳା ଅଂଶର ତଳ ଭାଗଠାରୁ ଉପର ଭାଗ ଅଧିକ ଦେଖାଯାଉଛି।' },
       { en: 'Even when the baby is ill, give only breast milk until 6 months.', or: 'ଶିଶୁକୁ ଅସୁସ୍ଥତା ସମୟରେ ମଧ୍ୟ ୬ ମାସ ପର୍ଯ୍ୟନ୍ତ କେବଳ ସ୍ତନ୍ୟପାନ କରାନ୍ତୁ।' },
       { en: 'Breastfeeding makes children brighter.', or: 'ସ୍ତନ୍ୟପାନ ଶିଶୁକୁ ବୁଦ୍ଧିଆ କରାଏ।' },
       { en: 'Any difficulty with breastfeeding: talk to your ASHA, Anganwadi worker or ANM.', or: 'ସ୍ତନ୍ୟପାନ କରାଇବାରେ କୌଣସି ଅସୁବିଧା ହେଲେ ନିଜ ଅଞ୍ଚଳରେ ଥିବା ଆଶା, ଅଙ୍ଗନୱାଡ଼ି କର୍ମୀ ଓ ସ୍ୱାସ୍ଥ୍ୟକର୍ମୀ ସହିତ ସଂପର୍କ କରନ୍ତୁ।' },
@@ -2313,10 +2319,10 @@ K.feed.LEAD = { en: 'Feeding, playing and talking with children helps them grow 
    ============================================================================ */
 K.ill = K.ill || {};
 K.ill.DIARR_PREVENT = [
-  { icon: 'hand', en: 'Wash both hands with soap before preparing food, before feeding the child, after using the toilet and after cleaning the child’s stool. Follow the right way of handwashing.', or: 'ଖାଦ୍ୟ ତିଆରି କରିବା ପୂର୍ବରୁ, ଶିଶୁକୁ ଖୁଆଇବା ପୂର୍ବରୁ, ମଳତ୍ୟାଗ କରିବା ପରେ ଏବଂ ଶିଶୁର ମଳ ସଫା କରିବା ପରେ ଦୁଇ ହାତକୁ ଭଲ ଭାବେ ସାବୁନ ଲଗାଇ ଧୁଅନ୍ତୁ। ହାତ ଧୋଇବାର ସଠିକ୍ ପ୍ରଣାଳୀ ଅନୁସରଣ କରନ୍ତୁ।' },
+  { icon: 'hand', en: 'Wash both hands with soap before preparing food, before feeding the child, after using the toilet and after cleaning the child\'s stool. Follow the right way of handwashing.', or: 'ଖାଦ୍ୟ ତିଆରି କରିବା ପୂର୍ବରୁ, ଶିଶୁକୁ ଖୁଆଇବା ପୂର୍ବରୁ, ମଳତ୍ୟାଗ କରିବା ପରେ ଏବଂ ଶିଶୁର ମଳ ସଫା କରିବା ପରେ ଦୁଇ ହାତକୁ ଭଲ ଭାବେ ସାବୁନ ଲଗାଇ ଧୁଅନ୍ତୁ। ହାତ ଧୋଇବାର ସଠିକ୍ ପ୍ରଣାଳୀ ଅନୁସରଣ କରନ୍ତୁ।' },
   { icon: 'water', en: 'Keep drinking water clean and safe, in a covered container.', or: 'ପାନୀୟ ଜଳକୁ ସଫା, ସୁରକ୍ଷିତ ଏବଂ ଢାଙ୍କୁଣି ଥିବା ପାତ୍ରରେ ଘୋଡ଼ାଇ ରଖନ୍ତୁ।' },
   { icon: 'house', en: "Keep the child's surroundings clean and wash the child's hands often.", or: 'ଶିଶୁଟିର ପରିବେଶକୁ ସଫା ଓ ସ୍ୱଚ୍ଛ ରଖନ୍ତୁ ଏବଂ ଶିଶୁଟିର ହାତକୁ ବାରମ୍ବାର ଧୁଅନ୍ତୁ।' },
-  { icon: 'shield', en: 'Always use a toilet; do not defecate in the open. Dispose of the child’s stool safely.', or: 'ସବୁ ସମୟରେ ପାଇଖାନା ବ୍ୟବହାର କରନ୍ତୁ ଏବଂ ଖୋଲାରେ ଶୌଚ କରନ୍ତୁ ନାହିଁ।' },
+  { icon: 'shield', en: 'Always use a toilet; do not defecate in the open. Dispose of the child\'s stool safely.', or: 'ସବୁ ସମୟରେ ପାଇଖାନା ବ୍ୟବହାର କରନ୍ତୁ ଏବଂ ଖୋଲାରେ ଶୌଚ କରନ୍ତୁ ନାହିଁ।' },
   { icon: 'syringe', en: 'Rotavirus vaccine (6, 10 and 14 weeks) protects against severe diarrhoea.', or: 'ରୋଟାଭାଇରସ୍ ଟୀକା (୬, ୧୦ ଓ ୧୪ ସପ୍ତାହ) ଗୁରୁତର ତରଳ ଝାଡ଼ାରୁ ସୁରକ୍ଷା ଦିଏ।' },
 ];
 K.ill.DIARR_TREAT = [
@@ -2354,6 +2360,90 @@ K.ill.IFA_RULES = [
   { en: 'One 50 ml bottle lasts 6 months. When it is finished, ask your ASHA/ANM for a new bottle.', or: 'ଗୋଟିଏ ୫୦ ମି.ଲି. ଆଇ.ଏଫ୍.ଏ ସିରପ୍ ବୋତଲ ୬ ମାସ ଯାଇଥାଏ। ଏହା ସରିବା ମାତ୍ରେ ନିଜ ଆଶା/ଏ.ଏନ୍.ଏମ୍. ଦିଦିଙ୍କୁ ନୂଆ ବୋତଲ ମାଗନ୍ତୁ।' },
   { en: 'Tick each dose after giving it.', or: 'ଗୋଟିଏ ଆଇ.ଏଫ୍.ଏ ସିରପ୍ ଦେବା ପରେ ଗୋଟିଏ ଚିହ୍ନ ଲଗାନ୍ତୁ।' },
   { en: 'If there is any problem after the syrup, contact your ANM at once.', or: 'ଯଦି ସିରପ୍ ଖାଇବା ପରେ କୌଣସି ସମସ୍ୟା ହୋଇଥାଏ, ତୁରନ୍ତ ନିଜ ଏ.ଏନ୍.ଏମ୍. ଦିଦିଙ୍କୁ ଯୋଗାଯୋଗ କରନ୍ତୁ।' },
+];
+
+}
+/* ── data/53-visits.js ── */
+{
+/* ============================================================================
+   data/53-visits — ASHA home-visit schedules for newborns and young children.
+   The setting `visitPlan` picks one; SSBSK is the default.
+
+   SSBSK — Samagra Shishu Bal Swasthya Karyakram (MoHFW; launched 29 June 2026;
+   Operational Guidelines 2026, Table 3.1 and Fig. 4.1). HBNC and HBYC are
+   merged into one programme from birth to 36 months:
+     healthy newborn, facility birth: day 3, 7, 14, 42 (the first visit on the
+       day of discharge or day 3)
+     birth at home: within 24 hours (day 1), then day 3, 7, 14, 42
+     'at-risk' newborn: day 1, 3, 5, 7, 10, 14, 21, 28, 42 — day 1 = day of
+       delivery or day of discharge; facility follow-up within 8 days of life.
+       At risk: birth weight < 2.5 kg, preterm, not started on breast milk or
+       unable to breastfeed, admitted to / discharged from SNCU, NBSU, MNCU or
+       NICU, birth defect, not back to birth weight by day 14.
+     young child: 3, 6, 9, 12, 18, 24, 30, 36 months
+   In the app, day numbers for babies at home are days of life (day 1 = day of
+   birth); a facility birth's first visit is day 3. Babies discharged from the
+   SNCU / NBSU have their own schedule counted from discharge.
+
+   HBNC + HBYC — as printed on the Odisha MCP card V-2023-24 (pp.7, 10):
+     newborn day 3, 7, 14, 21, 28, 42 (+ day 1 for births at home); SNCU / NBSU
+     graduates day 1, 3, 7, 14, 21, 28, 42 after discharge; young child 3, 6,
+     9, 12, 15 months.
+   ============================================================================ */
+K.visits = {
+  PLANS: {
+    ssbsk: { newborn: [3, 7, 14, 42], home: [1, 3, 7, 14, 42], atRisk: [1, 3, 5, 7, 10, 14, 21, 28, 42], sncu: [1, 3, 5, 7, 10, 14, 21, 28, 42], child: [3, 6, 9, 12, 18, 24, 30, 36], childEnd: 36 },
+    hbnc: { newborn: [3, 7, 14, 21, 28, 42], home: [1, 3, 7, 14, 21, 28, 42], atRisk: null, sncu: [1, 3, 7, 14, 21, 28, 42], child: [3, 6, 9, 12, 15], childEnd: 15 },
+  },
+  plan: () => (K.settings.get('visitPlan') === 'hbnc' ? 'hbnc' : 'ssbsk'),
+  get: () => K.visits.PLANS[K.visits.plan()],
+  /* every month any plan visits at, so records kept under the other plan still show */
+  ALL_MONTHS: [3, 6, 9, 12, 15, 18, 24, 30, 36],
+};
+/* SSBSK 'at-risk' newborn, from what the card records */
+K.visits.atRisk = (k) => {
+  if (!k) return false; const b = k.birth || {};
+  if (k.birthWeight != null && k.birthWeight < 2.5) return true;
+  if (k.gaWeeks != null && k.gaWeeks < 37) return true;
+  if (b.bf === 'late' || +b.sncu === 1 || +b.extraCare === 1) return true;
+  if (k.birthWeight != null && k.dob) { // not back to birth weight by day 14
+    const w = (k.hbnc || []).map(x => ({ date: x.date, wt: x.weight })).concat(k.growth || []).filter(x => x && x.date && x.wt != null && K.d.diff(k.dob, x.date) >= 13);
+    if (w.some(x => +x.wt < k.birthWeight)) return true;
+  }
+  return false;
+};
+/* newborn visit days for the mother and the babies at home */
+K.visits.newbornDays = (place, atRisk) => {
+  const P = K.visits.get(); const home = place && place !== 'inst';
+  if (P.atRisk && atRisk) return home ? P.atRisk : P.atRisk.filter(d => d >= 3);
+  return home ? P.home : P.newborn;
+};
+K.visits.TEXT = {
+  ssbsk: {
+    name: { en: 'SSBSK', or: 'SSBSK' },
+    pnc: { en: 'SSBSK (from June 2026): the ASHA visits mother and baby on days 3, 7, 14 and 42 after delivery, and within 24 hours of a birth at home. Stay 48 hours in hospital after delivery.', or: 'SSBSK (ଜୁନ୍ ୨୦୨୬ ରୁ): ଆଶାକର୍ମୀ ପ୍ରସବ ପରେ ୩ୟ, ୭ମ, ୧୪ ଓ ୪୨ ଦିନରେ ମା\' ଓ ଶିଶୁଙ୍କୁ ଗୃହ ପରିଦର୍ଶନ କରିବେ, ଘରେ ଜନ୍ମ ହେଲେ ୨୪ ଘଣ୍ଟା ମଧ୍ୟରେ ମଧ୍ୟ। ପ୍ରସବ ପରେ ୪୮ ଘଣ୍ଟା ଡାକ୍ତରଖାନାରେ ରୁହନ୍ତୁ।' },
+    risk: { en: 'A baby who needs extra care (under 2.5 kg, born before 37 weeks, not breastfed in the first day, or with a birth defect) is visited on days 1, 3, 5, 7, 10, 14, 21, 28 and 42, and should be checked at a health facility within 8 days of birth.', or: 'ଅଧିକ ଯତ୍ନ ଆବଶ୍ୟକ ଶିଶୁ (୨.୫ କି.ଗ୍ରା.ରୁ କମ୍ ଓଜନ, ୩୭ ସପ୍ତାହ ପୂର୍ବରୁ ଜନ୍ମ, ପ୍ରଥମ ଦିନ ସ୍ତନ୍ୟପାନ ଆରମ୍ଭ ହୋଇନଥିବା, ବା ଜନ୍ମଗତ ତ୍ରୁଟି ଥିବା) ୧ମ, ୩ୟ, ୫ମ, ୭ମ, ୧୦ମ, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନରେ ପରିଦର୍ଶନ ପାଇବେ, ଓ ଜନ୍ମର ୮ ଦିନ ମଧ୍ୟରେ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରରେ ଯାଞ୍ଚ ହେବା ଉଚିତ୍।' },
+    sncu: { en: 'A baby discharged from the SNCU / NBSU is visited on days 1, 3, 5, 7, 10, 14, 21, 28 and 42 after discharge (SSBSK).', or: 'SNCU / NBSU ରୁ ଡିସ୍‌ଚାର୍ଜ ହୋଇଥିବା ଶିଶୁଙ୍କୁ ଡିସ୍‌ଚାର୍ଜର ୧ମ, ୩ୟ, ୫ମ, ୭ମ, ୧୦ମ, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନରେ ଗୃହ ପରିଦର୍ଶନ (SSBSK)।' },
+    child: { en: 'The ASHA visits at 3, 6, 9, 12, 18, 24, 30 and 36 months to check growth, feeding, development and vaccines (SSBSK).', or: 'ଆଶା ଦିଦି ୩, ୬, ୯, ୧୨, ୧୮, ୨୪, ୩୦ ଓ ୩୬ ମାସରେ ଘରକୁ ଆସି ଶିଶୁର ବୃଦ୍ଧି, ଖାଦ୍ୟ, ବିକାଶ ଓ ଟୀକା ଯାଞ୍ଚ କରିବେ (SSBSK)।' },
+    over: { en: 'SSBSK home visits are for children up to 3 years.', or: 'SSBSK ଗୃହ ପରିଦର୍ଶନ ୩ ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ ଶିଶୁଙ୍କ ପାଇଁ।' },
+  },
+  hbnc: {
+    name: { en: 'HBYC', or: 'HBYC' },
+    pnc: { en: 'The ASHA visits on days 3, 7, 14, 21, 28 and 42 after delivery (also day 1 if born at home). Stay 48 hours in hospital after delivery.', or: 'ପ୍ରସବ ପରେ ଆଶାକର୍ମୀ ୩ୟ, ୭ମ, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନରେ ଗୃହ ପରିଦର୍ଶନ କରିବେ (ଘରେ ଜନ୍ମ ହୋଇଥିଲେ ୧ମ ଦିନ ମଧ୍ୟ)। ପ୍ରସବ ପରେ ୪୮ ଘଣ୍ଟା ଡାକ୍ତରଖାନାରେ ରୁହନ୍ତୁ।' },
+    risk: { en: 'Babies under 2.5 kg at birth get three extra visits.', or: '୨.୫ କି.ଗ୍ରା.ରୁ କମ୍ ଓଜନର ଶିଶୁଙ୍କ ପାଇଁ ତିନୋଟି ଅଧିକ ପରିଦର୍ଶନ।' },
+    sncu: { en: 'A baby who was admitted to the SNCU / NBSU is visited by the ASHA on days 1, 3, 7, 14, 21, 28 and 42 after discharge.', or: 'SNCU / NBSU ରେ ଭର୍ତ୍ତି ହୋଇଥିବା ଶିଶୁଙ୍କୁ ଆଶାକର୍ମୀ ଡିସ୍‌ଚାର୍ଜର ୧ମ, ୩ୟ, ୭ମ, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନରେ ଗୃହ ପରିଦର୍ଶନ କରିବେ।' },
+    child: { en: 'The ASHA visits at 3, 6, 9, 12 and 15 months to check growth, feeding, development and vaccines.', or: 'ଆଶା ଦିଦି ୩, ୬, ୯, ୧୨ ଓ ୧୫ ମାସରେ ଘରକୁ ଆସି ଶିଶୁର ବୃଦ୍ଧି, ଖାଦ୍ୟ, ବିକାଶ ଓ ଟୀକା ଯାଞ୍ଚ କରିବେ।' },
+    over: { en: 'HBYC visits are for children aged 3 to 15 months.', or: 'HBYC ପରିଦର୍ଶନ ୩ ରୁ ୧୫ ମାସ ବୟସର ଶିଶୁଙ୍କ ପାଇଁ।' },
+  },
+};
+K.visits.text = (key) => K.L(K.visits.TEXT[K.visits.plan()][key]);
+/* Learn: home visits under SSBSK (written for the app from the 2026 guidelines) */
+K.content = K.content || {};
+K.content.visitsSsbsk = [
+  { icon: 'house', en: 'SSBSK (Samagra Shishu Bal Swasthya Karyakram, from June 2026) joins the newborn and young-child home visits into one programme up to 3 years.', or: 'ସମଗ୍ର ଶିଶୁ ବାଳ ସ୍ୱାସ୍ଥ୍ୟ କାର୍ଯ୍ୟକ୍ରମ (SSBSK, ଜୁନ୍ ୨୦୨୬ ରୁ) ନବଜାତ ଶିଶୁ ଓ ଛୋଟ ପିଲାଙ୍କ ଗୃହ ପରିଦର୍ଶନକୁ ୩ ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ ଗୋଟିଏ କାର୍ଯ୍ୟକ୍ରମରେ ଯୋଡ଼ିଛି।' },
+  { icon: 'house', en: 'Every newborn: the ASHA visits on days 3, 7, 14 and 42, and within 24 hours of a birth at home.', or: 'ପ୍ରତ୍ୟେକ ନବଜାତ ଶିଶୁ: ଆଶାକର୍ମୀ ୩ୟ, ୭ମ, ୧୪ ଓ ୪୨ ଦିନରେ ଗୃହ ପରିଦର୍ଶନ କରିବେ, ଘରେ ଜନ୍ମ ହେଲେ ୨୪ ଘଣ୍ଟା ମଧ୍ୟରେ ମଧ୍ୟ।' },
+  { icon: 'scale', en: 'A baby who needs extra care (under 2.5 kg, born early, not breastfed, a birth defect, or home from the SNCU) gets 9 visits — days 1, 3, 5, 7, 10, 14, 21, 28 and 42 — and a check at the health facility within 8 days of birth.', or: 'ଅଧିକ ଯତ୍ନ ଆବଶ୍ୟକ ଶିଶୁ (୨.୫ କି.ଗ୍ରା.ରୁ କମ୍, ସମୟ ପୂର୍ବରୁ ଜନ୍ମ, ସ୍ତନ୍ୟପାନ କରୁନଥିବା, ଜନ୍ମଗତ ତ୍ରୁଟି, ବା SNCU ରୁ ଫେରିଥିବା) ୯ଟି ପରିଦର୍ଶନ ପାଇବେ — ୧ମ, ୩ୟ, ୫ମ, ୭ମ, ୧୦ମ, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନ — ଓ ଜନ୍ମର ୮ ଦିନ ମଧ୍ୟରେ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରରେ ଯାଞ୍ଚ।' },
+  { icon: 'calendar', en: 'Young child: home visits at 3, 6, 9, 12, 18, 24, 30 and 36 months.', or: 'ଛୋଟ ପିଲା: ୩, ୬, ୯, ୧୨, ୧୮, ୨୪, ୩୦ ଓ ୩୬ ମାସରେ ଗୃହ ପରିଦର୍ଶନ।' },
 ];
 
 }
@@ -2953,7 +3043,7 @@ Object.assign(K.preg, {
   lmpEq(p) { const e = K.preg.edd(p); return e ? K.d.addDays(e, -280) : null; },
   ga(p, on) { const e = K.preg.edd(p); if (!e) return null; const days = 280 - K.d.diff(on || K.d.today(), e); return { days, w: Math.floor(days / 7), d: ((days % 7) + 7) % 7 }; },
   tri: (days) => (days < 98 ? 1 : days < 196 ? 2 : 3),
-  /* scan or LMP? ACOG Committee Opinion 700 (2017): redate to the scan only when the two differ by more
+  /* scan or LMP? ACOG Committee Opinion 700 (2017, reaffirmed 2025): redate to the scan only when the two differ by more
      than 5 days (scan before 9 weeks), 7 (9–15+6), 10 (16–21+6), 14 (22–27+6) or 21 days (28 weeks on) */
   datingRule(lmp, usgDate, usgWeeks, usgDays) {
     if (!lmp || !usgDate || usgWeeks == null) return null;
@@ -3498,14 +3588,14 @@ K.i18n.add({
   'hrp.what': { en: 'What to do', or: 'କ\'ଣ କରିବେ' },
   'hrp.do1': { en: 'Deliver only in a hospital with a specialist, blood bank and caesarean facility (FRU / district hospital).', or: 'କେବଳ ବିଶେଷଜ୍ଞ, ରକ୍ତ ଭଣ୍ଡାର ଓ ଅସ୍ତ୍ରୋପଚାର ସୁବିଧା ଥିବା ଡାକ୍ତରଖାନାରେ (FRU / ଜିଲ୍ଲା ମୁଖ୍ୟ ଚିକିତ୍ସାଳୟ) ପ୍ରସବ କରାନ୍ତୁ।' },
   'hrp.do2': { en: 'See the doctor at PMSMA every month (e-PMSMA follow-up). In Odisha, ₹100 is given for travel for each specialist visit, up to three visits.', or: 'ପ୍ରତି ମାସ PMSMA ରେ ଡାକ୍ତରଙ୍କୁ ଦେଖାନ୍ତୁ (e-PMSMA)। ଓଡ଼ିଶାରେ ବିଶେଷଜ୍ଞଙ୍କ ପାଖକୁ ଯିବା ପାଇଁ ପ୍ରତି ଥର ୧୦୦ ଟଙ୍କା, ତିନୋଟି ଚେକଅପ୍ ପର୍ଯ୍ୟନ୍ତ ଦିଆଯାଏ।' },
-  'hrp.do3': { en: 'Keep 102 / 108 numbers ready and know the danger signs.', or: '୧୦୨ / ୧୦୮ ନମ୍ବର ପାଖରେ ରଖନ୍ତୁ ଓ ବିପଦ ଲକ୍ଷଣ ଜାଣନ୍ତୁ।' },
+  'hrp.do3': { en: 'Keep the 108 ambulance number ready and know the danger signs.', or: '୧୦୮ ଆମ୍ବୁଲାନ୍ସ ନମ୍ବର ପାଖରେ ରଖନ୍ତୁ ଓ ବିପଦ ଲକ୍ଷଣ ଜାଣନ୍ତୁ।' },
   'hrp.do4': { en: 'Treat the cause: for example, IFA treatment or injection iron for anaemia, BP tablets for hypertension.', or: 'କାରଣର ଚିକିତ୍ସା କରାନ୍ତୁ: ଯେପରି ରକ୍ତହୀନତା ପାଇଁ ଆଇ.ଏଫ୍.ଏ. ଚିକିତ୍ସା ବା ଇଞ୍ଜେକ୍ସନ୍ ଲୌହ, ଉଚ୍ଚ ରକ୍ତଚାପ ପାଇଁ ଔଷଧ।' },
   'hrp.redCard': { en: 'Red card', or: 'ରେଡ୍ କାର୍ଡ' },
   'hrp.redNo': { en: 'Red card serial number', or: 'ରେଡ୍ କାର୍ଡର କ୍ରମିକ ନଂ.' },
   'hrp.redDate': { en: 'Date given', or: 'ରେଡ୍ କାର୍ଡ ପ୍ରଦାନ ତାରିଖ' },
   'hrp.referral': { en: 'Referral centre', or: 'ରେଫରାଲ ସେବା କେନ୍ଦ୍ର' },
   'hrp.hard': { en: 'Village is hard to reach', or: 'ଗ୍ରାମ ଅପହଞ୍ଚ' },
-  'hrp.hardDo': { en: 'Plan to move near the delivery hospital before labour. Ask the ANM about a Maa Gruha (maternity waiting home) and book 102 early.', or: 'ପ୍ରସବ ଯନ୍ତ୍ରଣା ପୂର୍ବରୁ ଡାକ୍ତରଖାନା ପାଖକୁ ଯିବାର ଯୋଜନା କରନ୍ତୁ। ମା\' ଗୃହ (ପ୍ରସୂତି ଅପେକ୍ଷା ଗୃହ) ବିଷୟରେ ଏ.ଏନ୍.ଏମ୍.ଙ୍କୁ ପଚାରନ୍ତୁ ଓ ୧୦୨ ଆଗୁଆ ବୁକ୍ କରନ୍ତୁ।' },
+  'hrp.hardDo': { en: 'Plan to move near the delivery hospital before labour. Ask the ANM about a Maa Gruha (maternity waiting home) and book the 108 ambulance early.', or: 'ପ୍ରସବ ଯନ୍ତ୍ରଣା ପୂର୍ବରୁ ଡାକ୍ତରଖାନା ପାଖକୁ ଯିବାର ଯୋଜନା କରନ୍ତୁ। ମା\' ଗୃହ (ପ୍ରସୂତି ଅପେକ୍ଷା ଗୃହ) ବିଷୟରେ ଏ.ଏନ୍.ଏମ୍.ଙ୍କୁ ପଚାରନ୍ତୁ ଓ ୧୦୮ ଆମ୍ବୁଲାନ୍ସ ଆଗୁଆ ବୁକ୍ କରନ୍ତୁ।' },
   'hrp.save': { en: 'Save assessment', or: 'ଆକଳନ ସେଭ୍ କରନ୍ତୁ' },
   'hrp.perAnc': { en: 'Result at each ANC', or: 'ପ୍ରତ୍ୟେକ ଏଏନ୍‌ସିରେ ଫଳାଫଳ' },
   'hrp.open': { en: 'Open the high-risk check', or: 'ବିପଦସଙ୍କୁଳ ଆକଳନ ଖୋଲନ୍ତୁ' },
@@ -3703,7 +3793,7 @@ K.content.pregCare = [
 K.content.birthPlan = [
   { k: 'contact', en: 'Stay in touch with your ASHA, ANM and Anganwadi worker', or: 'ଆଶାକର୍ମୀ, ମହିଳା ସ୍ୱାସ୍ଥ୍ୟକର୍ମୀ ଓ ଅଙ୍ଗନୱାଡ଼ି କର୍ମୀଙ୍କ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ' },
   { k: 'hospital', en: 'Choose the hospital for delivery in advance', or: 'ପ୍ରସବ କରାଇବା ପାଇଁ ଆଗରୁ ଡାକ୍ତରଖାନା ଚିହ୍ନଟ କରି ରଖନ୍ତୁ' },
-  { k: 'transport', en: 'Arrange transport in advance (102 / 108 are free)', or: 'ପ୍ରସବ ପୂର୍ବରୁ ଗମନାଗମନର ବ୍ୟବସ୍ଥା କରନ୍ତୁ (୧୦୨ / ୧୦୮ ମାଗଣା)' },
+  { k: 'transport', en: 'Arrange transport in advance (the 108 ambulance is free)', or: 'ପ୍ରସବ ପୂର୍ବରୁ ଗମନାଗମନର ବ୍ୟବସ୍ଥା କରନ୍ତୁ (୧୦୮ ଆମ୍ବୁଲାନ୍ସ ମାଗଣା)' },
   { k: 'jsy', en: 'Register for JSY and MAMATA-PMMVY with the ASHA / AWW', or: 'ଆଶା / ଅଙ୍ଗନୱାଡ଼ି କର୍ମୀଙ୍କ ମାଧ୍ୟମରେ JSY ଓ ମମତା-PMMVY ରେ ପଞ୍ଜୀକରଣ କରନ୍ତୁ' },
   { k: 'money', en: 'Keep some money aside for an emergency', or: 'ଜରୁରୀକାଳୀନ ପାଇଁ କିଛି ଟଙ୍କା ରଖନ୍ତୁ' },
   { k: 'companion', en: 'Decide who will go with you (birth companion)', or: 'ଆପଣଙ୍କ ସହ କିଏ ଯିବେ ସ୍ଥିର କରନ୍ତୁ' },
@@ -3950,10 +4040,11 @@ K.due.add((c, today) => {
 /* ============================================================================
    modules/25-delivery — delivery record, postnatal (PNC/HBNC) home visits
    for mother and newborn, postpartum IFA/calcium.
-   HBNC schedule (Odisha MCP V-2023-24 p.10; HBNC guidelines): ASHA visits
-   mother and newborn on days 3, 7, 14, 21, 28, 42 after delivery (plus day 1
-   for births at home), day 1 = day of birth. A baby admitted to SNCU/NBSU has
-   its own visits on days 1, 3, 7, 14, 21, 28 and 42 after discharge (day 1 =
+   Visit days come from data/53-visits (SSBSK 2026 by default, or HBNC as on
+   the Odisha card): the ASHA visits mother and the babies at home on the
+   newborn days counted from delivery (day 1 = day of birth); an SSBSK
+   'at-risk' baby at home moves the joint visits to the at-risk days. A baby
+   admitted to SNCU/NBSU has its own visits counted from discharge (day 1 =
    day of discharge); the mother's checks stay counted from delivery.
    ============================================================================ */
 const h = K.h;
@@ -3995,13 +4086,12 @@ K.i18n.add({
   'pnc.visit': { en: 'Home visit · day {n}', or: 'ଗୃହ ପରିଦର୍ଶନ · {n} ଦିନ' },
   'pnc.mother': { en: "Mother's check", or: "ମା'ଙ୍କ ପ୍ରସବ ପରବର୍ତ୍ତୀ ଆକଳନ" },
   'pnc.baby': { en: 'Newborn check', or: 'ନବଜାତ ଶିଶୁର ଆକଳନ' },
-  'pnc.rule': { en: 'The ASHA visits on days 3, 7, 14, 21, 28 and 42 after delivery (also day 1 if born at home). Stay 48 hours in hospital after delivery.', or: 'ପ୍ରସବ ପରେ ଆଶାକର୍ମୀ ୩ୟ, ୭ମ, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନରେ ଗୃହ ପରିଦର୍ଶନ କରିବେ (ଘରେ ଜନ୍ମ ହୋଇଥିଲେ ୧ମ ଦିନ ମଧ୍ୟ)। ପ୍ରସବ ପରେ ୪୮ ଘଣ୍ଟା ଡାକ୍ତରଖାନାରେ ରୁହନ୍ତୁ।' },
   'pnc.save': { en: 'Save visit', or: 'ପରିଦର୍ଶନ ସେଭ୍ କରନ୍ତୁ' },
   'pnc.ppTabs': { en: 'Iron and calcium after delivery', or: 'ପ୍ରସବ ପରେ ଲୌହ ଓ କ୍ୟାଲସିୟମ୍' },
   'pnc.ppRule': { en: 'Take one IFA tablet and two calcium tablets every day for 6 months after delivery.', or: 'ପ୍ରସବ ପରଠାରୁ ୬ ମାସ ପର୍ଯ୍ୟନ୍ତ ଗୋଟିଏ IFA ଏବଂ ଦୁଇଟି କ୍ୟାଲସିୟମ୍ ବଟିକା ନିଶ୍ଚିତ ଖାଆନ୍ତୁ।' },
   'pnc.result': { en: 'What this visit shows', or: 'ଏହି ପରିଦର୍ଶନରୁ କ\'ଣ ଜଣାପଡ଼ିଲା' },
   'pnc.sncuVisits': { en: '{b}: visits after SNCU / NBSU discharge', or: '{b}: SNCU / NBSU ଡିସ୍‌ଚାର୍ଜ ପରେ ଗୃହ ପରିଦର୍ଶନ' },
-  'pnc.sncuRule': { en: 'A baby who was admitted to the SNCU / NBSU is visited by the ASHA on days 1, 3, 7, 14, 21, 28 and 42 after discharge.', or: 'SNCU / NBSU ରେ ଭର୍ତ୍ତି ହୋଇଥିବା ଶିଶୁଙ୍କୁ ଆଶାକର୍ମୀ ଡିସ୍‌ଚାର୍ଜର ୧ମ, ୩ୟ, ୭ମ, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନରେ ଗୃହ ପରିଦର୍ଶନ କରିବେ।' },
+  'pnc.riskKids': { en: '{b} needs extra care, so the visits follow the extra-care days.', or: '{b}ଙ୍କୁ ଅଧିକ ଯତ୍ନ ଆବଶ୍ୟକ, ତେଣୁ ପରିଦର୍ଶନ ଅଧିକ ଯତ୍ନ ଦିନ ଅନୁସାରେ।' },
   'pnc.sncuNoDis': { en: 'Add the discharge date in the baby\'s birth details to see these visits.', or: 'ଏହି ପରିଦର୍ଶନ ଦେଖିବା ପାଇଁ ଶିଶୁର ଜନ୍ମ ବିବରଣୀରେ ଡିସ୍‌ଚାର୍ଜ ତାରିଖ ଦିଅନ୍ତୁ।' },
   'pnc.visitSncu': { en: 'Visit after discharge · day {n}', or: 'ଡିସ୍‌ଚାର୍ଜ ପରେ ପରିଦର୍ଶନ · {n} ଦିନ' },
   // mother checks (Odisha p.6 list)
@@ -4032,25 +4122,28 @@ K.i18n.add({
   'pb.cord': { en: 'Cord stump', or: 'ନାଭି' }, 'cord.dry': { en: 'Dry, clean', or: 'ଶୁଖିଲା, ପରିଷ୍କାର' }, 'cord.red': { en: 'Red or with pus', or: 'ଲାଲ ବା ପୂଜ' },
   'pb.pustules': { en: 'Pus-filled boils on skin', or: 'ଚର୍ମରେ ପୂଜଥିବା ଫୋଟକା' }, 'pb.eyes': { en: 'Sticky or red eyes', or: 'ଆଖିରୁ ପିଚୁଟି ବା ଲାଲ ଆଖି' },
   'pb.kmc': { en: 'Kept warm (skin-to-skin if small)', or: 'ଉଷୁମ ରଖାଯାଇଛି (ଛୋଟ ଶିଶୁ ହେଲେ ଛାତିରେ ଲଗାଇ)' },
+  'child.extraCare': { en: 'Needs extra care at home: birth defect, or not able to breastfeed', or: 'ଘରେ ଅଧିକ ଯତ୍ନ ଆବଶ୍ୟକ: ଜନ୍ମଗତ ତ୍ରୁଟି, ବା ସ୍ତନ୍ୟପାନ କରିପାରୁନାହିଁ' },
   'tool.breath': { en: 'Count breaths with the timer', or: 'ଟାଇମର୍ ସହ ଶ୍ୱାସ ଗଣନ୍ତୁ' },
 });
 
 K.pnc = {};
-K.pnc.days = (p) => { const d = p.delivery || {}; return (d.place === 'inst' ? [3, 7, 14, 21, 28, 42] : [1, 3, 7, 14, 21, 28, 42]); };
-K.pnc.SNCU_DAYS = [1, 3, 7, 14, 21, 28, 42];
 K.pnc.isSncu = (k) => !!(k && k.birth && +k.birth.sncu === 1);
 K.pnc.homeKids = (p, c) => (c.children || []).filter(k => k.pregId === p.id && !K.pnc.isSncu(k)); // seen at the joint visits
 K.pnc.sncuKids = (p, c) => (c.children || []).filter(k => k.pregId === p.id && K.pnc.isSncu(k));
+K.pnc.riskKids = (p, c) => (K.visits.get().atRisk ? K.pnc.homeKids(p, c).filter(K.visits.atRisk) : []);
+/* plan days, plus any day already recorded (so visits kept under the other plan still show) */
+const withDone = (days, done) => [...new Set(days.concat(done.map(Number)))].sort((a, b) => a - b);
+K.pnc.days = (p, c) => withDone(K.visits.newbornDays((p.delivery || {}).place || 'inst', c ? K.pnc.riskKids(p, c).length > 0 : false), (p.pnc || []).map(x => x.day));
 const visitSt = (v, date, today) => { const lag = K.d.diff(date, today); return v ? 'done' : lag < 0 ? 'upcoming' : lag <= 2 ? 'due' : 'overdue'; };
 /* mother (with the babies at home): day 1 = day of delivery */
 K.pnc.schedule = (p, c, today) => {
   today = today || K.d.today(); if (!p.delivery || !p.delivery.date) return [];
-  return K.pnc.days(p).map(n => { const date = K.d.addDays(p.delivery.date, n - 1); const v = (p.pnc || []).find(x => x.day === n); return { n, date, v, st: visitSt(v, date, today) }; });
+  return K.pnc.days(p, c).map(n => { const date = K.d.addDays(p.delivery.date, n - 1); const v = (p.pnc || []).find(x => x.day === n); return { n, date, v, st: visitSt(v, date, today) }; });
 };
 /* SNCU / NBSU graduate: day 1 = day of discharge; its records carry sncu: 1 */
 K.pnc.kidSchedule = (k, today) => {
   today = today || K.d.today(); const base = K.pnc.isSncu(k) && k.birth.sncuDischarge; if (!base) return [];
-  return K.pnc.SNCU_DAYS.map(n => { const date = K.d.addDays(base, n - 1); const v = (k.hbnc || []).find(x => x.day === n && x.sncu); return { n, date, v, st: visitSt(v, date, today) }; });
+  return withDone(K.visits.get().sncu, (k.hbnc || []).filter(x => x.sncu).map(x => x.day)).map(n => { const date = K.d.addDays(base, n - 1); const v = (k.hbnc || []).find(x => x.day === n && x.sncu); return { n, date, v, st: visitSt(v, date, today) }; });
 };
 
 /* flags */
@@ -4111,6 +4204,7 @@ K.route('/card/:id/preg/:pid/delivery', ({ id, pid }) => {
       ${K.ui.yn({ name: pre + 'vitk', q: K.t('child.vitk'), value: b.vitk, pos: true })}
       ${K.ui.choices({ name: pre + 'bf', label: K.t('child.bf'), value: b.bf, options: ['1h', '24h', 'late'].map(v => ({ v, l: K.t('bf.' + v), tone: v === 'late' ? 'warn' : '' })) })}
       ${K.ui.yn({ name: pre + 'colostrum', q: K.t('child.colostrum'), value: b.colostrum, pos: true })}
+      ${K.ui.yn({ name: pre + 'extraCare', q: K.t('child.extraCare'), value: b.extraCare != null ? b.extraCare : (kid && kid.birth ? kid.birth.extraCare : null) })}
     </fieldset>`; };
   return {
     title: K.t('del.title'), sub: c.mother.name, back: K.preg.url(c, p).slice(1), tab: 'home',
@@ -4153,12 +4247,12 @@ K.forms.delSave = async (v, f) => {
     const g = (k) => v[`b${i}_${k}`];
     let wt = g('wt'); if (wt != null && wt > 20) wt = wt / 1000;
     const b = { outcome: g('outcome') || 'live', sex: g('sex') || '', wt: wt != null ? K.round(wt, 3) : null, cried: g('cried') == null ? null : +g('cried'), resus: g('resus') == null ? null : +g('resus'),
-      vitk: g('vitk') == null ? null : +g('vitk'), bf: g('bf') || '', colostrum: g('colostrum') == null ? null : +g('colostrum'), childId: (prev[i - 1] || {}).childId || null };
+      vitk: g('vitk') == null ? null : +g('vitk'), bf: g('bf') || '', colostrum: g('colostrum') == null ? null : +g('colostrum'), extraCare: g('extraCare') == null ? null : +g('extraCare'), childId: (prev[i - 1] || {}).childId || null };
     if (b.outcome === 'live') {
       let k = b.childId ? K.card.findKid(c, b.childId) : null;
       if (!k) { k = K.blank.child(); c.children.push(k); b.childId = k.id; }
       Object.assign(k, { pregId: p.id, dob: d.date, sex: b.sex, birthWeight: b.wt, gaWeeks: d.gaWeeks, name: g('name') || k.name || '' });
-      k.birth = Object.assign(k.birth || {}, { cried: b.cried, resus: b.resus, vitk: b.vitk, bf: b.bf, colostrum: b.colostrum, place: d.place });
+      k.birth = Object.assign(k.birth || {}, { cried: b.cried, resus: b.resus, vitk: b.vitk, bf: b.bf, colostrum: b.colostrum, extraCare: b.extraCare, place: d.place });
     } else if (b.childId) { c.children = c.children.filter(x => x.id !== b.childId); b.childId = null; }
     d.babies.push(b);
   }
@@ -4189,10 +4283,10 @@ K.route('/card/:id/preg/:pid/pnc', ({ id, pid }) => {
       </dl><p style="margin:10px 0 0">${K.ui.btn(K.t('del.edit'), { href: K.preg.url(c, p, '/delivery'), tone: 'quiet', size: 'sm', icon: 'edit' })}</p></div>
       ${kids.length ? h`<div class="cards-list" style="margin-top:10px">${kids.map(k => K.child.summaryCard(c, k))}</div>` : ''}
       <section class="sec" style="margin-top:18px">${K.ui.secH(K.t(K.pnc.homeKids(p, c).length ? 'pnc.visits' : 'pnc.visitsMother'))}
-        <p class="small">${K.t('pnc.rule')}</p>
+        <p class="small">${K.visits.text('pnc')}</p>${K.pnc.riskKids(p, c).length ? h`<p class="small"><b>${K.t('pnc.riskKids', { b: K.pnc.riskKids(p, c).map(K.child.label).join(', ') })}</b> ${K.visits.text('risk')}</p>` : ''}
         <div class="list">${sch.map(s => visitLi(s, K.preg.url(c, p, '/pnc/' + s.n)))}</div></section>
       ${K.pnc.sncuKids(p, c).map(k => { const ks = K.pnc.kidSchedule(k);
-        return h`<section class="sec">${K.ui.secH(K.t('pnc.sncuVisits', { b: K.child.label(k) }))}<p class="small">${K.t('pnc.sncuRule')}</p>
+        return h`<section class="sec">${K.ui.secH(K.t('pnc.sncuVisits', { b: K.child.label(k) }))}<p class="small">${K.visits.text('sncu')}</p>
           ${ks.length ? h`<div class="list">${ks.map(s => visitLi(s, K.preg.url(c, p, '/pnc/' + s.n + '?k=' + k.id)))}</div>`
             : K.ui.callout('warn', '', h`${K.t('pnc.sncuNoDis')} <a href="${K.child.url(c, k, '/edit')}">${K.t('child.edit')}</a>`)}</section>`; })}
       <section class="sec">${K.ui.secH(K.t('pnc.ppTabs'))}<p class="small">${K.t('pnc.ppRule')}</p>
@@ -4492,6 +4586,7 @@ function childForm(c, k, isNew) {
       ${K.ui.choices({ name: 'bf', label: K.t('child.bf'), value: b.bf, options: ['1h', '24h', 'late'].map(v => ({ v, l: K.t('bf.' + v), tone: v === 'late' ? 'warn' : '' })) })}
       ${K.ui.yn({ name: 'colostrum', q: K.t('child.colostrum'), value: b.colostrum, pos: true })}
       ${K.ui.yn({ name: 'vitk', q: K.t('child.vitk'), value: b.vitk, pos: true })}
+      ${K.ui.yn({ name: 'extraCare', q: K.t('child.extraCare'), value: b.extraCare })}
       ${K.ui.yn({ name: 'sncu', q: K.t('child.sncu'), value: b.sncu })}
       ${F('sncuDischarge', K.t('child.sncuDis'), { type: 'date', max: K.d.today(), value: b.sncuDischarge })}
     </fieldset>
@@ -4539,7 +4634,7 @@ K.forms.childSave = async (v, f) => {
   Object.assign(k, { name: v.name || '', sex: v.sex || '', dob: v.dob, birthWeight: bw != null ? K.round(bw, 3) : null, gaWeeks: v.gaWeeks != null ? v.gaWeeks : null,
     birthRegNo: v.birthRegNo || '', rchId: v.rchId != null ? String(v.rchId) : '', abhaId: v.abhaId || '' });
   k.birth = Object.assign(k.birth || {}, { cried: v.cried == null ? null : +v.cried, resus: v.resus == null ? null : +v.resus, bf: v.bf || '', colostrum: v.colostrum == null ? null : +v.colostrum,
-    vitk: v.vitk == null ? null : +v.vitk, sncu: v.sncu == null ? null : +v.sncu, sncuDischarge: v.sncuDischarge || '' });
+    vitk: v.vitk == null ? null : +v.vitk, extraCare: v.extraCare == null ? null : +v.extraCare, sncu: v.sncu == null ? null : +v.sncu, sncuDischarge: v.sncuDischarge || '' });
   if (K.child._photo) { k.photoThumb = K.child._photo; K.child._photo = null; }
   await K.store.save(c); K.ui.toast(K.t('saved')); K.go(K.child.url(c, k).slice(1), { replace: isNew });
 };
@@ -4629,7 +4724,7 @@ K.i18n.add({
   'vax.dueOn': { en: 'Due {d}', or: '{d} ରେ ଦେବାକୁ' },
   'vax.upto': { en: 'Can be given until {d}', or: '{d} ପର୍ଯ୍ୟନ୍ତ ଦିଆଯାଇପାରିବ' },
   'vax.jeOnly': { en: 'Only in selected districts', or: 'କେବଳ ନିର୍ଦ୍ଦିଷ୍ଟ ଜିଲ୍ଲାରେ' },
-  'vax.hpvNote': { en: 'Single dose for girls at 14 years, free at government facilities (from 2026).', or: '୧୪ ବର୍ଷ ବୟସର ଝିଅମାନଙ୍କ ପାଇଁ ଗୋଟିଏ ମାତ୍ରା, ସରକାରୀ ସ୍ୱାସ୍ଥ୍ୟକେନ୍ଦ୍ରରେ ମାଗଣା (୨୦୨୬ ଠାରୁ)।' },
+  'vax.hpvNote': { en: 'Single dose for girls aged 14, free at government health facilities. The national drive began on 28 February 2026; after it, the vaccine stays available on routine immunisation days.', or: '୧୪ ବର୍ଷ ବୟସର ଝିଅମାନଙ୍କ ପାଇଁ ଗୋଟିଏ ମାତ୍ରା, ସରକାରୀ ସ୍ୱାସ୍ଥ୍ୟକେନ୍ଦ୍ରରେ ମାଗଣା। ଜାତୀୟ ଅଭିଯାନ ୨୮ ଫେବୃଆରୀ ୨୦୨୬ ରେ ଆରମ୍ଭ ହୋଇଛି; ତା\'ପରେ ନିୟମିତ ଟୀକାକରଣ ଦିବସରେ ମିଳିବ।' },
   'vax.altDpt': { en: 'Too late for Penta at this age — DPT is given in its place.', or: 'ଏହି ବୟସରେ ପେଣ୍ଟା ଦିଆଯାଏ ନାହିଁ — ତା ବଦଳରେ ଡି.ପି.ଟି. ଦିଆଯାଏ।' },
   'vax.dptFor': { en: 'In place of {x}', or: '{x} ବଦଳରେ' },
   'vax.notAfter1': { en: 'Not started after 1 year in the government programme.', or: 'ସରକାରୀ କାର୍ଯ୍ୟକ୍ରମରେ ୧ ବର୍ଷ ପରେ ଆରମ୍ଭ କରାଯାଏ ନାହିଁ।' },
@@ -5469,18 +5564,19 @@ K.child.addTile(20, (c, k) => {
 /* ── modules/62-hbyc.js ── */
 {
 /* ============================================================================
-   modules/62-hbyc — Home Based Care for Young Child: ASHA home visits at
-   3, 6, 9, 12 and 15 months (Odisha MCP card V-2023-24 p.7 and p.10; HBYC
-   guidelines, MoHFW/MWCD 2018). Checklist rows apply to the visit months
-   marked on the card; vaccine, Vitamin A and weight rows are pre-filled
-   from the child's record and can be changed.
+   modules/62-hbyc — ASHA home visits for the young child. Months come from
+   data/53-visits: SSBSK 2026 (3, 6, 9, 12, 18, 24, 30, 36 months; the
+   default) or HBYC as on the Odisha MCP card V-2023-24 pp.7, 10 (3, 6, 9,
+   12, 15 months). Checklist rows follow the card's HBYC table; rows for the
+   SSBSK months after 15 carry the same checks (feeding as for 12–24 months,
+   MR-2, Vitamin A within 6 months). Vaccine, Vitamin A and weight rows are
+   pre-filled from the child's record and can be changed.
    Stored as k.hbyc = [{ id, m, date, ans: { item: 0|1 }, notes }]
    ============================================================================ */
 const h = K.h;
 
 K.i18n.add({
-  'hbyc.title': { en: 'Home visits (HBYC)', or: 'ଗୃହ ପରିଦର୍ଶନ (HBYC)' },
-  'hbyc.lede': { en: 'The ASHA visits at 3, 6, 9, 12 and 15 months to check growth, feeding, development and vaccines.', or: 'ଆଶା ଦିଦି ୩, ୬, ୯, ୧୨ ଓ ୧୫ ମାସରେ ଘରକୁ ଆସି ଶିଶୁର ବୃଦ୍ଧି, ଖାଦ୍ୟ, ବିକାଶ ଓ ଟୀକା ଯାଞ୍ଚ କରିବେ।' },
+  'hbyc.title': { en: 'Home visits ({p})', or: 'ଗୃହ ପରିଦର୍ଶନ ({p})' },
   'hbyc.visit': { en: '{m}-month visit', or: '{m} ମାସ ପରିଦର୍ଶନ' },
   'hbyc.verify': { en: 'ASHA checks', or: 'ଆଶାଙ୍କ ଦ୍ୱାରା ଯାଞ୍ଚ କରାଯିବ' },
   'hbyc.serve': { en: 'ASHA gives', or: 'ଆଶାଙ୍କ ଦ୍ୱାରା ସେବା ପ୍ରଦାନ କରାଯିବ' },
@@ -5494,24 +5590,28 @@ K.i18n.add({
   'hbyc.flagSick': { en: 'Child is sick — check danger signs and refer if needed.', or: 'ଶିଶୁ ଅସୁସ୍ଥ — ବିପଦ ଲକ୍ଷଣ ଯାଞ୍ଚ କରି ଆବଶ୍ୟକ ହେଲେ ପଠାନ୍ତୁ।' },
   'hbyc.tile': { en: 'Home visits', or: 'ଗୃହ ପରିଦର୍ଶନ' },
   'hbyc.deleteQ': { en: 'Delete this visit record?', or: 'ଏହି ପରିଦର୍ଶନ ବିବରଣୀ ବିଲୋପ କରିବେ?' },
-  'hbyc.over': { en: 'HBYC visits are for children aged 3 to 15 months.', or: 'HBYC ପରିଦର୍ଶନ ୩ ରୁ ୧୫ ମାସ ବୟସର ଶିଶୁଙ୍କ ପାଇଁ।' },
 });
 
 K.hbyc = {};
-K.hbyc.MONTHS = [3, 6, 9, 12, 15];
-const ALL = [3, 6, 9, 12, 15], FROM6 = [6, 9, 12, 15];
+/* visit months of the chosen plan, plus any month already recorded */
+K.hbyc.months = (k) => [...new Set(K.visits.get().child.concat(((k && k.hbyc) || []).map(v => +v.m)))].sort((a, b) => a - b);
+K.hbyc.end = () => K.visits.get().childEnd + 3; // months: no new visits after this age
+K.hbyc.title = () => K.t('hbyc.title', { p: K.L(K.visits.TEXT[K.visits.plan()].name) });
+const ALL = K.visits.ALL_MONTHS, FROM6 = ALL.filter(m => m >= 6), FROM12 = ALL.filter(m => m >= 12), FROM18 = ALL.filter(m => m >= 18);
 /* pos: "Yes" is the good answer. at: visit months where the row applies (card p.7) */
 K.hbyc.CHECK = [
   { k: 'sick', at: ALL, pos: false, en: 'Is the child sick?', or: 'ଶିଶୁ ଅସୁସ୍ଥ ଅଛି କି?' },
-  { k: 'bf', at: ALL, pos: true, en: 'Is breastfeeding continuing?', or: 'ସ୍ତନ୍ୟପାନ ଜାରି ଅଛି କି?' },
+  { k: 'bf', at: ALL.filter(m => m <= 24), pos: true, en: 'Is breastfeeding continuing?', or: 'ସ୍ତନ୍ୟପାନ ଜାରି ଅଛି କି?' },
   { k: 'cf6', at: [6], pos: true, en: 'Complementary food: 2–3 spoons at a time, 2–3 times a day, with 1–2 snacks?', or: 'ଥରକରେ ୨-୩ ଚାମଚର ଖାଦ୍ୟ, ଦିନକୁ ୨-୩ଥର, ୧-୨ଥର ଜଳଖିଆ ଦିଆଯାଉଛି କି?' },
   { k: 'cf9', at: [9], pos: true, en: 'Complementary food: ½ cup at a time, 2–3 times a day, with 1–2 snacks?', or: 'ଥରକରେ ୧/୨ କପ୍ ଖାଦ୍ୟ, ଦିନକୁ ୨-୩ଥର, ୧-୨ ଥର ଜଳଖିଆ ଦିଆଯାଉଛି କି?' },
-  { k: 'cf12', at: [12, 15], pos: true, en: 'Complementary food: ¾ to 1 cup at a time, 3–4 times a day, with 1–2 snacks?', or: 'ଥରକରେ ୩/୪-୧ କପ୍ ଖାଦ୍ୟ, ଦିନକୁ ୩-୪ଥର, ୧-୨ ଥର ଜଳଖିଆ ଦିଆଯାଉଛି କି?' },
+  { k: 'cf12', at: FROM12, pos: true, en: 'Complementary food: ¾ to 1 cup at a time, 3–4 times a day, with 1–2 snacks?', or: 'ଥରକରେ ୩/୪-୧ କପ୍ ଖାଦ୍ୟ, ଦିନକୁ ୩-୪ଥର, ୧-୨ ଥର ଜଳଖିଆ ଦିଆଯାଉଛି କି?' },
   { k: 'wt', at: ALL, pos: true, en: 'Has the AWW recorded the weight?', or: 'ଅଙ୍ଗନୱାଡ଼ି କର୍ମୀ ଓଜନ ରେକର୍ଡ କରିଛନ୍ତି କି?', auto: (k, d) => ((k.growth || []).some(g => g.wt != null && Math.abs(K.d.diff(g.date, d)) <= 30) ? 1 : null) },
   { k: 'delay', at: ALL, pos: false, en: 'Does the child have developmental delay (any warning sign)?', or: 'ଶିଶୁଟିର ବିଳମ୍ବିତ ବିକାଶ ଅଛି କି?', auto: (k) => (K.dev && K.dev.anyWarn(k) ? 1 : null) },
   { k: 'imm', at: ALL, pos: true, en: 'Immunisation status checked?', or: 'ଟୀକାକରଣର ସ୍ଥିତି ଯାଞ୍ଚ କରାଯାଇଛି କି?' },
   { k: 'mr', at: [9, 12, 15], pos: true, en: 'MR vaccine given?', or: 'ଏମ୍ଆର୍ ଟୀକା ଦିଆଯାଇଛି କି?', auto: (k) => (k.vax && k.vax.MR1 && k.vax.MR1.date ? 1 : null) },
+  { k: 'mr2', at: FROM18, pos: true, en: 'MR second dose given?', or: 'ଏମ୍ଆର୍ ଦ୍ୱିତୀୟ ଟୀକା ଦିଆଯାଇଛି କି?', auto: (k) => (k.vax && k.vax.MR2 && k.vax.MR2.date ? 1 : null) },
   { k: 'vita', at: [9, 12, 15], pos: true, en: 'Vitamin A given?', or: 'ଭିଟାମିନ୍ ‘ଏ’ ଦିଆଯାଇଛି କି?', auto: (k) => (k.vitA && k.vitA[1] ? 1 : null) },
+  { k: 'vita6', at: FROM18, pos: true, en: 'Vitamin A and deworming given in the last 6 months?', or: 'ଗତ ୬ ମାସ ମଧ୍ୟରେ ଭିଟାମିନ୍ ‘ଏ’ ଓ କୃମିନାଶକ ଦିଆଯାଇଛି କି?', auto: (k, d) => (Object.values(k.vitA || {}).some(x => x && Math.abs(K.d.diff(x, d)) <= 183) ? 1 : null) },
   { k: 'orsHome', at: ALL, pos: true, en: 'ORS packet at home?', or: 'ଓ.ଆର୍.ଏସ୍ ପ୍ୟାକେଟ୍ ଘରେ ଅଛି କି?' },
   { k: 'ifaHome', at: FROM6, pos: true, en: 'IFA syrup at home?', or: 'ଆଇ.ଏଫ୍.ଏ ସିରପ ଘରେ ଅଛି କି?' },
 ];
@@ -5527,10 +5627,10 @@ K.hbyc.SERVE = [
 K.hbyc.rec = (k, m) => (k.hbyc || []).find(v => +v.m === +m) || null;
 /* visit status: done · due (from the due date for 30 days) · overdue (until the next visit is due) · missed · upcoming */
 K.hbyc.list = (k, today) => {
-  today = today || K.d.today();
-  return K.hbyc.MONTHS.map((m, i) => {
-    const date = K.d.addMonths(k.dob, m); const r = K.hbyc.rec(k, m); const next = K.hbyc.MONTHS[i + 1];
-    const closes = next ? K.d.addMonths(k.dob, next) : K.d.addMonths(k.dob, 18);
+  today = today || K.d.today(); const months = K.hbyc.months(k);
+  return months.map((m, i) => {
+    const date = K.d.addMonths(k.dob, m); const r = K.hbyc.rec(k, m); const next = months[i + 1];
+    const closes = next ? K.d.addMonths(k.dob, next) : K.d.addMonths(k.dob, m + 3);
     let st; if (r) st = 'given'; else if (K.d.cmp(today, closes) >= 0) st = 'missed'; else { const lag = K.d.diff(date, today); st = lag < 0 ? 'upcoming' : lag <= 30 ? 'due' : 'overdue'; }
     return { m, date, r, st };
   });
@@ -5540,20 +5640,20 @@ const vaxNote = (k, d) => { const st = K.vax.state(k, d); const over = Object.va
 K.route('/card/:id/child/:kid/hbyc', ({ id, kid }) => {
   const c = K.card.load(id); if (!c) return K.screens.notFound(); const k = K.card.findKid(c, kid); if (!k) return K.screens.notFound();
   const back = K.child.url(c, k).slice(1);
-  if (!k.dob) return { title: K.t('hbyc.title'), back, html: h`<div class="wrap">${K.ui.callout('warn', '', K.t('vax.needDob'))}</div>` };
+  if (!k.dob) return { title: K.hbyc.title(), back, html: h`<div class="wrap">${K.ui.callout('warn', '', K.t('vax.needDob'))}</div>` };
   const list = K.hbyc.list(k); const n = list.filter(x => x.r).length;
-  return { title: K.t('hbyc.title'), sub: K.child.label(k), back, tab: 'home',
-    html: h`<div class="wrap">${K.ui.phead(K.child.label(k) + ' · ' + K.d.ageText(k.dob), K.t('hbyc.title'), K.t('hbyc.lede'))}
+  return { title: K.hbyc.title(), sub: K.child.label(k), back, tab: 'home',
+    html: h`<div class="wrap">${K.ui.phead(K.child.label(k) + ' · ' + K.d.ageText(k.dob), K.hbyc.title(), K.visits.text('child'))}
       <p class="small">${K.t('hbyc.done', { n, t: list.length })}</p>
       <div class="list">${list.map(x => K.ui.li({ href: K.child.url(c, k, '/hbyc/' + x.m), icon: x.st === 'given' ? 'check' : 'house', tone: x.st === 'given' ? 'done' : x.st === 'overdue' ? 'red' : x.st === 'due' ? 'amber' : 'ink',
         title: K.t('hbyc.visit', { m: x.m }), meta: x.r ? K.d.fmt(x.r.date) : K.d.fmt(x.date), trail: K.ui.pill(x.st === 'given' ? K.t('st.done') : K.vax.lbl({ st: x.st }), K.vax.tone({ st: x.st })) }))}</div>
-      ${K.d.age(k.dob).months >= 18 ? h`<p class="small faint" style="margin-top:12px">${K.t('hbyc.over')}</p>` : ''}
+      ${K.d.age(k.dob).months >= K.hbyc.end() ? h`<p class="small faint" style="margin-top:12px">${K.visits.text('over')}</p>` : ''}
     </div>` };
 });
 
 K.route('/card/:id/child/:kid/hbyc/:m', ({ id, kid, m }) => {
   const c = K.card.load(id); if (!c) return K.screens.notFound(); const k = K.card.findKid(c, kid); if (!k || !k.dob) return K.screens.notFound();
-  m = +m; if (!K.hbyc.MONTHS.includes(m)) return K.screens.notFound();
+  m = +m; if (!K.hbyc.months(k).includes(m)) return K.screens.notFound();
   const r = K.hbyc.rec(k, m) || {}; const ans = r.ans || {}; const date = r.date || K.d.today();
   const row = (it, pos) => { const auto = !r.ans && it.auto ? it.auto(k, date) : null; const v = ans[it.k] != null ? ans[it.k] : auto;
     return K.ui.yn({ name: it.k, q: K.L(it), value: v, pos, sub: auto != null && ans[it.k] == null ? K.t('hbyc.auto') : '' }); };
@@ -5588,7 +5688,7 @@ K.acts.hbycDelete = async (el) => {
 };
 
 K.child.addTile(40, (c, k) => {
-  const age = K.d.age(k.dob).months; if (age >= 18 && !(k.hbyc || []).length) return null;
+  const age = K.d.age(k.dob).months; if (age >= K.hbyc.end() && !(k.hbyc || []).length) return null;
   const list = K.hbyc.list(k); const nx = list.find(x => ['due', 'overdue', 'upcoming'].includes(x.st));
   return { icon: 'house', tone: nx && nx.st === 'overdue' ? 'amber' : '', title: K.t('hbyc.tile'), href: K.child.url(c, k, '/hbyc'),
     sub: `${K.t('hbyc.done', { n: list.filter(x => x.r).length, t: list.length })}${nx ? ' · ' + K.t('hbyc.visit', { m: nx.m }) + ' ' + K.d.fmt(nx.date, 'dm') : ''}` };
@@ -5596,7 +5696,7 @@ K.child.addTile(40, (c, k) => {
 K.due.add((c, today, horizon) => {
   const out = []; const H = Math.max(7, horizon || 0);
   K.card.kids(c).forEach(k => {
-    if (!k.dob || K.d.age(k.dob, today).months >= 18) return;
+    if (!k.dob || K.d.age(k.dob, today).months >= K.hbyc.end()) return;
     K.hbyc.list(k, today).filter(x => x.st === 'due' || x.st === 'overdue' || (x.st === 'upcoming' && K.d.diff(today, x.date) <= H)).forEach(x => out.push({
       id: 'hbyc' + k.id + x.m, kind: 'visit', icon: 'house', href: K.child.url(c, k, '/hbyc/' + x.m), who: K.child.label(k), date: x.date, status: x.st === 'overdue' ? 'overdue' : undefined,
       title: { en: `${K.child.label(k)}: ASHA home visit (${x.m} months)`, or: `${K.child.label(k)}: ଆଶାଙ୍କ ଗୃହ ପରିଦର୍ଶନ (${x.m} ମାସ)` } }));
@@ -5742,7 +5842,7 @@ K.i18n.add({
   'sick.tile': { en: 'Sick child', or: 'ଅସୁସ୍ଥ ଶିଶୁ' },
   'sick.tileSub': { en: 'Danger signs, diarrhoea, pneumonia, fever', or: 'ବିପଦ ଲକ୍ଷଣ, ତରଳ ଝାଡ଼ା, ନିମୋନିଆ, ଜ୍ୱର' },
   'sick.first': { en: 'First, look for danger signs', or: 'ପ୍ରଥମେ ବିପଦ ଲକ୍ଷଣ ଦେଖନ୍ତୁ' },
-  'sick.call': { en: 'Call 108', or: '୧୦୮ କୁ ଫୋନ୍' }, 'sick.call102': { en: 'Call 102', or: '୧୦୨ କୁ ଫୋନ୍' },
+  'sick.call': { en: 'Call 108', or: '୧୦୮ କୁ ଫୋନ୍' }, 'sick.call104': { en: '104 for advice', or: 'ପରାମର୍ଶ ପାଇଁ ୧୦୪' },
   'sick.diarr': { en: 'Diarrhoea', or: 'ତରଳ ଝାଡ଼ା' },
   'sick.diarrTreat': { en: 'Treatment at home', or: 'ତରଳ ଝାଡ଼ାର ଚିକିତ୍ସା' },
   'sick.diarrPrev': { en: 'Prevention', or: 'ତରଳ ଝାଡ଼ା ନ ହେବା ପାଇଁ' },
@@ -5777,7 +5877,7 @@ K.i18n.add({
   'br.fast': { en: 'Fast breathing ({n} — cut-off {c})', or: 'ଦ୍ରୁତ ଶ୍ୱାସ ({n} — ସୀମା {c})' },
   'br.fastDo': { en: 'This child may have pneumonia. Contact the ASHA or ANM now for treatment. If the chest pulls in, or there is any danger sign, go to the hospital at once (call 108).', or: 'ଶିଶୁର ନିମୋନିଆ ହୋଇପାରେ। ଚିକିତ୍ସା ପାଇଁ ଏବେ ହିଁ ଆଶା ବା ଏ.ଏନ୍.ଏମ୍.ଙ୍କ ସହ ଯୋଗାଯୋଗ କରନ୍ତୁ। ଛାତି ଭିତରକୁ ପଶୁଥିଲେ ବା କୌଣସି ବିପଦ ଲକ୍ଷଣ ଥିଲେ ତୁରନ୍ତ ଡାକ୍ତରଖାନା ଯାଆନ୍ତୁ (୧୦୮)।' },
   /* national MCP card 2018 p.7: a newborn breathing 60 or more is a danger sign — contact the health worker immediately */
-  'br.fastYoung': { en: 'In a baby under 2 months, fast breathing is a danger sign. Contact the ASHA or ANM immediately and take the baby to the hospital (call 108 or 102). Keep the baby warm and breastfeeding on the way.', or: '୨ ମାସରୁ କମ୍ ଶିଶୁରେ ଦ୍ରୁତ ଶ୍ୱାସ ବିପଦ ଲକ୍ଷଣ। ତୁରନ୍ତ ଆଶା ବା ଏ.ଏନ୍.ଏମ୍.ଙ୍କ ସହ ଯୋଗାଯୋଗ କରି ଶିଶୁକୁ ଡାକ୍ତରଖାନା ନିଅନ୍ତୁ (୧୦୮ ବା ୧୦୨ କୁ ଫୋନ୍ କରନ୍ତୁ)। ବାଟରେ ଶିଶୁକୁ ଉଷୁମ ରଖି ସ୍ତନ୍ୟପାନ କରାନ୍ତୁ।' },
+  'br.fastYoung': { en: 'In a baby under 2 months, fast breathing is a danger sign. Contact the ASHA or ANM immediately and take the baby to the hospital (call 108). Keep the baby warm and breastfeeding on the way.', or: '୨ ମାସରୁ କମ୍ ଶିଶୁରେ ଦ୍ରୁତ ଶ୍ୱାସ ବିପଦ ଲକ୍ଷଣ। ତୁରନ୍ତ ଆଶା ବା ଏ.ଏନ୍.ଏମ୍.ଙ୍କ ସହ ଯୋଗାଯୋଗ କରି ଶିଶୁକୁ ଡାକ୍ତରଖାନା ନିଅନ୍ତୁ (୧୦୮ କୁ ଫୋନ୍ କରନ୍ତୁ)। ବାଟରେ ଶିଶୁକୁ ଉଷୁମ ରଖି ସ୍ତନ୍ୟପାନ କରାନ୍ତୁ।' },
   'br.ok': { en: 'Not fast breathing ({n} — cut-off {c})', or: 'ଦ୍ରୁତ ଶ୍ୱାସ ନୁହେଁ ({n} — ସୀମା {c})' },
   'br.okDo': { en: 'Keep watching. Count again if the child gets worse, and look for chest indrawing.', or: 'ନଜର ରଖନ୍ତୁ। ଶିଶୁ ଅଧିକ ଅସୁସ୍ଥ ହେଲେ ପୁଣି ଗଣନ୍ତୁ ଓ ଛାତି ଭିତରକୁ ପଶୁଛି କି ଦେଖନ୍ତୁ।' },
   'br.indraw': { en: 'Chest indrawing (lower chest pulls in when breathing in) is a danger sign at any count.', or: 'ନିଃଶ୍ୱାସ ନେଲାବେଳେ ଛାତିର ତଳ ଭାଗ ଭିତରକୁ ପଶିବା ଯେକୌଣସି ଗଣନାରେ ବିପଦ ଲକ୍ଷଣ।' },
@@ -5797,7 +5897,7 @@ K.route('/card/:id/child/:kid/sick', ({ id, kid }) => {
     html: h`<div class="wrap">${K.ui.phead(K.child.label(k) + (k.dob ? ' · ' + K.d.ageText(k.dob) : ''), K.t('sick.title'))}
       <section class="k-card danger-box"><h2>${K.t('sick.first')}</h2><p class="small">${K.L(set.lead || set.title)}</p>
         <ul class="ill-list">${set.items.map(x => h`<li>${K.ui.icon(x.icon || 'alert', 'sm')}<span>${K.L(x)}</span></li>`)}</ul>
-        <div class="btn-row">${K.ui.btn(K.t('sick.call'), { href: 'tel:108', tone: 'danger', icon: 'phone' })}${K.ui.btn(K.t('sick.call102'), { href: 'tel:102', tone: 'ghost', icon: 'ambulance' })}</div></section>
+        <div class="btn-row">${K.ui.btn(K.t('sick.call'), { href: 'tel:108', tone: 'danger', icon: 'phone' })}${K.ui.btn(K.t('sick.call104'), { href: 'tel:104', tone: 'ghost', icon: 'phone' })}</div></section>
       <section class="sec">${K.ui.secH(K.t('sick.diarr'))}
         <h3 class="ill-h">${K.t('sick.diarrTreat')}</h3>${list(K.ill.DIARR_TREAT, 'ill-dt')}
         <p class="small">${K.t('sick.orsAmt')}</p>
@@ -5909,7 +6009,7 @@ K.i18n.add({
   'learn.close': { en: 'Close', or: 'ବନ୍ଦ କରନ୍ତୁ' },
   'learn.of': { en: '{i} of {n}', or: '{n} ମଧ୍ୟରୁ {i}' },
   'learn.call': { en: 'Emergency numbers', or: 'ଜରୁରୀକାଳୀନ ନମ୍ବର' },
-  'learn.c108': { en: '108 Ambulance', or: '୧୦୮ ଆମ୍ବୁଲାନ୍ସ' }, 'learn.c102': { en: '102 Janani Express', or: '୧୦୨ ଜନନୀ ଏକ୍ସପ୍ରେସ୍' }, 'learn.c104': { en: '104 Health helpline', or: '୧୦୪ ସ୍ୱାସ୍ଥ୍ୟ ହେଲ୍ପଲାଇନ୍' },
+  'learn.c108': { en: '108 Ambulance', or: '୧୦୮ ଆମ୍ବୁଲାନ୍ସ' }, 'learn.c104': { en: '104 Health helpline', or: '୧୦୪ ସ୍ୱାସ୍ଥ୍ୟ ହେଲ୍ପଲାଇନ୍' },
   'learn.dangerSub': { en: 'When to go to hospital at once', or: 'କେବେ ତୁରନ୍ତ ଡାକ୍ତରଖାନା ଯିବେ' },
   /* topic names */
   'lt.danger': { en: 'Danger signs', or: 'ବିପଦ ଲକ୍ଷଣ' },
@@ -5976,7 +6076,7 @@ K.learn.TOPICS = [
     { t: dict('lc.nbRemember'), items: K.content.newbornCare },
     { t: K.feed.STAGES[0].head, items: K.feed.STAGES[0].items.slice(0, 5).map(x => Object.assign({ icon: 'heart' }, x)) },
     { t: dict('child.lbw'), items: [Object.assign({ icon: 'heart' }, dict('child.lbwCare'))] },
-    { t: dict('lc.hbnc'), items: K.content.hbnc },
+    { t: dict('lc.hbnc'), items: K.visits.plan() === 'ssbsk' ? K.content.visitsSsbsk.concat(K.content.hbnc.slice(3)) : K.content.hbnc },
     dangerCard('newborn'),
   ] },
   { k: 'feeding', icon: 'bowl', group: 'child', cards: () => K.feed.STAGES.map(st => ({ t: st.name, lead: st.head, amount: st.amount, items: st.items.map(x => Object.assign({ icon: st.icon }, x)) }))
@@ -6025,7 +6125,7 @@ K.learn.card = (cd, id, o = {}) => h`<article class="lcard ${cd.tone || ''} ${o.
   ${cd.note ? h`<p class="lc-note">${K.L(cd.note)}</p>` : ''}
   ${o.say !== false ? h`<p class="lc-say">${K.ui.say('#' + id)}</p>` : ''}
 </article>`;
-const callRow = () => h`<div class="btn-row call-row">${K.ui.btn(K.t('learn.c108'), { href: 'tel:108', tone: 'danger', icon: 'ambulance', size: 'sm' })}${K.ui.btn(K.t('learn.c102'), { href: 'tel:102', tone: 'ghost', icon: 'phone', size: 'sm' })}${K.ui.btn(K.t('learn.c104'), { href: 'tel:104', tone: 'ghost', icon: 'phone', size: 'sm' })}</div>`;
+const callRow = () => h`<div class="btn-row call-row">${K.ui.btn(K.t('learn.c108'), { href: 'tel:108', tone: 'danger', icon: 'ambulance', size: 'sm' })}${K.ui.btn(K.t('learn.c104'), { href: 'tel:104', tone: 'ghost', icon: 'phone', size: 'sm' })}</div>`;
 
 /* ---------------------------------------------------------------- hub */
 K.route('/learn', () => {
@@ -6191,14 +6291,14 @@ K.i18n.add({
   'an.refer': { en: 'Severe anaemia: refer urgently to the FRU / district hospital.', or: 'ଗୁରୁତର ରକ୍ତହୀନତା: ତୁରନ୍ତ FRU / ଜିଲ୍ଲା ଚିକିତ୍ସାଳୟକୁ ପଠାନ୍ତୁ।' },
   'an.mo': { en: 'Treatment as advised by the medical officer; look for the cause.', or: 'ଚିକିତ୍ସକଙ୍କ ପରାମର୍ଶ ଅନୁସାରେ ଚିକିତ୍ସା; କାରଣ ଖୋଜନ୍ତୁ।' },
   'an.prev': { en: 'Keep up the preventive dose: {x}', or: 'ପ୍ରତିଷେଧକ ମାତ୍ରା ଜାରି ରଖନ୍ତୁ: {x}' },
-  'an.sickle': { en: 'Iron is withheld in thalassaemia major and after repeated blood transfusions. Sickle cell disease and thalassaemia need the doctor’s plan — injectable iron for severe anaemia is not used in them.', or: 'ଥାଲାସେମିଆ ମେଜର ଓ ବାରମ୍ବାର ରକ୍ତ ନେଇଥିଲେ ଲୌହସାର ଦିଆଯାଏ ନାହିଁ। ସିକଲ୍ ସେଲ୍ ରୋଗ ଓ ଥାଲାସେମିଆରେ ଡାକ୍ତରଙ୍କ ପରାମର୍ଶ ଆବଶ୍ୟକ — ଗୁରୁତର ରକ୍ତହୀନତାର ଇଞ୍ଜେକସନ୍ ଲୌହସାର ଏମାନଙ୍କ ପାଇଁ ନୁହେଁ।' },
+  'an.sickle': { en: 'Iron is withheld in thalassaemia major and after repeated blood transfusions. Sickle cell disease and thalassaemia need the doctor\'s plan — injectable iron for severe anaemia is not used in them.', or: 'ଥାଲାସେମିଆ ମେଜର ଓ ବାରମ୍ବାର ରକ୍ତ ନେଇଥିଲେ ଲୌହସାର ଦିଆଯାଏ ନାହିଁ। ସିକଲ୍ ସେଲ୍ ରୋଗ ଓ ଥାଲାସେମିଆରେ ଡାକ୍ତରଙ୍କ ପରାମର୍ଶ ଆବଶ୍ୟକ — ଗୁରୁତର ରକ୍ତହୀନତାର ଇଞ୍ଜେକସନ୍ ଲୌହସାର ଏମାନଙ୍କ ପାଇଁ ନୁହେଁ।' },
   'an.acute': { en: 'Do not give iron during an acute illness (fever, diarrhoea, pneumonia); restart after recovery.', or: 'ଜ୍ୱର, ତରଳ ଝାଡ଼ା, ନିମୋନିଆ ଭଳି ଅସୁସ୍ଥତା ସମୟରେ ଲୌହସାର ଦିଅନ୍ତୁ ନାହିଁ; ଭଲ ହେବା ପରେ ପୁଣି ଆରମ୍ଭ କରନ୍ତୁ।' },
   'an.v2026': { en: 'Cut-offs and doses follow the revised Anaemia Mukt Bharat Abhiyaan guidelines (MoHFW, June 2026), which use the WHO 2024 Hb cut-offs. Follow your district\'s instructions where they differ.', or: 'ମାନ ଓ ମାତ୍ରା ସଂଶୋଧିତ ଆନେମିଆ ମୁକ୍ତ ଭାରତ ଅଭିଯାନ ନିର୍ଦ୍ଦେଶାବଳୀ (ସ୍ୱାସ୍ଥ୍ୟ ମନ୍ତ୍ରଣାଳୟ, ଜୁନ୍ ୨୦୨୬) ଅନୁସାରେ, ଯାହା WHO ୨୦୨୪ ହିମୋଗ୍ଲୋବିନ୍ ମାନ ବ୍ୟବହାର କରେ। ଜିଲ୍ଲାର ନିର୍ଦ୍ଦେଶ ଭିନ୍ନ ହେଲେ ତାହା ମାନନ୍ତୁ।' },
   /* vaccine dates */
   'tv.dob': { en: 'Date of birth', or: 'ଜନ୍ମ ତାରିଖ' }, 'tv.sex': { en: 'Sex', or: 'ଲିଙ୍ଗ' }, 'tv.je': { en: 'JE vaccine given in this district', or: 'ଏହି ଜିଲ୍ଲାରେ ଜେ.ଇ. ଟୀକା ଦିଆଯାଏ' },
   'tv.due': { en: 'Due', or: 'ଦେବା ତାରିଖ' }, 'tv.until': { en: 'Until', or: 'ପର୍ଯ୍ୟନ୍ତ' },
   'tv.age': { en: 'Age today: {a}', or: 'ଆଜି ବୟସ: {a}' },
-  'tv.note': { en: 'Use the child’s card to record doses — this tool only lists dates. Babies born early are vaccinated by their actual date of birth.', or: 'ଟୀକା ଲେଖିବା ପାଇଁ ଶିଶୁର କାର୍ଡ ବ୍ୟବହାର କରନ୍ତୁ — ଏଠାରେ କେବଳ ତାରିଖ। ସମୟ ପୂର୍ବରୁ ଜନ୍ମିତ ଶିଶୁଙ୍କୁ ପ୍ରକୃତ ଜନ୍ମ ତାରିଖ ଅନୁସାରେ ଟୀକା ଦିଆଯାଏ।' },
+  'tv.note': { en: 'Use the child\'s card to record doses — this tool only lists dates. Babies born early are vaccinated by their actual date of birth.', or: 'ଟୀକା ଲେଖିବା ପାଇଁ ଶିଶୁର କାର୍ଡ ବ୍ୟବହାର କରନ୍ତୁ — ଏଠାରେ କେବଳ ତାରିଖ। ସମୟ ପୂର୍ବରୁ ଜନ୍ମିତ ଶିଶୁଙ୍କୁ ପ୍ରକୃତ ଜନ୍ମ ତାରିଖ ଅନୁସାରେ ଟୀକା ଦିଆଯାଏ।' },
   /* z-scores */
   'tz.date': { en: 'Date measured', or: 'ମାପ ତାରିଖ' }, 'tz.ga': { en: 'Weeks of pregnancy at birth (if born early)', or: 'ଜନ୍ମ ସମୟରେ ଗର୍ଭର ସପ୍ତାହ (ସମୟ ପୂର୍ବରୁ ଜନ୍ମ ହେଲେ)' },
   'tz.need': { en: 'Enter sex, date of birth and at least one measurement.', or: 'ଲିଙ୍ଗ, ଜନ୍ମ ତାରିଖ ଓ ଅତି କମ୍‌ରେ ଗୋଟିଏ ମାପ ଦିଅନ୍ତୁ।' },
@@ -6260,7 +6360,7 @@ K.route('/tools/edd', () => page('edd', h`<form class="form" data-form="noop" id
       ${K.ui.field({ name: 'lmp2', type: 'date', label: T('edd.lmpOpt'), max: K.d.today(), attrs: { 'data-live': 'tEdd' } })}
       <p class="small faint" style="margin:0">${T('edd.usgNote')}</p></div>
     <div class="fgroup" data-b="edd" hidden>${K.ui.field({ name: 'edd', type: 'date', label: T('edd.edd'), attrs: { 'data-live': 'tEdd' } })}</div>
-  </form>${resBox()}${src('Naegele\'s rule (LMP + 280 days); ACOG Committee Opinion 700 (2017) for scan versus LMP dating; ANC schedule and PMSMA (9th of every month) as on the MCP card.')}`, { mount() { K.live.tEdd(); } }));
+  </form>${resBox()}${src('Naegele\'s rule (LMP + 280 days); ACOG Committee Opinion 700 (2017, reaffirmed 2025) for scan versus LMP dating; ANC schedule and PMSMA (9th of every month) as on the MCP card.')}`, { mount() { K.live.tEdd(); } }));
 K.forms.noop = () => {};
 K.live.tEdd = K.debounce(() => {
   const f = K.$('#tedd'); if (!f) return; const v = K.formData(f); const b = v.basis || 'lmp';
@@ -6541,6 +6641,7 @@ K.route('/settings', () => {
         <div class="field"><span class="lbl">${K.t('set.ifaDays')}</span>
           <div class="choices">${[[2, 5], [3, 6]].map(p => h`<label class="choice"><input type="radio" name="ifaDays" value="${p.join(',')}" ${String(s.ifaDays) === p.join(',') ? K.raw('checked') : ''} data-live="setIfaDays"><span>${K.d.WD[K.i18n.lang === 'or' ? 'or' : 'en'][p[0]]} + ${K.d.WD[K.i18n.lang === 'or' ? 'or' : 'en'][p[1]]}</span></label>`)}</div>
           <span class="hint">${K.t('set.ifaDaysSub')}</span></div>
+        ${K.ui.choices({ name: 'visitPlan', label: K.t('set.plan'), value: s.visitPlan === 'hbnc' ? 'hbnc' : 'ssbsk', options: ['ssbsk', 'hbnc'].map(v => ({ v, l: K.t('set.plan.' + v) })), live: 'setPlan', hint: K.t('set.planSub') })}
         <div class="field"><label for="sp-rate">${K.t('set.speech')}</label>
           <input id="sp-rate" type="range" min="0.6" max="1.3" step="0.05" value="${rate}" data-live="setRate"></div>
       </div>
@@ -6553,6 +6654,7 @@ K.live.setBool = (el) => { K.settings.set(el.name, el.checked); if (el.name === 
 K.live.setText = K.debounce((el) => { K.settings.set(el.name, el.value.trim()); }, 400);
 K.live.setIfaDays = (el) => { K.settings.set('ifaDays', el.value.split(',').map(Number)); };
 K.live.setRate = (el) => { K.settings.set('speechRate', +el.value); };
+K.live.setPlan = (el) => { K.settings.set('visitPlan', el.value); K.ui.toast(K.t('saved')); };
 
 K.route('/about', () => ({
   title: K.t('about.title'), back: '/more', tab: 'more',
@@ -6571,7 +6673,10 @@ K.route('/about', () => ({
         <li>Anaemia Mukt Bharat Abhiyaan operational guidelines (MoHFW, June 2026): WHO 2024 haemoglobin cut-offs, treatment and prevention doses, deworming. HBNC and HBYC guidelines (MoHFW).</li>
         <li>MAMATA-PMMVY, Department of Women & Child Development and Mission Shakti, Odisha (effective 1 April 2025).</li>
         <li>IMNCI (WHO / MoHFW) and WHO Treatment of Diarrhoea (2005): fast-breathing cut-offs, danger signs, dehydration plans A–C, zinc.</li>
-        <li>ACOG Committee Opinion 700 (2017): when an ultrasound replaces the LMP for dating.</li>
+        <li>ACOG Committee Opinion 700 (2017, reaffirmed 2025): when an ultrasound replaces the LMP for dating.</li>
+        <li>Samagra Shishu Bal Swasthya Karyakram (SSBSK) operational guidelines, MoHFW, 2026 (launched 29 June 2026): home visits for newborns and children up to 3 years. HBNC and HBYC as printed on the Odisha card remain available in Settings.</li>
+        <li>PIB, 28 February 2026: nationwide HPV vaccination for girls aged 14 (single dose), continuing on routine immunisation days after the drive.</li>
+        <li>Government of Odisha, June 2021: the 102 and 108 ambulance lines merged into 108 (OdishaTV, 30 June 2021; Odisha card cover "108 / 108 – Janani Express").</li>
         <li>Indian Academy of Pediatrics (2022): nutritional anaemia in children, Indian Pediatrics 59:782–801.</li>
       </ul></section>
     <section class="sec">${K.ui.eyebrow(K.t('rev.title'))}<p class="small">${K.t('rev.sub')}</p>${K.ui.btn(K.t('rev.title'), { act: 'reviewCsv', tone: 'ghost', icon: 'download', size: 'sm' })}</section>
@@ -6633,7 +6738,7 @@ K.backup = {
     const media = (await K.db.all('media') || []).filter(m => cards.some(c => c.id === m.cardId));
     const s = K.settings.data;
     return { app: 'kavach', format: 1, exportedAt: new Date().toISOString(), build: K.build, cards, media,
-      settings: cardIds ? undefined : { lang: s.lang, mode: s.mode, district: s.district, jeArea: s.jeArea, ifaDays: s.ifaDays, odiaNum: s.odiaNum } };
+      settings: cardIds ? undefined : { lang: s.lang, mode: s.mode, district: s.district, jeArea: s.jeArea, ifaDays: s.ifaDays, visitPlan: s.visitPlan, odiaNum: s.odiaNum } };
   },
   fileName(cardName) { return `kavach-${cardName ? String(cardName).replace(/[^\w଀-୿]+/g, '-').slice(0, 30) + '-' : 'backup-'}${K.d.today()}.json`; },
   async file(cardIds, name) { const data = await this.build(cardIds); return new File([JSON.stringify(data)], this.fileName(name), { type: 'application/json' }); },
@@ -6812,7 +6917,9 @@ K.acts.dueIcs = () => {
    Sources: national MCP card 2018 p.1 (JSY, JSSK, PMSMA); Odisha MCP card
    V-2023-24 pp.43–46 (JSY amounts, e-PMSMA travel, NRC, ₹500 drop-back, SUMAN,
    Kilkari); WCD Odisha MAMATA-PMMVY page (checked 9 Oct 2026); AIR News
-   24 Oct 2025 (POSHAN / PMMVY helpline 1515 replaced 14408 from 1 Nov 2025).
+   24 Oct 2025 (POSHAN / PMMVY helpline 1515 replaced 14408 from 1 Nov 2025);
+   OdishaTV 30 Jun 2021 and the Odisha card cover ("108 / 108 – Janani Express"):
+   Odisha merged the 102 Janani Express line into 108.
    ============================================================================ */
 const h = K.h;
 
@@ -6830,8 +6937,7 @@ K.i18n.add({
 
 K.help = {};
 K.help.CALLS = [
-  { n: '108', icon: 'ambulance', tone: 'danger', t: { en: 'Ambulance — any emergency', or: 'ଆମ୍ବୁଲାନ୍ସ — ଯେକୌଣସି ଜରୁରୀ ଅବସ୍ଥା' } },
-  { n: '102', icon: 'ambulance', t: { en: 'Janani Express — pregnant women, mothers up to 42 days after delivery, sick infants up to 1 year', or: 'ଜନନୀ ଏକ୍ସପ୍ରେସ୍ — ଗର୍ଭବତୀ, ପ୍ରସବର ୪୨ ଦିନ ପର୍ଯ୍ୟନ୍ତ ମା’, ୧ ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ ଅସୁସ୍ଥ ଶିଶୁ' } },
+  { n: '108', icon: 'ambulance', tone: 'danger', t: { en: 'Free ambulance for any emergency — also Janani Express for pregnant women, mothers up to 42 days after delivery and sick infants (in Odisha, 102 is now part of 108)', or: 'ଯେକୌଣସି ଜରୁରୀ ଅବସ୍ଥାରେ ମାଗଣା ଆମ୍ବୁଲାନ୍ସ — ଗର୍ଭବତୀ, ପ୍ରସବର ୪୨ ଦିନ ପର୍ଯ୍ୟନ୍ତ ମା\' ଓ ଅସୁସ୍ଥ ଶିଶୁଙ୍କ ପାଇଁ ଜନନୀ ଏକ୍ସପ୍ରେସ୍ ମଧ୍ୟ (ଓଡ଼ିଶାରେ ୧୦୨ ଏବେ ୧୦୮ ର ଅଂଶ)' } },
   { n: '104', icon: 'phone', t: { en: 'Health helpline, 24 hours — advice and complaints', or: 'ସ୍ୱାସ୍ଥ୍ୟ ହେଲ୍ପଲାଇନ୍, ୨୪ ଘଣ୍ଟା — ପରାମର୍ଶ ଓ ଅଭିଯୋଗ' } },
   { n: '14416', icon: 'heart', t: { en: 'Tele-MANAS — feeling low, worried or not coping (free, 24 hours)', or: 'ଟେଲି-ମାନସ — ମନ ଦୁଃଖ, ଚିନ୍ତା ବା ଅସହାୟ ଲାଗିଲେ (ମାଗଣା, ୨୪ ଘଣ୍ଟା)' } },
   { n: '14423', icon: 'sound', t: { en: 'Kilkari — listen again to the weekly health messages (from the registered mobile)', or: 'କିଲକାରୀ — ସାପ୍ତାହିକ ସ୍ୱାସ୍ଥ୍ୟ ବାର୍ତ୍ତା ପୁଣି ଶୁଣନ୍ତୁ (ପଞ୍ଜୀକୃତ ମୋବାଇଲ୍‌ରୁ)' } },
@@ -6853,7 +6959,7 @@ K.help.SCHEMES = [
     src: 'Odisha MCP card V-2023-24, p.43', d: '2026-10-10' },
   { k: 'mamata', icon: 'mother', t: S('MAMATA–PMMVY (Odisha)', 'ମମତା–PMMVY (ଓଡ଼ିଶା)'),
     items: [S('From 1 April 2025: ₹6,000 after registering the pregnancy at the Anganwadi centre and at least one check-up within 6 months of the last period', '୧ ଏପ୍ରିଲ୍ ୨୦୨୫ ରୁ: ଅଙ୍ଗନୱାଡ଼ି କେନ୍ଦ୍ରରେ ଗର୍ଭ ପଞ୍ଜୀକରଣ ଓ ଶେଷ ଋତୁସ୍ରାବର ୬ ମାସ ମଧ୍ୟରେ ଅତି କମ୍‌ରେ ଗୋଟିଏ ପରୀକ୍ଷା ପରେ ୬,୦୦୦ ଟଙ୍କା'),
-      S('Second instalment after birth registration and the baby’s vaccines up to 14 weeks: ₹4,000 for a boy, ₹6,000 for a girl', 'ଜନ୍ମ ପଞ୍ଜୀକରଣ ଓ ଶିଶୁର ୧୪ ସପ୍ତାହ ପର୍ଯ୍ୟନ୍ତ ଟୀକା ପରେ ଦ୍ୱିତୀୟ କିସ୍ତି: ପୁଅ ପାଇଁ ୪,୦୦୦ ଟଙ୍କା, ଝିଅ ପାଇଁ ୬,୦୦୦ ଟଙ୍କା'),
+      S('Second instalment after birth registration and the baby\'s vaccines up to 14 weeks: ₹4,000 for a boy, ₹6,000 for a girl', 'ଜନ୍ମ ପଞ୍ଜୀକରଣ ଓ ଶିଶୁର ୧୪ ସପ୍ତାହ ପର୍ଯ୍ୟନ୍ତ ଟୀକା ପରେ ଦ୍ୱିତୀୟ କିସ୍ତି: ପୁଅ ପାଇଁ ୪,୦୦୦ ଟଙ୍କା, ଝିଅ ପାଇଁ ୬,୦୦୦ ଟଙ୍କା'),
       S('For up to two live births; women of PVTG communities for all births until 31 March 2029', 'ଦୁଇଟି ଜୀବିତ ସନ୍ତାନ ପର୍ଯ୍ୟନ୍ତ; PVTG ସମ୍ପ୍ରଦାୟର ମହିଳାଙ୍କ ପାଇଁ ୩୧ ମାର୍ଚ୍ଚ ୨୦୨୯ ପର୍ଯ୍ୟନ୍ତ ସମସ୍ତ ଜନ୍ମ'),
       S('Apply through the Anganwadi worker. Documents asked for include Aadhaar, a bank or post-office account, the MCP card and ABHA ID — this app does not store Aadhaar or bank details.', 'ଅଙ୍ଗନୱାଡ଼ି କର୍ମୀଙ୍କ ମାଧ୍ୟମରେ ଆବେଦନ କରନ୍ତୁ। ଆଧାର, ବ୍ୟାଙ୍କ ବା ଡାକଘର ଆକାଉଣ୍ଟ, MCP କାର୍ଡ ଓ ABHA ID ଆବଶ୍ୟକ — ଏହି ଆପ୍ ଆଧାର ବା ବ୍ୟାଙ୍କ ବିବରଣୀ ରଖେ ନାହିଁ।')],
     src: 'WCD Odisha, MAMATA-PMMVY page (wcd.odisha.gov.in)', d: '2026-10-09' },
@@ -6922,7 +7028,7 @@ K.i18n.add({
   'pr.do': { en: 'Print or save as PDF', or: 'ପ୍ରିଣ୍ଟ କରନ୍ତୁ ବା PDF ସେଭ୍ କରନ୍ତୁ' },
   'pr.hint': { en: 'In the print window choose "Save as PDF" to keep a file, or send it to a printer.', or: 'ପ୍ରିଣ୍ଟ ୱିଣ୍ଡୋରେ ଫାଇଲ୍ ରଖିବା ପାଇଁ “Save as PDF” ବାଛନ୍ତୁ, ବା ପ୍ରିଣ୍ଟରକୁ ପଠାନ୍ତୁ।' },
   'pr.head': { en: 'Mother and child card — summary', or: 'ମା’ ଓ ଶିଶୁ କାର୍ଡ — ସାରାଂଶ' },
-  'pr.printed': { en: 'Printed on {d} from Maa ’o’ Shishu Kavach (not an official government record). Keep with the MCP card.', or: '{d} ରେ ମା’ ଓ ଶିଶୁ କବଚରୁ ଛପା (ସରକାରୀ ରେକର୍ଡ ନୁହେଁ)। MCP କାର୍ଡ ସହ ରଖନ୍ତୁ।' },
+  'pr.printed': { en: 'Printed on {d} from Maa \'o\' Shishu Kavach (not an official government record). Keep with the MCP card.', or: '{d} ରେ ମା’ ଓ ଶିଶୁ କବଚରୁ ଛପା (ସରକାରୀ ରେକର୍ଡ ନୁହେଁ)। MCP କାର୍ଡ ସହ ରଖନ୍ତୁ।' },
   'pr.mother': { en: 'Mother', or: 'ମା’' }, 'pr.contacts': { en: 'Contacts', or: 'ଯୋଗାଯୋଗ' },
   'pr.preg': { en: 'Pregnancy', or: 'ଗର୍ଭାବସ୍ଥା' }, 'pr.anc': { en: 'Check-ups', or: 'ଗର୍ଭାବସ୍ଥାର ପରୀକ୍ଷା' },
   'pr.child': { en: 'Child', or: 'ଶିଶୁ' }, 'pr.vaxGiven': { en: 'Vaccines given', or: 'ଦିଆଯାଇଥିବା ଟୀକା' }, 'pr.vaxNext': { en: 'Due or overdue', or: 'ବାକି / ବିଳମ୍ବ' },
@@ -7062,7 +7168,7 @@ K.sample.build = (today) => {
   p.tests = { bloodGroup: 'B+', hiv: 'neg', hivDate: W(10, 2), syphilis: 'neg', syphilisDate: W(10, 2), hbsag: 'neg', hbsagDate: W(10, 2), malaria: 'neg', malariaDate: W(18, 1), ogtt: 118, ogttDate: W(24, 3) };
   const tick = (o, from) => { let d = from; let i = 0; while (K.d.cmp(d, today) < 0) { if (i % 7 !== 5) o.days[d] = 1; d = K.d.addDays(d, 1); i++; } o.start = from; };
   tick(p.ifa, W(14)); tick(p.calcium, W(14));
-  p.birthPlan = { facility: 'CHC Kutra', vehicle: '102', contact: 1, hospital: 1, transport: 1, jsy: 1 };
+  p.birthPlan = { facility: 'CHC Kutra', vehicle: '108', contact: 1, hospital: 1, transport: 1, jsy: 1 };
 
   k.pregId = '';
   c.pregnancies.push(p); c.children.push(k);

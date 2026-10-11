@@ -99,7 +99,7 @@ Object.assign(K.preg, {
   lmpEq(p) { const e = K.preg.edd(p); return e ? K.d.addDays(e, -280) : null; },
   ga(p, on) { const e = K.preg.edd(p); if (!e) return null; const days = 280 - K.d.diff(on || K.d.today(), e); return { days, w: Math.floor(days / 7), d: ((days % 7) + 7) % 7 }; },
   tri: (days) => (days < 98 ? 1 : days < 196 ? 2 : 3),
-  /* scan or LMP? ACOG Committee Opinion 700 (2017): redate to the scan only when the two differ by more
+  /* scan or LMP? ACOG Committee Opinion 700 (2017, reaffirmed 2025): redate to the scan only when the two differ by more
      than 5 days (scan before 9 weeks), 7 (9–15+6), 10 (16–21+6), 14 (22–27+6) or 21 days (28 weeks on) */
   datingRule(lmp, usgDate, usgWeeks, usgDays) {
     if (!lmp || !usgDate || usgWeeks == null) return null;
