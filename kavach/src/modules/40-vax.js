@@ -1,9 +1,10 @@
 /* ============================================================================
    modules/40-vax — immunisation engine, child tracker, Vitamin A +
    albendazole, missed-dose record, due items. Schedule in data/30-vaccines.
-   Status per dose: given · due (from due date for 4 weeks) · overdue ·
-   upcoming · waiting (previous dose of the series not yet given) ·
-   missed (catch-up limit passed) · na (JE outside endemic districts, HPV boys).
+   Status per dose: given · due (from the due date to the end of the NIS
+   window, at least 4 weeks) · overdue · upcoming · waiting (previous dose of
+   the series not yet given) · missed (age limit passed) · na (JE outside
+   endemic districts, HPV for boys, DPT while the child is still on Penta).
    ============================================================================ */
 const h = K.h;
 
@@ -39,7 +40,9 @@ K.i18n.add({
   'vax.upto': { en: 'Can be given until {d}', or: '{d} ପର୍ଯ୍ୟନ୍ତ ଦିଆଯାଇପାରିବ' },
   'vax.jeOnly': { en: 'Only in selected districts', or: 'କେବଳ ନିର୍ଦ୍ଦିଷ୍ଟ ଜିଲ୍ଲାରେ' },
   'vax.hpvNote': { en: 'Single dose for girls at 14 years, free at government facilities (from 2026).', or: '୧୪ ବର୍ଷ ବୟସର ଝିଅମାନଙ୍କ ପାଇଁ ଗୋଟିଏ ମାତ୍ରା, ସରକାରୀ ସ୍ୱାସ୍ଥ୍ୟକେନ୍ଦ୍ରରେ ମାଗଣା (୨୦୨୬ ଠାରୁ)।' },
-  'vax.altDpt': { en: 'Penta cannot be started after 1 year — the ANM will give DPT instead.', or: '୧ ବର୍ଷ ପରେ ପେଣ୍ଟା ଆରମ୍ଭ କରାଯାଏ ନାହିଁ — ଏ.ଏନ୍.ଏମ୍. ଡି.ପି.ଟି. ଦେବେ।' },
+  'vax.altDpt': { en: 'Too late for Penta at this age — DPT is given in its place.', or: 'ଏହି ବୟସରେ ପେଣ୍ଟା ଦିଆଯାଏ ନାହିଁ — ତା ବଦଳରେ ଡି.ପି.ଟି. ଦିଆଯାଏ।' },
+  'vax.dptFor': { en: 'In place of {x}', or: '{x} ବଦଳରେ' },
+  'vax.notAfter1': { en: 'Not started after 1 year in the government programme.', or: 'ସରକାରୀ କାର୍ଯ୍ୟକ୍ରମରେ ୧ ବର୍ଷ ପରେ ଆରମ୍ଭ କରାଯାଏ ନାହିଁ।' },
   'vax.missedNote': { en: 'Window closed; ask the ANM about catch-up.', or: 'ସମୟସୀମା ବିତିଗଲା; ଏ.ଏନ୍.ଏମ୍.ଙ୍କୁ ପଚାରନ୍ତୁ।' },
   'vax.four': { en: 'Four key messages on vaccination day', or: 'ମା\'ମାନଙ୍କ ପାଇଁ ଟୀକାକରଣ ଦିନ ଚାରୋଟି ଗୁରୁତ୍ୱପୂର୍ଣ୍ଣ ବାର୍ତ୍ତା' },
   'vax.know': { en: 'Things to know about vaccination', or: 'ଟୀକାଦାନ ବିଷୟରେ କେତୋଟି ଜାଣିବା କଥା' },
@@ -47,7 +50,7 @@ K.i18n.add({
   'vax.uwinSub': { en: 'Vaccines given at government sessions are recorded on U-WIN. Download the certificate with the mobile number given at registration.', or: 'ସରକାରୀ ଅଧିବେଶନରେ ଦିଆଯାଇଥିବା ଟୀକା U-WIN ରେ ଲେଖାଯାଏ। ପଞ୍ଜୀକରଣ ସମୟର ମୋବାଇଲ୍ ନମ୍ବର ସହ ପ୍ରମାଣପତ୍ର ଡାଉନଲୋଡ୍ କରନ୍ତୁ।' },
   'vax.how': { en: 'Dose and route', or: 'ମାତ୍ରା ଓ ପ୍ରୟୋଗ' },
   'vita.title': { en: 'Vitamin A and deworming', or: 'ଭିଟାମିନ୍ ଏ ଓ କୃମିନାଶକ' },
-  'vita.rule': { en: 'Vitamin A at 9 months (1 lakh IU), then 2 lakh IU every 6 months until 5 years — 9 doses. From 18 months, albendazole is given with it (1–2 years: 200 mg; 2 years and above: 400 mg).', or: '୯ ମାସରେ ଭିଟାମିନ୍ ଏ (୧ ଲକ୍ଷ IU), ତା\'ପରେ ୫ ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ ପ୍ରତି ୬ ମାସରେ ୨ ଲକ୍ଷ IU — ୯ଟି ମାତ୍ରା। ୧୮ ମାସରୁ ଏହା ସହ କୃମିନାଶକ ଆଲ୍‌ବେଣ୍ଡାଜୋଲ୍ (୧–୨ ବର୍ଷ: ୨୦୦ ମି.ଗ୍ରା.; ୨ ବର୍ଷ ଓ ଅଧିକ: ୪୦୦ ମି.ଗ୍ରା.)।' },
+  'vita.rule': { en: 'Vitamin A at 9 months, then every 6 months until 5 years — 9 doses. Under 12 months the dose is 1 lakh IU (1 ml); from 12 months it is 2 lakh IU (2 ml), also when the first dose is late. Albendazole for worms twice a year from 12 months (1–2 years: 200 mg; 2 years and above: 400 mg); from 18 months it is given with Vitamin A.', or: '୯ ମାସରେ ଭିଟାମିନ୍ ଏ, ତା\'ପରେ ୫ ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ ପ୍ରତି ୬ ମାସରେ — ୯ଟି ମାତ୍ରା। ୧୨ ମାସରୁ କମ୍ ବୟସରେ ମାତ୍ରା ୧ ଲକ୍ଷ IU (୧ ମି.ଲି.); ୧୨ ମାସରୁ ୨ ଲକ୍ଷ IU (୨ ମି.ଲି.), ପ୍ରଥମ ମାତ୍ରା ବିଳମ୍ବରେ ଦିଆଗଲେ ମଧ୍ୟ। କୃମିନାଶକ ଆଲ୍‌ବେଣ୍ଡାଜୋଲ୍ ୧୨ ମାସରୁ ବର୍ଷକୁ ଦୁଇଥର (୧–୨ ବର୍ଷ: ୨୦୦ ମି.ଗ୍ରା.; ୨ ବର୍ଷ ଓ ଅଧିକ: ୪୦୦ ମି.ଗ୍ରା.); ୧୮ ମାସରୁ ଭିଟାମିନ୍ ଏ ସହ ଦିଆଯାଏ।' },
   'vita.vitA': { en: 'Vitamin A', or: 'ଭିଟାମିନ୍ ଏ' }, 'vita.alb': { en: 'Albendazole', or: 'ଆଲ୍‌ବେଣ୍ଡାଜୋଲ୍' },
   'vita.at': { en: 'at {m} months', or: '{m} ମାସରେ' },
   'vax.open': { en: 'Open vaccination record', or: 'ଟୀକାକରଣ ସୂଚନା ଖୋଲନ୍ତୁ' },
@@ -67,35 +70,57 @@ K.vax.state = (k, today, ctx) => {
     if (it.sex && k.sex && it.sex !== k.sex) r = { st: 'na', why: 'sex' };
     else if (it.je && !ctx.je && !rec.date) r = { st: 'na', why: 'je' };
     else if (rec.date) r = { st: 'given', date: rec.date };
+    // a DPT dose comes into use only once the Penta dose it replaces can no longer be given
+    else if (it.for && !(out[it.for] && out[it.for].st === 'missed')) r = { st: 'na', why: 'track' };
     else {
       let due = K.vax.at(k.dob, it.due); let after = null;
-      if (it.prev) { const pg = gv(k, it.prev); if (pg) due = K.d.max(due, K.d.addDays(pg, it.gap || 28)); else after = it.prev; }
+      const prevId = it.prevAlt && out[it.prev] && out[it.prev].st === 'na' ? it.prevAlt : it.prev;
+      if (prevId) {
+        const pg = gv(k, prevId);
+        if (pg) {
+          const gapM = it.gapM || (it.lateGapM && K.d.age(k.dob, pg).months >= 12 ? it.lateGapM : 0);
+          due = K.d.max(due, gapM ? K.d.addMonths(pg, gapM) : K.d.addDays(pg, it.gap || 28));
+        } else after = prevId;
+      }
       const lim = it.upto ? K.vax.at(k.dob, it.upto) : null;
       const startLim = it.start && !it.prev ? K.vax.at(k.dob, it.start) : null;
-      const prevSt = it.prev ? out[it.prev] : null;
+      const prevSt = prevId ? out[prevId] : null;
       if (startLim && K.d.cmp(today, startLim) > 0) r = { st: 'missed', due, why: 'start', alt: it.alt };
-      else if (lim && K.d.cmp(today, lim) > 0) r = { st: 'missed', due, why: 'upto' };
-      else if (after && prevSt && (prevSt.st === 'missed' || prevSt.st === 'na')) r = { st: prevSt.st, due, why: 'prev' };
+      else if (lim && K.d.cmp(today, lim) > 0) r = { st: 'missed', due, why: 'upto', alt: it.alt };
+      else if (after && prevSt && (prevSt.st === 'missed' || prevSt.st === 'na')) r = { st: prevSt.st, due, why: 'prev', alt: it.alt, noStart: prevSt.why === 'start' || !!prevSt.noStart };
       else if (after) r = { st: 'waiting', due, after, lim };
-      else { const lag = K.d.diff(due, today); r = { st: lag < 0 ? 'upcoming' : lag <= 28 ? 'due' : 'overdue', due, lim }; }
+      else {
+        const lag = K.d.diff(due, today); const end = K.d.max(K.d.addDays(due, 28), it.win ? K.vax.at(k.dob, it.win) : null);
+        r = { st: lag < 0 ? 'upcoming' : K.d.cmp(today, end) <= 0 ? 'due' : 'overdue', due, lim };
+      }
       if (rec.missed) r.missedRec = rec.missed;
     }
     out[it.id] = Object.assign({ it }, r);
   });
   return out;
 };
+/* Vitamin A dose and albendazole dose follow the child's age on the day given (or due, or today if late) */
+const ageOn = (k, today, date, due) => K.d.age(k.dob, date || (K.d.cmp(today, due) > 0 ? today : due)).months;
+const doseSt = (date, due, closes, today) => { if (date) return 'given'; if (K.d.cmp(today, closes) >= 0) return 'missed'; const lag = K.d.diff(due, today); return lag < 0 ? 'upcoming' : lag <= 28 ? 'due' : 'overdue'; };
 K.vax.vitaState = (k, today) => {
   today = today || K.d.today(); if (!k.dob) return [];
   return K.vax.VITA.map((v, i) => {
     const date = (k.vitA || {})[v.n]; const alb = (k.alb || {})[v.n];
     const due = K.d.addMonths(k.dob, v.m); const next = K.vax.VITA[i + 1]; const closes = next ? K.d.addMonths(k.dob, next.m) : K.d.addMonths(k.dob, 60 + 6);
-    let st; if (date) st = 'given'; else if (K.d.cmp(today, closes) >= 0) st = 'missed'; else { const lag = K.d.diff(due, today); st = lag < 0 ? 'upcoming' : lag <= 28 ? 'due' : 'overdue'; }
-    return { v, date, alb, due, st, albDose: v.m < 24 ? '200 mg' : '400 mg' };
+    return { v, date, alb, due, st: doseSt(date, due, closes, today), dose: K.vax.vitaDose(ageOn(k, today, date, due)), albDose: K.vax.albDose(ageOn(k, today, alb || date, due)) };
   });
 };
-K.vax.counts = (st) => { const vals = Object.values(st).filter(s => s.st !== 'na' && s.st !== 'upcoming' && s.st !== 'waiting'); return { n: vals.filter(s => s.st === 'given').length, t: vals.length }; };
+/* albendazole alone at 12 months (stored as alb[0]); the next dose comes with Vit-A 2 at 18 months */
+K.vax.alb0State = (k, today) => {
+  today = today || K.d.today(); if (!k.dob) return null;
+  const v = K.vax.ALB0; const date = (k.alb || {})[0]; const due = K.d.addMonths(k.dob, v.m);
+  return { v, date, due, st: doseSt(date, due, K.d.addMonths(k.dob, 18), today), albDose: K.vax.albDose(ageOn(k, today, date, due)) };
+};
+/* missed Penta doses replaced by DPT are not counted twice */
+K.vax.counts = (st) => { const vals = Object.values(st).filter(s => s.st !== 'na' && s.st !== 'upcoming' && s.st !== 'waiting' && !(s.st === 'missed' && s.alt === 'dpt')); return { n: vals.filter(s => s.st === 'given').length, t: vals.length }; };
 K.vax.fic = (k, st) => {
-  const ids = ['BCG', 'OPV1', 'OPV2', 'OPV3', 'Penta1', 'Penta2', 'Penta3', 'MR1'];
+  const dpt = ['Penta1', 'Penta2', 'Penta3'].map((id, i) => (st[id] && st[id].st === 'given' ? id : 'DPT' + (i + 1)));
+  const ids = ['BCG', 'OPV1', 'OPV2', 'OPV3', ...dpt, 'MR1'];
   if (!ids.every(id => st[id] && st[id].st === 'given')) return null;
   const last = ids.map(id => st[id].date).sort().pop();
   const fic = K.d.cmp(last, K.d.addMonths(k.dob, 12)) <= 0 ? 'fic' : 'ficLate';
@@ -121,23 +146,24 @@ K.route('/card/:id/child/:kid/vax', ({ id, kid }) => {
   const c = K.card.load(id); if (!c) return K.screens.notFound(); const k = K.card.findKid(c, kid); if (!k) return K.screens.notFound();
   if (!k.dob) return { title: K.t('vax.tracker'), back: K.child.url(c, k).slice(1), html: h`<div class="wrap">${K.ui.callout('warn', '', K.t('vax.needDob'))}</div>` };
   const st = K.vax.state(k); const cnt = K.vax.counts(st); const fic = K.vax.fic(k, st);
-  const hcp = K.settings.isHcp(); const vita = K.vax.vitaState(k);
+  const hcp = K.settings.isHcp(); const vita = K.vax.vitaState(k); const alb0 = K.vax.alb0State(k);
   const ageM = K.d.age(k.dob).months;
   const row = (s) => {
     const it = s.it; const meta = [];
     if (s.st === 'given') meta.push(K.d.fmt(s.date)); else if (s.st === 'waiting') meta.push(K.t('vax.after', { x: (K.vax.LIST.find(i => i.id === s.after) || {}).code || '' })); else if (s.due) meta.push(K.t('vax.dueOn', { d: K.d.fmt(s.due) }));
     if (s.st !== 'given' && s.lim && s.st !== 'missed') meta.push(K.t('vax.upto', { d: K.d.fmt(s.lim) }));
     if (s.why === 'je') meta.push(K.t('vax.jeOnly'));
-    if (s.st === 'missed' && s.alt === 'dpt') meta.push(K.t('vax.altDpt')); else if (s.st === 'missed') meta.push(K.t('vax.missedNote'));
+    if (it.for && s.st !== 'na') meta.push(K.t('vax.dptFor', { x: (K.vax.LIST.find(i => i.id === it.for) || {}).code || '' }));
+    if (s.st === 'missed') meta.push(s.alt === 'dpt' ? K.t('vax.altDpt') : s.why === 'start' || s.noStart ? K.t('vax.notAfter1') : K.t('vax.missedNote'));
     if (it.campaign) meta.push(K.t('vax.hpvNote'));
-    return h`<button type="button" class="vrow ${s.st}" data-act="vaxSheet" data-arg="${c.id}|${k.id}|${it.id}" ${s.why === 'sex' ? K.raw('hidden') : ''}>
+    return h`<button type="button" class="vrow ${s.st}" data-act="vaxSheet" data-arg="${c.id}|${k.id}|${it.id}" ${s.why === 'sex' || s.why === 'track' ? K.raw('hidden') : ''}>
       <span class="vchip">${s.st === 'given' ? K.ui.icon('check', 'sm') : K.ui.icon('syringe', 'sm')}</span>
       <span class="vbody"><b class="vcode">${it.code}</b><span class="vp">${K.L(it.p)}</span><span class="vm">${meta.join(' · ')}</span>${hcp ? h`<span class="vhow mono">${it.how}</span>` : ''}</span>
       ${K.ui.pill(K.vax.lbl(s), K.vax.tone(s))}</button>`;
   };
   const vrowVita = (x) => h`<button type="button" class="vrow ${x.st}" data-act="vitaSheet" data-arg="${c.id}|${k.id}|${x.v.n}">
       <span class="vchip">${x.st === 'given' ? K.ui.icon('check', 'sm') : K.ui.icon('drop', 'sm')}</span>
-      <span class="vbody"><b class="vcode">${x.v.code}</b><span class="vp">${K.L(K.vax.P.vita)}</span><span class="vm">${x.date ? K.d.fmt(x.date) : K.t('vax.dueOn', { d: K.d.fmt(x.due) })}${x.v.alb ? ' · ' + K.t('vita.alb') + (x.alb ? ' ' + K.d.fmt(x.alb) : ' ' + x.albDose) : ''}</span>${hcp ? h`<span class="vhow mono">${x.v.dose} · oral</span>` : ''}</span>
+      <span class="vbody"><b class="vcode">${x.v.code}</b><span class="vp">${K.L(K.vax.P.vita)}</span><span class="vm">${x.date ? K.d.fmt(x.date) : K.t('vax.dueOn', { d: K.d.fmt(x.due) })}${x.v.alb ? ' · ' + K.t('vita.alb') + (x.alb ? ' ' + K.d.fmt(x.alb) : ' ' + x.albDose) : ''}</span>${hcp ? h`<span class="vhow mono">${x.dose} · oral</span>` : ''}</span>
       ${K.ui.pill(K.vax.lbl({ st: x.st }), K.vax.tone({ st: x.st }))}</button>`;
   let nextOpen = false;
   const visits = K.vax.VISITS.filter(v => v.k !== 'y14' || k.sex !== 'm').map(v => {
@@ -162,8 +188,10 @@ K.route('/card/:id/child/:kid/vax', ({ id, kid }) => {
       ${!K.settings.get('jeArea') ? h`<p class="small faint" style="margin-top:8px">JE · ${K.t('set.jeSub')} <a href="#/settings">${K.t('more.settings')}</a></p>` : ''}
       <div class="vgroups">${visits}</div>
       <section class="sec" id="vita">${K.ui.secH(K.t('vita.title'))}<p class="small">${K.t('vita.rule')}</p>
-        <div class="list">${vita.filter(x => x.v.m <= Math.max(ageM + 12, 9)).map(x => K.ui.li({ act: 'vitaSheet', arg: `${c.id}|${k.id}|${x.v.n}`, icon: x.st === 'given' ? 'check' : 'drop', tone: x.st === 'given' ? 'done' : x.st === 'overdue' ? 'red' : x.st === 'due' ? 'amber' : 'ink',
-          title: `${x.v.code} · ${K.t('vita.at', { m: x.v.m })}`, meta: [x.date ? K.t('vita.vitA') + ' ' + K.d.fmt(x.date) : K.d.fmt(x.due) + ' · ' + x.v.dose, x.v.alb ? (x.alb ? K.t('vita.alb') + ' ' + K.d.fmt(x.alb) : K.t('vita.alb') + ' ' + x.albDose) : ''].filter(Boolean).join(' · '),
+        <div class="list">${vita.concat(alb0 ? [alb0] : []).filter(x => x.v.m <= Math.max(ageM + 12, 9)).sort((a, b) => a.v.m - b.v.m).map(x => K.ui.li({ act: 'vitaSheet', arg: `${c.id}|${k.id}|${x.v.n}`, icon: x.st === 'given' ? 'check' : x.v.n === 0 ? 'pill' : 'drop', tone: x.st === 'given' ? 'done' : x.st === 'overdue' ? 'red' : x.st === 'due' ? 'amber' : 'ink',
+          title: `${x.v.n === 0 ? K.t('vita.alb') : x.v.code} · ${K.t('vita.at', { m: x.v.m })}`,
+          meta: (x.v.n === 0 ? [x.date ? K.d.fmt(x.date) : K.d.fmt(x.due) + ' · ' + x.albDose]
+            : [x.date ? K.t('vita.vitA') + ' ' + K.d.fmt(x.date) : K.d.fmt(x.due) + ' · ' + x.dose, x.v.alb ? (x.alb ? K.t('vita.alb') + ' ' + K.d.fmt(x.alb) : K.t('vita.alb') + ' ' + x.albDose) : '']).filter(Boolean).join(' · '),
           trail: K.ui.pill(K.vax.lbl({ st: x.st }), K.vax.tone({ st: x.st })) }))}</div></section>
       ${missed.length ? h`<section class="sec">${K.ui.secH(K.t('vax.missedTable'))}<div class="table"><table><thead><tr><th>${K.t('vax.title')}</th><th>${K.t('date')}</th><th>${K.t('vax.reason')}</th><th>${K.t('vax.nextSession')}</th></tr></thead>
         <tbody>${missed.map(s => h`<tr><td class="num">${s.it.code}</td><td class="num">${K.d.fmt(s.missedRec.date)}</td><td>${s.missedRec.reason || '–'}</td><td class="num">${K.d.fmt(s.missedRec.next)}</td></tr>`)}</tbody></table></div></section>` : ''}
@@ -233,7 +261,7 @@ K.acts.vaxGroup = (el) => {
   const v = K.vax.VISITS.find(x => x.k === vk);
   const box = (val, code, sub) => h`<label class="chk"><input type="checkbox" name="ids" value="${val}" checked><span class="box">${K.ui.icon('check', 'sm')}</span><span><b>${code}</b> <span class="small faint">${sub}</span></span></label>`;
   K.ui.sheet.open(h`<h2>${K.L(v.name)}</h2><form class="form" data-form="vaxGroupSave" data-arg="${cid}|${kid}">
-    <div class="checklist">${items.map(s => box(s.it.id, s.it.code, K.L(s.it.p)))}${vaOn ? box('VitA' + vn, va.v.code, va.v.dose) : ''}${vaOn && va.v.alb && !va.alb ? box('Alb' + vn, K.t('vita.alb'), va.albDose) : ''}</div>
+    <div class="checklist">${items.map(s => box(s.it.id, s.it.code, K.L(s.it.p)))}${vaOn ? box('VitA' + vn, va.v.code, va.dose) : ''}${vaOn && va.v.alb && !va.alb ? box('Alb' + vn, K.t('vita.alb'), va.albDose) : ''}</div>
     ${K.ui.field({ name: 'date', type: 'date', label: K.t('vax.givenOn'), value: K.d.today(), max: K.d.today(), attrs: { min: k.dob } })}
     ${K.ui.choices({ name: 'place', label: K.t('vax.place'), value: 'session', options: ['session', 'fac', 'pvt'].map(x => ({ v: x, l: K.t('vpl.' + x) })) })}
     ${K.ui.btn(K.t('vax.markAll'), { type: 'submit', icon: 'check', block: true })}</form>`);
@@ -250,12 +278,19 @@ K.forms.vaxGroupSave = async (v, f) => {
 /* Vitamin A + albendazole sheet */
 K.acts.vitaSheet = (el) => {
   const [cid, kid, n] = el.dataset.arg.split('|'); const c = K.card.load(cid); const k = c && K.card.findKid(c, kid); if (!k) return;
+  const save = (has) => h`<div class="btn-row">${K.ui.btn(K.t('btn.save'), { type: 'submit', icon: 'check' })}${has ? K.ui.btn(K.t('vax.remove'), { act: 'vitaRemove', arg: el.dataset.arg, tone: 'ghost', icon: 'trash' }) : ''}</div>`;
+  if (n === '0') { // albendazole alone at 12 months
+    const a = K.vax.alb0State(k);
+    K.ui.sheet.open(h`<h2>${K.t('vita.alb')} · ${K.t('vita.at', { m: a.v.m })}</h2><p class="small">${a.albDose}</p>
+      <form class="form" data-form="vitaSave" data-arg="${el.dataset.arg}">${K.ui.field({ name: 'alb', type: 'date', label: K.t('vita.alb'), value: a.date || K.d.today(), max: K.d.today(), attrs: { min: k.dob } })}${save(a.date)}</form>`);
+    return;
+  }
   const x = K.vax.vitaState(k).find(s => String(s.v.n) === n);
-  K.ui.sheet.open(h`<h2>${x.v.code} · ${K.t('vita.at', { m: x.v.m })}</h2><p class="small">${x.v.dose}${x.v.alb ? ' · ' + K.t('vita.alb') + ' ' + x.albDose : ''}</p>
+  K.ui.sheet.open(h`<h2>${x.v.code} · ${K.t('vita.at', { m: x.v.m })}</h2><p class="small">${x.dose}${x.v.alb ? ' · ' + K.t('vita.alb') + ' ' + x.albDose : ''}</p>
     <form class="form" data-form="vitaSave" data-arg="${el.dataset.arg}">
-      ${K.ui.field({ name: 'vitA', type: 'date', label: K.t('vita.vitA'), value: x.date || K.d.today(), max: K.d.today() })}
-      ${x.v.alb ? K.ui.field({ name: 'alb', type: 'date', label: K.t('vita.alb'), value: x.alb || K.d.today(), max: K.d.today() }) : ''}
-      <div class="btn-row">${K.ui.btn(K.t('btn.save'), { type: 'submit', icon: 'check' })}${x.date ? K.ui.btn(K.t('vax.remove'), { act: 'vitaRemove', arg: el.dataset.arg, tone: 'ghost', icon: 'trash' }) : ''}</div></form>`);
+      ${K.ui.field({ name: 'vitA', type: 'date', label: K.t('vita.vitA'), value: x.date || K.d.today(), max: K.d.today(), attrs: { min: k.dob } })}
+      ${x.v.alb ? K.ui.field({ name: 'alb', type: 'date', label: K.t('vita.alb'), value: x.alb || K.d.today(), max: K.d.today(), attrs: { min: k.dob } }) : ''}
+      ${save(x.date)}</form>`);
 };
 K.forms.vitaSave = async (v, f) => {
   const [cid, kid, n] = f.dataset.arg.split('|'); const c = K.card.load(cid); const k = c && K.card.findKid(c, kid); if (!k) return;
@@ -304,6 +339,9 @@ K.due.add((c, today, horizon) => {
     const va = K.vax.vitaState(k, today).find(x => x.st === 'due' || x.st === 'overdue' || (x.st === 'upcoming' && K.d.diff(today, x.due) <= HV));
     if (va) out.push({ id: 'vita' + k.id, kind: 'vax', icon: 'drop', href: href + '#vita', who: K.child.label(k), date: va.due, status: va.st === 'overdue' ? 'overdue' : undefined,
       title: { en: `${K.child.label(k)}: ${va.v.code}${va.v.alb ? ' + albendazole' : ''}`, or: `${K.child.label(k)}: ${va.v.code}${va.v.alb ? ' + କୃମିନାଶକ' : ''}` } });
+    const a0 = K.vax.alb0State(k, today);
+    if (a0 && (a0.st === 'due' || a0.st === 'overdue' || (a0.st === 'upcoming' && K.d.diff(today, a0.due) <= HV))) out.push({ id: 'alb0' + k.id, kind: 'vax', icon: 'pill', href: href + '#vita', who: K.child.label(k), date: a0.due, status: a0.st === 'overdue' ? 'overdue' : undefined,
+      title: { en: `${K.child.label(k)}: albendazole for worms (${a0.albDose})`, or: `${K.child.label(k)}: କୃମିନାଶକ ଆଲ୍‌ବେଣ୍ଡାଜୋଲ୍ (${a0.albDose})` } });
   });
   return out;
 });

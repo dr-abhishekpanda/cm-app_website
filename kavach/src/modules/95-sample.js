@@ -27,6 +27,7 @@ K.sample.build = (today) => {
   give(['OPV2', 'Penta2', 'Rota2'], at(72));
   give(['OPV3', 'Penta3', 'Rota3', 'fIPV2', 'PCV2'], at(101));
   const m9 = K.d.addMonths(k.dob, 9); give(['MR1', 'fIPV3', 'PCVB'], K.d.addDays(m9, 6)); k.vitA[1] = K.d.addDays(m9, 6);
+  k.alb = Object.assign(k.alb || {}, { 0: K.d.addDays(K.d.addMonths(k.dob, 12), 4) }); // first deworming dose at 12 months
   const wts = [2.7, 3.6, 4.6, 5.4, 6.0, 6.5, 6.9, 7.2, 7.5, 7.7, 7.9, 8.1, 8.2, 8.3];
   k.growth = wts.map((w, i) => ({ id: K.uid('g'), date: K.d.addDays(K.d.addMonths(k.dob, i), i ? 3 : 0), wt: w, ht: i === 13 ? 72.5 : i === 9 ? 69 : null, pos: 'L', muac: i === 13 ? 13.4 : null, hc: null, oedema: 0 }))
     .filter(g => K.d.cmp(g.date, today) <= 0);

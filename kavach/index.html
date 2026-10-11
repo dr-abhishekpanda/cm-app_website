@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="0469c8169c">
+<html lang="en" data-build="264f6b928f">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -592,7 +592,8 @@ details.acc.fp.on{border-color:var(--primary)}
 .vgroups{display:grid;gap:12px;margin-top:16px}
 .vgroup{border:1px solid var(--line);border-radius:var(--r);background:var(--card);overflow:hidden}
 .vgroup.done{background:color-mix(in srgb,var(--ok-tint) 40%,var(--card))}
-.vg-h{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line-soft)}
+.vg-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line-soft)}
+.vg-h>div:first-child{flex:1 1 8rem;min-width:0} /* long button labels (Odia) wrap below instead of squeezing the heading */
 .vg-h h3{margin:0}
 .vlist{display:grid}
 .vrow{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:11px 14px;border:0;border-bottom:1px solid var(--line-soft);background:transparent;text-align:left;width:100%}
@@ -667,7 +668,7 @@ details.acc.fp.on{border-color:var(--primary)}
 details.vgroup>summary{list-style:none;cursor:pointer}
 details.vgroup>summary::-webkit-details-marker{display:none}
 details.vgroup:not([open])>summary{border-bottom:0}
-.vg-r{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.vg-r{display:flex;align-items:center;gap:8px;flex:0 1 auto;margin-left:auto}
 .vg-chev{transition:transform .18s ease;color:var(--ink-faint)}
 details.vgroup[open] .vg-chev{transform:rotate(180deg)}
 /* chart tab grid, compact table */
@@ -934,8 +935,8 @@ details.feed-st>summary small{font-weight:400;color:var(--ink-soft);font-size:.8
    escapes interpolated values unless they are K.raw()/nested K.h results.
    ============================================================================ */
 const K = window.K = window.K || {};
-K.build = '0469c8169c';
-K.builtAt = '2026-10-10T11:51:56.738Z';
+K.build = '264f6b928f';
+K.builtAt = '2026-10-11T07:40:42.738Z';
 
 class Raw { constructor(s){ this.s = s; } toString(){ return this.s; } }
 K.Raw = Raw;
@@ -1773,7 +1774,7 @@ K.content.danger = {
       { k: 'fever', icon: 'temp', en: 'High fever', or: 'ଜ୍ୱର ହେବା' },
       { k: 'fits', icon: 'alert', en: 'Fits (convulsions)', or: 'ବାତ ମାରିବା' },
       { k: 'head', icon: 'eye', en: 'Severe headache, blurred vision or dizziness', or: 'ପ୍ରବଳ ମୁଣ୍ଡବିନ୍ଧା, ଆଖି ଝାପ୍‌ସା ଦେଖାଯିବା ବା ମୁଣ୍ଡ ବୁଲାଇବା' },
-      { k: 'swell', icon: 'hand', en: 'Swelling of the face, hands or whole body', or: 'ପାଦ, ହାତ ବା ମୁହଁ ଫୁଲିବା' },
+      { k: 'swell', icon: 'hand', en: 'Swelling of the face and hands, or of the whole body', or: 'ମୁହଁ ଓ ହାତ ଫୁଲିବା, ବା ସାରା ଦେହ ଫୁଲିବା' },
       { k: 'vomit', icon: 'water', en: 'Vomiting again and again', or: 'ଅତିରିକ୍ତ ବାନ୍ତି ହେବା' },
       { k: 'jaund', icon: 'sun', en: 'Yellow eyes or skin (jaundice)', or: 'ହଳଦିଆ ପଡ଼ିବା (କାମଳ ରୋଗ)' },
       { k: 'fm', icon: 'baby', en: 'Baby moves less, or stops moving', or: 'ପେଟରେ ପିଲା କମ୍ ଚଳିବା ବା ନ ଚଳିବା' },
@@ -1832,7 +1833,7 @@ K.content.danger = {
   },
   child: {
     title: { en: 'Danger signs in a young child (2 months – 5 years)', or: 'ଛୋଟ ପିଲାଙ୍କ ବିପଦ ଲକ୍ଷଣ (୨ ମାସ – ୫ ବର୍ଷ)' },
-    lead: { en: 'Take the child to a health facility the same day if the child:', or: 'ପିଲାଙ୍କଠାରେ ଏହି ଲକ୍ଷଣ ଦେଖାଦେଲେ ସେହି ଦିନ ହିଁ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରକୁ ନିଅନ୍ତୁ:' },
+    lead: { en: 'Take the child to a health facility immediately if the child:', or: 'ପିଲାଙ୍କଠାରେ ଏହି ଲକ୍ଷଣ ଦେଖାଦେଲେ ତୁରନ୍ତ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରକୁ ନିଅନ୍ତୁ:' },
     items: [
       { k: 'drink', icon: 'bottle', en: 'Cannot drink or breastfeed', or: 'ପିଇ ପାରୁନାହିଁ ବା ମା\'କ୍ଷୀର ଖାଇ ପାରୁନାହିଁ' },
       { k: 'vomit', icon: 'water', en: 'Vomits everything', or: 'ଯାହା ଖାଏ ସବୁ ବାନ୍ତି କରିଦିଏ' },
@@ -1862,11 +1863,19 @@ K.content.danger = {
 {
 /* ============================================================================
    data/30-vaccines — National Immunization Schedule (UIP, MoHFW) as used on
-   the Odisha MCP card V-2023-24, with catch-up limits from the NIS table:
-   BCG ≤1 y · OPV-0 ≤15 d · Hep B birth dose ≤24 h · OPV ≤5 y ·
-   Penta / Rota / PCV / fIPV not started after 12 m (series then completed) ·
-   DPT in place of Penta if starting after 1 y · MR ≤5 y · JE ≤15 y (endemic
-   districts only) · DPT boosters ≤7 y · PCV & fIPV dose 1→2 gap 8 weeks.
+   the Odisha MCP card V-2023-24, with the limits of the NIS table
+   (Immunization Handbook for Medical Officers 2017, Unit 2):
+   BCG ≤1 y · OPV-0 ≤15 d · Hep B birth dose ≤24 h · OPV ≤5 y · MR ≤5 y ·
+   JE ≤15 y (endemic districts only; JE-1 given after 12 months → at least
+   3 months before JE-2, NIS footnote @) · DPT ≤7 y · PCV & fIPV 1→2 gap 8 wk.
+   Late starters (NHM Odisha UIP training deck 2024, slides 12–14): Penta,
+   Rota, PCV and fIPV are not started after 1 year, and a series begun before
+   1 year is completed by 2 years. A Penta dose that can no longer be given is
+   given as DPT (doses 4 weeks apart, up to 7 years) — `for` links each DPT
+   dose to the Penta dose it replaces, `prevAlt` is the earlier dose when the
+   child stayed on Penta. DPT and OPV boosters: at least 6 months after the
+   3rd dose (`gapM`). `win` = end of the NIS window (9–12 m, 16–24 m, 5–6 y):
+   a dose is 'due' until then and 'overdue' after.
    fIPV-3 at 9 months (added 2023). HPV single dose for girls at 14 (2026).
    Ages: d = days, w = weeks, m = months, y = years from date of birth.
    ============================================================================ */
@@ -1904,33 +1913,44 @@ K.vax.LIST = [
   { id: 'HepB0', code: 'Hep B birth dose', v: 'birth', due: { d: 0 }, upto: { d: 1 }, p: P.hepb, how: '0.5 ml · IM · anterolateral mid-thigh' },
   { id: 'OPV1', code: 'OPV-1', v: 'w6', due: { w: 6 }, upto: { y: 5 }, p: P.polio, how: '2 drops · oral' },
   { id: 'Penta1', code: 'Penta-1', v: 'w6', due: { w: 6 }, start: { y: 1 }, p: P.penta, alt: 'dpt', how: '0.5 ml · IM · anterolateral mid-thigh' },
-  { id: 'Rota1', code: 'Rota-1', v: 'w6', due: { w: 6 }, start: { y: 1 }, p: P.rota, how: '5 drops · oral' },
+  { id: 'DPT1', code: 'DPT-1', v: 'w6', due: { y: 1 }, upto: { y: 7 }, for: 'Penta1', p: P.dpt, how: '0.5 ml · IM · anterolateral mid-thigh' },
+  { id: 'Rota1', code: 'Rota-1', v: 'w6', due: { w: 6 }, start: { y: 1 }, p: P.rota, how: '5 drops · oral (Rotavac; other brands: dose on the label)' },
   { id: 'fIPV1', code: 'f-IPV-1', v: 'w6', due: { w: 6 }, start: { y: 1 }, p: P.polio, how: '0.1 ml · intradermal · right upper arm' },
   { id: 'PCV1', code: 'PCV-1', v: 'w6', due: { w: 6 }, start: { y: 1 }, p: P.pcv, how: '0.5 ml · IM · anterolateral mid-thigh (right)' },
   { id: 'OPV2', code: 'OPV-2', v: 'w10', due: { w: 10 }, upto: { y: 5 }, prev: 'OPV1', gap: 28, p: P.polio, how: '2 drops · oral' },
-  { id: 'Penta2', code: 'Penta-2', v: 'w10', due: { w: 10 }, prev: 'Penta1', gap: 28, p: P.penta, how: '0.5 ml · IM · anterolateral mid-thigh' },
-  { id: 'Rota2', code: 'Rota-2', v: 'w10', due: { w: 10 }, prev: 'Rota1', gap: 28, p: P.rota, how: '5 drops · oral' },
+  { id: 'Penta2', code: 'Penta-2', v: 'w10', due: { w: 10 }, upto: { y: 2 }, prev: 'Penta1', gap: 28, alt: 'dpt', p: P.penta, how: '0.5 ml · IM · anterolateral mid-thigh' },
+  { id: 'DPT2', code: 'DPT-2', v: 'w10', due: { y: 1 }, upto: { y: 7 }, for: 'Penta2', prev: 'DPT1', prevAlt: 'Penta1', gap: 28, p: P.dpt, how: '0.5 ml · IM · anterolateral mid-thigh' },
+  { id: 'Rota2', code: 'Rota-2', v: 'w10', due: { w: 10 }, upto: { y: 2 }, prev: 'Rota1', gap: 28, p: P.rota, how: '5 drops · oral (Rotavac; other brands: dose on the label)' },
   { id: 'OPV3', code: 'OPV-3', v: 'w14', due: { w: 14 }, upto: { y: 5 }, prev: 'OPV2', gap: 28, p: P.polio, how: '2 drops · oral' },
-  { id: 'Penta3', code: 'Penta-3', v: 'w14', due: { w: 14 }, prev: 'Penta2', gap: 28, p: P.penta, how: '0.5 ml · IM · anterolateral mid-thigh' },
-  { id: 'Rota3', code: 'Rota-3', v: 'w14', due: { w: 14 }, prev: 'Rota2', gap: 28, p: P.rota, how: '5 drops · oral' },
-  { id: 'fIPV2', code: 'f-IPV-2', v: 'w14', due: { w: 14 }, prev: 'fIPV1', gap: 56, p: P.polio, how: '0.1 ml · intradermal · right upper arm' },
-  { id: 'PCV2', code: 'PCV-2', v: 'w14', due: { w: 14 }, prev: 'PCV1', gap: 56, p: P.pcv, how: '0.5 ml · IM · anterolateral mid-thigh (right)' },
-  { id: 'MR1', code: 'MR-1', v: 'm9', due: { m: 9 }, upto: { y: 5 }, p: P.mr, how: '0.5 ml · subcutaneous · right upper arm' },
-  { id: 'JE1', code: 'JE-1', v: 'm9', due: { m: 9 }, upto: { y: 15 }, je: 1, p: P.je, how: '0.5 ml · IM · left mid-thigh' },
-  { id: 'fIPV3', code: 'f-IPV-3', v: 'm9', due: { m: 9 }, prev: 'fIPV2', gap: 28, p: P.polio, how: '0.1 ml · intradermal · left upper arm' },
-  { id: 'PCVB', code: 'PCV booster', v: 'm9', due: { m: 9 }, prev: 'PCV2', gap: 56, p: P.pcv, how: '0.5 ml · IM · anterolateral mid-thigh (right)' },
-  { id: 'MR2', code: 'MR-2', v: 'm16', due: { m: 16 }, upto: { y: 5 }, prev: 'MR1', gap: 28, p: P.mr, how: '0.5 ml · subcutaneous · right upper arm' },
-  { id: 'OPVB', code: 'OPV booster', v: 'm16', due: { m: 16 }, upto: { y: 5 }, prev: 'OPV3', gap: 168, p: P.polio, how: '2 drops · oral' },
-  { id: 'JE2', code: 'JE-2', v: 'm16', due: { m: 16 }, upto: { y: 15 }, prev: 'JE1', gap: 28, je: 1, p: P.je, how: '0.5 ml · IM · left mid-thigh' },
-  { id: 'DPTB1', code: 'DPT booster-1', v: 'm16', due: { m: 16 }, upto: { y: 7 }, prev: 'Penta3', gap: 168, p: P.dpt, how: '0.5 ml · IM · anterolateral mid-thigh' },
-  { id: 'DPTB2', code: 'DPT booster-2', v: 'y5', due: { y: 5 }, upto: { y: 7 }, prev: 'DPTB1', gap: 168, p: P.dpt, how: '0.5 ml · IM · upper arm' },
+  { id: 'Penta3', code: 'Penta-3', v: 'w14', due: { w: 14 }, upto: { y: 2 }, prev: 'Penta2', gap: 28, alt: 'dpt', p: P.penta, how: '0.5 ml · IM · anterolateral mid-thigh' },
+  { id: 'DPT3', code: 'DPT-3', v: 'w14', due: { y: 1 }, upto: { y: 7 }, for: 'Penta3', prev: 'DPT2', prevAlt: 'Penta2', gap: 28, p: P.dpt, how: '0.5 ml · IM · anterolateral mid-thigh' },
+  { id: 'Rota3', code: 'Rota-3', v: 'w14', due: { w: 14 }, upto: { y: 2 }, prev: 'Rota2', gap: 28, p: P.rota, how: '5 drops · oral (Rotavac; other brands: dose on the label)' },
+  { id: 'fIPV2', code: 'f-IPV-2', v: 'w14', due: { w: 14 }, upto: { y: 2 }, prev: 'fIPV1', gap: 56, p: P.polio, how: '0.1 ml · intradermal · right upper arm' },
+  { id: 'PCV2', code: 'PCV-2', v: 'w14', due: { w: 14 }, upto: { y: 2 }, prev: 'PCV1', gap: 56, p: P.pcv, how: '0.5 ml · IM · anterolateral mid-thigh (right)' },
+  { id: 'MR1', code: 'MR-1', v: 'm9', due: { m: 9 }, win: { m: 12 }, upto: { y: 5 }, p: P.mr, how: '0.5 ml · subcutaneous · right upper arm' },
+  { id: 'JE1', code: 'JE-1', v: 'm9', due: { m: 9 }, win: { m: 12 }, upto: { y: 15 }, je: 1, p: P.je, how: '0.5 ml · subcutaneous · left upper arm (live SA-14-14-2; IM if the inactivated vaccine is supplied)' },
+  { id: 'fIPV3', code: 'f-IPV-3', v: 'm9', due: { m: 9 }, win: { m: 12 }, upto: { y: 2 }, prev: 'fIPV2', gap: 28, p: P.polio, how: '0.1 ml · intradermal · left upper arm' },
+  { id: 'PCVB', code: 'PCV booster', v: 'm9', due: { m: 9 }, win: { m: 12 }, upto: { y: 2 }, prev: 'PCV2', gap: 56, p: P.pcv, how: '0.5 ml · IM · anterolateral mid-thigh (right)' },
+  { id: 'MR2', code: 'MR-2', v: 'm16', due: { m: 16 }, win: { m: 24 }, upto: { y: 5 }, prev: 'MR1', gap: 28, p: P.mr, how: '0.5 ml · subcutaneous · right upper arm' },
+  { id: 'OPVB', code: 'OPV booster', v: 'm16', due: { m: 16 }, win: { m: 24 }, upto: { y: 5 }, prev: 'OPV3', gapM: 6, p: P.polio, how: '2 drops · oral' },
+  { id: 'JE2', code: 'JE-2', v: 'm16', due: { m: 16 }, win: { m: 24 }, upto: { y: 15 }, prev: 'JE1', gap: 28, lateGapM: 3, je: 1, p: P.je, how: '0.5 ml · subcutaneous · left upper arm (live SA-14-14-2; IM if the inactivated vaccine is supplied)' },
+  { id: 'DPTB1', code: 'DPT booster-1', v: 'm16', due: { m: 16 }, win: { m: 24 }, upto: { y: 7 }, prev: 'DPT3', prevAlt: 'Penta3', gapM: 6, p: P.dpt, how: '0.5 ml · IM · anterolateral mid-thigh' },
+  { id: 'DPTB2', code: 'DPT booster-2', v: 'y5', due: { y: 5 }, win: { y: 6 }, upto: { y: 7 }, prev: 'DPTB1', gap: 168, p: P.dpt, how: '0.5 ml · IM · upper arm' },
   { id: 'Td10', code: 'Td-10', v: 'y10', due: { y: 10 }, p: P.td, how: '0.5 ml · IM · upper arm' },
-  { id: 'HPV', code: 'HPV', v: 'y14', due: { y: 14 }, sex: 'f', campaign: 1, p: P.hpv, how: 'Single dose · IM · upper arm' },
+  { id: 'HPV', code: 'HPV', v: 'y14', due: { y: 14 }, win: { y: 15 }, upto: { y: 15 }, sex: 'f', campaign: 1, p: P.hpv, how: 'Single dose · IM · upper arm' },
   { id: 'Td16', code: 'Td-16', v: 'y16', due: { y: 16 }, p: P.td, how: '0.5 ml · IM · upper arm' },
 ];
 /* Vitamin A: 1 lakh IU at 9 m, then 2 lakh IU every 6 months to 5 years (9 doses).
-   Odisha card: Vit-A 2 at 18 m … Vit-A 9 at 60 m, each "& Albendazole syrup". */
-K.vax.VITA = [9, 18, 24, 30, 36, 42, 48, 54, 60].map((m, i) => ({ id: 'VitA' + (i + 1), n: i + 1, m, code: 'Vit-A ' + (i + 1), dose: i === 0 ? '1 lakh IU (1 ml)' : '2 lakh IU (2 ml)', alb: i > 0 }));
+   Odisha card: Vit-A 2 at 18 m … Vit-A 9 at 60 m, each "& Albendazole syrup".
+   The dose follows the age on the day: 1 lakh IU (1 ml) under 12 months, 2 lakh IU
+   (2 ml) from 12 months — so a late first dose is 2 ml (NIS table; WHO 2011).
+   Albendazole twice a year from 12 months (both MCP cards' deworming table starts at
+   1–2 years with two doses; AMB 2026 ch.5): an albendazole-only dose at 12 months
+   (stored as alb[0]), then with Vit-A 2–9. 200 mg under 2 years, 400 mg from 2 years. */
+K.vax.VITA = [9, 18, 24, 30, 36, 42, 48, 54, 60].map((m, i) => ({ id: 'VitA' + (i + 1), n: i + 1, m, code: 'Vit-A ' + (i + 1), alb: i > 0 }));
+K.vax.ALB0 = { n: 0, m: 12, code: 'Albendazole' };
+K.vax.vitaDose = (ageM) => (ageM < 12 ? '1 lakh IU (1 ml)' : '2 lakh IU (2 ml)');
+K.vax.albDose = (ageM) => (ageM < 24 ? '200 mg' : '400 mg');
 K.vax.P = P;
 K.vax.FOUR = [
   { icon: 'syringe', t: { en: 'Which vaccine was given, and what disease it protects from', or: 'କେଉଁ ଟୀକା ଦିଆଯାଇଛି, କେଉଁ ରୋଗରୁ ସୁରକ୍ଷା ମିଳେ' } },
@@ -2375,7 +2395,7 @@ K.content.newbornCare = [
 ];
 K.content.hbnc = [
   { icon: 'house', en: 'The ASHA visits a newborn at home on days 3, 7, 14, 21, 28 and 42 (and on day 1 after a home birth) to check for danger signs.', or: 'ନିର୍ଦ୍ଦେଶାବଳୀ ଅନୁଯାୟୀ ଜନ୍ମର ୧ମ ଦିନ (କେବଳ ଘରେ ଜନ୍ମ ହୋଇଥିବା ଶିଶୁମାନଙ୍କ ପାଇଁ), ୩ୟ, ୭ମ, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନରେ ଆଶାକର୍ମୀମାନେ ଗୃହ ପରିଦର୍ଶନ କରି ନବଜାତକଙ୍କର ସ୍ୱାସ୍ଥ୍ୟଗତ ବିପଦର ଲକ୍ଷଣ ଚିହ୍ନଟ କରିବେ।' },
-  { icon: 'hospital', en: 'After discharge from an SNCU or NBSU, the same visits are counted from the day of discharge.', or: 'ଏସ୍.ଏନ୍.ସି.ୟୁ. ବା ଏନ୍.ବି.ଏସ୍.ୟୁ.ରୁ ଡିସ୍‌ଚାର୍ଜ ହେଲେ ଡିସ୍‌ଚାର୍ଜର ୧ମ, ୩ୟ, ୭ମ, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନରେ ଗୃହ ପରିଦର୍ଶନ ହେବ।' },
+  { icon: 'hospital', en: 'After discharge from an SNCU or NBSU, the ASHA visits on days 1, 3, 7, 14, 21, 28 and 42 counted from the day of discharge.', or: 'ଏସ୍.ଏନ୍.ସି.ୟୁ. ବା ଏନ୍.ବି.ଏସ୍.ୟୁ.ରୁ ଡିସ୍‌ଚାର୍ଜ ହେଲେ ଡିସ୍‌ଚାର୍ଜର ୧ମ, ୩ୟ, ୭ମ, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନରେ ଗୃହ ପରିଦର୍ଶନ ହେବ।' },
   { icon: 'scale', en: 'Babies under 2.5 kg get three extra visits.', or: '୨.୫ କି.ଗ୍ରା.ରୁ କମ୍ ଓଜନର ଶିଶୁଙ୍କ ପାଇଁ ତିନୋଟି ଅଧିକ ପରିଦର୍ଶନ।' },
   { icon: 'eye', en: 'Babies born before 34 weeks or under 2 kg need an eye check for ROP by 1 month of age.', or: 'ଗର୍ଭଧାରଣ ଠାରୁ ୩୪ ସପ୍ତାହ ପୂରଣ ହେବା ପୂର୍ବରୁ ଜନ୍ମ ହୋଇଥିବା ବା ଜନ୍ମ ସମୟରେ ୨ କି.ଗ୍ରା.ରୁ କମ୍ ଓଜନ ଥିବା ଶିଶୁଙ୍କର ଏକ ମାସ ବୟସରେ ଚକ୍ଷୁ ପରୀକ୍ଷା (RoP Screening) ଆବଶ୍ୟକ।' },
 ];
@@ -2852,6 +2872,8 @@ K.i18n.add({
   'preg.days': { en: 'days', or: 'ଦିନ' },
   'preg.basis': { en: 'Use for dates', or: 'ତାରିଖ ପାଇଁ ବ୍ୟବହାର କରନ୍ତୁ' },
   'preg.basis.lmp': { en: 'LMP', or: 'ଶେଷ ମାସିକ' }, 'preg.basis.usg': { en: 'Ultrasound', or: 'ଅଲଟ୍ରାସାଉଣ୍ଡ' },
+  'edd.rule': { en: 'Scan at {w} weeks and the LMP differ by {d} days (limit {t} days at this stage): {x}.', or: '{w} ସପ୍ତାହର ସ୍କାନ୍ ଓ LMP ମଧ୍ୟରେ {d} ଦିନ ପାର୍ଥକ୍ୟ (ଏହି ସମୟରେ ସୀମା {t} ଦିନ): {x}।' },
+  'edd.useScan': { en: 'use the scan date', or: 'ସ୍କାନ୍ ତାରିଖ ବ୍ୟବହାର କରନ୍ତୁ' }, 'edd.useLmp': { en: 'keep the LMP date', or: 'LMP ତାରିଖ ରଖନ୍ତୁ' },
   'preg.obs': { en: 'Earlier pregnancies', or: 'ପୂର୍ବ ଗର୍ଭାବସ୍ଥା' },
   'preg.gravida': { en: 'Total pregnancies (with this one)', or: 'ସମୁଦାୟ ଗର୍ଭ ସଂଖ୍ୟା (ଏହା ସହ)' },
   'preg.para': { en: 'Deliveries before', or: 'ପୂର୍ବ ପ୍ରସବ ସଂଖ୍ୟା' },
@@ -2931,6 +2953,15 @@ Object.assign(K.preg, {
   lmpEq(p) { const e = K.preg.edd(p); return e ? K.d.addDays(e, -280) : null; },
   ga(p, on) { const e = K.preg.edd(p); if (!e) return null; const days = 280 - K.d.diff(on || K.d.today(), e); return { days, w: Math.floor(days / 7), d: ((days % 7) + 7) % 7 }; },
   tri: (days) => (days < 98 ? 1 : days < 196 ? 2 : 3),
+  /* scan or LMP? ACOG Committee Opinion 700 (2017): redate to the scan only when the two differ by more
+     than 5 days (scan before 9 weeks), 7 (9–15+6), 10 (16–21+6), 14 (22–27+6) or 21 days (28 weeks on) */
+  datingRule(lmp, usgDate, usgWeeks, usgDays) {
+    if (!lmp || !usgDate || usgWeeks == null) return null;
+    const ga = +usgWeeks * 7 + (+usgDays || 0); const eddUsg = K.d.addDays(usgDate, 280 - ga); const eddLmp = K.d.addDays(lmp, 280);
+    const diff = Math.abs(K.d.diff(eddLmp, eddUsg)); const limit = ga < 63 ? 5 : ga < 112 ? 7 : ga < 154 ? 10 : ga < 196 ? 14 : 21;
+    return { ga, diff, limit, useScan: diff > limit, eddUsg, eddLmp };
+  },
+  ruleText: (r) => (r ? K.t('edd.rule', { w: Math.floor(r.ga / 7), d: r.diff, t: r.limit, x: K.t(r.useScan ? 'edd.useScan' : 'edd.useLmp') }) : ''),
   gaText: (g) => (g ? K.t('preg.gaWD', { w: g.w, d: g.d }) : '–'),
   gaShort: (g) => (g ? K.digits(`${g.w}w ${g.d}d`) : '–'),
   dateAt(p, weeks, days = 0) { const l = K.preg.lmpEq(p); return l ? K.d.addDays(l, weeks * 7 + days) : null; },
@@ -2947,12 +2978,13 @@ function pregForm(c, p, isNew) {
   const hist = p.hist || {};
   return h`<form class="form" data-form="pregSave" data-id="${c.id}" data-pid="${isNew ? '' : p.id}" novalidate>
     <fieldset class="fgroup"><legend>${K.t('preg.lmp')}</legend>
-      ${F('lmp', '', { type: 'date', max: K.d.today(), hint: K.t('preg.lmpUnknown') })}
+      ${F('lmp', '', { type: 'date', max: K.d.today(), hint: K.t('preg.lmpUnknown'), attrs: { 'data-live': 'pregDating' } })}
       ${F('eddKnown', K.t('preg.eddKnown'), { type: 'date' })}
       <details class="acc" ${p.usgDate ? K.raw('open') : ''}><summary>${K.ui.icon('eye', 'sm')}${K.t('preg.usg')}</summary><div class="acc-b form">
-        ${F('usgDate', K.t('preg.usgDate'), { type: 'date', max: K.d.today() })}
-        <div class="frow">${F('usgWeeks', K.t('preg.usgGa') + ' · ' + K.t('preg.weeks'), { type: 'number' })}${F('usgDays', K.t('preg.days'), { type: 'number' })}</div>
+        ${F('usgDate', K.t('preg.usgDate'), { type: 'date', max: K.d.today(), attrs: { 'data-live': 'pregDating' } })}
+        <div class="frow">${F('usgWeeks', K.t('preg.usgGa') + ' · ' + K.t('preg.weeks'), { type: 'number', attrs: { 'data-live': 'pregDating' } })}${F('usgDays', K.t('preg.days'), { type: 'number', attrs: { 'data-live': 'pregDating' } })}</div>
         ${K.ui.choices({ name: 'eddBasis', label: K.t('preg.basis'), value: p.eddBasis || 'lmp', options: [{ v: 'lmp', l: K.t('preg.basis.lmp') }, { v: 'usg', l: K.t('preg.basis.usg') }] })}
+        <p class="small" id="preg-dating" aria-live="polite">${K.preg.ruleText(K.preg.datingRule(p.lmp, p.usgDate, p.usgWeeks, p.usgDays))}</p>
       </div></details>
     </fieldset>
     <fieldset class="fgroup"><legend>${K.t('preg.obs')}</legend>
@@ -2971,6 +3003,10 @@ function pregForm(c, p, isNew) {
     <div class="btn-bar">${K.ui.btn(K.t('preg.save'), { type: 'submit', icon: 'check' })}${K.ui.btn(K.t('btn.cancel'), { href: isNew ? `#/card/${c.id}` : K.preg.url(c, p), tone: 'ghost' })}</div>
   </form>`;
 }
+K.live.pregDating = K.debounce((el) => {
+  const f = el && el.closest('form'); const out = K.$('#preg-dating'); if (!f || !out) return; const v = K.formData(f);
+  out.textContent = K.preg.ruleText(K.preg.datingRule(v.lmp, v.usgDate, v.usgWeeks, v.usgDays));
+}, 250);
 K.route('/card/:id/preg/new', ({ id }, q) => {
   const c = K.card.load(id); if (!c) return K.screens.notFound();
   const act = K.card.activePreg(c); if (act) return { redirect: `/card/${id}/preg/${act.id}` };
@@ -3186,9 +3222,15 @@ K.anc.WINDOWS = [
   { n: 3, from: 28 * 7, to: 34 * 7, end: 36 * 7 - 1, key: 'anc.w3' },
   { n: 4, from: 36 * 7, to: 40 * 7, end: 44 * 7, key: 'anc.w4' },
 ];
-K.anc.hbClass = (hb) => hb == null ? null : hb < 7 ? { k: 'severe', tone: 'danger', en: 'Severe anaemia', or: 'ଗୁରୁତର ରକ୍ତହୀନତା' }
-  : hb < 10 ? { k: 'moderate', tone: 'warn', en: 'Moderate anaemia', or: 'ମଧ୍ୟମ ରକ୍ତହୀନତା' }
-  : hb < 11 ? { k: 'mild', tone: 'warn', en: 'Mild anaemia', or: 'ସାମାନ୍ୟ ରକ୍ତହୀନତା' } : { k: 'normal', tone: 'ok', en: 'Normal', or: 'ସ୍ୱାଭାବିକ' };
+/* Hb in pregnancy — WHO 2024 cut-offs used by the AMB Abhiyaan guidelines (June 2026):
+   1st & 3rd trimester < 11 anaemia (mild 10–10.9, moderate 7–9.9); 2nd trimester
+   (14–27 weeks here) < 10.5 (mild 9.5–10.4, moderate 7–9.4); severe < 7 throughout. */
+K.anc.hbClass = (hb, gaDays) => { if (hb == null) return null; const t2 = gaDays != null && K.preg.tri(gaDays) === 2;
+  return hb < 7 ? { k: 'severe', tone: 'danger', en: 'Severe anaemia', or: 'ଗୁରୁତର ରକ୍ତହୀନତା' }
+    : hb < (t2 ? 9.5 : 10) ? { k: 'moderate', tone: 'warn', en: 'Moderate anaemia', or: 'ମଧ୍ୟମ ରକ୍ତହୀନତା' }
+    : hb < (t2 ? 10.5 : 11) ? { k: 'mild', tone: 'warn', en: 'Mild anaemia', or: 'ସାମାନ୍ୟ ରକ୍ତହୀନତା' } : { k: 'normal', tone: 'ok', en: 'Normal', or: 'ସ୍ୱାଭାବିକ' }; };
+/* class of a dated Hb value within a pregnancy */
+K.anc.hbAt = (p, hb) => (hb ? K.anc.hbClass(hb.v, (K.preg.ga(p, hb.date) || {}).days) : null);
 
 /* flags for one visit. Returns [{tone, en, or, hrp?}] */
 K.anc.flags = (a, p, c) => {
@@ -3199,16 +3241,17 @@ K.anc.flags = (a, p, c) => {
   if ((sys != null && sys >= 160) || (dia != null && dia >= 110)) F('danger', 'Very high BP (≥160/110): refer to hospital today.', 'ଅତ୍ୟଧିକ ଉଚ୍ଚ ରକ୍ତଚାପ (≥୧୬୦/୧୧୦): ଆଜି ହିଁ ଡାକ୍ତରଖାନାକୁ ପଠାନ୍ତୁ।', 'k28');
   else if (highBp) F('danger', 'High BP (≥140/90): refer to a doctor; check urine albumin.', 'ଉଚ୍ଚ ରକ୍ତଚାପ (≥୧୪୦/୯୦): ଡାକ୍ତରଙ୍କ ପାଖକୁ ପଠାନ୍ତୁ; ପରିସ୍ରାରେ ଆଲ୍‌ବୁମିନ୍ ପରୀକ୍ଷା କରନ୍ତୁ।', 'k28');
   if (highBp && (alb || (a.sx || []).includes('head') || a.oedema === 'gen')) F('danger', 'Signs of pre-eclampsia (high BP with albumin, headache or swelling).', 'ପ୍ରି-ଏକ୍ଲାମ୍ପସିଆର ଲକ୍ଷଣ (ଉଚ୍ଚ ରକ୍ତଚାପ ସହ ଆଲ୍‌ବୁମିନ୍, ମୁଣ୍ଡବିନ୍ଧା ବା ଫୁଲା)।', 'k28');
-  if (sys != null && dia != null && sys < 90 && dia < 60) F('warn', 'Low BP: check for bleeding, dehydration or weakness.', 'କମ୍ ରକ୍ତଚାପ: ରକ୍ତସ୍ରାବ, ଜଳାଭାବ ବା ଦୁର୍ବଳତା ଯାଞ୍ଚ କରନ୍ତୁ।');
-  const hc = K.anc.hbClass(hb);
+  if ((sys != null && sys < 90) || (dia != null && dia < 60)) F('warn', 'Low BP (below 90/60): check for bleeding, dehydration or weakness.', 'କମ୍ ରକ୍ତଚାପ (୯୦/୬୦ ରୁ କମ୍): ରକ୍ତସ୍ରାବ, ଜଳାଭାବ ବା ଦୁର୍ବଳତା ଯାଞ୍ଚ କରନ୍ତୁ।');
+  const hc = K.anc.hbClass(hb, g.days);
   if (hc && hc.k === 'severe') F('danger', `Hb ${hb} g/dl: severe anaemia — high-risk pregnancy; refer for treatment.`, `ହିମୋଗ୍ଲୋବିନ୍ ${hb} g/dl: ଗୁରୁତର ରକ୍ତହୀନତା — ବିପଦସଙ୍କୁଳ ଗର୍ଭ; ଚିକିତ୍ସା ପାଇଁ ପଠାନ୍ତୁ।`, 'k27');
   else if (hc && hc.k !== 'normal') F('warn', `Hb ${hb} g/dl: ${hc.en.toLowerCase()} — take IFA as advised (treatment dose is 2 tablets a day).`, `ହିମୋଗ୍ଲୋବିନ୍ ${hb} g/dl: ${hc.or} — ପରାମର୍ଶ ଅନୁସାରେ ଆଇ.ଏଫ୍.ଏ. ଖାଆନ୍ତୁ (ଚିକିତ୍ସା ମାତ୍ରା ଦିନକୁ ୨ ବଟିକା)।`);
   if (alb && !highBp) F('warn', 'Albumin in urine: recheck BP and urine.', 'ପରିସ୍ରାରେ ଆଲ୍‌ବୁମିନ୍: ରକ୍ତଚାପ ଓ ପରିସ୍ରା ପୁଣି ଯାଞ୍ଚ କରନ୍ତୁ।', 'k29');
   if (a.urineSugar && a.urineSugar !== 'nil') F('warn', 'Sugar in urine: test for diabetes in pregnancy (OGTT).', 'ପରିସ୍ରାରେ ଶର୍କରା: ଗର୍ଭକାଳୀନ ମଧୁମେହ ପାଇଁ OGTT ପରୀକ୍ଷା କରନ୍ତୁ।', 'k29');
   const w = K.num(a.weight);
   if (w != null && w < 40) F('danger', 'Weight below 40 kg: high-risk pregnancy.', 'ଓଜନ ୪୦ କି.ଗ୍ରା.ରୁ କମ୍: ବିପଦସଙ୍କୁଳ ଗର୍ଭ।', 'k26');
-  if (w != null && g.days >= 13 * 7) {
-    const prev = (p.anc || []).filter(x => x !== a && x.id !== a.id && x.weight != null && K.d.diff(x.date, a.date) >= 21).sort(K.by('date', -1))[0];
+  // monthly weight gain from the 2nd trimester (Odisha ଖ.୨.୧୧): both visits at 14 weeks or later
+  if (w != null && g.days >= 14 * 7) {
+    const prev = (p.anc || []).filter(x => x !== a && x.id !== a.id && x.weight != null && K.d.diff(x.date, a.date) >= 21 && (K.preg.ga(p, x.date) || { days: 0 }).days >= 14 * 7).sort(K.by('date', -1))[0];
     if (prev) { const days = K.d.diff(prev.date, a.date); const rate = (w - prev.weight) / (days / 30.4375);
       if (rate < 0.5) F('warn', `Gaining only ${K.round(rate, 1)} kg a month (less than 0.5 kg): check diet and baby's growth.`, `ମାସକୁ କେବଳ ${K.round(rate, 1)} କି.ଗ୍ରା. ଓଜନ ବଢ଼ୁଛି (୫୦୦ ଗ୍ରାମରୁ କମ୍): ଖାଦ୍ୟ ଓ ଶିଶୁର ବୃଦ୍ଧି ଯାଞ୍ଚ କରନ୍ତୁ।`, 'k211');
       else if (rate > 3) F('warn', `Gaining ${K.round(rate, 1)} kg a month (more than 3 kg): check BP and swelling.`, `ମାସକୁ ${K.round(rate, 1)} କି.ଗ୍ରା. ଓଜନ ବଢ଼ୁଛି (୩ କି.ଗ୍ରା.ରୁ ଅଧିକ): ରକ୍ତଚାପ ଓ ଫୁଲା ଯାଞ୍ଚ କରନ୍ତୁ।`, 'k211'); }
@@ -3257,7 +3300,7 @@ K.anc.nextPmsma = (p, today) => {
     let s = K.d.iso(d); if (K.d.parse(s).getDay() === 0) s = K.d.addDays(s, 1); // Sunday → next working day
     const g = K.preg.ga(p, s).days;
     if (g > 40 * 7) return null;
-    if (g >= 13 * 7) return s;
+    if (g >= 14 * 7) return s; // PMSMA is for the 2nd and 3rd trimesters (from 14 weeks, as K.preg.tri)
     d.setMonth(d.getMonth() + 1);
   }
   return null;
@@ -3785,7 +3828,7 @@ K.route('/card/:id/preg/:pid/tests', ({ id, pid }) => {
   return {
     title: K.t('tests.title'), sub: c.mother.name, back: K.preg.url(c, p).slice(1), tab: 'home',
     html: h`<div class="wrap">${K.ui.phead(K.t('preg.overview'), K.t('tests.title'), K.t('tests.rule'))}
-      ${hb ? K.ui.stat(K.t('test.latestHb'), `${K.n(hb.v)} g/dl`, hb.v < 7 ? 'danger' : hb.v < 11 ? 'warn' : '', K.d.fmt(hb.date) + ' · ' + K.L(K.anc.hbClass(hb.v))) : ''}
+      ${hb ? K.ui.stat(K.t('test.latestHb'), `${K.n(hb.v)} g/dl`, { severe: 'danger', moderate: 'warn', mild: 'warn' }[K.anc.hbAt(p, hb).k] || '', K.d.fmt(hb.date) + ' · ' + K.L(K.anc.hbAt(p, hb))) : ''}
       <p></p>
       <form class="form" data-form="testsSave" data-id="${id}" data-pid="${pid}">
         <div class="fgroup">${K.ui.field({ name: 'bloodGroup', type: 'select', label: K.t('test.bloodGroup'), value: t.bloodGroup || c.mother.bloodGroup, options: bg })}</div>
@@ -3862,7 +3905,7 @@ K.preg.addSection(30, (c, p) => {
   const hb = K.preg.latest(p, 'hb');
   const rows = [
     ['test.bloodGroup', t.bloodGroup || c.mother.bloodGroup || '', (t.bloodGroup || c.mother.bloodGroup) ? (/-$/.test(t.bloodGroup || c.mother.bloodGroup) ? 'over' : 'ok') : 'soon'],
-    ['anc.hb', hb ? `${K.n(hb.v)} g/dl` : '', hb ? (hb.v < 11 ? (hb.v < 7 ? 'over' : 'due') : 'ok') : 'soon'],
+    ['anc.hb', hb ? `${K.n(hb.v)} g/dl` : '', hb ? ({ severe: 'over', moderate: 'due', mild: 'due' }[K.anc.hbAt(p, hb).k] || 'ok') : 'soon'],
     ['test.hiv', lab(t.hiv), tone(t.hiv)], ['test.syphilis', lab(t.syphilis), tone(t.syphilis)], ['test.hbsag', lab(t.hbsag), tone(t.hbsag)],
     ['test.ogtt', t.ogtt ? `${K.n(t.ogtt, 0)} mg/dl` : '', t.ogtt ? (t.ogtt >= 140 ? 'over' : 'ok') : 'soon'],
   ];
@@ -3907,9 +3950,11 @@ K.due.add((c, today) => {
 /* ============================================================================
    modules/25-delivery — delivery record, postnatal (PNC/HBNC) home visits
    for mother and newborn, postpartum IFA/calcium.
-   HBNC schedule (Odisha MCP V-2023-24 p.10; HBNC guidelines): ASHA visits on
-   days 3, 7, 14, 21, 28, 42 (plus day 1 for home births); after SNCU/NBSU
-   discharge the same days are counted from discharge.
+   HBNC schedule (Odisha MCP V-2023-24 p.10; HBNC guidelines): ASHA visits
+   mother and newborn on days 3, 7, 14, 21, 28, 42 after delivery (plus day 1
+   for births at home), day 1 = day of birth. A baby admitted to SNCU/NBSU has
+   its own visits on days 1, 3, 7, 14, 21, 28 and 42 after discharge (day 1 =
+   day of discharge); the mother's checks stay counted from delivery.
    ============================================================================ */
 const h = K.h;
 
@@ -3945,6 +3990,7 @@ K.i18n.add({
   'del.edit': { en: 'Edit delivery record', or: 'ପ୍ରସବ ବିବରଣୀ ସଂଶୋଧନ' },
   'pnc.title': { en: 'After delivery', or: 'ପ୍ରସବ ପରର ଯତ୍ନ' },
   'pnc.visits': { en: 'Home visits (mother and newborn)', or: 'ଗୃହ ପରିଦର୍ଶନ (ମା\' ଓ ନବଜାତ ଶିଶୁ)' },
+  'pnc.visitsMother': { en: 'Home visits (mother)', or: 'ଗୃହ ପରିଦର୍ଶନ (ମା\')' },
   'pnc.day': { en: 'Day {n}', or: '{n} ଦିନ' },
   'pnc.visit': { en: 'Home visit · day {n}', or: 'ଗୃହ ପରିଦର୍ଶନ · {n} ଦିନ' },
   'pnc.mother': { en: "Mother's check", or: "ମା'ଙ୍କ ପ୍ରସବ ପରବର୍ତ୍ତୀ ଆକଳନ" },
@@ -3954,7 +4000,10 @@ K.i18n.add({
   'pnc.ppTabs': { en: 'Iron and calcium after delivery', or: 'ପ୍ରସବ ପରେ ଲୌହ ଓ କ୍ୟାଲସିୟମ୍' },
   'pnc.ppRule': { en: 'Take one IFA tablet and two calcium tablets every day for 6 months after delivery.', or: 'ପ୍ରସବ ପରଠାରୁ ୬ ମାସ ପର୍ଯ୍ୟନ୍ତ ଗୋଟିଏ IFA ଏବଂ ଦୁଇଟି କ୍ୟାଲସିୟମ୍ ବଟିକା ନିଶ୍ଚିତ ଖାଆନ୍ତୁ।' },
   'pnc.result': { en: 'What this visit shows', or: 'ଏହି ପରିଦର୍ଶନରୁ କ\'ଣ ଜଣାପଡ଼ିଲା' },
-  'pnc.sncuNote': { en: 'Visits counted from SNCU/NBSU discharge on {d}.', or: '{d} ରେ SNCU/NBSU ଡିସ୍‌ଚାର୍ଜ ଦିନଠାରୁ ପରିଦର୍ଶନ ଗଣନା।' },
+  'pnc.sncuVisits': { en: '{b}: visits after SNCU / NBSU discharge', or: '{b}: SNCU / NBSU ଡିସ୍‌ଚାର୍ଜ ପରେ ଗୃହ ପରିଦର୍ଶନ' },
+  'pnc.sncuRule': { en: 'A baby who was admitted to the SNCU / NBSU is visited by the ASHA on days 1, 3, 7, 14, 21, 28 and 42 after discharge.', or: 'SNCU / NBSU ରେ ଭର୍ତ୍ତି ହୋଇଥିବା ଶିଶୁଙ୍କୁ ଆଶାକର୍ମୀ ଡିସ୍‌ଚାର୍ଜର ୧ମ, ୩ୟ, ୭ମ, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନରେ ଗୃହ ପରିଦର୍ଶନ କରିବେ।' },
+  'pnc.sncuNoDis': { en: 'Add the discharge date in the baby\'s birth details to see these visits.', or: 'ଏହି ପରିଦର୍ଶନ ଦେଖିବା ପାଇଁ ଶିଶୁର ଜନ୍ମ ବିବରଣୀରେ ଡିସ୍‌ଚାର୍ଜ ତାରିଖ ଦିଅନ୍ତୁ।' },
+  'pnc.visitSncu': { en: 'Visit after discharge · day {n}', or: 'ଡିସ୍‌ଚାର୍ଜ ପରେ ପରିଦର୍ଶନ · {n} ଦିନ' },
   // mother checks (Odisha p.6 list)
   'pm.pallor': { en: 'Palms or eyes pale (anaemia)', or: 'ହାତ ପାପୁଲି, ଆଖି ଶେଥା ପଡ଼ିଯିବା ବା ରକ୍ତହୀନତା ହେବା' },
   'pm.breast': { en: 'Breasts', or: 'ସ୍ତନ' }, 'br.normal': { en: 'Normal', or: 'ସାଧାରଣ' }, 'br.engorged': { en: 'Hard, swollen, painful', or: 'ଟାଣ/ନରମ/ଫୁଲିଯିବା' }, 'br.cracked': { en: 'Cracked nipple', or: 'ସ୍ତନବୃନ୍ତ ଫାଟିଯିବା' },
@@ -3988,17 +4037,20 @@ K.i18n.add({
 
 K.pnc = {};
 K.pnc.days = (p) => { const d = p.delivery || {}; return (d.place === 'inst' ? [3, 7, 14, 21, 28, 42] : [1, 3, 7, 14, 21, 28, 42]); };
-K.pnc.base = (p, c) => { const d = p.delivery || {}; const kids = (c.children || []).filter(k => k.pregId === p.id); const s = kids.map(k => k.birth && k.birth.sncu && k.birth.sncuDischarge).filter(Boolean).sort().pop(); return s || d.date; };
+K.pnc.SNCU_DAYS = [1, 3, 7, 14, 21, 28, 42];
+K.pnc.isSncu = (k) => !!(k && k.birth && +k.birth.sncu === 1);
+K.pnc.homeKids = (p, c) => (c.children || []).filter(k => k.pregId === p.id && !K.pnc.isSncu(k)); // seen at the joint visits
+K.pnc.sncuKids = (p, c) => (c.children || []).filter(k => k.pregId === p.id && K.pnc.isSncu(k));
+const visitSt = (v, date, today) => { const lag = K.d.diff(date, today); return v ? 'done' : lag < 0 ? 'upcoming' : lag <= 2 ? 'due' : 'overdue'; };
+/* mother (with the babies at home): day 1 = day of delivery */
 K.pnc.schedule = (p, c, today) => {
   today = today || K.d.today(); if (!p.delivery || !p.delivery.date) return [];
-  const base = K.pnc.base(p, c); // day 1 = day of birth (or of SNCU discharge)
-  return K.pnc.days(p).map(n => {
-    const date = K.d.addDays(base, n - 1);
-    const v = (p.pnc || []).find(x => x.day === n);
-    const lag = K.d.diff(date, today);
-    const st = v ? 'done' : lag < 0 ? 'upcoming' : lag <= 2 ? 'due' : 'overdue';
-    return { n, date, v, st };
-  });
+  return K.pnc.days(p).map(n => { const date = K.d.addDays(p.delivery.date, n - 1); const v = (p.pnc || []).find(x => x.day === n); return { n, date, v, st: visitSt(v, date, today) }; });
+};
+/* SNCU / NBSU graduate: day 1 = day of discharge; its records carry sncu: 1 */
+K.pnc.kidSchedule = (k, today) => {
+  today = today || K.d.today(); const base = K.pnc.isSncu(k) && k.birth.sncuDischarge; if (!base) return [];
+  return K.pnc.SNCU_DAYS.map(n => { const date = K.d.addDays(base, n - 1); const v = (k.hbnc || []).find(x => x.day === n && x.sncu); return { n, date, v, st: visitSt(v, date, today) }; });
 };
 
 /* flags */
@@ -4121,9 +4173,11 @@ K.route('/card/:id/preg/:pid/pnc', ({ id, pid }) => {
   const c = K.card.load(id); if (!c) return K.screens.notFound(); const p = K.card.findPreg(c, pid); if (!p) return K.screens.notFound();
   if (!p.delivery) return { redirect: `/card/${id}/preg/${pid}/delivery` };
   const d = p.delivery; const kids = c.children.filter(k => k.pregId === p.id);
-  const sch = K.pnc.schedule(p, c); const base = K.pnc.base(p, c);
+  const sch = K.pnc.schedule(p, c);
   const day = K.d.diff(d.date, K.d.today());
   const tone = { done: 'ok', due: 'due', overdue: 'over', upcoming: 'soon' }, lbl = { done: K.t('st.done'), due: K.t('st.due'), overdue: K.t('st.overdue'), upcoming: K.t('st.upcoming') };
+  const visitLi = (s, href) => K.ui.li({ href, icon: s.st === 'done' ? 'check' : 'house', tone: s.st === 'done' ? 'done' : s.st === 'due' ? 'amber' : s.st === 'overdue' ? 'red' : 'ink',
+    title: K.t('pnc.day', { n: s.n }), meta: s.v ? K.d.fmt(s.v.date) : K.d.fmt(s.date), trail: K.ui.pill(lbl[s.st], tone[s.st]) });
   return {
     title: K.t('pnc.title'), sub: c.mother.name, back: `/card/${id}`, tab: 'home',
     html: h`<div class="wrap">${K.ui.phead(K.t('preg.deliveredOn', { d: K.d.fmt(d.date, 'long') }), K.t('pnc.title'), day >= 0 && day <= 42 ? K.t('stage.pnc', { d: day }) : '')}
@@ -4134,10 +4188,13 @@ K.route('/card/:id/preg/:pid/pnc', ({ id, pid }) => {
         ${d.babies.map((b, i) => h`<dt>${K.t('del.baby', { n: i + 1 })}</dt><dd>${K.t('out.' + b.outcome)}${b.sex ? ' · ' + K.t('sex.' + b.sex) : ''}${b.wt != null ? ' · ' + K.n(b.wt, 2) + ' ' + K.t('u.kg') : ''}</dd>`)}
       </dl><p style="margin:10px 0 0">${K.ui.btn(K.t('del.edit'), { href: K.preg.url(c, p, '/delivery'), tone: 'quiet', size: 'sm', icon: 'edit' })}</p></div>
       ${kids.length ? h`<div class="cards-list" style="margin-top:10px">${kids.map(k => K.child.summaryCard(c, k))}</div>` : ''}
-      <section class="sec" style="margin-top:18px">${K.ui.secH(K.t('pnc.visits'))}
-        <p class="small">${K.t('pnc.rule')}</p>${base !== d.date ? h`<p class="small">${K.t('pnc.sncuNote', { d: K.d.fmt(base) })}</p>` : ''}
-        <div class="list">${sch.map(s => K.ui.li({ href: K.preg.url(c, p, '/pnc/' + s.n), icon: s.st === 'done' ? 'check' : 'house', tone: s.st === 'done' ? 'done' : s.st === 'due' ? 'amber' : s.st === 'overdue' ? 'red' : 'ink',
-          title: K.t('pnc.day', { n: s.n }), meta: s.v ? K.d.fmt(s.v.date) : K.d.fmt(s.date), trail: K.ui.pill(lbl[s.st], tone[s.st]) }))}</div></section>
+      <section class="sec" style="margin-top:18px">${K.ui.secH(K.t(K.pnc.homeKids(p, c).length ? 'pnc.visits' : 'pnc.visitsMother'))}
+        <p class="small">${K.t('pnc.rule')}</p>
+        <div class="list">${sch.map(s => visitLi(s, K.preg.url(c, p, '/pnc/' + s.n)))}</div></section>
+      ${K.pnc.sncuKids(p, c).map(k => { const ks = K.pnc.kidSchedule(k);
+        return h`<section class="sec">${K.ui.secH(K.t('pnc.sncuVisits', { b: K.child.label(k) }))}<p class="small">${K.t('pnc.sncuRule')}</p>
+          ${ks.length ? h`<div class="list">${ks.map(s => visitLi(s, K.preg.url(c, p, '/pnc/' + s.n + '?k=' + k.id)))}</div>`
+            : K.ui.callout('warn', '', h`${K.t('pnc.sncuNoDis')} <a href="${K.child.url(c, k, '/edit')}">${K.t('child.edit')}</a>`)}</section>`; })}
       <section class="sec">${K.ui.secH(K.t('pnc.ppTabs'))}<p class="small">${K.t('pnc.ppRule')}</p>
         ${K.tracker.render('trk-ppifa', K.t('ifa.title'), p.ppIfa, 180, d.date, { key: `${id}:${pid}:ppIfa` })}<p></p>
         ${K.tracker.render('trk-ppca', K.t('ca.title'), p.ppCalcium, 180, d.date, { key: `${id}:${pid}:ppCalcium` })}</section>
@@ -4148,14 +4205,15 @@ K.route('/card/:id/preg/:pid/pnc', ({ id, pid }) => {
 });
 
 /* ---------------------------------------------------------------- PNC / HBNC visit form */
-K.route('/card/:id/preg/:pid/pnc/:day', ({ id, pid, day }) => {
+K.route('/card/:id/preg/:pid/pnc/:day', ({ id, pid, day }, q) => {
   const c = K.card.load(id); if (!c) return K.screens.notFound(); const p = K.card.findPreg(c, pid); if (!p || !p.delivery) return K.screens.notFound();
-  const n = +day; const s = K.pnc.schedule(p, c).find(x => x.n === n) || { date: K.d.today() };
-  const m = (p.pnc || []).find(x => x.day === n) || {};
-  const kids = c.children.filter(k => k.pregId === p.id);
+  const sk = q && q.get('k') ? K.card.findKid(c, q.get('k')) : null; // a visit to an SNCU/NBSU graduate (baby only)
+  const n = +day; const s = (sk ? K.pnc.kidSchedule(sk) : K.pnc.schedule(p, c)).find(x => x.n === n) || { date: K.d.today() };
+  const m = (sk ? (sk.hbnc || []).find(x => x.day === n && x.sncu) : (p.pnc || []).find(x => x.day === n)) || {};
+  const kids = sk ? [sk] : K.pnc.homeKids(p, c);
   const POS = ['pm.toilet', 'pm.bf', 'pm.diet', 'pm.rest', 'pm.fp', 'pb.ebf', 'pb.suck', 'pb.active', 'pb.urine', 'pb.stool', 'pb.kmc'];
   const yn = (name, key, val, live) => K.ui.yn({ name, q: K.t(key), value: val, live: live || 'pncPreview', pos: POS.includes(key) });
-  const babyFs = (k) => { const b = (k.hbnc || []).find(x => x.day === n) || {}; const pre = `k_${k.id}_`;
+  const babyFs = (k) => { const b = (k.hbnc || []).find(x => x.day === n && !!x.sncu === !!sk) || {}; const pre = `k_${k.id}_`;
     return h`<fieldset class="fgroup"><legend>${K.t('pnc.baby')} · ${K.child.label(k)}</legend>
       <div class="frow">${K.ui.field({ name: pre + 'weight', type: 'decimal', label: K.t('pb.weight'), unit: K.t('u.kg'), value: b.weight, attrs: { 'data-live': 'pncPreview' } })}${K.ui.field({ name: pre + 'temp', type: 'decimal', label: K.t('pb.temp'), unit: '°C', value: b.temp, attrs: { 'data-live': 'pncPreview' } })}</div>
       ${K.ui.field({ name: pre + 'breaths', type: 'number', label: K.t('pb.breaths'), unit: '/min', value: b.breaths, hint: h`<a href="#/tools/breath">${K.t('tool.breath')}</a>`, attrs: { 'data-live': 'pncPreview' } })}
@@ -4164,19 +4222,19 @@ K.route('/card/:id/preg/:pid/pnc/:day', ({ id, pid, day }) => {
       ${K.ui.choices({ name: pre + 'cord', label: K.t('pb.cord'), value: b.cord, options: [{ v: 'dry', l: K.t('cord.dry') }, { v: 'red', l: K.t('cord.red'), tone: 'danger' }], live: 'pncPreview' })}
     </fieldset>`; };
   return {
-    title: K.t('pnc.visit', { n }), sub: c.mother.name, back: K.preg.url(c, p, '/pnc').slice(1), tab: 'home',
-    html: h`<div class="wrap">${K.ui.phead(K.t('pnc.title'), K.t('pnc.visit', { n }))}
-      <form class="form" data-form="pncSave" data-id="${id}" data-pid="${pid}" data-day="${n}" novalidate>
+    title: K.t(sk ? 'pnc.visitSncu' : 'pnc.visit', { n }), sub: sk ? K.child.label(sk) : c.mother.name, back: K.preg.url(c, p, '/pnc').slice(1), tab: 'home',
+    html: h`<div class="wrap">${K.ui.phead(K.t('pnc.title'), K.t(sk ? 'pnc.visitSncu' : 'pnc.visit', { n }))}
+      <form class="form" data-form="pncSave" data-id="${id}" data-pid="${pid}" data-day="${n}" data-k="${sk ? sk.id : ''}" novalidate>
         <div class="fgroup">${K.ui.field({ name: 'date', type: 'date', label: K.t('date'), value: m.date || (K.d.cmp(s.date, K.d.today()) <= 0 ? s.date : K.d.today()), max: K.d.today(), required: true })}
           ${K.ui.choices({ name: 'by', label: K.t('anc.by'), value: m.by || (K.settings.isHcp() ? 'asha' : ''), options: ['asha', 'anm', 'doc', 'self'].map(v => ({ v, l: K.t('by.' + v) })) })}</div>
-        <fieldset class="fgroup"><legend>${K.t('pnc.mother')}</legend>
+        ${sk ? '' : h`<fieldset class="fgroup"><legend>${K.t('pnc.mother')}</legend>
           <div class="frow">${K.ui.field({ name: 'bpSys', type: 'number', label: K.t('anc.sys'), unit: 'mmHg', value: m.bpSys, attrs: { 'data-live': 'pncPreview' } })}${K.ui.field({ name: 'bpDia', type: 'number', label: K.t('anc.dia'), unit: 'mmHg', value: m.bpDia, attrs: { 'data-live': 'pncPreview' } })}</div>
           ${K.ui.field({ name: 'temp', type: 'decimal', label: K.t('anc.temp'), unit: '°C', value: m.temp, attrs: { 'data-live': 'pncPreview' } })}
           ${K.ui.choices({ name: 'breast', label: K.t('pm.breast'), value: m.breast, options: ['normal', 'engorged', 'cracked'].map(v => ({ v, l: K.t('br.' + v), tone: v === 'normal' ? '' : 'warn' })), live: 'pncPreview' })}
           ${['pallor', 'bleed', 'uterus', 'discharge', 'episio', 'pain', 'fits', 'headache', 'mood'].map(k => yn(k, 'pm.' + k, m[k]))}
           ${['toilet', 'bf', 'diet', 'rest', 'fp'].map(k => yn(k, 'pm.' + k, m[k]))}
           ${K.ui.field({ name: 'other', label: K.t('pm.other'), value: m.other })}
-        </fieldset>
+        </fieldset>`}
         ${kids.map(babyFs)}
         <section id="pnc-preview" aria-live="polite"></section>
         <div class="btn-bar">${K.ui.btn(K.t('pnc.save'), { type: 'submit', icon: 'check' })}</div>
@@ -4185,28 +4243,30 @@ K.route('/card/:id/preg/:pid/pnc/:day', ({ id, pid, day }) => {
   };
 });
 const pncCollect = (v, f, c, p) => {
-  const n = +f.dataset.day; const m = { day: n, date: v.date, by: v.by || '' };
-  ['bpSys', 'bpDia', 'temp', 'breast', 'other'].forEach(k => { if (v[k] != null) m[k] = v[k]; });
-  ['pallor', 'bleed', 'uterus', 'discharge', 'episio', 'pain', 'fits', 'headache', 'mood', 'toilet', 'bf', 'diet', 'rest', 'fp'].forEach(k => { if (v[k] != null) m[k] = +v[k]; });
-  const babies = c.children.filter(k => k.pregId === p.id).map(k => { const pre = `k_${k.id}_`; const b = { day: n, date: v.date };
+  const n = +f.dataset.day; const sk = f.dataset.k ? K.card.findKid(c, f.dataset.k) : null; const m = sk ? null : { day: n, date: v.date, by: v.by || '' };
+  if (m) { ['bpSys', 'bpDia', 'temp', 'breast', 'other'].forEach(k => { if (v[k] != null) m[k] = v[k]; });
+    ['pallor', 'bleed', 'uterus', 'discharge', 'episio', 'pain', 'fits', 'headache', 'mood', 'toilet', 'bf', 'diet', 'rest', 'fp'].forEach(k => { if (v[k] != null) m[k] = +v[k]; }); }
+  const babies = (sk ? [sk] : K.pnc.homeKids(p, c)).map(k => { const pre = `k_${k.id}_`; const b = Object.assign({ day: n, date: v.date }, sk ? { sncu: 1, by: v.by || '' } : {});
     Object.keys(v).filter(x => x.startsWith(pre)).forEach(x => { const key = x.slice(pre.length); const val = v[x]; b[key] = ['weight', 'temp', 'breaths', 'cord'].includes(key) ? val : +val; });
     return { k, b }; });
-  return { m, babies, n };
+  return { m, babies, n, sk };
 };
+/* the baby's day of life on the visit date (for the weight and urine checks) */
+const dayOfLife = (k, date) => (k.dob && date ? K.d.diff(k.dob, date) + 1 : null);
 K.live.pncPreview = K.debounce(() => {
   const f = K.$('form[data-form="pncSave"]'); if (!f) return; const c = K.card.load(f.dataset.id); const p = c && K.card.findPreg(c, f.dataset.pid); if (!p) return;
-  const { m, babies, n } = pncCollect(K.formData(f), f, c, p);
-  const fl = K.pnc.motherFlags(m).concat(...babies.map(({ k, b }) => K.pnc.babyFlags(b, k, n).map(x => Object.assign({}, x, { en: `${K.child.label(k)}: ${x.en}`, or: `${K.child.label(k)}: ${x.or}` }))));
+  const { m, babies } = pncCollect(K.formData(f), f, c, p);
+  const fl = (m ? K.pnc.motherFlags(m) : []).concat(...babies.map(({ k, b }) => K.pnc.babyFlags(b, k, dayOfLife(k, b.date) || +f.dataset.day).map(x => Object.assign({}, x, { en: `${K.child.label(k)}: ${x.en}`, or: `${K.child.label(k)}: ${x.or}` }))));
   K.$('#pnc-preview').innerHTML = K.hv(h`<h3 style="margin:4px 0 8px">${K.t('pnc.result')}</h3>${K.pnc.flagList(fl)}`);
 }, 300);
 K.forms.pncSave = async (v, f) => {
   const c = K.card.load(f.dataset.id); const p = c && K.card.findPreg(c, f.dataset.pid); if (!p) return;
   if (!v.date || !K.d.valid(v.date) || K.d.diff(v.date, K.d.today()) < 0) { K.ui.toast(K.t('err.date')); return; }
-  const { m, babies, n } = pncCollect(v, f, c, p);
-  p.pnc = (p.pnc || []).filter(x => x.day !== n).concat([m]).sort(K.by('day'));
-  babies.forEach(({ k, b }) => { k.hbnc = (k.hbnc || []).filter(x => x.day !== n).concat([b]).sort(K.by('day'));
-    if (b.weight != null) { k.growth = k.growth || []; const g = k.growth.find(x => x.src === 'hbnc' && x.day === n); if (g) Object.assign(g, { date: b.date, wt: b.weight }); else k.growth.push({ id: K.uid('g'), date: b.date, wt: b.weight, src: 'hbnc', day: n }); } });
-  if (m.fp === 1) { p.fp = p.fp || {}; p.fp.counselled = p.fp.counselled || m.date; }
+  const { m, babies, n, sk } = pncCollect(v, f, c, p); const src = sk ? 'hbnc-sncu' : 'hbnc';
+  if (m) p.pnc = (p.pnc || []).filter(x => x.day !== n).concat([m]).sort(K.by('day'));
+  babies.forEach(({ k, b }) => { k.hbnc = (k.hbnc || []).filter(x => x.day !== n || !!x.sncu !== !!sk).concat([b]).sort(K.by('day'));
+    if (b.weight != null) { k.growth = k.growth || []; const g = k.growth.find(x => x.src === src && x.day === n); if (g) Object.assign(g, { date: b.date, wt: b.weight }); else k.growth.push({ id: K.uid('g'), date: b.date, wt: b.weight, src, day: n }); } });
+  if (m && m.fp === 1) { p.fp = p.fp || {}; p.fp.counselled = p.fp.counselled || m.date; }
   await K.store.save(c); K.ui.toast(K.t('saved')); K.go(K.preg.url(c, p, '/pnc').slice(1));
 };
 
@@ -4225,6 +4285,12 @@ K.due.add((c, today) => {
     const nx = K.pnc.schedule(p, c, today).find(s => s.st !== 'done');
     if (nx) out.push({ id: 'pnc' + nx.n, kind: 'pnc', icon: 'house', href: K.preg.url(c, p, '/pnc/' + nx.n), title: { en: `Home visit after delivery · day ${nx.n}`, or: `ପ୍ରସବ ପରେ ଗୃହ ପରିଦର୍ଶନ · ${nx.n} ଦିନ` }, date: nx.date, status: nx.st === 'overdue' ? 'overdue' : undefined });
   });
+  (c.pregnancies || []).filter(p => p.delivery).forEach(p => K.pnc.sncuKids(p, c).forEach(k => {
+    if (!k.birth.sncuDischarge || K.d.diff(k.birth.sncuDischarge, today) > 45) return;
+    const nx = K.pnc.kidSchedule(k, today).find(s => s.st !== 'done'); const who = K.child.label(k);
+    if (nx) out.push({ id: 'pncs' + k.id + nx.n, kind: 'pnc', icon: 'house', href: K.preg.url(c, p, '/pnc/' + nx.n + '?k=' + k.id), who, date: nx.date, status: nx.st === 'overdue' ? 'overdue' : undefined,
+      title: { en: `${who}: visit after SNCU discharge · day ${nx.n}`, or: `${who}: SNCU ଡିସ୍‌ଚାର୍ଜ ପରେ ପରିଦର୍ଶନ · ${nx.n} ଦିନ` } });
+  }));
   return out;
 });
 K.summary.add((c) => (c.pregnancies || []).filter(p => p.delivery && K.d.diff(p.delivery.date, K.d.today()) <= 60).map(p => `${K.t('preg.deliveredOn', { d: K.d.fmt(p.delivery.date) })} · ${K.t('del.place.' + p.delivery.place)} · ${K.t('dt.' + p.delivery.type)}`));
@@ -4525,9 +4591,10 @@ K.summary.add((c) => K.card.kids(c).map(k => `${K.child.label(k)}: ${K.d.fmt(k.d
 /* ============================================================================
    modules/40-vax — immunisation engine, child tracker, Vitamin A +
    albendazole, missed-dose record, due items. Schedule in data/30-vaccines.
-   Status per dose: given · due (from due date for 4 weeks) · overdue ·
-   upcoming · waiting (previous dose of the series not yet given) ·
-   missed (catch-up limit passed) · na (JE outside endemic districts, HPV boys).
+   Status per dose: given · due (from the due date to the end of the NIS
+   window, at least 4 weeks) · overdue · upcoming · waiting (previous dose of
+   the series not yet given) · missed (age limit passed) · na (JE outside
+   endemic districts, HPV for boys, DPT while the child is still on Penta).
    ============================================================================ */
 const h = K.h;
 
@@ -4563,7 +4630,9 @@ K.i18n.add({
   'vax.upto': { en: 'Can be given until {d}', or: '{d} ପର୍ଯ୍ୟନ୍ତ ଦିଆଯାଇପାରିବ' },
   'vax.jeOnly': { en: 'Only in selected districts', or: 'କେବଳ ନିର୍ଦ୍ଦିଷ୍ଟ ଜିଲ୍ଲାରେ' },
   'vax.hpvNote': { en: 'Single dose for girls at 14 years, free at government facilities (from 2026).', or: '୧୪ ବର୍ଷ ବୟସର ଝିଅମାନଙ୍କ ପାଇଁ ଗୋଟିଏ ମାତ୍ରା, ସରକାରୀ ସ୍ୱାସ୍ଥ୍ୟକେନ୍ଦ୍ରରେ ମାଗଣା (୨୦୨୬ ଠାରୁ)।' },
-  'vax.altDpt': { en: 'Penta cannot be started after 1 year — the ANM will give DPT instead.', or: '୧ ବର୍ଷ ପରେ ପେଣ୍ଟା ଆରମ୍ଭ କରାଯାଏ ନାହିଁ — ଏ.ଏନ୍.ଏମ୍. ଡି.ପି.ଟି. ଦେବେ।' },
+  'vax.altDpt': { en: 'Too late for Penta at this age — DPT is given in its place.', or: 'ଏହି ବୟସରେ ପେଣ୍ଟା ଦିଆଯାଏ ନାହିଁ — ତା ବଦଳରେ ଡି.ପି.ଟି. ଦିଆଯାଏ।' },
+  'vax.dptFor': { en: 'In place of {x}', or: '{x} ବଦଳରେ' },
+  'vax.notAfter1': { en: 'Not started after 1 year in the government programme.', or: 'ସରକାରୀ କାର୍ଯ୍ୟକ୍ରମରେ ୧ ବର୍ଷ ପରେ ଆରମ୍ଭ କରାଯାଏ ନାହିଁ।' },
   'vax.missedNote': { en: 'Window closed; ask the ANM about catch-up.', or: 'ସମୟସୀମା ବିତିଗଲା; ଏ.ଏନ୍.ଏମ୍.ଙ୍କୁ ପଚାରନ୍ତୁ।' },
   'vax.four': { en: 'Four key messages on vaccination day', or: 'ମା\'ମାନଙ୍କ ପାଇଁ ଟୀକାକରଣ ଦିନ ଚାରୋଟି ଗୁରୁତ୍ୱପୂର୍ଣ୍ଣ ବାର୍ତ୍ତା' },
   'vax.know': { en: 'Things to know about vaccination', or: 'ଟୀକାଦାନ ବିଷୟରେ କେତୋଟି ଜାଣିବା କଥା' },
@@ -4571,7 +4640,7 @@ K.i18n.add({
   'vax.uwinSub': { en: 'Vaccines given at government sessions are recorded on U-WIN. Download the certificate with the mobile number given at registration.', or: 'ସରକାରୀ ଅଧିବେଶନରେ ଦିଆଯାଇଥିବା ଟୀକା U-WIN ରେ ଲେଖାଯାଏ। ପଞ୍ଜୀକରଣ ସମୟର ମୋବାଇଲ୍ ନମ୍ବର ସହ ପ୍ରମାଣପତ୍ର ଡାଉନଲୋଡ୍ କରନ୍ତୁ।' },
   'vax.how': { en: 'Dose and route', or: 'ମାତ୍ରା ଓ ପ୍ରୟୋଗ' },
   'vita.title': { en: 'Vitamin A and deworming', or: 'ଭିଟାମିନ୍ ଏ ଓ କୃମିନାଶକ' },
-  'vita.rule': { en: 'Vitamin A at 9 months (1 lakh IU), then 2 lakh IU every 6 months until 5 years — 9 doses. From 18 months, albendazole is given with it (1–2 years: 200 mg; 2 years and above: 400 mg).', or: '୯ ମାସରେ ଭିଟାମିନ୍ ଏ (୧ ଲକ୍ଷ IU), ତା\'ପରେ ୫ ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ ପ୍ରତି ୬ ମାସରେ ୨ ଲକ୍ଷ IU — ୯ଟି ମାତ୍ରା। ୧୮ ମାସରୁ ଏହା ସହ କୃମିନାଶକ ଆଲ୍‌ବେଣ୍ଡାଜୋଲ୍ (୧–୨ ବର୍ଷ: ୨୦୦ ମି.ଗ୍ରା.; ୨ ବର୍ଷ ଓ ଅଧିକ: ୪୦୦ ମି.ଗ୍ରା.)।' },
+  'vita.rule': { en: 'Vitamin A at 9 months, then every 6 months until 5 years — 9 doses. Under 12 months the dose is 1 lakh IU (1 ml); from 12 months it is 2 lakh IU (2 ml), also when the first dose is late. Albendazole for worms twice a year from 12 months (1–2 years: 200 mg; 2 years and above: 400 mg); from 18 months it is given with Vitamin A.', or: '୯ ମାସରେ ଭିଟାମିନ୍ ଏ, ତା\'ପରେ ୫ ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ ପ୍ରତି ୬ ମାସରେ — ୯ଟି ମାତ୍ରା। ୧୨ ମାସରୁ କମ୍ ବୟସରେ ମାତ୍ରା ୧ ଲକ୍ଷ IU (୧ ମି.ଲି.); ୧୨ ମାସରୁ ୨ ଲକ୍ଷ IU (୨ ମି.ଲି.), ପ୍ରଥମ ମାତ୍ରା ବିଳମ୍ବରେ ଦିଆଗଲେ ମଧ୍ୟ। କୃମିନାଶକ ଆଲ୍‌ବେଣ୍ଡାଜୋଲ୍ ୧୨ ମାସରୁ ବର୍ଷକୁ ଦୁଇଥର (୧–୨ ବର୍ଷ: ୨୦୦ ମି.ଗ୍ରା.; ୨ ବର୍ଷ ଓ ଅଧିକ: ୪୦୦ ମି.ଗ୍ରା.); ୧୮ ମାସରୁ ଭିଟାମିନ୍ ଏ ସହ ଦିଆଯାଏ।' },
   'vita.vitA': { en: 'Vitamin A', or: 'ଭିଟାମିନ୍ ଏ' }, 'vita.alb': { en: 'Albendazole', or: 'ଆଲ୍‌ବେଣ୍ଡାଜୋଲ୍' },
   'vita.at': { en: 'at {m} months', or: '{m} ମାସରେ' },
   'vax.open': { en: 'Open vaccination record', or: 'ଟୀକାକରଣ ସୂଚନା ଖୋଲନ୍ତୁ' },
@@ -4591,35 +4660,57 @@ K.vax.state = (k, today, ctx) => {
     if (it.sex && k.sex && it.sex !== k.sex) r = { st: 'na', why: 'sex' };
     else if (it.je && !ctx.je && !rec.date) r = { st: 'na', why: 'je' };
     else if (rec.date) r = { st: 'given', date: rec.date };
+    // a DPT dose comes into use only once the Penta dose it replaces can no longer be given
+    else if (it.for && !(out[it.for] && out[it.for].st === 'missed')) r = { st: 'na', why: 'track' };
     else {
       let due = K.vax.at(k.dob, it.due); let after = null;
-      if (it.prev) { const pg = gv(k, it.prev); if (pg) due = K.d.max(due, K.d.addDays(pg, it.gap || 28)); else after = it.prev; }
+      const prevId = it.prevAlt && out[it.prev] && out[it.prev].st === 'na' ? it.prevAlt : it.prev;
+      if (prevId) {
+        const pg = gv(k, prevId);
+        if (pg) {
+          const gapM = it.gapM || (it.lateGapM && K.d.age(k.dob, pg).months >= 12 ? it.lateGapM : 0);
+          due = K.d.max(due, gapM ? K.d.addMonths(pg, gapM) : K.d.addDays(pg, it.gap || 28));
+        } else after = prevId;
+      }
       const lim = it.upto ? K.vax.at(k.dob, it.upto) : null;
       const startLim = it.start && !it.prev ? K.vax.at(k.dob, it.start) : null;
-      const prevSt = it.prev ? out[it.prev] : null;
+      const prevSt = prevId ? out[prevId] : null;
       if (startLim && K.d.cmp(today, startLim) > 0) r = { st: 'missed', due, why: 'start', alt: it.alt };
-      else if (lim && K.d.cmp(today, lim) > 0) r = { st: 'missed', due, why: 'upto' };
-      else if (after && prevSt && (prevSt.st === 'missed' || prevSt.st === 'na')) r = { st: prevSt.st, due, why: 'prev' };
+      else if (lim && K.d.cmp(today, lim) > 0) r = { st: 'missed', due, why: 'upto', alt: it.alt };
+      else if (after && prevSt && (prevSt.st === 'missed' || prevSt.st === 'na')) r = { st: prevSt.st, due, why: 'prev', alt: it.alt, noStart: prevSt.why === 'start' || !!prevSt.noStart };
       else if (after) r = { st: 'waiting', due, after, lim };
-      else { const lag = K.d.diff(due, today); r = { st: lag < 0 ? 'upcoming' : lag <= 28 ? 'due' : 'overdue', due, lim }; }
+      else {
+        const lag = K.d.diff(due, today); const end = K.d.max(K.d.addDays(due, 28), it.win ? K.vax.at(k.dob, it.win) : null);
+        r = { st: lag < 0 ? 'upcoming' : K.d.cmp(today, end) <= 0 ? 'due' : 'overdue', due, lim };
+      }
       if (rec.missed) r.missedRec = rec.missed;
     }
     out[it.id] = Object.assign({ it }, r);
   });
   return out;
 };
+/* Vitamin A dose and albendazole dose follow the child's age on the day given (or due, or today if late) */
+const ageOn = (k, today, date, due) => K.d.age(k.dob, date || (K.d.cmp(today, due) > 0 ? today : due)).months;
+const doseSt = (date, due, closes, today) => { if (date) return 'given'; if (K.d.cmp(today, closes) >= 0) return 'missed'; const lag = K.d.diff(due, today); return lag < 0 ? 'upcoming' : lag <= 28 ? 'due' : 'overdue'; };
 K.vax.vitaState = (k, today) => {
   today = today || K.d.today(); if (!k.dob) return [];
   return K.vax.VITA.map((v, i) => {
     const date = (k.vitA || {})[v.n]; const alb = (k.alb || {})[v.n];
     const due = K.d.addMonths(k.dob, v.m); const next = K.vax.VITA[i + 1]; const closes = next ? K.d.addMonths(k.dob, next.m) : K.d.addMonths(k.dob, 60 + 6);
-    let st; if (date) st = 'given'; else if (K.d.cmp(today, closes) >= 0) st = 'missed'; else { const lag = K.d.diff(due, today); st = lag < 0 ? 'upcoming' : lag <= 28 ? 'due' : 'overdue'; }
-    return { v, date, alb, due, st, albDose: v.m < 24 ? '200 mg' : '400 mg' };
+    return { v, date, alb, due, st: doseSt(date, due, closes, today), dose: K.vax.vitaDose(ageOn(k, today, date, due)), albDose: K.vax.albDose(ageOn(k, today, alb || date, due)) };
   });
 };
-K.vax.counts = (st) => { const vals = Object.values(st).filter(s => s.st !== 'na' && s.st !== 'upcoming' && s.st !== 'waiting'); return { n: vals.filter(s => s.st === 'given').length, t: vals.length }; };
+/* albendazole alone at 12 months (stored as alb[0]); the next dose comes with Vit-A 2 at 18 months */
+K.vax.alb0State = (k, today) => {
+  today = today || K.d.today(); if (!k.dob) return null;
+  const v = K.vax.ALB0; const date = (k.alb || {})[0]; const due = K.d.addMonths(k.dob, v.m);
+  return { v, date, due, st: doseSt(date, due, K.d.addMonths(k.dob, 18), today), albDose: K.vax.albDose(ageOn(k, today, date, due)) };
+};
+/* missed Penta doses replaced by DPT are not counted twice */
+K.vax.counts = (st) => { const vals = Object.values(st).filter(s => s.st !== 'na' && s.st !== 'upcoming' && s.st !== 'waiting' && !(s.st === 'missed' && s.alt === 'dpt')); return { n: vals.filter(s => s.st === 'given').length, t: vals.length }; };
 K.vax.fic = (k, st) => {
-  const ids = ['BCG', 'OPV1', 'OPV2', 'OPV3', 'Penta1', 'Penta2', 'Penta3', 'MR1'];
+  const dpt = ['Penta1', 'Penta2', 'Penta3'].map((id, i) => (st[id] && st[id].st === 'given' ? id : 'DPT' + (i + 1)));
+  const ids = ['BCG', 'OPV1', 'OPV2', 'OPV3', ...dpt, 'MR1'];
   if (!ids.every(id => st[id] && st[id].st === 'given')) return null;
   const last = ids.map(id => st[id].date).sort().pop();
   const fic = K.d.cmp(last, K.d.addMonths(k.dob, 12)) <= 0 ? 'fic' : 'ficLate';
@@ -4645,23 +4736,24 @@ K.route('/card/:id/child/:kid/vax', ({ id, kid }) => {
   const c = K.card.load(id); if (!c) return K.screens.notFound(); const k = K.card.findKid(c, kid); if (!k) return K.screens.notFound();
   if (!k.dob) return { title: K.t('vax.tracker'), back: K.child.url(c, k).slice(1), html: h`<div class="wrap">${K.ui.callout('warn', '', K.t('vax.needDob'))}</div>` };
   const st = K.vax.state(k); const cnt = K.vax.counts(st); const fic = K.vax.fic(k, st);
-  const hcp = K.settings.isHcp(); const vita = K.vax.vitaState(k);
+  const hcp = K.settings.isHcp(); const vita = K.vax.vitaState(k); const alb0 = K.vax.alb0State(k);
   const ageM = K.d.age(k.dob).months;
   const row = (s) => {
     const it = s.it; const meta = [];
     if (s.st === 'given') meta.push(K.d.fmt(s.date)); else if (s.st === 'waiting') meta.push(K.t('vax.after', { x: (K.vax.LIST.find(i => i.id === s.after) || {}).code || '' })); else if (s.due) meta.push(K.t('vax.dueOn', { d: K.d.fmt(s.due) }));
     if (s.st !== 'given' && s.lim && s.st !== 'missed') meta.push(K.t('vax.upto', { d: K.d.fmt(s.lim) }));
     if (s.why === 'je') meta.push(K.t('vax.jeOnly'));
-    if (s.st === 'missed' && s.alt === 'dpt') meta.push(K.t('vax.altDpt')); else if (s.st === 'missed') meta.push(K.t('vax.missedNote'));
+    if (it.for && s.st !== 'na') meta.push(K.t('vax.dptFor', { x: (K.vax.LIST.find(i => i.id === it.for) || {}).code || '' }));
+    if (s.st === 'missed') meta.push(s.alt === 'dpt' ? K.t('vax.altDpt') : s.why === 'start' || s.noStart ? K.t('vax.notAfter1') : K.t('vax.missedNote'));
     if (it.campaign) meta.push(K.t('vax.hpvNote'));
-    return h`<button type="button" class="vrow ${s.st}" data-act="vaxSheet" data-arg="${c.id}|${k.id}|${it.id}" ${s.why === 'sex' ? K.raw('hidden') : ''}>
+    return h`<button type="button" class="vrow ${s.st}" data-act="vaxSheet" data-arg="${c.id}|${k.id}|${it.id}" ${s.why === 'sex' || s.why === 'track' ? K.raw('hidden') : ''}>
       <span class="vchip">${s.st === 'given' ? K.ui.icon('check', 'sm') : K.ui.icon('syringe', 'sm')}</span>
       <span class="vbody"><b class="vcode">${it.code}</b><span class="vp">${K.L(it.p)}</span><span class="vm">${meta.join(' · ')}</span>${hcp ? h`<span class="vhow mono">${it.how}</span>` : ''}</span>
       ${K.ui.pill(K.vax.lbl(s), K.vax.tone(s))}</button>`;
   };
   const vrowVita = (x) => h`<button type="button" class="vrow ${x.st}" data-act="vitaSheet" data-arg="${c.id}|${k.id}|${x.v.n}">
       <span class="vchip">${x.st === 'given' ? K.ui.icon('check', 'sm') : K.ui.icon('drop', 'sm')}</span>
-      <span class="vbody"><b class="vcode">${x.v.code}</b><span class="vp">${K.L(K.vax.P.vita)}</span><span class="vm">${x.date ? K.d.fmt(x.date) : K.t('vax.dueOn', { d: K.d.fmt(x.due) })}${x.v.alb ? ' · ' + K.t('vita.alb') + (x.alb ? ' ' + K.d.fmt(x.alb) : ' ' + x.albDose) : ''}</span>${hcp ? h`<span class="vhow mono">${x.v.dose} · oral</span>` : ''}</span>
+      <span class="vbody"><b class="vcode">${x.v.code}</b><span class="vp">${K.L(K.vax.P.vita)}</span><span class="vm">${x.date ? K.d.fmt(x.date) : K.t('vax.dueOn', { d: K.d.fmt(x.due) })}${x.v.alb ? ' · ' + K.t('vita.alb') + (x.alb ? ' ' + K.d.fmt(x.alb) : ' ' + x.albDose) : ''}</span>${hcp ? h`<span class="vhow mono">${x.dose} · oral</span>` : ''}</span>
       ${K.ui.pill(K.vax.lbl({ st: x.st }), K.vax.tone({ st: x.st }))}</button>`;
   let nextOpen = false;
   const visits = K.vax.VISITS.filter(v => v.k !== 'y14' || k.sex !== 'm').map(v => {
@@ -4686,8 +4778,10 @@ K.route('/card/:id/child/:kid/vax', ({ id, kid }) => {
       ${!K.settings.get('jeArea') ? h`<p class="small faint" style="margin-top:8px">JE · ${K.t('set.jeSub')} <a href="#/settings">${K.t('more.settings')}</a></p>` : ''}
       <div class="vgroups">${visits}</div>
       <section class="sec" id="vita">${K.ui.secH(K.t('vita.title'))}<p class="small">${K.t('vita.rule')}</p>
-        <div class="list">${vita.filter(x => x.v.m <= Math.max(ageM + 12, 9)).map(x => K.ui.li({ act: 'vitaSheet', arg: `${c.id}|${k.id}|${x.v.n}`, icon: x.st === 'given' ? 'check' : 'drop', tone: x.st === 'given' ? 'done' : x.st === 'overdue' ? 'red' : x.st === 'due' ? 'amber' : 'ink',
-          title: `${x.v.code} · ${K.t('vita.at', { m: x.v.m })}`, meta: [x.date ? K.t('vita.vitA') + ' ' + K.d.fmt(x.date) : K.d.fmt(x.due) + ' · ' + x.v.dose, x.v.alb ? (x.alb ? K.t('vita.alb') + ' ' + K.d.fmt(x.alb) : K.t('vita.alb') + ' ' + x.albDose) : ''].filter(Boolean).join(' · '),
+        <div class="list">${vita.concat(alb0 ? [alb0] : []).filter(x => x.v.m <= Math.max(ageM + 12, 9)).sort((a, b) => a.v.m - b.v.m).map(x => K.ui.li({ act: 'vitaSheet', arg: `${c.id}|${k.id}|${x.v.n}`, icon: x.st === 'given' ? 'check' : x.v.n === 0 ? 'pill' : 'drop', tone: x.st === 'given' ? 'done' : x.st === 'overdue' ? 'red' : x.st === 'due' ? 'amber' : 'ink',
+          title: `${x.v.n === 0 ? K.t('vita.alb') : x.v.code} · ${K.t('vita.at', { m: x.v.m })}`,
+          meta: (x.v.n === 0 ? [x.date ? K.d.fmt(x.date) : K.d.fmt(x.due) + ' · ' + x.albDose]
+            : [x.date ? K.t('vita.vitA') + ' ' + K.d.fmt(x.date) : K.d.fmt(x.due) + ' · ' + x.dose, x.v.alb ? (x.alb ? K.t('vita.alb') + ' ' + K.d.fmt(x.alb) : K.t('vita.alb') + ' ' + x.albDose) : '']).filter(Boolean).join(' · '),
           trail: K.ui.pill(K.vax.lbl({ st: x.st }), K.vax.tone({ st: x.st })) }))}</div></section>
       ${missed.length ? h`<section class="sec">${K.ui.secH(K.t('vax.missedTable'))}<div class="table"><table><thead><tr><th>${K.t('vax.title')}</th><th>${K.t('date')}</th><th>${K.t('vax.reason')}</th><th>${K.t('vax.nextSession')}</th></tr></thead>
         <tbody>${missed.map(s => h`<tr><td class="num">${s.it.code}</td><td class="num">${K.d.fmt(s.missedRec.date)}</td><td>${s.missedRec.reason || '–'}</td><td class="num">${K.d.fmt(s.missedRec.next)}</td></tr>`)}</tbody></table></div></section>` : ''}
@@ -4757,7 +4851,7 @@ K.acts.vaxGroup = (el) => {
   const v = K.vax.VISITS.find(x => x.k === vk);
   const box = (val, code, sub) => h`<label class="chk"><input type="checkbox" name="ids" value="${val}" checked><span class="box">${K.ui.icon('check', 'sm')}</span><span><b>${code}</b> <span class="small faint">${sub}</span></span></label>`;
   K.ui.sheet.open(h`<h2>${K.L(v.name)}</h2><form class="form" data-form="vaxGroupSave" data-arg="${cid}|${kid}">
-    <div class="checklist">${items.map(s => box(s.it.id, s.it.code, K.L(s.it.p)))}${vaOn ? box('VitA' + vn, va.v.code, va.v.dose) : ''}${vaOn && va.v.alb && !va.alb ? box('Alb' + vn, K.t('vita.alb'), va.albDose) : ''}</div>
+    <div class="checklist">${items.map(s => box(s.it.id, s.it.code, K.L(s.it.p)))}${vaOn ? box('VitA' + vn, va.v.code, va.dose) : ''}${vaOn && va.v.alb && !va.alb ? box('Alb' + vn, K.t('vita.alb'), va.albDose) : ''}</div>
     ${K.ui.field({ name: 'date', type: 'date', label: K.t('vax.givenOn'), value: K.d.today(), max: K.d.today(), attrs: { min: k.dob } })}
     ${K.ui.choices({ name: 'place', label: K.t('vax.place'), value: 'session', options: ['session', 'fac', 'pvt'].map(x => ({ v: x, l: K.t('vpl.' + x) })) })}
     ${K.ui.btn(K.t('vax.markAll'), { type: 'submit', icon: 'check', block: true })}</form>`);
@@ -4774,12 +4868,19 @@ K.forms.vaxGroupSave = async (v, f) => {
 /* Vitamin A + albendazole sheet */
 K.acts.vitaSheet = (el) => {
   const [cid, kid, n] = el.dataset.arg.split('|'); const c = K.card.load(cid); const k = c && K.card.findKid(c, kid); if (!k) return;
+  const save = (has) => h`<div class="btn-row">${K.ui.btn(K.t('btn.save'), { type: 'submit', icon: 'check' })}${has ? K.ui.btn(K.t('vax.remove'), { act: 'vitaRemove', arg: el.dataset.arg, tone: 'ghost', icon: 'trash' }) : ''}</div>`;
+  if (n === '0') { // albendazole alone at 12 months
+    const a = K.vax.alb0State(k);
+    K.ui.sheet.open(h`<h2>${K.t('vita.alb')} · ${K.t('vita.at', { m: a.v.m })}</h2><p class="small">${a.albDose}</p>
+      <form class="form" data-form="vitaSave" data-arg="${el.dataset.arg}">${K.ui.field({ name: 'alb', type: 'date', label: K.t('vita.alb'), value: a.date || K.d.today(), max: K.d.today(), attrs: { min: k.dob } })}${save(a.date)}</form>`);
+    return;
+  }
   const x = K.vax.vitaState(k).find(s => String(s.v.n) === n);
-  K.ui.sheet.open(h`<h2>${x.v.code} · ${K.t('vita.at', { m: x.v.m })}</h2><p class="small">${x.v.dose}${x.v.alb ? ' · ' + K.t('vita.alb') + ' ' + x.albDose : ''}</p>
+  K.ui.sheet.open(h`<h2>${x.v.code} · ${K.t('vita.at', { m: x.v.m })}</h2><p class="small">${x.dose}${x.v.alb ? ' · ' + K.t('vita.alb') + ' ' + x.albDose : ''}</p>
     <form class="form" data-form="vitaSave" data-arg="${el.dataset.arg}">
-      ${K.ui.field({ name: 'vitA', type: 'date', label: K.t('vita.vitA'), value: x.date || K.d.today(), max: K.d.today() })}
-      ${x.v.alb ? K.ui.field({ name: 'alb', type: 'date', label: K.t('vita.alb'), value: x.alb || K.d.today(), max: K.d.today() }) : ''}
-      <div class="btn-row">${K.ui.btn(K.t('btn.save'), { type: 'submit', icon: 'check' })}${x.date ? K.ui.btn(K.t('vax.remove'), { act: 'vitaRemove', arg: el.dataset.arg, tone: 'ghost', icon: 'trash' }) : ''}</div></form>`);
+      ${K.ui.field({ name: 'vitA', type: 'date', label: K.t('vita.vitA'), value: x.date || K.d.today(), max: K.d.today(), attrs: { min: k.dob } })}
+      ${x.v.alb ? K.ui.field({ name: 'alb', type: 'date', label: K.t('vita.alb'), value: x.alb || K.d.today(), max: K.d.today(), attrs: { min: k.dob } }) : ''}
+      ${save(x.date)}</form>`);
 };
 K.forms.vitaSave = async (v, f) => {
   const [cid, kid, n] = f.dataset.arg.split('|'); const c = K.card.load(cid); const k = c && K.card.findKid(c, kid); if (!k) return;
@@ -4828,6 +4929,9 @@ K.due.add((c, today, horizon) => {
     const va = K.vax.vitaState(k, today).find(x => x.st === 'due' || x.st === 'overdue' || (x.st === 'upcoming' && K.d.diff(today, x.due) <= HV));
     if (va) out.push({ id: 'vita' + k.id, kind: 'vax', icon: 'drop', href: href + '#vita', who: K.child.label(k), date: va.due, status: va.st === 'overdue' ? 'overdue' : undefined,
       title: { en: `${K.child.label(k)}: ${va.v.code}${va.v.alb ? ' + albendazole' : ''}`, or: `${K.child.label(k)}: ${va.v.code}${va.v.alb ? ' + କୃମିନାଶକ' : ''}` } });
+    const a0 = K.vax.alb0State(k, today);
+    if (a0 && (a0.st === 'due' || a0.st === 'overdue' || (a0.st === 'upcoming' && K.d.diff(today, a0.due) <= HV))) out.push({ id: 'alb0' + k.id, kind: 'vax', icon: 'pill', href: href + '#vita', who: K.child.label(k), date: a0.due, status: a0.st === 'overdue' ? 'overdue' : undefined,
+      title: { en: `${K.child.label(k)}: albendazole for worms (${a0.albDose})`, or: `${K.child.label(k)}: କୃମିନାଶକ ଆଲ୍‌ବେଣ୍ଡାଜୋଲ୍ (${a0.albDose})` } });
   });
   return out;
 });
@@ -4842,7 +4946,9 @@ K.summary.add((c) => K.card.kids(c).filter(k => k.dob).map(k => { const st = K.v
    z = ((y/M)^L − 1)/(L·S); weight-based indicators use the WHO restricted
    method beyond ±3 SD (as in the WHO anthro package). Length < 731 days,
    height ≥ 731 days (±0.7 cm if measured the other way). Preterm babies
-   under 2 years are assessed at corrected age.
+   under 2 years are assessed at corrected age; before term-equivalent age
+   (corrected age < 0) no WHO grade is given (the standards start at term).
+   Weight-for-length/height and SAM by WHZ only to 5 years (1826 days).
    Classification (WHO; MCP card zones): WAZ < −2 moderately, < −3 severely
    underweight · HAZ < −2 stunted · WHZ < −2 wasted (MAM), < −3 SAM ·
    MUAC (6–59 m) < 11.5 cm SAM, 11.5–12.4 MAM · bilateral pitting oedema = SAM.
@@ -4896,6 +5002,8 @@ K.i18n.add({
   'gr.implaus': { en: 'This value looks unlikely — please re-measure.', or: 'ଏହି ମାପ ଅସମ୍ଭବ ଲାଗୁଛି — ଦୟାକରି ପୁଣି ମାପନ୍ତୁ।' },
   'gr.need': { en: 'Add sex and date of birth to use the growth charts.', or: 'ବୃଦ୍ଧି ଚାର୍ଟ ପାଇଁ ଶିଶୁର ଲିଙ୍ଗ ଓ ଜନ୍ମ ତାରିଖ ଦିଅନ୍ତୁ।' },
   'gr.over5': { en: 'WHO growth standards cover 0–5 years.', or: 'WHO ବୃଦ୍ଧି ମାନକ ୦–୫ ବର୍ଷ ପାଇଁ।' },
+  'gr.preTerm': { en: 'Not yet at term age', or: 'ଏପର୍ଯ୍ୟନ୍ତ ପୂର୍ଣ୍ଣ ସମୟ ବୟସ ହୋଇନାହିଁ' },
+  'gr.preTermDo': { en: 'This baby was born early and has not yet reached 40 weeks. WHO growth charts start at term, so no grade is given until then. Weigh the baby as the SNCU or doctor advises, and keep the baby warm and breastfed.', or: 'ଏହି ଶିଶୁ ସମୟ ପୂର୍ବରୁ ଜନ୍ମ ହୋଇଛି ଓ ଏପର୍ଯ୍ୟନ୍ତ ୪୦ ସପ୍ତାହ ପୂରଣ ହୋଇନାହିଁ। WHO ବୃଦ୍ଧି ଚାର୍ଟ ପୂର୍ଣ୍ଣ ସମୟରୁ ଆରମ୍ଭ, ତେଣୁ ସେପର୍ଯ୍ୟନ୍ତ କୌଣସି ଶ୍ରେଣୀ ଦିଆଯାଏ ନାହିଁ। SNCU ବା ଡାକ୍ତରଙ୍କ ପରାମର୍ଶ ଅନୁସାରେ ଓଜନ କରନ୍ତୁ ଏବଂ ଶିଶୁକୁ ଉଷୁମ ରଖି ସ୍ତନ୍ୟପାନ କରାନ୍ତୁ।' },
   'gr.deleteQ': { en: 'Delete this measurement?', or: 'ଏହି ମାପ ବିଲୋପ କରିବେ?' },
   'gr.equal': { en: 'Ensure equal care for the girl child.', or: 'ବାଳିକାଙ୍କ ପାଇଁ ସମାନ ସୁବିଧା ସୁନିଶ୍ଚିତ କରନ୍ତୁ।' },
   'gr.muacNote': { en: 'MUAC applies from 6 months to 5 years: below 11.5 cm = SAM; 11.5–12.4 cm = MAM.', or: 'MUAC ୬ ମାସରୁ ୫ ବର୍ଷ ପାଇଁ: ୧୧.୫ ସେ.ମି.ରୁ କମ୍ = SAM; ୧୧.୫–୧୨.୪ ସେ.ମି. = MAM।' },
@@ -4923,13 +5031,15 @@ K.growth.z = (y, lms, restricted) => {
 };
 K.growth.defRange = (ageD) => (ageD <= 330 ? '1' : ageD <= 700 ? '2' : '5');
 K.growth.sex = k => (k.sex === 'm' ? 1 : k.sex === 'f' ? 2 : null);
-K.growth.ageDays = (k, date) => { const dob = K.child.useCorrected(k, date) ? K.child.correctedDob(k) : k.dob; return Math.max(0, K.d.diff(dob, date)); };
+K.growth.ageRaw = (k, date) => K.d.diff(K.child.useCorrected(k, date) ? K.child.correctedDob(k) : k.dob, date); // < 0 before term-equivalent age
+K.growth.ageDays = (k, date) => Math.max(0, K.growth.ageRaw(k, date));
 
 /* all indicators for one measurement */
 K.growth.assess = (k, m) => {
   const sex = K.growth.sex(k); if (!sex || !k.dob || !m || !m.date) return null;
-  const age = K.growth.ageDays(k, m.date); const r = { age, corrected: K.child.useCorrected(k, m.date) };
+  const raw = K.growth.ageRaw(k, m.date); const age = Math.max(0, raw); const r = { age, corrected: K.child.useCorrected(k, m.date) };
   const wt = K.num(m.wt), ht0 = K.num(m.ht), hc = K.num(m.hc), muac = K.num(m.muac); const oed = +m.oedema === 1;
+  if (raw < 0) { r.preTerm = true; r.oedema = oed; if (ht0 != null) r.ht = ht0; return r; } // before 40 weeks: no WHO grade
   if (age > 1826) r.over5 = true;
   if (wt != null && age <= 1826 && !oed) r.waz = K.growth.z(wt, K.growth.lms('wfa', sex, age), true);
   if (ht0 != null) {
@@ -4937,7 +5047,7 @@ K.growth.assess = (k, m) => {
     if (age < 731 && pos === 'H') ht += 0.7; else if (age >= 731 && pos === 'L') ht -= 0.7;
     r.ht = ht;
     if (age <= 1826) r.haz = K.growth.z(ht, K.growth.lms('lhfa', sex, age), false);
-    if (wt != null && !oed) { const ind = age < 731 ? 'wfl' : 'wfh'; const l = K.growth.lms(ind, sex, Math.round(ht * 10) / 10); if (l) r.whz = K.growth.z(wt, l, true); r.whInd = ind; }
+    if (wt != null && !oed && age <= 1826) { const ind = age < 731 ? 'wfl' : 'wfh'; const l = K.growth.lms(ind, sex, Math.round(ht * 10) / 10); if (l) r.whz = K.growth.z(wt, l, true); r.whInd = ind; }
     if (wt != null && !oed && age <= 1826) r.baz = K.growth.z(wt / Math.pow(ht / 100, 2), K.growth.lms('bfa', sex, age), true);
   }
   if (hc != null && age <= 1826) r.hcz = K.growth.z(hc, K.growth.lms('hcfa', sex, age), false);
@@ -4962,6 +5072,7 @@ K.growth.faltering = (k) => {
 };
 K.growth.headline = (r) => {
   if (!r) return null;
+  if (r.preTerm) return { tone: 'info', t: K.t('gr.preTerm') };
   if (r.sam) return { tone: 'red', t: K.t('gr.sam') };
   if (r.zone === 's') return { tone: 'red', t: K.t('gr.zone.s') };
   if (r.mam) return { tone: 'amber', t: K.t('gr.mam') };
@@ -4988,7 +5099,7 @@ K.growth.chart = (k, ind, range) => {
   const L = {}; [-3, -2, -1, 0, 1, 2, 3].forEach(z => { L[z] = line(z); });
   // points
   const pts = (k.growth || []).filter(m => m.date).sort(K.by('date')).map(m => {
-    const r = K.growth.assess(k, m); if (!r) return null;
+    const r = K.growth.assess(k, m); if (!r || r.preTerm) return null;
     if (ind === 'wfa' && m.wt != null && !r.oedema) return { x: r.age, y: +m.wt, m };
     if (ind === 'lhfa' && r.ht != null) return { x: r.age, y: r.ht, m };
     if (ind === 'hcfa' && m.hc != null) return { x: r.age, y: +m.hc, m };
@@ -5049,7 +5160,7 @@ K.route('/card/:id/child/:kid/growth', ({ id, kid }, q) => {
     title: K.t('gr.title'), sub: K.child.label(k), back, tab: 'home',
     html: h`<div class="wrap">${K.ui.phead(K.child.label(k) + ' · ' + K.d.ageText(k.dob), K.t('gr.title'), K.t('gr.monthly'))}
       ${hl ? K.ui.callout(hl.tone === 'red' ? 'danger' : hl.tone === 'amber' ? 'warn' : hl.tone === 'info' ? 'info' : '', hl.t,
-        hl.tone === 'red' ? (r.sam ? K.t('gr.samDo') : K.t('gr.adv.s')) : hl.tone === 'amber' ? K.t('gr.adv.m') : (K.growth.faltering(k) ? K.t('gr.falter') : K.t('gr.good')), hl.tone === 'teal' ? 'check' : null) : ''}
+        r.preTerm ? K.t('gr.preTermDo') : hl.tone === 'red' ? (r.sam ? K.t('gr.samDo') : K.t('gr.adv.s')) : hl.tone === 'amber' ? K.t('gr.adv.m') : (K.growth.faltering(k) ? K.t('gr.falter') : K.t('gr.good')), hl.tone === 'teal' ? 'check' : null) : ''}
       ${K.growth.faltering(k) && hl && hl.tone !== 'teal' ? h`<p></p>${K.ui.callout('warn', '', K.t('gr.falter'))}` : ''}
       <p></p>${K.ui.btn(K.t('gr.add'), { href: K.child.url(c, k, '/growth/new'), icon: 'plus', block: true })}
       <section class="sec" style="margin-top:16px">
@@ -5099,14 +5210,14 @@ K.growth.resultHtml = (k, r, o = {}) => {
   if (!r) return '';
   const hcp = o.stats != null ? o.stats : K.settings.isHcp(); const out = []; const hl = K.growth.headline(r);
   if (r.flag) out.push(K.ui.callout('warn', '', K.t('gr.implaus')));
-  if (hl) out.push(K.ui.callout(hl.tone === 'red' ? 'danger' : hl.tone === 'amber' ? 'warn' : hl.tone === 'info' ? 'info' : '', hl.t, hl.tone === 'red' ? (r.sam ? K.t('gr.samDo') : K.t('gr.adv.s')) : hl.tone === 'amber' ? K.t('gr.adv.m') : '', hl.tone === 'teal' ? 'check' : null));
+  if (hl) out.push(K.ui.callout(hl.tone === 'red' ? 'danger' : hl.tone === 'amber' ? 'warn' : hl.tone === 'info' ? 'info' : '', hl.t, r.preTerm ? K.t('gr.preTermDo') : hl.tone === 'red' ? (r.sam ? K.t('gr.samDo') : K.t('gr.adv.s')) : hl.tone === 'amber' ? K.t('gr.adv.m') : '', hl.tone === 'teal' ? 'check' : null));
   if (r.haz != null && r.haz < -2) out.push(K.ui.callout('warn', r.haz < -3 ? K.t('gr.stuntS') : K.t('gr.stunt'), ''));
   if (r.whz != null && r.whz > 2) out.push(K.ui.callout('info', K.t('gr.over'), ''));
   if (r.hcz != null && r.hcz < -2) out.push(K.ui.callout('warn', K.t('gr.micro'), ''));
   if (r.hcz != null && r.hcz > 2) out.push(K.ui.callout('warn', K.t('gr.macro'), ''));
   if (r.over5) out.push(K.ui.callout('info', '', K.t('gr.over5')));
   const stats = hcp ? h`<div class="stats" style="margin-top:8px">${[['WAZ', r.waz], ['HAZ', r.haz], [r.whInd === 'wfh' ? 'WHZ' : 'WLZ', r.whz], ['BAZ', r.baz], ['HCZ', r.hcz]].filter(x => x[1] != null)
-    .map(x => K.ui.stat(x[0], zs(x[1]), x[1] < -3 ? 'danger' : x[1] < -2 ? 'warn' : '', ''))}${r.corrected ? K.ui.stat(K.t('child.age'), K.d.ageText(K.d.addDays(K.d.today(), -r.age)), 'ink', K.t('gr.corrected')) : ''}</div>` : '';
+    .map(x => K.ui.stat(x[0], zs(x[1]), x[1] < -3 ? 'danger' : x[1] < -2 ? 'warn' : '', ''))}${r.corrected && !r.preTerm ? K.ui.stat(K.t('child.age'), K.d.ageText(K.d.addDays(K.d.today(), -r.age)), 'ink', K.t('gr.corrected')) : ''}</div>` : '';
   return h`<div class="stack">${out}</div>${stats}`;
 };
 K.live.grPreview = K.debounce(() => {
@@ -5145,7 +5256,7 @@ K.child.addSection(20, (c, k) => {
 });
 K.child.cardBits.push((c, k) => {
   const last = K.growth.latest(k); if (!last) return '';
-  const hl = K.growth.headline(K.growth.assess(k, last)); if (!hl || hl.tone === 'teal') return '';
+  const r = K.growth.assess(k, last); const hl = K.growth.headline(r); if (!hl || hl.tone === 'teal' || r.preTerm) return '';
   return K.ui.pill(hl.t.replace(/ \(.+\)/, ''), hl.tone === 'amber' ? 'due' : hl.tone === 'red' ? 'over' : 'info', 'scale');
 });
 K.due.add((c, today) => {
@@ -5664,7 +5775,9 @@ K.i18n.add({
   'br.orType': { en: 'Or type the number you counted', or: 'କିମ୍ବା ଗଣିଥିବା ସଂଖ୍ୟା ଲେଖନ୍ତୁ' },
   'br.perMin': { en: 'breaths a minute', or: 'ଶ୍ୱାସ ପ୍ରତି ମିନିଟ୍' },
   'br.fast': { en: 'Fast breathing ({n} — cut-off {c})', or: 'ଦ୍ରୁତ ଶ୍ୱାସ ({n} — ସୀମା {c})' },
-  'br.fastDo': { en: 'This child may have pneumonia. See the ASHA, ANM or doctor today. If the chest pulls in, or there is any danger sign, go to the hospital now (call 108).', or: 'ଶିଶୁର ନିମୋନିଆ ହୋଇପାରେ। ଆଜି ହିଁ ଆଶା, ଏ.ଏନ୍.ଏମ୍. ବା ଡାକ୍ତରଙ୍କୁ ଦେଖାନ୍ତୁ। ଛାତି ଭିତରକୁ ପଶୁଥିଲେ ବା କୌଣସି ବିପଦ ଲକ୍ଷଣ ଥିଲେ ଏବେ ହିଁ ଡାକ୍ତରଖାନା ଯାଆନ୍ତୁ (୧୦୮)।' },
+  'br.fastDo': { en: 'This child may have pneumonia. Contact the ASHA or ANM now for treatment. If the chest pulls in, or there is any danger sign, go to the hospital at once (call 108).', or: 'ଶିଶୁର ନିମୋନିଆ ହୋଇପାରେ। ଚିକିତ୍ସା ପାଇଁ ଏବେ ହିଁ ଆଶା ବା ଏ.ଏନ୍.ଏମ୍.ଙ୍କ ସହ ଯୋଗାଯୋଗ କରନ୍ତୁ। ଛାତି ଭିତରକୁ ପଶୁଥିଲେ ବା କୌଣସି ବିପଦ ଲକ୍ଷଣ ଥିଲେ ତୁରନ୍ତ ଡାକ୍ତରଖାନା ଯାଆନ୍ତୁ (୧୦୮)।' },
+  /* national MCP card 2018 p.7: a newborn breathing 60 or more is a danger sign — contact the health worker immediately */
+  'br.fastYoung': { en: 'In a baby under 2 months, fast breathing is a danger sign. Contact the ASHA or ANM immediately and take the baby to the hospital (call 108 or 102). Keep the baby warm and breastfeeding on the way.', or: '୨ ମାସରୁ କମ୍ ଶିଶୁରେ ଦ୍ରୁତ ଶ୍ୱାସ ବିପଦ ଲକ୍ଷଣ। ତୁରନ୍ତ ଆଶା ବା ଏ.ଏନ୍.ଏମ୍.ଙ୍କ ସହ ଯୋଗାଯୋଗ କରି ଶିଶୁକୁ ଡାକ୍ତରଖାନା ନିଅନ୍ତୁ (୧୦୮ ବା ୧୦୨ କୁ ଫୋନ୍ କରନ୍ତୁ)। ବାଟରେ ଶିଶୁକୁ ଉଷୁମ ରଖି ସ୍ତନ୍ୟପାନ କରାନ୍ତୁ।' },
   'br.ok': { en: 'Not fast breathing ({n} — cut-off {c})', or: 'ଦ୍ରୁତ ଶ୍ୱାସ ନୁହେଁ ({n} — ସୀମା {c})' },
   'br.okDo': { en: 'Keep watching. Count again if the child gets worse, and look for chest indrawing.', or: 'ନଜର ରଖନ୍ତୁ। ଶିଶୁ ଅଧିକ ଅସୁସ୍ଥ ହେଲେ ପୁଣି ଗଣନ୍ତୁ ଓ ଛାତି ଭିତରକୁ ପଶୁଛି କି ଦେଖନ୍ତୁ।' },
   'br.indraw': { en: 'Chest indrawing (lower chest pulls in when breathing in) is a danger sign at any count.', or: 'ନିଃଶ୍ୱାସ ନେଲାବେଳେ ଛାତିର ତଳ ଭାଗ ଭିତରକୁ ପଶିବା ଯେକୌଣସି ଗଣନାରେ ବିପଦ ଲକ୍ଷଣ।' },
@@ -5749,7 +5862,7 @@ K.sick.result = () => {
   const f = K.$('form[data-form="breathCalc"]'); if (!f) return; const v = K.formData(f); const box = K.$('#br-result'); if (!box) return;
   const n = v.n; if (n == null || !v.age) { box.innerHTML = ''; return; }
   const cut = { a1: 60, a2: 50, a3: 40 }[v.age]; const fast = n >= cut;
-  box.innerHTML = K.hv(fast ? K.ui.callout('danger', K.t('br.fast', { n, c: cut }), K.t('br.fastDo')) : K.ui.callout('', K.t('br.ok', { n, c: cut }), K.t('br.okDo'), 'check'));
+  box.innerHTML = K.hv(fast ? K.ui.callout('danger', K.t('br.fast', { n, c: cut }), K.t(v.age === 'a1' ? 'br.fastYoung' : 'br.fastDo')) : K.ui.callout('', K.t('br.ok', { n, c: cut }), K.t('br.okDo'), 'check'));
 };
 K.live.breathAge = () => K.sick.result();
 K.acts.breathGo = () => {
@@ -5994,12 +6107,15 @@ document.addEventListener('keydown', (e) => { const f = K.$('.flip'); if (!f || 
    Nothing here is saved. Each tool cites its source at the bottom.
    - EDD / gestational age (Naegele: LMP + 280 days; or ultrasound dating)
    - High-risk quick check (Odisha MCP card V-2023-24 list, modules/22-hrp)
-   - Anaemia: WHO Hb cut-offs; Anaemia Mukt Bharat (AMB) treatment flowcharts
-     (AMB operational guidelines 2018 and training module, NHM): 6–59 m by
-     weight band 1 / 1.5 / 2 ml IFA syrup daily × 2 months; 5–9 y 3 mg/kg/day
-     × 2 months; 10–19 y 2 IFA tablets daily × 3 months; pregnancy mild /
-     moderate 2 IFA tablets daily, recheck at 1 month; severe → FRU/DH (IV iron
-     ≤34 weeks, admission > 34 weeks or Hb < 5).
+   - Anaemia: Anaemia Mukt Bharat Abhiyaan operational guidelines (MoHFW,
+     June 2026). Hb cut-offs = WHO 2024 (§4.1): 6–23 m and 2nd-trimester
+     pregnancy lowered to 10.5. Treatment (ch.4): 6–59 m IFA syrup 3 mg/kg/day
+     by weight band 1 / 1.5 / 2 ml × 3 months; 5–9 y 1 pink tablet daily × 3 m;
+     10–19 y 1 blue tablet daily × 3 m; women 20–49 y 1 red tablet daily × 3 m;
+     breastfeeding (≤6 m after delivery) 2 red daily × 3 m; pregnancy mild /
+     moderate 2 red daily, recheck at 1 month (IV iron sucrose ×5 or FCM ×2 for
+     moderate as the doctor advises, after the 1st trimester). Recheck: severe
+     1 m, moderate 2 m, mild 3 m. Severe → FRU/DH; Hb < 5 → transfusion.
    - Vaccine due dates (data/30-vaccines), growth z-scores (modules/50-growth),
      corrected age, ORS/zinc (WHO/IMNCI plans A and B), IFA/deworming doses (AMB).
    ============================================================================ */
@@ -6040,7 +6156,8 @@ K.i18n.add({
   'edd.k41': { en: 'Not delivered by now: go to the hospital (high risk)', or: 'ଏପର୍ଯ୍ୟନ୍ତ ପ୍ରସବ ହୋଇନଥିଲେ ଡାକ୍ତରଖାନା ଯାଆନ୍ତୁ (ବିପଦସଙ୍କୁଳ)' },
   'edd.pmsma': { en: 'Next PMSMA (doctor check-up on the 9th)', or: 'ପରବର୍ତ୍ତୀ PMSMA (୯ ତାରିଖରେ ଡାକ୍ତରୀ ପରୀକ୍ଷା)' },
   'edd.bad': { en: 'These dates do not fit a current pregnancy (more than 44 weeks, or in the future). Check the date.', or: 'ଏହି ତାରିଖ ବର୍ତ୍ତମାନର ଗର୍ଭ ସହ ମେଳ ଖାଉନାହିଁ (୪୪ ସପ୍ତାହରୁ ଅଧିକ ବା ଭବିଷ୍ୟତ)। ତାରିଖ ଯାଞ୍ଚ କରନ୍ତୁ।' },
-  'edd.usgNote': { en: 'A first-trimester scan dates a pregnancy better than the LMP. If the two differ by more than 7 days, use the scan.', or: 'ପ୍ରଥମ ତ୍ରୟମାସର ସ୍କାନ୍ LMP ଠାରୁ ଅଧିକ ସଠିକ୍। ଦୁହିଁଙ୍କ ମଧ୍ୟରେ ୭ ଦିନରୁ ଅଧିକ ପାର୍ଥକ୍ୟ ଥିଲେ ସ୍କାନ୍ ବ୍ୟବହାର କରନ୍ତୁ।' },
+  'edd.usgNote': { en: 'If the LMP is known too, enter it: the scan replaces the LMP date only when the two differ by more than 5 days (scan before 9 weeks), 7 days (9–15 weeks), 10 days (16–21 weeks), 14 days (22–27 weeks) or 21 days (28 weeks or later).', or: 'LMP ମଧ୍ୟ ଜଣାଥିଲେ ଦିଅନ୍ତୁ: ଦୁହିଁଙ୍କ ମଧ୍ୟରେ ପାର୍ଥକ୍ୟ ୫ ଦିନ (୯ ସପ୍ତାହ ପୂର୍ବର ସ୍କାନ୍), ୭ ଦିନ (୯–୧୫ ସପ୍ତାହ), ୧୦ ଦିନ (୧୬–୨୧ ସପ୍ତାହ), ୧୪ ଦିନ (୨୨–୨୭ ସପ୍ତାହ) ବା ୨୧ ଦିନ (୨୮ ସପ୍ତାହ ବା ପରେ) ରୁ ଅଧିକ ହେଲେ ହିଁ ସ୍କାନ୍ ତାରିଖ ବ୍ୟବହାର ହୁଏ।' },
+  'edd.lmpOpt': { en: 'First day of the last period, if known', or: 'ଶେଷ ଋତୁସ୍ରାବର ପ୍ରଥମ ଦିନ, ଜଣାଥିଲେ' },
   /* HRP */
   'thrp.lede': { en: 'Answer what you know. One "yes" makes the pregnancy high-risk. Nothing is saved — use the card\'s own high-risk check to record it.', or: 'ଜାଣିଥିବା ଉତ୍ତର ଦିଅନ୍ତୁ। ଗୋଟିଏ “ହଁ” ଥିଲେ ଗର୍ଭ ବିପଦସଙ୍କୁଳ। ଏଠାରେ କିଛି ସେଭ୍ ହୁଏ ନାହିଁ।' },
   'thrp.none': { en: 'No high-risk condition among the answers given. Check again at every visit.', or: 'ଦିଆଯାଇଥିବା ଉତ୍ତରରେ କୌଣସି ବିପଦସଙ୍କୁଳ ଅବସ୍ଥା ନାହିଁ। ପ୍ରତ୍ୟେକ ପରିଦର୍ଶନରେ ପୁଣି ଯାଞ୍ଚ କରନ୍ତୁ।' },
@@ -6048,31 +6165,35 @@ K.i18n.add({
   /* anaemia */
   'an.group': { en: 'Who', or: 'କିଏ' },
   'an.g.c6': { en: 'Child 6–59 months', or: 'ଶିଶୁ ୬–୫୯ ମାସ' }, 'an.g.c5': { en: 'Child 5–9 years', or: 'ପିଲା ୫–୯ ବର୍ଷ' }, 'an.g.a': { en: 'Adolescent 10–19 years', or: 'କିଶୋର/କିଶୋରୀ ୧୦–୧୯ ବର୍ଷ' },
-  'an.g.p': { en: 'Pregnant woman', or: 'ଗର୍ଭବତୀ ମହିଳା' }, 'an.g.w': { en: 'Woman, not pregnant (incl. breastfeeding)', or: 'ମହିଳା, ଗର୍ଭବତୀ ନୁହଁନ୍ତି (ସ୍ତନ୍ୟପାନ ସହିତ)' }, 'an.g.m': { en: 'Man 15 years and over', or: 'ପୁରୁଷ ୧୫ ବର୍ଷ ଓ ଅଧିକ' },
+  'an.g.p': { en: 'Pregnant woman', or: 'ଗର୍ଭବତୀ ମହିଳା' }, 'an.g.l': { en: 'Breastfeeding mother (up to 6 months after delivery)', or: 'ସ୍ତନ୍ୟପାନ କରାଉଥିବା ମା\' (ପ୍ରସବର ୬ ମାସ ପର୍ଯ୍ୟନ୍ତ)' },
+  'an.g.w': { en: 'Woman 20–49 years, not pregnant', or: 'ମହିଳା ୨୦–୪୯ ବର୍ଷ, ଗର୍ଭବତୀ ନୁହଁନ୍ତି' }, 'an.g.m': { en: 'Man 15 years and over', or: 'ପୁରୁଷ ୧୫ ବର୍ଷ ଓ ଅଧିକ' },
+  'an.cAge': { en: 'Age', or: 'ବୟସ' }, 'an.c.623': { en: '6–23 months', or: '୬–୨୩ ମାସ' }, 'an.c.2459': { en: '24–59 months', or: '୨୪–୫୯ ମାସ' },
   'an.ageA': { en: 'Age and sex', or: 'ବୟସ ଓ ଲିଙ୍ଗ' }, 'an.a.1011': { en: '10–11 years', or: '୧୦–୧୧ ବର୍ଷ' }, 'an.a.1214': { en: '12–14 years', or: '୧୨–୧୪ ବର୍ଷ' }, 'an.a.g15': { en: 'Girl 15–19', or: 'କିଶୋରୀ ୧୫–୧୯' }, 'an.a.b15': { en: 'Boy 15–19', or: 'କିଶୋର ୧୫–୧୯' },
   'an.hb': { en: 'Haemoglobin', or: 'ହିମୋଗ୍ଲୋବିନ୍' }, 'an.wt': { en: 'Weight', or: 'ଓଜନ' }, 'an.ga': { en: 'Weeks of pregnancy', or: 'ଗର୍ଭର ସପ୍ତାହ' },
+  'an.gaNeed': { en: 'Enter the weeks: in the 2nd trimester (14–27 weeks) anaemia starts below 10.5 g/dl instead of 11.', or: 'ସପ୍ତାହ ଦିଅନ୍ତୁ: ଦ୍ୱିତୀୟ ତ୍ରୟମାସରେ (୧୪–୨୭ ସପ୍ତାହ) ୧୧ ବଦଳରେ ୧୦.୫ g/dl ରୁ କମ୍ ହେଲେ ରକ୍ତହୀନତା।' },
   'an.none': { en: 'No anaemia', or: 'ରକ୍ତହୀନତା ନାହିଁ' }, 'an.mild': { en: 'Mild anaemia', or: 'ମୃଦୁ ରକ୍ତହୀନତା' }, 'an.moderate': { en: 'Moderate anaemia', or: 'ମଧ୍ୟମ ରକ୍ତହୀନତା' }, 'an.severe': { en: 'Severe anaemia', or: 'ଗୁରୁତର ରକ୍ତହୀନତା' },
-  'an.cut': { en: 'WHO cut-offs for this group (g/dl): no anaemia ≥{n}; mild {mi}; moderate {mo}; severe <{s}', or: 'ଏହି ଗୋଷ୍ଠୀ ପାଇଁ WHO ମାନ (g/dl): ରକ୍ତହୀନତା ନାହିଁ ≥{n}; ମୃଦୁ {mi}; ମଧ୍ୟମ {mo}; ଗୁରୁତର <{s}' },
+  'an.cut': { en: 'WHO 2024 cut-offs for this group (g/dl): no anaemia ≥{n}; mild {mi}; moderate {mo}; severe <{s}', or: 'ଏହି ଗୋଷ୍ଠୀ ପାଇଁ WHO ୨୦୨୪ ମାନ (g/dl): ରକ୍ତହୀନତା ନାହିଁ ≥{n}; ମୃଦୁ {mi}; ମଧ୍ୟମ {mo}; ଗୁରୁତର <{s}' },
   'an.treat': { en: 'Treatment (Anaemia Mukt Bharat)', or: 'ଚିକିତ୍ସା (ଆନେମିଆ ମୁକ୍ତ ଭାରତ)' },
-  'an.c6.dose': { en: 'IFA syrup {ml} ml once a day for 2 months ({mg} mg elemental iron a day; syrup has 20 mg iron per ml).', or: 'ଆଇ.ଏଫ୍.ଏ. ସିରପ୍ {ml} ମି.ଲି. ଦିନକୁ ଥରେ, ୨ ମାସ ({mg} ମି.ଗ୍ରା. ଲୌହସାର ପ୍ରତିଦିନ; ସିରପ୍‌ରେ ପ୍ରତି ମି.ଲି.ରେ ୨୦ ମି.ଗ୍ରା.)।' },
-  'an.c6.band': { en: 'AMB weight bands: 6–10.9 kg → 1 ml; 11–14.9 kg → 1.5 ml; 15–19.9 kg → 2 ml.', or: 'AMB ଓଜନ ଶ୍ରେଣୀ: ୬–୧୦.୯ କି.ଗ୍ରା. → ୧ ମି.ଲି.; ୧୧–୧୪.୯ କି.ଗ୍ରା. → ୧.୫ ମି.ଲି.; ୧୫–୧୯.୯ କି.ଗ୍ରା. → ୨ ମି.ଲି.।' },
+  'an.c6.dose': { en: 'IFA syrup {ml} ml once a day for 3 months ({mg} mg elemental iron a day; the syrup has 20 mg iron per ml).', or: 'ଆଇ.ଏଫ୍.ଏ. ସିରପ୍ {ml} ମି.ଲି. ଦିନକୁ ଥରେ, ୩ ମାସ ({mg} ମି.ଗ୍ରା. ଲୌହସାର ପ୍ରତିଦିନ; ସିରପ୍‌ରେ ପ୍ରତି ମି.ଲି.ରେ ୨୦ ମି.ଗ୍ରା.)।' },
+  'an.c6.band': { en: 'AMB weight bands (3 mg iron per kg a day): 6–10.9 kg → 1 ml; 11–14.9 kg → 1.5 ml; 15–19.9 kg → 2 ml.', or: 'AMB ଓଜନ ଶ୍ରେଣୀ (ପ୍ରତି କି.ଗ୍ରା.ରେ ଦିନକୁ ୩ ମି.ଗ୍ରା. ଲୌହସାର): ୬–୧୦.୯ କି.ଗ୍ରା. → ୧ ମି.ଲି.; ୧୧–୧୪.୯ କି.ଗ୍ରା. → ୧.୫ ମି.ଲି.; ୧୫–୧୯.୯ କି.ଗ୍ରା. → ୨ ମି.ଲି.।' },
   'an.c6.out': { en: 'Weight is outside the AMB bands (6–19.9 kg): dose as advised by the medical officer.', or: 'ଓଜନ AMB ଶ୍ରେଣୀ (୬–୧୯.୯ କି.ଗ୍ରା.) ବାହାରେ: ଚିକିତ୍ସକଙ୍କ ପରାମର୍ଶ ଅନୁସାରେ ମାତ୍ରା।' },
-  'an.c6.f': { en: 'Recheck Hb after 2 months. No improvement → refer to the FRU / district hospital. When Hb reaches 11 g/dl, go back to the twice-weekly preventive dose (1 ml).', or: '୨ ମାସ ପରେ ପୁଣି ହିମୋଗ୍ଲୋବିନ୍ ପରୀକ୍ଷା। ଉନ୍ନତି ନ ହେଲେ FRU / ଜିଲ୍ଲା ଚିକିତ୍ସାଳୟକୁ ପଠାନ୍ତୁ। ୧୧ g/dl ହେଲେ ସପ୍ତାହକୁ ଦୁଇଥର ପ୍ରତିଷେଧକ ମାତ୍ରା (୧ ମି.ଲି.) କୁ ଫେରନ୍ତୁ।' },
-  'an.c5.dose': { en: 'Iron 3 mg/kg/day for 2 months: {mg} mg elemental iron a day.', or: 'ଲୌହସାର ୩ ମି.ଗ୍ରା./କି.ଗ୍ରା./ଦିନ, ୨ ମାସ: ପ୍ରତିଦିନ {mg} ମି.ଗ୍ରା. ଲୌହସାର।' },
-  'an.c5.rule': { en: 'Iron 3 mg/kg/day for 2 months — enter the weight to see the daily amount.', or: 'ଲୌହସାର ୩ ମି.ଗ୍ରା./କି.ଗ୍ରା./ଦିନ, ୨ ମାସ — ପ୍ରତିଦିନର ପରିମାଣ ପାଇଁ ଓଜନ ଦିଅନ୍ତୁ।' },
-  'an.c5.f': { en: 'Recheck Hb after 2 months. No improvement → refer to the FRU / district hospital. Normal Hb → weekly preventive tablet (pink).', or: '୨ ମାସ ପରେ ପୁଣି ପରୀକ୍ଷା। ଉନ୍ନତି ନ ହେଲେ FRU / ଜିଲ୍ଲା ଚିକିତ୍ସାଳୟକୁ ପଠାନ୍ତୁ। ସ୍ୱାଭାବିକ ହେଲେ ସାପ୍ତାହିକ ପ୍ରତିଷେଧକ ବଟିକା (ଗୋଲାପୀ)।' },
-  'an.a.dose': { en: 'Two IFA tablets (each 60 mg iron + 500 mcg folic acid) once a day after a meal, for 3 months. Not improved after 3 months → refer to the FRU / district hospital.', or: 'ଦୁଇଟି ଆଇ.ଏଫ୍.ଏ. ବଟିକା (ପ୍ରତ୍ୟେକରେ ୬୦ ମି.ଗ୍ରା. ଲୌହସାର + ୫୦୦ ମାଇକ୍ରୋଗ୍ରାମ ଫୋଲିକ୍ ଏସିଡ୍) ଦିନକୁ ଥରେ ଖାଇବା ପରେ, ୩ ମାସ। ୩ ମାସ ପରେ ଉନ୍ନତି ନ ହେଲେ FRU / ଜିଲ୍ଲା ଚିକିତ୍ସାଳୟକୁ ପଠାନ୍ତୁ।' },
-  'an.p.dose': { en: 'Two IFA tablets (each 60 mg iron + 500 mcg folic acid) every day. Recheck Hb after 1 month: if it has risen by 1 g/dl or more, continue and recheck at 2 months; if not, refer to the FRU / district hospital for injectable iron (iron sucrose or FCM).', or: 'ପ୍ରତିଦିନ ଦୁଇଟି ଆଇ.ଏଫ୍.ଏ. ବଟିକା (ପ୍ରତ୍ୟେକରେ ୬୦ ମି.ଗ୍ରା. ଲୌହସାର + ୫୦୦ ମାଇକ୍ରୋଗ୍ରାମ ଫୋଲିକ୍ ଏସିଡ୍)। ୧ ମାସ ପରେ ପୁଣି ପରୀକ୍ଷା: ୧ g/dl ବା ଅଧିକ ବଢ଼ିଲେ ଜାରି ରଖି ୨ ମାସରେ ପୁଣି ପରୀକ୍ଷା; ନ ବଢ଼ିଲେ ଇଞ୍ଜେକସନ୍ ଲୌହସାର (ଆଇରନ୍ ସୁକ୍ରୋଜ୍ ବା FCM) ପାଇଁ FRU / ଜିଲ୍ଲା ଚିକିତ୍ସାଳୟକୁ ପଠାନ୍ତୁ।' },
-  'an.p.iv': { en: 'Injectable iron can be the first choice if anaemia is found late in pregnancy or tablets are unlikely to be taken.', or: 'ଗର୍ଭାବସ୍ଥାର ଶେଷ ଭାଗରେ ରକ୍ତହୀନତା ଚିହ୍ନଟ ହେଲେ ବା ବଟିକା ନିୟମିତ ଖାଇବା ସମ୍ଭବ ନ ହେଲେ ଇଞ୍ଜେକସନ୍ ଲୌହସାର ପ୍ରଥମ ବିକଳ୍ପ ହୋଇପାରେ।' },
-  'an.p.sev34': { en: 'Severe anaemia up to 34 weeks: refer urgently to the FRU / district hospital for injectable iron (iron sucrose or FCM).', or: '୩୪ ସପ୍ତାହ ପର୍ଯ୍ୟନ୍ତ ଗୁରୁତର ରକ୍ତହୀନତା: ଇଞ୍ଜେକସନ୍ ଲୌହସାର ପାଇଁ ତୁରନ୍ତ FRU / ଜିଲ୍ଲା ଚିକିତ୍ସାଳୟକୁ ପଠାନ୍ତୁ।' },
-  'an.p.sevLate': { en: 'Severe anaemia after 34 weeks: admit at once to a hospital with round-the-clock specialist care; blood transfusion may be needed.', or: '୩୪ ସପ୍ତାହ ପରେ ଗୁରୁତର ରକ୍ତହୀନତା: ୨୪ ଘଣ୍ଟା ବିଶେଷଜ୍ଞ ସେବା ଥିବା ଡାକ୍ତରଖାନାରେ ତୁରନ୍ତ ଭର୍ତ୍ତି କରନ୍ତୁ; ରକ୍ତ ଦେବା ଆବଶ୍ୟକ ହୋଇପାରେ।' },
-  'an.p.lt5': { en: 'Hb below 5 g/dl: admit at once at any stage of pregnancy.', or: 'ହିମୋଗ୍ଲୋବିନ୍ ୫ g/dl ରୁ କମ୍: ଗର୍ଭର ଯେକୌଣସି ସମୟରେ ତୁରନ୍ତ ଭର୍ତ୍ତି କରନ୍ତୁ।' },
+  'an.c6.f': { en: 'Recheck Hb after 2 months if moderate, 3 months if mild. Risen but not yet normal → continue for another 3 months; little or no rise (less than 1 g/dl) → check that the syrup is being given, and refer to the FRU / district hospital. Once Hb is normal for age (10.5 g/dl under 2 years, 11 g/dl from 2 years), go back to the twice-weekly preventive dose (1 ml).', or: 'ମଧ୍ୟମ ହେଲେ ୨ ମାସ ପରେ, ମୃଦୁ ହେଲେ ୩ ମାସ ପରେ ପୁଣି ହିମୋଗ୍ଲୋବିନ୍ ପରୀକ୍ଷା। ବଢ଼ିଛି କିନ୍ତୁ ସ୍ୱାଭାବିକ ହୋଇନାହିଁ → ଆଉ ୩ ମାସ ଜାରି ରଖନ୍ତୁ; ଅଳ୍ପ ବା ଆଦୌ ବଢ଼ିନାହିଁ (୧ g/dl ରୁ କମ୍) → ସିରପ୍ ନିୟମିତ ଦିଆଯାଉଛି କି ଯାଞ୍ଚ କରି FRU / ଜିଲ୍ଲା ଚିକିତ୍ସାଳୟକୁ ପଠାନ୍ତୁ। ବୟସ ଅନୁସାରେ ସ୍ୱାଭାବିକ ହେଲେ (୨ ବର୍ଷରୁ କମ୍: ୧୦.୫ g/dl; ୨ ବର୍ଷରୁ: ୧୧ g/dl) ସପ୍ତାହକୁ ଦୁଇଥର ପ୍ରତିଷେଧକ ମାତ୍ରା (୧ ମି.ଲି.) କୁ ଫେରନ୍ତୁ।' },
+  'an.c5.dose': { en: 'One pink IFA tablet (45 mg iron + 400 mcg folic acid) once a day after a meal, for 3 months.', or: 'ଗୋଟିଏ ଗୋଲାପୀ ଆଇ.ଏଫ୍.ଏ. ବଟିକା (୪୫ ମି.ଗ୍ରା. ଲୌହସାର + ୪୦୦ ମାଇକ୍ରୋଗ୍ରାମ ଫୋଲିକ୍ ଏସିଡ୍) ଦିନକୁ ଥରେ ଖାଇବା ପରେ, ୩ ମାସ।' },
+  'an.a.dose': { en: 'One blue IFA tablet (60 mg iron + 500 mcg folic acid) once a day after a meal, for 3 months.', or: 'ଗୋଟିଏ ନୀଳ ଆଇ.ଏଫ୍.ଏ. ବଟିକା (୬୦ ମି.ଗ୍ରା. ଲୌହସାର + ୫୦୦ ମାଇକ୍ରୋଗ୍ରାମ ଫୋଲିକ୍ ଏସିଡ୍) ଦିନକୁ ଥରେ ଖାଇବା ପରେ, ୩ ମାସ।' },
+  'an.w.dose': { en: 'One red IFA tablet (60 mg iron + 500 mcg folic acid) once a day after a meal, for 3 months.', or: 'ଗୋଟିଏ ଲାଲ୍ ଆଇ.ଏଫ୍.ଏ. ବଟିକା (୬୦ ମି.ଗ୍ରା. ଲୌହସାର + ୫୦୦ ମାଇକ୍ରୋଗ୍ରାମ ଫୋଲିକ୍ ଏସିଡ୍) ଦିନକୁ ଥରେ ଖାଇବା ପରେ, ୩ ମାସ।' },
+  'an.f3': { en: 'Recheck Hb after 2 months if moderate, 3 months if mild. Risen but not yet normal → continue for another 3 months; little or no rise (less than 1 g/dl) → check that the tablets are taken, and refer to the FRU / district hospital. Once normal → back to the weekly preventive tablet.', or: 'ମଧ୍ୟମ ହେଲେ ୨ ମାସ ପରେ, ମୃଦୁ ହେଲେ ୩ ମାସ ପରେ ପୁଣି ହିମୋଗ୍ଲୋବିନ୍ ପରୀକ୍ଷା। ବଢ଼ିଛି କିନ୍ତୁ ସ୍ୱାଭାବିକ ହୋଇନାହିଁ → ଆଉ ୩ ମାସ ଜାରି ରଖନ୍ତୁ; ଅଳ୍ପ ବା ଆଦୌ ବଢ଼ିନାହିଁ (୧ g/dl ରୁ କମ୍) → ବଟିକା ନିୟମିତ ଖାଉଛନ୍ତି କି ଯାଞ୍ଚ କରି FRU / ଜିଲ୍ଲା ଚିକିତ୍ସାଳୟକୁ ପଠାନ୍ତୁ। ସ୍ୱାଭାବିକ ହେଲେ ସାପ୍ତାହିକ ପ୍ରତିଷେଧକ ବଟିକାକୁ ଫେରନ୍ତୁ।' },
+  'an.l.dose': { en: 'Two red IFA tablets (each 60 mg iron + 500 mcg folic acid) a day, for 3 months. For moderate anaemia the doctor may give injectable iron instead (iron sucrose in 5 doses or ferric carboxymaltose in 2 doses).', or: 'ଦିନକୁ ଦୁଇଟି ଲାଲ୍ ଆଇ.ଏଫ୍.ଏ. ବଟିକା (ପ୍ରତ୍ୟେକରେ ୬୦ ମି.ଗ୍ରା. ଲୌହସାର + ୫୦୦ ମାଇକ୍ରୋଗ୍ରାମ ଫୋଲିକ୍ ଏସିଡ୍), ୩ ମାସ। ମଧ୍ୟମ ରକ୍ତହୀନତାରେ ଡାକ୍ତର ଏହା ବଦଳରେ ଇଞ୍ଜେକସନ୍ ଲୌହସାର ଦେଇପାରନ୍ତି (ଆଇରନ୍ ସୁକ୍ରୋଜ୍ ୫ ମାତ୍ରା ବା ଫେରିକ୍ କାର୍ବୋକ୍ସିମାଲ୍ଟୋଜ୍ ୨ ମାତ୍ରା)।' },
+  'an.l.f': { en: 'Recheck Hb after 2 months if moderate, 3 months if mild. Little or no rise (less than 1 g/dl) → refer to the FRU / district hospital. Once normal → 1 red tablet a day until 6 months after delivery.', or: 'ମଧ୍ୟମ ହେଲେ ୨ ମାସ ପରେ, ମୃଦୁ ହେଲେ ୩ ମାସ ପରେ ପୁଣି ପରୀକ୍ଷା। ଅଳ୍ପ ବା ଆଦୌ ବଢ଼ିନାହିଁ (୧ g/dl ରୁ କମ୍) → FRU / ଜିଲ୍ଲା ଚିକିତ୍ସାଳୟକୁ ପଠାନ୍ତୁ। ସ୍ୱାଭାବିକ ହେଲେ ପ୍ରସବର ୬ ମାସ ପର୍ଯ୍ୟନ୍ତ ଦିନକୁ ଗୋଟିଏ ଲାଲ୍ ବଟିକା।' },
+  'an.p.dose': { en: 'Two red IFA tablets (each 60 mg iron + 500 mcg folic acid) every day. Recheck Hb after 1 month: risen by 1 g/dl or more → continue, and go back to 1 tablet a day once Hb is normal; less than 1 g/dl rise, or falling → refer to the FRU / district hospital for tests.', or: 'ପ୍ରତିଦିନ ଦୁଇଟି ଲାଲ୍ ଆଇ.ଏଫ୍.ଏ. ବଟିକା (ପ୍ରତ୍ୟେକରେ ୬୦ ମି.ଗ୍ରା. ଲୌହସାର + ୫୦୦ ମାଇକ୍ରୋଗ୍ରାମ ଫୋଲିକ୍ ଏସିଡ୍)। ୧ ମାସ ପରେ ପୁଣି ପରୀକ୍ଷା: ୧ g/dl ବା ଅଧିକ ବଢ଼ିଲେ ଜାରି ରଖନ୍ତୁ ଓ ସ୍ୱାଭାବିକ ହେଲେ ଦିନକୁ ଗୋଟିଏ ବଟିକାକୁ ଫେରନ୍ତୁ; ୧ g/dl ରୁ କମ୍ ବଢ଼ିଲେ ବା କମିଲେ ପରୀକ୍ଷା ପାଇଁ FRU / ଜିଲ୍ଲା ଚିକିତ୍ସାଳୟକୁ ପଠାନ୍ତୁ।' },
+  'an.p.iv': { en: 'For moderate anaemia the doctor may choose injectable iron (iron sucrose in 5 doses or ferric carboxymaltose in 2 doses) — only after the first trimester.', or: 'ମଧ୍ୟମ ରକ୍ତହୀନତାରେ ଡାକ୍ତର ଇଞ୍ଜେକସନ୍ ଲୌହସାର ବାଛିପାରନ୍ତି (ଆଇରନ୍ ସୁକ୍ରୋଜ୍ ୫ ମାତ୍ରା ବା ଫେରିକ୍ କାର୍ବୋକ୍ସିମାଲ୍ଟୋଜ୍ ୨ ମାତ୍ରା) — କେବଳ ପ୍ରଥମ ତ୍ରୟମାସ ପରେ।' },
+  'an.p.sev': { en: 'Severe anaemia: refer urgently to the FRU / district hospital, where injectable iron (only after the first trimester) or blood transfusion is decided.', or: 'ଗୁରୁତର ରକ୍ତହୀନତା: ତୁରନ୍ତ FRU / ଜିଲ୍ଲା ଚିକିତ୍ସାଳୟକୁ ପଠାନ୍ତୁ; ସେଠାରେ ଇଞ୍ଜେକସନ୍ ଲୌହସାର (କେବଳ ପ୍ରଥମ ତ୍ରୟମାସ ପରେ) ବା ରକ୍ତ ଦେବା ସ୍ଥିର ହେବ।' },
+  'an.p.lt5': { en: 'Hb below 5 g/dl: admit at once for blood transfusion, at any stage of pregnancy.', or: 'ହିମୋଗ୍ଲୋବିନ୍ ୫ g/dl ରୁ କମ୍: ଗର୍ଭର ଯେକୌଣସି ସମୟରେ ରକ୍ତ ଦେବା ପାଇଁ ତୁରନ୍ତ ଭର୍ତ୍ତି କରନ୍ତୁ।' },
   'an.refer': { en: 'Severe anaemia: refer urgently to the FRU / district hospital.', or: 'ଗୁରୁତର ରକ୍ତହୀନତା: ତୁରନ୍ତ FRU / ଜିଲ୍ଲା ଚିକିତ୍ସାଳୟକୁ ପଠାନ୍ତୁ।' },
   'an.mo': { en: 'Treatment as advised by the medical officer; look for the cause.', or: 'ଚିକିତ୍ସକଙ୍କ ପରାମର୍ଶ ଅନୁସାରେ ଚିକିତ୍ସା; କାରଣ ଖୋଜନ୍ତୁ।' },
   'an.prev': { en: 'Keep up the preventive dose: {x}', or: 'ପ୍ରତିଷେଧକ ମାତ୍ରା ଜାରି ରଖନ୍ତୁ: {x}' },
   'an.sickle': { en: 'Iron is withheld in thalassaemia major and after repeated blood transfusions. Sickle cell disease and thalassaemia need the doctor’s plan — injectable iron for severe anaemia is not used in them.', or: 'ଥାଲାସେମିଆ ମେଜର ଓ ବାରମ୍ବାର ରକ୍ତ ନେଇଥିଲେ ଲୌହସାର ଦିଆଯାଏ ନାହିଁ। ସିକଲ୍ ସେଲ୍ ରୋଗ ଓ ଥାଲାସେମିଆରେ ଡାକ୍ତରଙ୍କ ପରାମର୍ଶ ଆବଶ୍ୟକ — ଗୁରୁତର ରକ୍ତହୀନତାର ଇଞ୍ଜେକସନ୍ ଲୌହସାର ଏମାନଙ୍କ ପାଇଁ ନୁହେଁ।' },
   'an.acute': { en: 'Do not give iron during an acute illness (fever, diarrhoea, pneumonia); restart after recovery.', or: 'ଜ୍ୱର, ତରଳ ଝାଡ଼ା, ନିମୋନିଆ ଭଳି ଅସୁସ୍ଥତା ସମୟରେ ଲୌହସାର ଦିଅନ୍ତୁ ନାହିଁ; ଭଲ ହେବା ପରେ ପୁଣି ଆରମ୍ଭ କରନ୍ତୁ।' },
-  'an.v2026': { en: 'Anaemia Mukt Bharat Abhiyaan guidelines were revised in June 2026 (seven groups, adding low-birth-weight babies 0–6 months). Check the revised doses with your district before relying on this tool.', or: 'ଜୁନ୍ ୨୦୨୬ ରେ ଆନେମିଆ ମୁକ୍ତ ଭାରତ ଅଭିଯାନ ନିର୍ଦ୍ଦେଶାବଳୀ ସଂଶୋଧିତ ହୋଇଛି (ସାତୋଟି ଗୋଷ୍ଠୀ, କମ୍ ଓଜନର ଶିଶୁ ୦–୬ ମାସ ଯୋଗ)। ଏହି ଉପକରଣ ବ୍ୟବହାର ପୂର୍ବରୁ ଜିଲ୍ଲାରୁ ସଂଶୋଧିତ ମାତ୍ରା ନିଶ୍ଚିତ କରନ୍ତୁ।' },
+  'an.v2026': { en: 'Cut-offs and doses follow the revised Anaemia Mukt Bharat Abhiyaan guidelines (MoHFW, June 2026), which use the WHO 2024 Hb cut-offs. Follow your district\'s instructions where they differ.', or: 'ମାନ ଓ ମାତ୍ରା ସଂଶୋଧିତ ଆନେମିଆ ମୁକ୍ତ ଭାରତ ଅଭିଯାନ ନିର୍ଦ୍ଦେଶାବଳୀ (ସ୍ୱାସ୍ଥ୍ୟ ମନ୍ତ୍ରଣାଳୟ, ଜୁନ୍ ୨୦୨୬) ଅନୁସାରେ, ଯାହା WHO ୨୦୨୪ ହିମୋଗ୍ଲୋବିନ୍ ମାନ ବ୍ୟବହାର କରେ। ଜିଲ୍ଲାର ନିର୍ଦ୍ଦେଶ ଭିନ୍ନ ହେଲେ ତାହା ମାନନ୍ତୁ।' },
   /* vaccine dates */
   'tv.dob': { en: 'Date of birth', or: 'ଜନ୍ମ ତାରିଖ' }, 'tv.sex': { en: 'Sex', or: 'ଲିଙ୍ଗ' }, 'tv.je': { en: 'JE vaccine given in this district', or: 'ଏହି ଜିଲ୍ଲାରେ ଜେ.ଇ. ଟୀକା ଦିଆଯାଏ' },
   'tv.due': { en: 'Due', or: 'ଦେବା ତାରିଖ' }, 'tv.until': { en: 'Until', or: 'ପର୍ଯ୍ୟନ୍ତ' },
@@ -6103,6 +6224,10 @@ K.i18n.add({
   'to.someNoWt': { en: 'Plan B: 75 ml of ORS per kg over 4 hours — enter the weight to see the amount.', or: 'ପ୍ଲାନ୍ B: ୪ ଘଣ୍ଟାରେ ପ୍ରତି କି.ଗ୍ରା. ୭୫ ମି.ଲି. ଓଆର୍ଏସ୍ — ପରିମାଣ ପାଇଁ ଓଜନ ଦିଅନ୍ତୁ।' },
   'to.noDo': { en: 'Plan A at home: ORS after each loose stool — {amt}. Keep feeding.', or: 'ଘରେ ପ୍ଲାନ୍ A: ପ୍ରତ୍ୟେକ ତରଳ ଝାଡ଼ା ପରେ ଓଆର୍ଏସ୍ — {amt}। ଖାଇବା ଜାରି ରଖନ୍ତୁ।' },
   'to.amt2': { en: '50–100 ml (¼ to ½ cup)', or: '୫୦–୧୦୦ ମି.ଲି. (୧/୪ ରୁ ୧/୨ କପ୍)' }, 'to.amt10': { en: '100–200 ml (½ to 1 cup)', or: '୧୦୦–୨୦୦ ମି.ଲି. (୧/୨ ରୁ ୧ କପ୍)' }, 'to.amtOld': { en: 'as much as wanted', or: 'ଯେତେ ଚାହିଁବ' },
+  'to.rule': { en: 'Severe dehydration: two or more of lethargic/unconscious, sunken eyes, not able to drink, skin pinch very slow. Some dehydration: two or more signs from either list.', or: 'ଗୁରୁତର ଜଳୀୟ ଅଭାବ: ଅଚେତ/ନିସ୍ତେଜ, ଆଖି ଗାତକୁ ପଶିବା, ପିଇ ନ ପାରିବା, ଚର୍ମ ବହୁତ ଧୀରେ ଫେରିବା — ଏଥିରୁ ଦୁଇଟି ବା ଅଧିକ। କିଛି ଜଳୀୟ ଅଭାବ: ଯେକୌଣସି ଦୁଇଟି ବା ଅଧିକ ଲକ୍ଷଣ।' },
+  'to.dangerT': { en: 'Danger sign: refer urgently', or: 'ବିପଦ ଲକ୍ଷଣ: ତୁରନ୍ତ ପଠାନ୍ତୁ' },
+  'to.dangerDo': { en: 'A child who is lethargic or unconscious, or not able to drink, needs hospital care now (call 108).', or: 'ଅଚେତ ବା ଅତ୍ୟଧିକ ନିସ୍ତେଜ, କିମ୍ବା ପିଇ ପାରୁନଥିବା ଶିଶୁକୁ ଏବେ ହିଁ ଡାକ୍ତରଖାନା ନିଅନ୍ତୁ (୧୦୮ କୁ ଫୋନ୍ କରନ୍ତୁ)।' },
+  'to.onWay': { en: 'Give sips of ORS on the way if the child can drink, and keep breastfeeding.', or: 'ପିଇପାରିଲେ ବାଟରେ ଅଳ୍ପ ଅଳ୍ପ ଓଆର୍ଏସ୍ ଦିଅନ୍ତୁ ଓ ସ୍ତନ୍ୟପାନ ଜାରି ରଖନ୍ତୁ।' },
   'to.zinc': { en: 'Zinc: {z} once a day for 14 days.', or: 'ଜିଙ୍କ୍: ଦିନକୁ ଥରେ {z}, ୧୪ ଦିନ।' },
   'to.blood': { en: 'Blood in the stool, diarrhoea for 14 days or more, or any danger sign: refer.', or: 'ଝାଡ଼ାରେ ରକ୍ତ, ୧୪ ଦିନ ବା ଅଧିକ ତରଳ ଝାଡ଼ା, ବା କୌଣସି ବିପଦ ଲକ୍ଷଣ: ପଠାନ୍ତୁ।' },
   /* IFA table */
@@ -6132,16 +6257,18 @@ K.route('/tools/edd', () => page('edd', h`<form class="form" data-form="noop" id
     <div class="fgroup" data-b="lmp">${K.ui.field({ name: 'lmp', type: 'date', label: T('edd.lmp'), max: K.d.today(), attrs: { 'data-live': 'tEdd' } })}</div>
     <div class="fgroup" data-b="usg" hidden>${K.ui.field({ name: 'usgDate', type: 'date', label: T('edd.usgDate'), max: K.d.today(), attrs: { 'data-live': 'tEdd' } })}
       <div class="frow">${K.ui.field({ name: 'usgW', type: 'number', label: T('edd.usgW'), attrs: { 'data-live': 'tEdd' } })}${K.ui.field({ name: 'usgD', type: 'number', label: T('edd.usgD'), attrs: { 'data-live': 'tEdd' } })}</div>
+      ${K.ui.field({ name: 'lmp2', type: 'date', label: T('edd.lmpOpt'), max: K.d.today(), attrs: { 'data-live': 'tEdd' } })}
       <p class="small faint" style="margin:0">${T('edd.usgNote')}</p></div>
     <div class="fgroup" data-b="edd" hidden>${K.ui.field({ name: 'edd', type: 'date', label: T('edd.edd'), attrs: { 'data-live': 'tEdd' } })}</div>
-  </form>${resBox()}${src('Naegele’s rule (LMP + 280 days); ANC schedule and PMSMA (9th of every month) as on the MCP card.')}`, { mount() { K.live.tEdd(); } }));
+  </form>${resBox()}${src('Naegele\'s rule (LMP + 280 days); ACOG Committee Opinion 700 (2017) for scan versus LMP dating; ANC schedule and PMSMA (9th of every month) as on the MCP card.')}`, { mount() { K.live.tEdd(); } }));
 K.forms.noop = () => {};
 K.live.tEdd = K.debounce(() => {
   const f = K.$('#tedd'); if (!f) return; const v = K.formData(f); const b = v.basis || 'lmp';
   K.$$('[data-b]', f).forEach(el => { el.hidden = el.dataset.b !== b; });
   const p = b === 'lmp' ? { lmp: v.lmp } : b === 'usg' ? { eddBasis: 'usg', usgDate: v.usgDate, usgWeeks: v.usgW, usgDays: v.usgD || 0 } : { eddKnown: v.edd };
   if (b === 'usg' && (v.usgW == null || !v.usgDate)) return setRes('');
-  const e = K.preg.edd(p); if (!e || !K.d.valid(e)) return setRes('');
+  const rule = b === 'usg' && v.lmp2 ? K.preg.datingRule(v.lmp2, v.usgDate, v.usgW, v.usgD) : null;
+  const e = rule ? (rule.useScan ? rule.eddUsg : rule.eddLmp) : K.preg.edd(p); if (!e || !K.d.valid(e)) return setRes('');
   const g = K.preg.ga({ eddKnown: e }); const today = K.d.today();
   if (g.days < 0 || g.days > 44 * 7) return setRes(K.ui.callout('warn', '', T('edd.bad')));
   const lmp = K.d.addDays(e, -280); const at = (w) => K.d.addDays(lmp, w * 7);
@@ -6149,6 +6276,7 @@ K.live.tEdd = K.debounce(() => {
   const pm = g.days >= 84 ? K.anc.nextPmsma({ eddKnown: e }) : null;
   setRes(h`<div class="stats"><div class="stat"><span class="lb">${T('edd.edd')}</span><span class="vl">${K.d.fmt(e, 'long')}</span><span class="sub">${K.d.weekday(e)} · ${K.d.rel(e)}</span></div>
       <div class="stat"><span class="lb">${T('edd.today')}</span><span class="vl ink">${K.preg.gaText(g)}</span><span class="sub">${T('preg.tri.' + K.preg.tri(g.days))}</span></div></div>
+    ${rule ? h`<p></p>${K.ui.callout(rule.useScan ? 'warn' : '', '', K.preg.ruleText(rule))}` : ''}
     ${b !== 'lmp' ? h`<p class="small">${T('edd.lmpEq')}: ${K.d.fmt(lmp, 'long')}</p>` : ''}
     <section class="sec">${K.ui.secH(T('edd.keys'))}<div class="list">${rows.map(([w, key]) => { const d = at(w); const past = K.d.cmp(d, today) < 0;
       return K.ui.li({ icon: w === 40 ? 'star' : w === 41 ? 'alert' : 'calendar', tone: past ? 'done' : w === 41 ? 'red' : '', title: T(key), meta: `${K.plural(w, 'week')} · ${K.d.fmt(d)}`, trail: past ? K.ui.icon('check', 'sm') : h`<span class="small faint">${K.d.rel(d)}</span>` }); })}
@@ -6175,47 +6303,50 @@ K.live.tHrp = () => {
 K.acts.tHrpClear = () => { K.$$('#thrp input[type=radio]').forEach(i => { i.checked = false; }); K.live.tHrp(); window.scrollTo(0, 0); };
 
 /* ---------------------------------------------------------------- anaemia */
-/* WHO Hb cut-offs (g/dl): [no anaemia ≥, mild ≥, moderate ≥] — severe below the last */
-K.tools.HB = { c6: [11, 10, 7], c5: [11.5, 11, 8], a1011: [11.5, 11, 8], a1214: [12, 11, 8], ag15: [12, 11, 8], ab15: [13, 11, 8], p: [11, 10, 7], w: [12, 11, 8], m: [13, 11, 8] };
+/* Hb cut-offs (g/dl): [no anaemia ≥, mild ≥, moderate ≥] — severe below the last.
+   WHO 2024, as adopted by the AMB Abhiyaan guidelines (MoHFW, June 2026, §4.1). */
+K.tools.HB = { c623: [10.5, 9.5, 7], c2459: [11, 10, 7], c5: [11.5, 11, 8], a1011: [11.5, 11, 8], a1214: [12, 11, 8], ag15: [12, 11, 8], ab15: [13, 11, 8],
+  p: [11, 10, 7], p2: [10.5, 9.5, 7], l: [12, 11, 8], w: [12, 11, 8], m: [13, 11, 8] };
 K.tools.hbClass = (key, hb) => { const c = K.tools.HB[key]; if (!c || hb == null) return null; return hb >= c[0] ? 'none' : hb >= c[1] ? 'mild' : hb >= c[2] ? 'moderate' : 'severe'; };
+/* the key for a group; pregnancy uses the 2nd-trimester cut-off at 14–27 weeks (K.preg.tri) */
+K.tools.hbKey = (g, v) => (g === 'a' ? 'a' + (v.ag || '1214') : g === 'c6' ? 'c' + (v.cg || '623') : g === 'p' && v.ga != null && K.preg.tri(v.ga * 7) === 2 ? 'p2' : g);
 const PREV = {
   c6: { en: '1 ml IFA syrup twice a week', or: 'ସପ୍ତାହକୁ ଦୁଇଥର ୧ ମି.ଲି. ଆଇ.ଏଫ୍.ଏ. ସିରପ୍' },
   c5: { en: '1 pink IFA tablet (45 mg) once a week', or: 'ସପ୍ତାହକୁ ଥରେ ଗୋଟିଏ ଗୋଲାପୀ ଆଇ.ଏଫ୍.ଏ. ବଟିକା (୪୫ ମି.ଗ୍ରା.)' },
   a: { en: '1 blue IFA tablet (60 mg) once a week', or: 'ସପ୍ତାହକୁ ଥରେ ଗୋଟିଏ ନୀଳ ଆଇ.ଏଫ୍.ଏ. ବଟିକା (୬୦ ମି.ଗ୍ରା.)' },
-  p: { en: '1 red IFA tablet (60 mg) every day from the 4th month, at least 180 days', or: '୪ର୍ଥ ମାସରୁ ପ୍ରତିଦିନ ଗୋଟିଏ ଲାଲ୍ ଆଇ.ଏଫ୍.ଏ. ବଟିକା (୬୦ ମି.ଗ୍ରା.), ଅତି କମ୍‌ରେ ୧୮୦ ଦିନ' },
-  w: { en: '1 red IFA tablet once a week (daily for 180 days after delivery while breastfeeding)', or: 'ସପ୍ତାହକୁ ଥରେ ଗୋଟିଏ ଲାଲ୍ ଆଇ.ଏଫ୍.ଏ. ବଟିକା (ପ୍ରସବ ପରେ ୧୮୦ ଦିନ ପ୍ରତିଦିନ)' },
+  p: { en: '1 red IFA tablet (60 mg) every day from the 2nd trimester (4th month), for 180 days', or: 'ଦ୍ୱିତୀୟ ତ୍ରୟମାସ (୪ର୍ଥ ମାସ) ରୁ ୧୮୦ ଦିନ ପ୍ରତିଦିନ ଗୋଟିଏ ଲାଲ୍ ଆଇ.ଏଫ୍.ଏ. ବଟିକା (୬୦ ମି.ଗ୍ରା.)' },
+  l: { en: '1 red IFA tablet (60 mg) every day for 180 days after delivery', or: 'ପ୍ରସବ ପରେ ୧୮୦ ଦିନ ପ୍ରତିଦିନ ଗୋଟିଏ ଲାଲ୍ ଆଇ.ଏଫ୍.ଏ. ବଟିକା (୬୦ ମି.ଗ୍ରା.)' },
+  w: { en: '1 red IFA tablet (60 mg) once a week', or: 'ସପ୍ତାହକୁ ଥରେ ଗୋଟିଏ ଲାଲ୍ ଆଇ.ଏଫ୍.ଏ. ବଟିକା (୬୦ ମି.ଗ୍ରା.)' },
 };
 K.route('/tools/anaemia', () => page('anaemia', h`<form class="form" data-form="noop" id="tan">
-    ${K.ui.field({ name: 'g', type: 'select', label: T('an.group'), value: 'p', placeholder: false, options: ['c6', 'c5', 'a', 'p', 'w', 'm'].map(v => ({ v, l: T('an.g.' + v) })), attrs: { 'data-live': 'tAn' } })}
+    ${K.ui.field({ name: 'g', type: 'select', label: T('an.group'), value: 'p', placeholder: false, options: ['c6', 'c5', 'a', 'p', 'l', 'w', 'm'].map(v => ({ v, l: T('an.g.' + v) })), attrs: { 'data-live': 'tAn' } })}
+    <div data-show="c6" hidden>${K.ui.choices({ name: 'cg', label: T('an.cAge'), value: '623', options: ['623', '2459'].map(v => ({ v, l: T('an.c.' + v) })), live: 'tAn' })}</div>
     <div data-show="a" hidden>${K.ui.choices({ name: 'ag', label: T('an.ageA'), value: '1214', options: ['1011', '1214', 'g15', 'b15'].map(v => ({ v, l: T('an.a.' + v) })), live: 'tAn' })}</div>
     <div class="frow">${K.ui.field({ name: 'hb', type: 'decimal', label: T('an.hb'), unit: 'g/dl', attrs: { 'data-live': 'tAn' } })}
-      <div data-show="c6 c5">${K.ui.field({ name: 'wt', type: 'decimal', label: T('an.wt'), unit: T('u.kg'), attrs: { 'data-live': 'tAn' } })}</div>
+      <div data-show="c6">${K.ui.field({ name: 'wt', type: 'decimal', label: T('an.wt'), unit: T('u.kg'), attrs: { 'data-live': 'tAn' } })}</div>
       <div data-show="p">${K.ui.field({ name: 'ga', type: 'number', label: T('an.ga'), attrs: { 'data-live': 'tAn' } })}</div></div>
   </form>${resBox()}<p class="small">${T('tools.hcpNote')}</p>${K.ui.callout('info', '', T('an.v2026'))}
-  ${src('WHO haemoglobin cut-offs; Anaemia Mukt Bharat operational guidelines (MoHFW, 2018) and AMB training module treatment flowcharts (NHM). Revised AMB Abhiyaan guidelines: June 2026.')}`, { mount() { K.live.tAn(); } }));
+  ${src('Anaemia Mukt Bharat Abhiyaan operational guidelines (MoHFW, June 2026): WHO 2024 haemoglobin cut-offs (section 4.1) and treatment protocols (chapter 4).')}`, { mount() { K.live.tAn(); } }));
 K.live.tAn = K.debounce(() => {
   const f = K.$('#tan'); if (!f) return; const v = K.formData(f); const g = v.g || 'p';
   K.$$('[data-show]', f).forEach(el => { el.hidden = !el.dataset.show.split(' ').includes(g); });
-  const key = g === 'a' ? 'a' + (v.ag || '1214') : g; const hb = v.hb;
+  const key = K.tools.hbKey(g, v); const hb = v.hb;
   if (hb == null || hb < 2 || hb > 22) return setRes('');
   const cls = K.tools.hbClass(key, hb); const c = K.tools.HB[key];
   const tone = cls === 'severe' ? 'danger' : cls === 'none' ? '' : 'warn';
   const cut = T('an.cut', { n: c[0], mi: `${c[1]}–${(c[0] - 0.1).toFixed(1)}`, mo: `${c[2]}–${(c[1] - 0.1).toFixed(1)}`, s: c[2] });
   const out = [];
-  if (cls === 'none') { if (PREV[g === 'a' ? 'a' : g]) out.push(h`<p>${T('an.prev', { x: K.L(PREV[g === 'a' ? 'a' : g]) })}</p>`); }
+  if (cls === 'none') { if (PREV[g]) out.push(h`<p>${T('an.prev', { x: K.L(PREV[g]) })}</p>`); }
+  else if (cls === 'severe') out.push(h`<p><b>${g === 'p' ? T(hb < 5 ? 'an.p.lt5' : 'an.p.sev') : T('an.refer')}</b></p>`);
   else if (g === 'c6') {
-    if (cls === 'severe') out.push(h`<p><b>${T('an.refer')}</b></p>`);
-    else { const w = v.wt; const ml = w == null ? null : w >= 6 && w < 11 ? 1 : w >= 11 && w < 15 ? 1.5 : w >= 15 && w < 20 ? 2 : 0;
-      out.push(ml ? h`<p><b>${T('an.c6.dose', { ml: K.n(ml, 1), mg: K.n(ml * 20, 0) })}</b></p>` : ml === 0 ? h`<p>${T('an.c6.out')}</p>` : '', h`<p class="small">${T('an.c6.band')}</p><p>${T('an.c6.f')}</p>`); }
-  } else if (g === 'c5') {
-    if (cls === 'severe') out.push(h`<p><b>${T('an.refer')}</b></p>`);
-    else out.push(v.wt ? h`<p><b>${T('an.c5.dose', { mg: K.n(v.wt * 3, 0) })}</b></p>` : h`<p>${T('an.c5.rule')}</p>`, h`<p>${T('an.c5.f')}</p>`);
-  } else if (g === 'a') out.push(cls === 'severe' ? h`<p><b>${T('an.refer')}</b></p>` : h`<p><b>${T('an.a.dose')}</b></p>`);
-  else if (g === 'p') {
-    if (cls === 'severe') { if (hb < 5) out.push(h`<p><b>${T('an.p.lt5')}</b></p>`); else out.push(h`<p><b>${v.ga != null && v.ga > 34 ? T('an.p.sevLate') : T('an.p.sev34')}</b></p>`); }
-    else out.push(h`<p><b>${T('an.p.dose')}</b></p><p class="small">${T('an.p.iv')}</p>`);
-  } else out.push(cls === 'severe' ? h`<p><b>${T('an.refer')}</b></p>` : h`<p>${T('an.mo')}</p>`);
+    const w = v.wt; const ml = w == null ? null : w >= 6 && w < 11 ? 1 : w >= 11 && w < 15 ? 1.5 : w >= 15 && w < 20 ? 2 : 0;
+    out.push(ml ? h`<p><b>${T('an.c6.dose', { ml: K.n(ml, 1), mg: K.n(ml * 20, 0) })}</b></p>` : ml === 0 ? h`<p>${T('an.c6.out')}</p>` : '', h`<p class="small">${T('an.c6.band')}</p><p>${T('an.c6.f')}</p>`);
+  } else if (g === 'c5' || g === 'a' || g === 'w') out.push(h`<p><b>${T('an.' + g + '.dose')}</b></p><p>${T('an.f3')}</p>`);
+  else if (g === 'l') out.push(h`<p><b>${T('an.l.dose')}</b></p><p>${T('an.l.f')}</p>`);
+  else if (g === 'p') out.push(h`<p><b>${T('an.p.dose')}</b></p><p class="small">${T('an.p.iv')}</p>`);
+  else out.push(h`<p>${T('an.mo')}</p>`);
   setRes(h`${K.ui.callout(tone, T('an.' + cls) + ` · ${K.n(hb, 1)} g/dl`, cut, cls === 'none' ? 'check' : null)}
+    ${g === 'p' && v.ga == null ? h`<p class="small faint" style="margin:8px 0 0">${T('an.gaNeed')}</p>` : ''}
     ${cls !== 'none' ? h`<section class="sec">${K.ui.secH(T('an.treat'))}<div class="k-card tool-adv">${out}<p class="small faint">${T('an.acute')}</p><p class="small faint">${T('an.sickle')}</p></div></section>` : h`<div style="margin-top:10px">${out}</div>`}`);
 }, 200);
 
@@ -6224,12 +6355,13 @@ K.route('/tools/vax', () => page('vax', h`<form class="form" data-form="noop" id
     <div class="frow">${K.ui.field({ name: 'dob', type: 'date', label: T('tv.dob'), max: K.d.today(), attrs: { 'data-live': 'tVax' } })}
       ${K.ui.field({ name: 'sex', type: 'select', label: T('tv.sex'), placeholder: '–', options: [{ v: 'f', l: T('sex.f') }, { v: 'm', l: T('sex.m') }], attrs: { 'data-live': 'tVax' } })}</div>
     ${K.ui.sw({ name: 'je', title: T('tv.je'), checked: !!K.settings.get('jeArea'), live: 'tVax' })}
-  </form>${resBox()}<p class="small faint">${T('tv.note')}</p>${src('National Immunization Schedule (MoHFW) as printed on the Odisha MCP card V-2023-24; fIPV-3 at 9 months; HPV for girls at 14 (2026).')}`, { mount() { K.live.tVax(); } }));
+  </form>${resBox()}<p class="small faint">${T('tv.note')}</p>${src('National Immunization Schedule (MoHFW) as printed on the Odisha MCP card V-2023-24, with the age limits of the Immunization Handbook for Medical Officers (2017); fIPV-3 at 9 months; HPV for girls at 14 (2026); late starters as in the NHM Odisha UIP training deck (2024): DPT in place of Penta after 1 year.')}`, { mount() { K.live.tVax(); } }));
 K.live.tVax = K.debounce(() => {
   const f = K.$('#tvax'); if (!f) return; const v = K.formData(f); if (!v.dob) return setRes('');
   const k = { dob: v.dob, sex: v.sex || '', vax: {}, vitA: {}, alb: {} };
   const st = K.vax.state(k, K.d.today(), { je: !!v.je });
-  const vita = K.vax.vitaState(k);
+  const vita = K.vax.vitaState(k); const a0 = K.vax.alb0State(k);
+  const vrow = (x) => h`<tr><td class="num">${x.v.code}</td><td class="num">${K.d.fmt(x.due)}</td><td class="small">${x.dose}${x.v.alb ? ' + ' + T('vita.alb') + ' ' + x.albDose : ''}</td></tr>`;
   const rows = K.vax.VISITS.filter(x => x.k !== 'y14' || v.sex !== 'm').map(vis => {
     const items = K.vax.LIST.filter(it => it.v === vis.k).map(it => st[it.id]).filter(s => s && s.st !== 'na');
     if (!items.length) return '';
@@ -6238,7 +6370,8 @@ K.live.tVax = K.debounce(() => {
   });
   setRes(h`<p class="small">${T('tv.age', { a: K.d.ageText(v.dob) })}</p>
     <div class="table"><table><thead><tr><th>${T('vax.title')}</th><th>${T('tv.due')}</th><th>${T('tv.until')}</th></tr></thead><tbody>${rows}
-      <tr class="tv-h"><td colspan="3"><b>${T('vita.title')}</b></td></tr>${vita.map(x => h`<tr><td class="num">${x.v.code}</td><td class="num">${K.d.fmt(x.due)}</td><td class="small">${x.v.dose}</td></tr>`)}</tbody></table></div>`);
+      <tr class="tv-h"><td colspan="3"><b>${T('vita.title')}</b></td></tr>${vrow(vita[0])}
+      ${a0 ? h`<tr><td>${T('vita.alb')}</td><td class="num">${K.d.fmt(a0.due)}</td><td class="small">${a0.albDose}</td></tr>` : ''}${vita.slice(1).map(vrow)}</tbody></table></div>`);
 }, 200);
 
 /* ---------------------------------------------------------------- z-scores */
@@ -6293,38 +6426,52 @@ K.live.tCa = K.debounce(() => {
 }, 200);
 
 /* ---------------------------------------------------------------- ORS and zinc */
-const SIGNS_SEV = ['leth', 'eyes', 'nodrink', 'pinchVS'], SIGNS_SOME = ['rest', 'eyes', 'thirst', 'pinchS'];
+/* IMNCI chart booklet / WHO Treatment of Diarrhoea (2005), 2 months – 5 years.
+   Four features, each counted once at its worse level: condition (restless →
+   lethargic/unconscious), eyes (sunken), drinking (thirsty → not able to drink),
+   skin pinch (slow → very slow). Severe = two or more severe-row signs; some =
+   two or more features at either level. Lethargic/unconscious and not able to
+   drink are also general danger signs: urgent referral whatever the class. */
+const SIGNS_SEV = ['leth', 'eyes', 'nodrink', 'pinchVS'];
+const FEATURES = [['rest', 'leth'], ['eyes'], ['thirst', 'nodrink'], ['pinchS', 'pinchVS']];
+K.tools.dehydration = (s) => {
+  const nSev = SIGNS_SEV.filter(x => s.includes(x)).length; const nAny = FEATURES.filter(f => f.some(x => s.includes(x))).length;
+  return { cls: nSev >= 2 ? 'severe' : nAny >= 2 ? 'some' : 'no', danger: s.includes('leth') || s.includes('nodrink') };
+};
 K.route('/tools/ors', () => page('ors', h`<form class="form" data-form="noop" id="tors">
     <div class="frow">${K.ui.field({ name: 'age', type: 'number', label: T('to.age'), unit: T('to.m'), attrs: { 'data-live': 'tOrs' } })}${K.ui.field({ name: 'wt', type: 'decimal', label: T('an.wt'), unit: T('u.kg'), attrs: { 'data-live': 'tOrs' } })}</div>
-    <div class="field"><span class="lbl">${T('to.signs')}</span><div class="choices">${['leth', 'rest', 'eyes', 'nodrink', 'thirst', 'pinchVS', 'pinchS'].map(s => h`<label class="choice ${SIGNS_SEV.includes(s) && s !== 'eyes' ? 'danger' : 'warn'}"><input type="checkbox" name="s" value="${s}" data-live="tOrs"><span>${T('to.s.' + s)}</span></label>`)}</div></div>
-  </form>${resBox()}${src('WHO / IMNCI assessment of dehydration and Plans A, B and C; zinc as on the Odisha MCP card (p.9).')}`, { mount() { K.live.tOrs(); } }));
+    <div class="field"><span class="lbl">${T('to.signs')}</span><div class="choices">${['leth', 'rest', 'eyes', 'nodrink', 'thirst', 'pinchVS', 'pinchS'].map(s => h`<label class="choice ${SIGNS_SEV.includes(s) && s !== 'eyes' ? 'danger' : 'warn'}"><input type="checkbox" name="s" value="${s}" data-live="tOrs"><span>${T('to.s.' + s)}</span></label>`)}</div>
+      <p class="small faint" style="margin:6px 0 0">${T('to.rule')}</p></div>
+  </form>${resBox()}${src('IMNCI chart booklet (MoHFW) and WHO Treatment of Diarrhoea (2005): dehydration classes and Plans A, B and C; zinc as on the Odisha MCP card (p.9).')}`, { mount() { K.live.tOrs(); } }));
 K.live.tOrs = K.debounce(() => {
   const f = K.$('#tors'); if (!f) return; const v = K.formData(f); const s = v.s || []; const age = v.age;
   if (age == null && v.wt == null && !s.length) return setRes('');
-  const nSev = SIGNS_SEV.filter(x => s.includes(x)).length, nSome = SIGNS_SOME.filter(x => s.includes(x)).length;
-  const cls = nSev >= 2 ? 'severe' : nSome >= 2 ? 'some' : 'no';
+  const { cls, danger } = K.tools.dehydration(s);
   const amt = age == null ? T('to.amt2') + ' / ' + T('to.amt10') : age < 24 ? T('to.amt2') : age < 120 ? T('to.amt10') : T('to.amtOld');
   const z = age == null ? null : age < 2 ? null : age < 6 ? T('sick.zincHalf') : T('sick.zincOne');
+  // with a danger sign the child goes to hospital now: no home plan, no green tick
   const plan = cls === 'severe' ? K.ui.callout('danger', T('to.severe'), T('to.severeDo'))
+    : danger ? K.ui.callout('warn', T('to.' + cls), T('to.onWay'))
     : cls === 'some' ? K.ui.callout('warn', T('to.some'), v.wt ? T('to.someDo', { ml: K.n(Math.round(v.wt * 75 / 10) * 10, 0) }) : T('to.someNoWt'))
     : K.ui.callout('', T('to.no'), T('to.noDo', { amt }), 'check');
-  setRes(h`${plan}<div class="k-card tool-adv" style="margin-top:10px">${z ? h`<p><b>${T('to.zinc', { z })}</b></p>` : age != null && age < 2 ? h`<p>${T('sick.zincYoung')}</p>` : ''}<p class="small">${T('to.blood')}</p></div>`);
+  setRes(h`${danger ? h`${K.ui.callout('danger', T('to.dangerT'), T('to.dangerDo'))}<p></p>` : ''}${plan}<div class="k-card tool-adv" style="margin-top:10px">${z ? h`<p><b>${T('to.zinc', { z })}</b></p>` : age != null && age < 2 ? h`<p>${T('sick.zincYoung')}</p>` : ''}<p class="small">${T('to.blood')}</p></div>`);
 }, 200);
 
 /* ---------------------------------------------------------------- IFA and deworming doses */
 K.route('/tools/ifa', () => {
   const rows = [
+    [{ en: 'Low-birth-weight babies 0–6 months', or: 'କମ୍ ଓଜନର ଶିଶୁ ୦–୬ ମାସ' }, { en: 'IFA drops in the dose prescribed by the paediatrician', or: 'ଶିଶୁରୋଗ ବିଶେଷଜ୍ଞଙ୍କ ଲେଖାଥିବା ମାତ୍ରାରେ ଆଇ.ଏଫ୍.ଏ. ଡ୍ରପ୍' }, { en: '–', or: '–' }],
     [{ en: '6–59 months', or: '୬–୫୯ ମାସ' }, PREV.c6, { en: '12–24 months: ½ tablet; 24–59 months: 1 tablet — twice a year', or: '୧୨–୨୪ ମାସ: ଅଧା ବଟିକା; ୨୪–୫୯ ମାସ: ଗୋଟିଏ ବଟିକା — ବର୍ଷକୁ ଦୁଇଥର' }],
     [{ en: '5–9 years', or: '୫–୯ ବର୍ଷ' }, PREV.c5, { en: '1 tablet twice a year', or: 'ବର୍ଷକୁ ଦୁଇଥର ଗୋଟିଏ ବଟିକା' }],
     [{ en: '10–19 years', or: '୧୦–୧୯ ବର୍ଷ' }, PREV.a, { en: '1 tablet twice a year', or: 'ବର୍ଷକୁ ଦୁଇଥର ଗୋଟିଏ ବଟିକା' }],
-    [{ en: 'Women 20–49 years (not pregnant, not breastfeeding)', or: 'ମହିଳା ୨୦–୪୯ ବର୍ଷ (ଗର୍ଭବତୀ ନୁହଁନ୍ତି, ସ୍ତନ୍ୟପାନ କରାଉନାହାନ୍ତି)' }, { en: '1 red IFA tablet (60 mg) once a week', or: 'ସପ୍ତାହକୁ ଥରେ ଗୋଟିଏ ଲାଲ୍ ଆଇ.ଏଫ୍.ଏ. ବଟିକା (୬୦ ମି.ଗ୍ରା.)' }, { en: '1 tablet twice a year (Odisha card: women 20–24 years)', or: 'ବର୍ଷକୁ ଦୁଇଥର ଗୋଟିଏ ବଟିକା (ଓଡ଼ିଶା କାର୍ଡ: ୨୦–୨୪ ବର୍ଷ)' }],
+    [{ en: 'Women 20–49 years (not pregnant, not breastfeeding)', or: 'ମହିଳା ୨୦–୪୯ ବର୍ଷ (ଗର୍ଭବତୀ ନୁହଁନ୍ତି, ସ୍ତନ୍ୟପାନ କରାଉନାହାନ୍ତି)' }, { en: '1 red IFA tablet (60 mg) once a week', or: 'ସପ୍ତାହକୁ ଥରେ ଗୋଟିଏ ଲାଲ୍ ଆଇ.ଏଫ୍.ଏ. ବଟିକା (୬୦ ମି.ଗ୍ରା.)' }, { en: '1 tablet twice a year', or: 'ବର୍ଷକୁ ଦୁଇଥର ଗୋଟିଏ ବଟିକା' }],
     [{ en: 'Pregnant women', or: 'ଗର୍ଭବତୀ ମହିଳା' }, PREV.p, { en: '1 tablet once, after the first 3 months (preferably in the 2nd trimester)', or: 'ପ୍ରଥମ ତିନି ମାସ ପରେ ଥରେ ଗୋଟିଏ ବଟିକା (ଦ୍ୱିତୀୟ ତ୍ରୟମାସରେ)' }],
-    [{ en: 'Breastfeeding mothers (0–6 months after delivery)', or: 'ସ୍ତନ୍ୟପାନ କରାଉଥିବା ମା’ (ପ୍ରସବ ପରେ ୦–୬ ମାସ)' }, { en: '1 red IFA tablet every day for 180 days', or: '୧୮୦ ଦିନ ପ୍ରତିଦିନ ଗୋଟିଏ ଲାଲ୍ ଆଇ.ଏଫ୍.ଏ. ବଟିକା' }, { en: '–', or: '–' }],
+    [{ en: 'Breastfeeding mothers (0–6 months after delivery)', or: 'ସ୍ତନ୍ୟପାନ କରାଉଥିବା ମା’ (ପ୍ରସବ ପରେ ୦–୬ ମାସ)' }, PREV.l, { en: '–', or: '–' }],
   ];
   return page('ifa', h`<div class="table"><table><thead><tr><th>${T('ti.who')}</th><th>${T('ti.ifa')}</th><th>${T('ti.worm')}</th></tr></thead>
       <tbody>${rows.map(r => h`<tr><td><b>${K.L(r[0])}</b></td><td class="small">${K.L(r[1])}</td><td class="small">${K.L(r[2])}</td></tr>`)}</tbody></table></div>
     <p class="small" style="margin-top:10px">${T('an.acute')}</p>${K.ui.callout('info', '', T('an.v2026'))}
-    ${src('Anaemia Mukt Bharat (6×6×6) as described on Vikaspedia (MeitY) and the AMB operational guidelines 2018; National Deworming Day on 10 February and 10 August; Odisha MCP card p.43.')}`);
+    ${src('Anaemia Mukt Bharat Abhiyaan operational guidelines (MoHFW, June 2026), chapters 3 and 5; National Deworming Day rounds in February and August; Odisha MCP card p.43.')}`);
 });
 
 }
@@ -6419,12 +6566,12 @@ K.route('/about', () => ({
       <ul class="ul small">
         <li>Mother and Child Protection Card, 2018 version — MoHFW & MoWCD, Government of India.</li>
         <li>ମା' ଏବଂ ଶିଶୁ ସୁରକ୍ଷା କାର୍ଡ (MCP Card) V-2023-24 — NHM & ICDS, Government of Odisha.</li>
-        <li>National Immunization Schedule (UIP), MoHFW — including fIPV-3 at 9 months and catch-up rules.</li>
+        <li>National Immunization Schedule (UIP), MoHFW, and the Immunization Handbook for Medical Officers (2017) — including fIPV-3 at 9 months and age limits; NHM Odisha UIP training deck (2024) for late starters (DPT in place of Penta, series completed by 2 years).</li>
         <li>WHO Child Growth Standards (2006): LMS tables from the WHO <span class="mono">anthro</span> package.</li>
-        <li>Anemia Mukt Bharat operational guidelines (MoHFW, 2018); HBNC and HBYC guidelines (MoHFW).</li>
+        <li>Anaemia Mukt Bharat Abhiyaan operational guidelines (MoHFW, June 2026): WHO 2024 haemoglobin cut-offs, treatment and prevention doses, deworming. HBNC and HBYC guidelines (MoHFW).</li>
         <li>MAMATA-PMMVY, Department of Women & Child Development and Mission Shakti, Odisha (effective 1 April 2025).</li>
-        <li>Anaemia Mukt Bharat training module (treatment flowcharts) as published by NHM; Anaemia Mukt Bharat Abhiyaan guidelines revised June 2026 (not yet reflected in doses).</li>
-        <li>IMNCI (WHO / MoHFW): fast-breathing cut-offs, dehydration plans A–C, zinc.</li>
+        <li>IMNCI (WHO / MoHFW) and WHO Treatment of Diarrhoea (2005): fast-breathing cut-offs, danger signs, dehydration plans A–C, zinc.</li>
+        <li>ACOG Committee Opinion 700 (2017): when an ultrasound replaces the LMP for dating.</li>
         <li>Indian Academy of Pediatrics (2022): nutritional anaemia in children, Indian Pediatrics 59:782–801.</li>
       </ul></section>
     <section class="sec">${K.ui.eyebrow(K.t('rev.title'))}<p class="small">${K.t('rev.sub')}</p>${K.ui.btn(K.t('rev.title'), { act: 'reviewCsv', tone: 'ghost', icon: 'download', size: 'sm' })}</section>
@@ -6888,6 +7035,7 @@ K.sample.build = (today) => {
   give(['OPV2', 'Penta2', 'Rota2'], at(72));
   give(['OPV3', 'Penta3', 'Rota3', 'fIPV2', 'PCV2'], at(101));
   const m9 = K.d.addMonths(k.dob, 9); give(['MR1', 'fIPV3', 'PCVB'], K.d.addDays(m9, 6)); k.vitA[1] = K.d.addDays(m9, 6);
+  k.alb = Object.assign(k.alb || {}, { 0: K.d.addDays(K.d.addMonths(k.dob, 12), 4) }); // first deworming dose at 12 months
   const wts = [2.7, 3.6, 4.6, 5.4, 6.0, 6.5, 6.9, 7.2, 7.5, 7.7, 7.9, 8.1, 8.2, 8.3];
   k.growth = wts.map((w, i) => ({ id: K.uid('g'), date: K.d.addDays(K.d.addMonths(k.dob, i), i ? 3 : 0), wt: w, ht: i === 13 ? 72.5 : i === 9 ? 69 : null, pos: 'L', muac: i === 13 ? 13.4 : null, hc: null, oedema: 0 }))
     .filter(g => K.d.cmp(g.date, today) <= 0);

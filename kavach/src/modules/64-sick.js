@@ -45,7 +45,9 @@ K.i18n.add({
   'br.orType': { en: 'Or type the number you counted', or: 'କିମ୍ବା ଗଣିଥିବା ସଂଖ୍ୟା ଲେଖନ୍ତୁ' },
   'br.perMin': { en: 'breaths a minute', or: 'ଶ୍ୱାସ ପ୍ରତି ମିନିଟ୍' },
   'br.fast': { en: 'Fast breathing ({n} — cut-off {c})', or: 'ଦ୍ରୁତ ଶ୍ୱାସ ({n} — ସୀମା {c})' },
-  'br.fastDo': { en: 'This child may have pneumonia. See the ASHA, ANM or doctor today. If the chest pulls in, or there is any danger sign, go to the hospital now (call 108).', or: 'ଶିଶୁର ନିମୋନିଆ ହୋଇପାରେ। ଆଜି ହିଁ ଆଶା, ଏ.ଏନ୍.ଏମ୍. ବା ଡାକ୍ତରଙ୍କୁ ଦେଖାନ୍ତୁ। ଛାତି ଭିତରକୁ ପଶୁଥିଲେ ବା କୌଣସି ବିପଦ ଲକ୍ଷଣ ଥିଲେ ଏବେ ହିଁ ଡାକ୍ତରଖାନା ଯାଆନ୍ତୁ (୧୦୮)।' },
+  'br.fastDo': { en: 'This child may have pneumonia. Contact the ASHA or ANM now for treatment. If the chest pulls in, or there is any danger sign, go to the hospital at once (call 108).', or: 'ଶିଶୁର ନିମୋନିଆ ହୋଇପାରେ। ଚିକିତ୍ସା ପାଇଁ ଏବେ ହିଁ ଆଶା ବା ଏ.ଏନ୍.ଏମ୍.ଙ୍କ ସହ ଯୋଗାଯୋଗ କରନ୍ତୁ। ଛାତି ଭିତରକୁ ପଶୁଥିଲେ ବା କୌଣସି ବିପଦ ଲକ୍ଷଣ ଥିଲେ ତୁରନ୍ତ ଡାକ୍ତରଖାନା ଯାଆନ୍ତୁ (୧୦୮)।' },
+  /* national MCP card 2018 p.7: a newborn breathing 60 or more is a danger sign — contact the health worker immediately */
+  'br.fastYoung': { en: 'In a baby under 2 months, fast breathing is a danger sign. Contact the ASHA or ANM immediately and take the baby to the hospital (call 108 or 102). Keep the baby warm and breastfeeding on the way.', or: '୨ ମାସରୁ କମ୍ ଶିଶୁରେ ଦ୍ରୁତ ଶ୍ୱାସ ବିପଦ ଲକ୍ଷଣ। ତୁରନ୍ତ ଆଶା ବା ଏ.ଏନ୍.ଏମ୍.ଙ୍କ ସହ ଯୋଗାଯୋଗ କରି ଶିଶୁକୁ ଡାକ୍ତରଖାନା ନିଅନ୍ତୁ (୧୦୮ ବା ୧୦୨ କୁ ଫୋନ୍ କରନ୍ତୁ)। ବାଟରେ ଶିଶୁକୁ ଉଷୁମ ରଖି ସ୍ତନ୍ୟପାନ କରାନ୍ତୁ।' },
   'br.ok': { en: 'Not fast breathing ({n} — cut-off {c})', or: 'ଦ୍ରୁତ ଶ୍ୱାସ ନୁହେଁ ({n} — ସୀମା {c})' },
   'br.okDo': { en: 'Keep watching. Count again if the child gets worse, and look for chest indrawing.', or: 'ନଜର ରଖନ୍ତୁ। ଶିଶୁ ଅଧିକ ଅସୁସ୍ଥ ହେଲେ ପୁଣି ଗଣନ୍ତୁ ଓ ଛାତି ଭିତରକୁ ପଶୁଛି କି ଦେଖନ୍ତୁ।' },
   'br.indraw': { en: 'Chest indrawing (lower chest pulls in when breathing in) is a danger sign at any count.', or: 'ନିଃଶ୍ୱାସ ନେଲାବେଳେ ଛାତିର ତଳ ଭାଗ ଭିତରକୁ ପଶିବା ଯେକୌଣସି ଗଣନାରେ ବିପଦ ଲକ୍ଷଣ।' },
@@ -130,7 +132,7 @@ K.sick.result = () => {
   const f = K.$('form[data-form="breathCalc"]'); if (!f) return; const v = K.formData(f); const box = K.$('#br-result'); if (!box) return;
   const n = v.n; if (n == null || !v.age) { box.innerHTML = ''; return; }
   const cut = { a1: 60, a2: 50, a3: 40 }[v.age]; const fast = n >= cut;
-  box.innerHTML = K.hv(fast ? K.ui.callout('danger', K.t('br.fast', { n, c: cut }), K.t('br.fastDo')) : K.ui.callout('', K.t('br.ok', { n, c: cut }), K.t('br.okDo'), 'check'));
+  box.innerHTML = K.hv(fast ? K.ui.callout('danger', K.t('br.fast', { n, c: cut }), K.t(v.age === 'a1' ? 'br.fastYoung' : 'br.fastDo')) : K.ui.callout('', K.t('br.ok', { n, c: cut }), K.t('br.okDo'), 'check'));
 };
 K.live.breathAge = () => K.sick.result();
 K.acts.breathGo = () => {

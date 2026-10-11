@@ -34,7 +34,7 @@ K.content.newbornCare = [
 ];
 K.content.hbnc = [
   { icon: 'house', en: 'The ASHA visits a newborn at home on days 3, 7, 14, 21, 28 and 42 (and on day 1 after a home birth) to check for danger signs.', or: 'ନିର୍ଦ୍ଦେଶାବଳୀ ଅନୁଯାୟୀ ଜନ୍ମର ୧ମ ଦିନ (କେବଳ ଘରେ ଜନ୍ମ ହୋଇଥିବା ଶିଶୁମାନଙ୍କ ପାଇଁ), ୩ୟ, ୭ମ, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନରେ ଆଶାକର୍ମୀମାନେ ଗୃହ ପରିଦର୍ଶନ କରି ନବଜାତକଙ୍କର ସ୍ୱାସ୍ଥ୍ୟଗତ ବିପଦର ଲକ୍ଷଣ ଚିହ୍ନଟ କରିବେ।' },
-  { icon: 'hospital', en: 'After discharge from an SNCU or NBSU, the same visits are counted from the day of discharge.', or: 'ଏସ୍.ଏନ୍.ସି.ୟୁ. ବା ଏନ୍.ବି.ଏସ୍.ୟୁ.ରୁ ଡିସ୍‌ଚାର୍ଜ ହେଲେ ଡିସ୍‌ଚାର୍ଜର ୧ମ, ୩ୟ, ୭ମ, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନରେ ଗୃହ ପରିଦର୍ଶନ ହେବ।' },
+  { icon: 'hospital', en: 'After discharge from an SNCU or NBSU, the ASHA visits on days 1, 3, 7, 14, 21, 28 and 42 counted from the day of discharge.', or: 'ଏସ୍.ଏନ୍.ସି.ୟୁ. ବା ଏନ୍.ବି.ଏସ୍.ୟୁ.ରୁ ଡିସ୍‌ଚାର୍ଜ ହେଲେ ଡିସ୍‌ଚାର୍ଜର ୧ମ, ୩ୟ, ୭ମ, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନରେ ଗୃହ ପରିଦର୍ଶନ ହେବ।' },
   { icon: 'scale', en: 'Babies under 2.5 kg get three extra visits.', or: '୨.୫ କି.ଗ୍ରା.ରୁ କମ୍ ଓଜନର ଶିଶୁଙ୍କ ପାଇଁ ତିନୋଟି ଅଧିକ ପରିଦର୍ଶନ।' },
   { icon: 'eye', en: 'Babies born before 34 weeks or under 2 kg need an eye check for ROP by 1 month of age.', or: 'ଗର୍ଭଧାରଣ ଠାରୁ ୩୪ ସପ୍ତାହ ପୂରଣ ହେବା ପୂର୍ବରୁ ଜନ୍ମ ହୋଇଥିବା ବା ଜନ୍ମ ସମୟରେ ୨ କି.ଗ୍ରା.ରୁ କମ୍ ଓଜନ ଥିବା ଶିଶୁଙ୍କର ଏକ ମାସ ବୟସରେ ଚକ୍ଷୁ ପରୀକ୍ଷା (RoP Screening) ଆବଶ୍ୟକ।' },
 ];

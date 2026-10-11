@@ -1,9 +1,11 @@
 /* ============================================================================
    modules/25-delivery — delivery record, postnatal (PNC/HBNC) home visits
    for mother and newborn, postpartum IFA/calcium.
-   HBNC schedule (Odisha MCP V-2023-24 p.10; HBNC guidelines): ASHA visits on
-   days 3, 7, 14, 21, 28, 42 (plus day 1 for home births); after SNCU/NBSU
-   discharge the same days are counted from discharge.
+   HBNC schedule (Odisha MCP V-2023-24 p.10; HBNC guidelines): ASHA visits
+   mother and newborn on days 3, 7, 14, 21, 28, 42 after delivery (plus day 1
+   for births at home), day 1 = day of birth. A baby admitted to SNCU/NBSU has
+   its own visits on days 1, 3, 7, 14, 21, 28 and 42 after discharge (day 1 =
+   day of discharge); the mother's checks stay counted from delivery.
    ============================================================================ */
 const h = K.h;
 
@@ -39,6 +41,7 @@ K.i18n.add({
   'del.edit': { en: 'Edit delivery record', or: 'ପ୍ରସବ ବିବରଣୀ ସଂଶୋଧନ' },
   'pnc.title': { en: 'After delivery', or: 'ପ୍ରସବ ପରର ଯତ୍ନ' },
   'pnc.visits': { en: 'Home visits (mother and newborn)', or: 'ଗୃହ ପରିଦର୍ଶନ (ମା\' ଓ ନବଜାତ ଶିଶୁ)' },
+  'pnc.visitsMother': { en: 'Home visits (mother)', or: 'ଗୃହ ପରିଦର୍ଶନ (ମା\')' },
   'pnc.day': { en: 'Day {n}', or: '{n} ଦିନ' },
   'pnc.visit': { en: 'Home visit · day {n}', or: 'ଗୃହ ପରିଦର୍ଶନ · {n} ଦିନ' },
   'pnc.mother': { en: "Mother's check", or: "ମା'ଙ୍କ ପ୍ରସବ ପରବର୍ତ୍ତୀ ଆକଳନ" },
@@ -48,7 +51,10 @@ K.i18n.add({
   'pnc.ppTabs': { en: 'Iron and calcium after delivery', or: 'ପ୍ରସବ ପରେ ଲୌହ ଓ କ୍ୟାଲସିୟମ୍' },
   'pnc.ppRule': { en: 'Take one IFA tablet and two calcium tablets every day for 6 months after delivery.', or: 'ପ୍ରସବ ପରଠାରୁ ୬ ମାସ ପର୍ଯ୍ୟନ୍ତ ଗୋଟିଏ IFA ଏବଂ ଦୁଇଟି କ୍ୟାଲସିୟମ୍ ବଟିକା ନିଶ୍ଚିତ ଖାଆନ୍ତୁ।' },
   'pnc.result': { en: 'What this visit shows', or: 'ଏହି ପରିଦର୍ଶନରୁ କ\'ଣ ଜଣାପଡ଼ିଲା' },
-  'pnc.sncuNote': { en: 'Visits counted from SNCU/NBSU discharge on {d}.', or: '{d} ରେ SNCU/NBSU ଡିସ୍‌ଚାର୍ଜ ଦିନଠାରୁ ପରିଦର୍ଶନ ଗଣନା।' },
+  'pnc.sncuVisits': { en: '{b}: visits after SNCU / NBSU discharge', or: '{b}: SNCU / NBSU ଡିସ୍‌ଚାର୍ଜ ପରେ ଗୃହ ପରିଦର୍ଶନ' },
+  'pnc.sncuRule': { en: 'A baby who was admitted to the SNCU / NBSU is visited by the ASHA on days 1, 3, 7, 14, 21, 28 and 42 after discharge.', or: 'SNCU / NBSU ରେ ଭର୍ତ୍ତି ହୋଇଥିବା ଶିଶୁଙ୍କୁ ଆଶାକର୍ମୀ ଡିସ୍‌ଚାର୍ଜର ୧ମ, ୩ୟ, ୭ମ, ୧୪, ୨୧, ୨୮ ଓ ୪୨ ଦିନରେ ଗୃହ ପରିଦର୍ଶନ କରିବେ।' },
+  'pnc.sncuNoDis': { en: 'Add the discharge date in the baby\'s birth details to see these visits.', or: 'ଏହି ପରିଦର୍ଶନ ଦେଖିବା ପାଇଁ ଶିଶୁର ଜନ୍ମ ବିବରଣୀରେ ଡିସ୍‌ଚାର୍ଜ ତାରିଖ ଦିଅନ୍ତୁ।' },
+  'pnc.visitSncu': { en: 'Visit after discharge · day {n}', or: 'ଡିସ୍‌ଚାର୍ଜ ପରେ ପରିଦର୍ଶନ · {n} ଦିନ' },
   // mother checks (Odisha p.6 list)
   'pm.pallor': { en: 'Palms or eyes pale (anaemia)', or: 'ହାତ ପାପୁଲି, ଆଖି ଶେଥା ପଡ଼ିଯିବା ବା ରକ୍ତହୀନତା ହେବା' },
   'pm.breast': { en: 'Breasts', or: 'ସ୍ତନ' }, 'br.normal': { en: 'Normal', or: 'ସାଧାରଣ' }, 'br.engorged': { en: 'Hard, swollen, painful', or: 'ଟାଣ/ନରମ/ଫୁଲିଯିବା' }, 'br.cracked': { en: 'Cracked nipple', or: 'ସ୍ତନବୃନ୍ତ ଫାଟିଯିବା' },
@@ -82,17 +88,20 @@ K.i18n.add({
 
 K.pnc = {};
 K.pnc.days = (p) => { const d = p.delivery || {}; return (d.place === 'inst' ? [3, 7, 14, 21, 28, 42] : [1, 3, 7, 14, 21, 28, 42]); };
-K.pnc.base = (p, c) => { const d = p.delivery || {}; const kids = (c.children || []).filter(k => k.pregId === p.id); const s = kids.map(k => k.birth && k.birth.sncu && k.birth.sncuDischarge).filter(Boolean).sort().pop(); return s || d.date; };
+K.pnc.SNCU_DAYS = [1, 3, 7, 14, 21, 28, 42];
+K.pnc.isSncu = (k) => !!(k && k.birth && +k.birth.sncu === 1);
+K.pnc.homeKids = (p, c) => (c.children || []).filter(k => k.pregId === p.id && !K.pnc.isSncu(k)); // seen at the joint visits
+K.pnc.sncuKids = (p, c) => (c.children || []).filter(k => k.pregId === p.id && K.pnc.isSncu(k));
+const visitSt = (v, date, today) => { const lag = K.d.diff(date, today); return v ? 'done' : lag < 0 ? 'upcoming' : lag <= 2 ? 'due' : 'overdue'; };
+/* mother (with the babies at home): day 1 = day of delivery */
 K.pnc.schedule = (p, c, today) => {
   today = today || K.d.today(); if (!p.delivery || !p.delivery.date) return [];
-  const base = K.pnc.base(p, c); // day 1 = day of birth (or of SNCU discharge)
-  return K.pnc.days(p).map(n => {
-    const date = K.d.addDays(base, n - 1);
-    const v = (p.pnc || []).find(x => x.day === n);
-    const lag = K.d.diff(date, today);
-    const st = v ? 'done' : lag < 0 ? 'upcoming' : lag <= 2 ? 'due' : 'overdue';
-    return { n, date, v, st };
-  });
+  return K.pnc.days(p).map(n => { const date = K.d.addDays(p.delivery.date, n - 1); const v = (p.pnc || []).find(x => x.day === n); return { n, date, v, st: visitSt(v, date, today) }; });
+};
+/* SNCU / NBSU graduate: day 1 = day of discharge; its records carry sncu: 1 */
+K.pnc.kidSchedule = (k, today) => {
+  today = today || K.d.today(); const base = K.pnc.isSncu(k) && k.birth.sncuDischarge; if (!base) return [];
+  return K.pnc.SNCU_DAYS.map(n => { const date = K.d.addDays(base, n - 1); const v = (k.hbnc || []).find(x => x.day === n && x.sncu); return { n, date, v, st: visitSt(v, date, today) }; });
 };
 
 /* flags */
@@ -215,9 +224,11 @@ K.route('/card/:id/preg/:pid/pnc', ({ id, pid }) => {
   const c = K.card.load(id); if (!c) return K.screens.notFound(); const p = K.card.findPreg(c, pid); if (!p) return K.screens.notFound();
   if (!p.delivery) return { redirect: `/card/${id}/preg/${pid}/delivery` };
   const d = p.delivery; const kids = c.children.filter(k => k.pregId === p.id);
-  const sch = K.pnc.schedule(p, c); const base = K.pnc.base(p, c);
+  const sch = K.pnc.schedule(p, c);
   const day = K.d.diff(d.date, K.d.today());
   const tone = { done: 'ok', due: 'due', overdue: 'over', upcoming: 'soon' }, lbl = { done: K.t('st.done'), due: K.t('st.due'), overdue: K.t('st.overdue'), upcoming: K.t('st.upcoming') };
+  const visitLi = (s, href) => K.ui.li({ href, icon: s.st === 'done' ? 'check' : 'house', tone: s.st === 'done' ? 'done' : s.st === 'due' ? 'amber' : s.st === 'overdue' ? 'red' : 'ink',
+    title: K.t('pnc.day', { n: s.n }), meta: s.v ? K.d.fmt(s.v.date) : K.d.fmt(s.date), trail: K.ui.pill(lbl[s.st], tone[s.st]) });
   return {
     title: K.t('pnc.title'), sub: c.mother.name, back: `/card/${id}`, tab: 'home',
     html: h`<div class="wrap">${K.ui.phead(K.t('preg.deliveredOn', { d: K.d.fmt(d.date, 'long') }), K.t('pnc.title'), day >= 0 && day <= 42 ? K.t('stage.pnc', { d: day }) : '')}
@@ -228,10 +239,13 @@ K.route('/card/:id/preg/:pid/pnc', ({ id, pid }) => {
         ${d.babies.map((b, i) => h`<dt>${K.t('del.baby', { n: i + 1 })}</dt><dd>${K.t('out.' + b.outcome)}${b.sex ? ' · ' + K.t('sex.' + b.sex) : ''}${b.wt != null ? ' · ' + K.n(b.wt, 2) + ' ' + K.t('u.kg') : ''}</dd>`)}
       </dl><p style="margin:10px 0 0">${K.ui.btn(K.t('del.edit'), { href: K.preg.url(c, p, '/delivery'), tone: 'quiet', size: 'sm', icon: 'edit' })}</p></div>
       ${kids.length ? h`<div class="cards-list" style="margin-top:10px">${kids.map(k => K.child.summaryCard(c, k))}</div>` : ''}
-      <section class="sec" style="margin-top:18px">${K.ui.secH(K.t('pnc.visits'))}
-        <p class="small">${K.t('pnc.rule')}</p>${base !== d.date ? h`<p class="small">${K.t('pnc.sncuNote', { d: K.d.fmt(base) })}</p>` : ''}
-        <div class="list">${sch.map(s => K.ui.li({ href: K.preg.url(c, p, '/pnc/' + s.n), icon: s.st === 'done' ? 'check' : 'house', tone: s.st === 'done' ? 'done' : s.st === 'due' ? 'amber' : s.st === 'overdue' ? 'red' : 'ink',
-          title: K.t('pnc.day', { n: s.n }), meta: s.v ? K.d.fmt(s.v.date) : K.d.fmt(s.date), trail: K.ui.pill(lbl[s.st], tone[s.st]) }))}</div></section>
+      <section class="sec" style="margin-top:18px">${K.ui.secH(K.t(K.pnc.homeKids(p, c).length ? 'pnc.visits' : 'pnc.visitsMother'))}
+        <p class="small">${K.t('pnc.rule')}</p>
+        <div class="list">${sch.map(s => visitLi(s, K.preg.url(c, p, '/pnc/' + s.n)))}</div></section>
+      ${K.pnc.sncuKids(p, c).map(k => { const ks = K.pnc.kidSchedule(k);
+        return h`<section class="sec">${K.ui.secH(K.t('pnc.sncuVisits', { b: K.child.label(k) }))}<p class="small">${K.t('pnc.sncuRule')}</p>
+          ${ks.length ? h`<div class="list">${ks.map(s => visitLi(s, K.preg.url(c, p, '/pnc/' + s.n + '?k=' + k.id)))}</div>`
+            : K.ui.callout('warn', '', h`${K.t('pnc.sncuNoDis')} <a href="${K.child.url(c, k, '/edit')}">${K.t('child.edit')}</a>`)}</section>`; })}
       <section class="sec">${K.ui.secH(K.t('pnc.ppTabs'))}<p class="small">${K.t('pnc.ppRule')}</p>
         ${K.tracker.render('trk-ppifa', K.t('ifa.title'), p.ppIfa, 180, d.date, { key: `${id}:${pid}:ppIfa` })}<p></p>
         ${K.tracker.render('trk-ppca', K.t('ca.title'), p.ppCalcium, 180, d.date, { key: `${id}:${pid}:ppCalcium` })}</section>
@@ -242,14 +256,15 @@ K.route('/card/:id/preg/:pid/pnc', ({ id, pid }) => {
 });
 
 /* ---------------------------------------------------------------- PNC / HBNC visit form */
-K.route('/card/:id/preg/:pid/pnc/:day', ({ id, pid, day }) => {
+K.route('/card/:id/preg/:pid/pnc/:day', ({ id, pid, day }, q) => {
   const c = K.card.load(id); if (!c) return K.screens.notFound(); const p = K.card.findPreg(c, pid); if (!p || !p.delivery) return K.screens.notFound();
-  const n = +day; const s = K.pnc.schedule(p, c).find(x => x.n === n) || { date: K.d.today() };
-  const m = (p.pnc || []).find(x => x.day === n) || {};
-  const kids = c.children.filter(k => k.pregId === p.id);
+  const sk = q && q.get('k') ? K.card.findKid(c, q.get('k')) : null; // a visit to an SNCU/NBSU graduate (baby only)
+  const n = +day; const s = (sk ? K.pnc.kidSchedule(sk) : K.pnc.schedule(p, c)).find(x => x.n === n) || { date: K.d.today() };
+  const m = (sk ? (sk.hbnc || []).find(x => x.day === n && x.sncu) : (p.pnc || []).find(x => x.day === n)) || {};
+  const kids = sk ? [sk] : K.pnc.homeKids(p, c);
   const POS = ['pm.toilet', 'pm.bf', 'pm.diet', 'pm.rest', 'pm.fp', 'pb.ebf', 'pb.suck', 'pb.active', 'pb.urine', 'pb.stool', 'pb.kmc'];
   const yn = (name, key, val, live) => K.ui.yn({ name, q: K.t(key), value: val, live: live || 'pncPreview', pos: POS.includes(key) });
-  const babyFs = (k) => { const b = (k.hbnc || []).find(x => x.day === n) || {}; const pre = `k_${k.id}_`;
+  const babyFs = (k) => { const b = (k.hbnc || []).find(x => x.day === n && !!x.sncu === !!sk) || {}; const pre = `k_${k.id}_`;
     return h`<fieldset class="fgroup"><legend>${K.t('pnc.baby')} · ${K.child.label(k)}</legend>
       <div class="frow">${K.ui.field({ name: pre + 'weight', type: 'decimal', label: K.t('pb.weight'), unit: K.t('u.kg'), value: b.weight, attrs: { 'data-live': 'pncPreview' } })}${K.ui.field({ name: pre + 'temp', type: 'decimal', label: K.t('pb.temp'), unit: '°C', value: b.temp, attrs: { 'data-live': 'pncPreview' } })}</div>
       ${K.ui.field({ name: pre + 'breaths', type: 'number', label: K.t('pb.breaths'), unit: '/min', value: b.breaths, hint: h`<a href="#/tools/breath">${K.t('tool.breath')}</a>`, attrs: { 'data-live': 'pncPreview' } })}
@@ -258,19 +273,19 @@ K.route('/card/:id/preg/:pid/pnc/:day', ({ id, pid, day }) => {
       ${K.ui.choices({ name: pre + 'cord', label: K.t('pb.cord'), value: b.cord, options: [{ v: 'dry', l: K.t('cord.dry') }, { v: 'red', l: K.t('cord.red'), tone: 'danger' }], live: 'pncPreview' })}
     </fieldset>`; };
   return {
-    title: K.t('pnc.visit', { n }), sub: c.mother.name, back: K.preg.url(c, p, '/pnc').slice(1), tab: 'home',
-    html: h`<div class="wrap">${K.ui.phead(K.t('pnc.title'), K.t('pnc.visit', { n }))}
-      <form class="form" data-form="pncSave" data-id="${id}" data-pid="${pid}" data-day="${n}" novalidate>
+    title: K.t(sk ? 'pnc.visitSncu' : 'pnc.visit', { n }), sub: sk ? K.child.label(sk) : c.mother.name, back: K.preg.url(c, p, '/pnc').slice(1), tab: 'home',
+    html: h`<div class="wrap">${K.ui.phead(K.t('pnc.title'), K.t(sk ? 'pnc.visitSncu' : 'pnc.visit', { n }))}
+      <form class="form" data-form="pncSave" data-id="${id}" data-pid="${pid}" data-day="${n}" data-k="${sk ? sk.id : ''}" novalidate>
         <div class="fgroup">${K.ui.field({ name: 'date', type: 'date', label: K.t('date'), value: m.date || (K.d.cmp(s.date, K.d.today()) <= 0 ? s.date : K.d.today()), max: K.d.today(), required: true })}
           ${K.ui.choices({ name: 'by', label: K.t('anc.by'), value: m.by || (K.settings.isHcp() ? 'asha' : ''), options: ['asha', 'anm', 'doc', 'self'].map(v => ({ v, l: K.t('by.' + v) })) })}</div>
-        <fieldset class="fgroup"><legend>${K.t('pnc.mother')}</legend>
+        ${sk ? '' : h`<fieldset class="fgroup"><legend>${K.t('pnc.mother')}</legend>
           <div class="frow">${K.ui.field({ name: 'bpSys', type: 'number', label: K.t('anc.sys'), unit: 'mmHg', value: m.bpSys, attrs: { 'data-live': 'pncPreview' } })}${K.ui.field({ name: 'bpDia', type: 'number', label: K.t('anc.dia'), unit: 'mmHg', value: m.bpDia, attrs: { 'data-live': 'pncPreview' } })}</div>
           ${K.ui.field({ name: 'temp', type: 'decimal', label: K.t('anc.temp'), unit: '°C', value: m.temp, attrs: { 'data-live': 'pncPreview' } })}
           ${K.ui.choices({ name: 'breast', label: K.t('pm.breast'), value: m.breast, options: ['normal', 'engorged', 'cracked'].map(v => ({ v, l: K.t('br.' + v), tone: v === 'normal' ? '' : 'warn' })), live: 'pncPreview' })}
           ${['pallor', 'bleed', 'uterus', 'discharge', 'episio', 'pain', 'fits', 'headache', 'mood'].map(k => yn(k, 'pm.' + k, m[k]))}
           ${['toilet', 'bf', 'diet', 'rest', 'fp'].map(k => yn(k, 'pm.' + k, m[k]))}
           ${K.ui.field({ name: 'other', label: K.t('pm.other'), value: m.other })}
-        </fieldset>
+        </fieldset>`}
         ${kids.map(babyFs)}
         <section id="pnc-preview" aria-live="polite"></section>
         <div class="btn-bar">${K.ui.btn(K.t('pnc.save'), { type: 'submit', icon: 'check' })}</div>
@@ -279,28 +294,30 @@ K.route('/card/:id/preg/:pid/pnc/:day', ({ id, pid, day }) => {
   };
 });
 const pncCollect = (v, f, c, p) => {
-  const n = +f.dataset.day; const m = { day: n, date: v.date, by: v.by || '' };
-  ['bpSys', 'bpDia', 'temp', 'breast', 'other'].forEach(k => { if (v[k] != null) m[k] = v[k]; });
-  ['pallor', 'bleed', 'uterus', 'discharge', 'episio', 'pain', 'fits', 'headache', 'mood', 'toilet', 'bf', 'diet', 'rest', 'fp'].forEach(k => { if (v[k] != null) m[k] = +v[k]; });
-  const babies = c.children.filter(k => k.pregId === p.id).map(k => { const pre = `k_${k.id}_`; const b = { day: n, date: v.date };
+  const n = +f.dataset.day; const sk = f.dataset.k ? K.card.findKid(c, f.dataset.k) : null; const m = sk ? null : { day: n, date: v.date, by: v.by || '' };
+  if (m) { ['bpSys', 'bpDia', 'temp', 'breast', 'other'].forEach(k => { if (v[k] != null) m[k] = v[k]; });
+    ['pallor', 'bleed', 'uterus', 'discharge', 'episio', 'pain', 'fits', 'headache', 'mood', 'toilet', 'bf', 'diet', 'rest', 'fp'].forEach(k => { if (v[k] != null) m[k] = +v[k]; }); }
+  const babies = (sk ? [sk] : K.pnc.homeKids(p, c)).map(k => { const pre = `k_${k.id}_`; const b = Object.assign({ day: n, date: v.date }, sk ? { sncu: 1, by: v.by || '' } : {});
     Object.keys(v).filter(x => x.startsWith(pre)).forEach(x => { const key = x.slice(pre.length); const val = v[x]; b[key] = ['weight', 'temp', 'breaths', 'cord'].includes(key) ? val : +val; });
     return { k, b }; });
-  return { m, babies, n };
+  return { m, babies, n, sk };
 };
+/* the baby's day of life on the visit date (for the weight and urine checks) */
+const dayOfLife = (k, date) => (k.dob && date ? K.d.diff(k.dob, date) + 1 : null);
 K.live.pncPreview = K.debounce(() => {
   const f = K.$('form[data-form="pncSave"]'); if (!f) return; const c = K.card.load(f.dataset.id); const p = c && K.card.findPreg(c, f.dataset.pid); if (!p) return;
-  const { m, babies, n } = pncCollect(K.formData(f), f, c, p);
-  const fl = K.pnc.motherFlags(m).concat(...babies.map(({ k, b }) => K.pnc.babyFlags(b, k, n).map(x => Object.assign({}, x, { en: `${K.child.label(k)}: ${x.en}`, or: `${K.child.label(k)}: ${x.or}` }))));
+  const { m, babies } = pncCollect(K.formData(f), f, c, p);
+  const fl = (m ? K.pnc.motherFlags(m) : []).concat(...babies.map(({ k, b }) => K.pnc.babyFlags(b, k, dayOfLife(k, b.date) || +f.dataset.day).map(x => Object.assign({}, x, { en: `${K.child.label(k)}: ${x.en}`, or: `${K.child.label(k)}: ${x.or}` }))));
   K.$('#pnc-preview').innerHTML = K.hv(h`<h3 style="margin:4px 0 8px">${K.t('pnc.result')}</h3>${K.pnc.flagList(fl)}`);
 }, 300);
 K.forms.pncSave = async (v, f) => {
   const c = K.card.load(f.dataset.id); const p = c && K.card.findPreg(c, f.dataset.pid); if (!p) return;
   if (!v.date || !K.d.valid(v.date) || K.d.diff(v.date, K.d.today()) < 0) { K.ui.toast(K.t('err.date')); return; }
-  const { m, babies, n } = pncCollect(v, f, c, p);
-  p.pnc = (p.pnc || []).filter(x => x.day !== n).concat([m]).sort(K.by('day'));
-  babies.forEach(({ k, b }) => { k.hbnc = (k.hbnc || []).filter(x => x.day !== n).concat([b]).sort(K.by('day'));
-    if (b.weight != null) { k.growth = k.growth || []; const g = k.growth.find(x => x.src === 'hbnc' && x.day === n); if (g) Object.assign(g, { date: b.date, wt: b.weight }); else k.growth.push({ id: K.uid('g'), date: b.date, wt: b.weight, src: 'hbnc', day: n }); } });
-  if (m.fp === 1) { p.fp = p.fp || {}; p.fp.counselled = p.fp.counselled || m.date; }
+  const { m, babies, n, sk } = pncCollect(v, f, c, p); const src = sk ? 'hbnc-sncu' : 'hbnc';
+  if (m) p.pnc = (p.pnc || []).filter(x => x.day !== n).concat([m]).sort(K.by('day'));
+  babies.forEach(({ k, b }) => { k.hbnc = (k.hbnc || []).filter(x => x.day !== n || !!x.sncu !== !!sk).concat([b]).sort(K.by('day'));
+    if (b.weight != null) { k.growth = k.growth || []; const g = k.growth.find(x => x.src === src && x.day === n); if (g) Object.assign(g, { date: b.date, wt: b.weight }); else k.growth.push({ id: K.uid('g'), date: b.date, wt: b.weight, src, day: n }); } });
+  if (m && m.fp === 1) { p.fp = p.fp || {}; p.fp.counselled = p.fp.counselled || m.date; }
   await K.store.save(c); K.ui.toast(K.t('saved')); K.go(K.preg.url(c, p, '/pnc').slice(1));
 };
 
@@ -319,6 +336,12 @@ K.due.add((c, today) => {
     const nx = K.pnc.schedule(p, c, today).find(s => s.st !== 'done');
     if (nx) out.push({ id: 'pnc' + nx.n, kind: 'pnc', icon: 'house', href: K.preg.url(c, p, '/pnc/' + nx.n), title: { en: `Home visit after delivery · day ${nx.n}`, or: `ପ୍ରସବ ପରେ ଗୃହ ପରିଦର୍ଶନ · ${nx.n} ଦିନ` }, date: nx.date, status: nx.st === 'overdue' ? 'overdue' : undefined });
   });
+  (c.pregnancies || []).filter(p => p.delivery).forEach(p => K.pnc.sncuKids(p, c).forEach(k => {
+    if (!k.birth.sncuDischarge || K.d.diff(k.birth.sncuDischarge, today) > 45) return;
+    const nx = K.pnc.kidSchedule(k, today).find(s => s.st !== 'done'); const who = K.child.label(k);
+    if (nx) out.push({ id: 'pncs' + k.id + nx.n, kind: 'pnc', icon: 'house', href: K.preg.url(c, p, '/pnc/' + nx.n + '?k=' + k.id), who, date: nx.date, status: nx.st === 'overdue' ? 'overdue' : undefined,
+      title: { en: `${who}: visit after SNCU discharge · day ${nx.n}`, or: `${who}: SNCU ଡିସ୍‌ଚାର୍ଜ ପରେ ପରିଦର୍ଶନ · ${nx.n} ଦିନ` } });
+  }));
   return out;
 });
 K.summary.add((c) => (c.pregnancies || []).filter(p => p.delivery && K.d.diff(p.delivery.date, K.d.today()) <= 60).map(p => `${K.t('preg.deliveredOn', { d: K.d.fmt(p.delivery.date) })} · ${K.t('del.place.' + p.delivery.place)} · ${K.t('dt.' + p.delivery.type)}`));

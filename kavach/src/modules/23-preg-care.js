@@ -197,7 +197,7 @@ K.route('/card/:id/preg/:pid/tests', ({ id, pid }) => {
   return {
     title: K.t('tests.title'), sub: c.mother.name, back: K.preg.url(c, p).slice(1), tab: 'home',
     html: h`<div class="wrap">${K.ui.phead(K.t('preg.overview'), K.t('tests.title'), K.t('tests.rule'))}
-      ${hb ? K.ui.stat(K.t('test.latestHb'), `${K.n(hb.v)} g/dl`, hb.v < 7 ? 'danger' : hb.v < 11 ? 'warn' : '', K.d.fmt(hb.date) + ' · ' + K.L(K.anc.hbClass(hb.v))) : ''}
+      ${hb ? K.ui.stat(K.t('test.latestHb'), `${K.n(hb.v)} g/dl`, { severe: 'danger', moderate: 'warn', mild: 'warn' }[K.anc.hbAt(p, hb).k] || '', K.d.fmt(hb.date) + ' · ' + K.L(K.anc.hbAt(p, hb))) : ''}
       <p></p>
       <form class="form" data-form="testsSave" data-id="${id}" data-pid="${pid}">
         <div class="fgroup">${K.ui.field({ name: 'bloodGroup', type: 'select', label: K.t('test.bloodGroup'), value: t.bloodGroup || c.mother.bloodGroup, options: bg })}</div>
@@ -274,7 +274,7 @@ K.preg.addSection(30, (c, p) => {
   const hb = K.preg.latest(p, 'hb');
   const rows = [
     ['test.bloodGroup', t.bloodGroup || c.mother.bloodGroup || '', (t.bloodGroup || c.mother.bloodGroup) ? (/-$/.test(t.bloodGroup || c.mother.bloodGroup) ? 'over' : 'ok') : 'soon'],
-    ['anc.hb', hb ? `${K.n(hb.v)} g/dl` : '', hb ? (hb.v < 11 ? (hb.v < 7 ? 'over' : 'due') : 'ok') : 'soon'],
+    ['anc.hb', hb ? `${K.n(hb.v)} g/dl` : '', hb ? ({ severe: 'over', moderate: 'due', mild: 'due' }[K.anc.hbAt(p, hb).k] || 'ok') : 'soon'],
     ['test.hiv', lab(t.hiv), tone(t.hiv)], ['test.syphilis', lab(t.syphilis), tone(t.syphilis)], ['test.hbsag', lab(t.hbsag), tone(t.hbsag)],
     ['test.ogtt', t.ogtt ? `${K.n(t.ogtt, 0)} mg/dl` : '', t.ogtt ? (t.ogtt >= 140 ? 'over' : 'ok') : 'soon'],
   ];

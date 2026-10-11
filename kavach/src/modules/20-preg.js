@@ -18,6 +18,8 @@ K.i18n.add({
   'preg.days': { en: 'days', or: 'ଦିନ' },
   'preg.basis': { en: 'Use for dates', or: 'ତାରିଖ ପାଇଁ ବ୍ୟବହାର କରନ୍ତୁ' },
   'preg.basis.lmp': { en: 'LMP', or: 'ଶେଷ ମାସିକ' }, 'preg.basis.usg': { en: 'Ultrasound', or: 'ଅଲଟ୍ରାସାଉଣ୍ଡ' },
+  'edd.rule': { en: 'Scan at {w} weeks and the LMP differ by {d} days (limit {t} days at this stage): {x}.', or: '{w} ସପ୍ତାହର ସ୍କାନ୍ ଓ LMP ମଧ୍ୟରେ {d} ଦିନ ପାର୍ଥକ୍ୟ (ଏହି ସମୟରେ ସୀମା {t} ଦିନ): {x}।' },
+  'edd.useScan': { en: 'use the scan date', or: 'ସ୍କାନ୍ ତାରିଖ ବ୍ୟବହାର କରନ୍ତୁ' }, 'edd.useLmp': { en: 'keep the LMP date', or: 'LMP ତାରିଖ ରଖନ୍ତୁ' },
   'preg.obs': { en: 'Earlier pregnancies', or: 'ପୂର୍ବ ଗର୍ଭାବସ୍ଥା' },
   'preg.gravida': { en: 'Total pregnancies (with this one)', or: 'ସମୁଦାୟ ଗର୍ଭ ସଂଖ୍ୟା (ଏହା ସହ)' },
   'preg.para': { en: 'Deliveries before', or: 'ପୂର୍ବ ପ୍ରସବ ସଂଖ୍ୟା' },
@@ -97,6 +99,15 @@ Object.assign(K.preg, {
   lmpEq(p) { const e = K.preg.edd(p); return e ? K.d.addDays(e, -280) : null; },
   ga(p, on) { const e = K.preg.edd(p); if (!e) return null; const days = 280 - K.d.diff(on || K.d.today(), e); return { days, w: Math.floor(days / 7), d: ((days % 7) + 7) % 7 }; },
   tri: (days) => (days < 98 ? 1 : days < 196 ? 2 : 3),
+  /* scan or LMP? ACOG Committee Opinion 700 (2017): redate to the scan only when the two differ by more
+     than 5 days (scan before 9 weeks), 7 (9–15+6), 10 (16–21+6), 14 (22–27+6) or 21 days (28 weeks on) */
+  datingRule(lmp, usgDate, usgWeeks, usgDays) {
+    if (!lmp || !usgDate || usgWeeks == null) return null;
+    const ga = +usgWeeks * 7 + (+usgDays || 0); const eddUsg = K.d.addDays(usgDate, 280 - ga); const eddLmp = K.d.addDays(lmp, 280);
+    const diff = Math.abs(K.d.diff(eddLmp, eddUsg)); const limit = ga < 63 ? 5 : ga < 112 ? 7 : ga < 154 ? 10 : ga < 196 ? 14 : 21;
+    return { ga, diff, limit, useScan: diff > limit, eddUsg, eddLmp };
+  },
+  ruleText: (r) => (r ? K.t('edd.rule', { w: Math.floor(r.ga / 7), d: r.diff, t: r.limit, x: K.t(r.useScan ? 'edd.useScan' : 'edd.useLmp') }) : ''),
   gaText: (g) => (g ? K.t('preg.gaWD', { w: g.w, d: g.d }) : '–'),
   gaShort: (g) => (g ? K.digits(`${g.w}w ${g.d}d`) : '–'),
   dateAt(p, weeks, days = 0) { const l = K.preg.lmpEq(p); return l ? K.d.addDays(l, weeks * 7 + days) : null; },
@@ -113,12 +124,13 @@ function pregForm(c, p, isNew) {
   const hist = p.hist || {};
   return h`<form class="form" data-form="pregSave" data-id="${c.id}" data-pid="${isNew ? '' : p.id}" novalidate>
     <fieldset class="fgroup"><legend>${K.t('preg.lmp')}</legend>
-      ${F('lmp', '', { type: 'date', max: K.d.today(), hint: K.t('preg.lmpUnknown') })}
+      ${F('lmp', '', { type: 'date', max: K.d.today(), hint: K.t('preg.lmpUnknown'), attrs: { 'data-live': 'pregDating' } })}
       ${F('eddKnown', K.t('preg.eddKnown'), { type: 'date' })}
       <details class="acc" ${p.usgDate ? K.raw('open') : ''}><summary>${K.ui.icon('eye', 'sm')}${K.t('preg.usg')}</summary><div class="acc-b form">
-        ${F('usgDate', K.t('preg.usgDate'), { type: 'date', max: K.d.today() })}
-        <div class="frow">${F('usgWeeks', K.t('preg.usgGa') + ' · ' + K.t('preg.weeks'), { type: 'number' })}${F('usgDays', K.t('preg.days'), { type: 'number' })}</div>
+        ${F('usgDate', K.t('preg.usgDate'), { type: 'date', max: K.d.today(), attrs: { 'data-live': 'pregDating' } })}
+        <div class="frow">${F('usgWeeks', K.t('preg.usgGa') + ' · ' + K.t('preg.weeks'), { type: 'number', attrs: { 'data-live': 'pregDating' } })}${F('usgDays', K.t('preg.days'), { type: 'number', attrs: { 'data-live': 'pregDating' } })}</div>
         ${K.ui.choices({ name: 'eddBasis', label: K.t('preg.basis'), value: p.eddBasis || 'lmp', options: [{ v: 'lmp', l: K.t('preg.basis.lmp') }, { v: 'usg', l: K.t('preg.basis.usg') }] })}
+        <p class="small" id="preg-dating" aria-live="polite">${K.preg.ruleText(K.preg.datingRule(p.lmp, p.usgDate, p.usgWeeks, p.usgDays))}</p>
       </div></details>
     </fieldset>
     <fieldset class="fgroup"><legend>${K.t('preg.obs')}</legend>
@@ -137,6 +149,10 @@ function pregForm(c, p, isNew) {
     <div class="btn-bar">${K.ui.btn(K.t('preg.save'), { type: 'submit', icon: 'check' })}${K.ui.btn(K.t('btn.cancel'), { href: isNew ? `#/card/${c.id}` : K.preg.url(c, p), tone: 'ghost' })}</div>
   </form>`;
 }
+K.live.pregDating = K.debounce((el) => {
+  const f = el && el.closest('form'); const out = K.$('#preg-dating'); if (!f || !out) return; const v = K.formData(f);
+  out.textContent = K.preg.ruleText(K.preg.datingRule(v.lmp, v.usgDate, v.usgWeeks, v.usgDays));
+}, 250);
 K.route('/card/:id/preg/new', ({ id }, q) => {
   const c = K.card.load(id); if (!c) return K.screens.notFound();
   const act = K.card.activePreg(c); if (act) return { redirect: `/card/${id}/preg/${act.id}` };

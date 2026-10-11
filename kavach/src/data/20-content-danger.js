@@ -14,7 +14,7 @@ K.content.danger = {
       { k: 'fever', icon: 'temp', en: 'High fever', or: 'ଜ୍ୱର ହେବା' },
       { k: 'fits', icon: 'alert', en: 'Fits (convulsions)', or: 'ବାତ ମାରିବା' },
       { k: 'head', icon: 'eye', en: 'Severe headache, blurred vision or dizziness', or: 'ପ୍ରବଳ ମୁଣ୍ଡବିନ୍ଧା, ଆଖି ଝାପ୍‌ସା ଦେଖାଯିବା ବା ମୁଣ୍ଡ ବୁଲାଇବା' },
-      { k: 'swell', icon: 'hand', en: 'Swelling of the face, hands or whole body', or: 'ପାଦ, ହାତ ବା ମୁହଁ ଫୁଲିବା' },
+      { k: 'swell', icon: 'hand', en: 'Swelling of the face and hands, or of the whole body', or: 'ମୁହଁ ଓ ହାତ ଫୁଲିବା, ବା ସାରା ଦେହ ଫୁଲିବା' },
       { k: 'vomit', icon: 'water', en: 'Vomiting again and again', or: 'ଅତିରିକ୍ତ ବାନ୍ତି ହେବା' },
       { k: 'jaund', icon: 'sun', en: 'Yellow eyes or skin (jaundice)', or: 'ହଳଦିଆ ପଡ଼ିବା (କାମଳ ରୋଗ)' },
       { k: 'fm', icon: 'baby', en: 'Baby moves less, or stops moving', or: 'ପେଟରେ ପିଲା କମ୍ ଚଳିବା ବା ନ ଚଳିବା' },
@@ -73,7 +73,7 @@ K.content.danger = {
   },
   child: {
     title: { en: 'Danger signs in a young child (2 months – 5 years)', or: 'ଛୋଟ ପିଲାଙ୍କ ବିପଦ ଲକ୍ଷଣ (୨ ମାସ – ୫ ବର୍ଷ)' },
-    lead: { en: 'Take the child to a health facility the same day if the child:', or: 'ପିଲାଙ୍କଠାରେ ଏହି ଲକ୍ଷଣ ଦେଖାଦେଲେ ସେହି ଦିନ ହିଁ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରକୁ ନିଅନ୍ତୁ:' },
+    lead: { en: 'Take the child to a health facility immediately if the child:', or: 'ପିଲାଙ୍କଠାରେ ଏହି ଲକ୍ଷଣ ଦେଖାଦେଲେ ତୁରନ୍ତ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ରକୁ ନିଅନ୍ତୁ:' },
     items: [
       { k: 'drink', icon: 'bottle', en: 'Cannot drink or breastfeed', or: 'ପିଇ ପାରୁନାହିଁ ବା ମା\'କ୍ଷୀର ଖାଇ ପାରୁନାହିଁ' },
       { k: 'vomit', icon: 'water', en: 'Vomits everything', or: 'ଯାହା ଖାଏ ସବୁ ବାନ୍ତି କରିଦିଏ' },

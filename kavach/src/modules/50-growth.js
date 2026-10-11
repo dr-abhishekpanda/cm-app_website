@@ -3,7 +3,9 @@
    z = ((y/M)^L − 1)/(L·S); weight-based indicators use the WHO restricted
    method beyond ±3 SD (as in the WHO anthro package). Length < 731 days,
    height ≥ 731 days (±0.7 cm if measured the other way). Preterm babies
-   under 2 years are assessed at corrected age.
+   under 2 years are assessed at corrected age; before term-equivalent age
+   (corrected age < 0) no WHO grade is given (the standards start at term).
+   Weight-for-length/height and SAM by WHZ only to 5 years (1826 days).
    Classification (WHO; MCP card zones): WAZ < −2 moderately, < −3 severely
    underweight · HAZ < −2 stunted · WHZ < −2 wasted (MAM), < −3 SAM ·
    MUAC (6–59 m) < 11.5 cm SAM, 11.5–12.4 MAM · bilateral pitting oedema = SAM.
@@ -57,6 +59,8 @@ K.i18n.add({
   'gr.implaus': { en: 'This value looks unlikely — please re-measure.', or: 'ଏହି ମାପ ଅସମ୍ଭବ ଲାଗୁଛି — ଦୟାକରି ପୁଣି ମାପନ୍ତୁ।' },
   'gr.need': { en: 'Add sex and date of birth to use the growth charts.', or: 'ବୃଦ୍ଧି ଚାର୍ଟ ପାଇଁ ଶିଶୁର ଲିଙ୍ଗ ଓ ଜନ୍ମ ତାରିଖ ଦିଅନ୍ତୁ।' },
   'gr.over5': { en: 'WHO growth standards cover 0–5 years.', or: 'WHO ବୃଦ୍ଧି ମାନକ ୦–୫ ବର୍ଷ ପାଇଁ।' },
+  'gr.preTerm': { en: 'Not yet at term age', or: 'ଏପର୍ଯ୍ୟନ୍ତ ପୂର୍ଣ୍ଣ ସମୟ ବୟସ ହୋଇନାହିଁ' },
+  'gr.preTermDo': { en: 'This baby was born early and has not yet reached 40 weeks. WHO growth charts start at term, so no grade is given until then. Weigh the baby as the SNCU or doctor advises, and keep the baby warm and breastfed.', or: 'ଏହି ଶିଶୁ ସମୟ ପୂର୍ବରୁ ଜନ୍ମ ହୋଇଛି ଓ ଏପର୍ଯ୍ୟନ୍ତ ୪୦ ସପ୍ତାହ ପୂରଣ ହୋଇନାହିଁ। WHO ବୃଦ୍ଧି ଚାର୍ଟ ପୂର୍ଣ୍ଣ ସମୟରୁ ଆରମ୍ଭ, ତେଣୁ ସେପର୍ଯ୍ୟନ୍ତ କୌଣସି ଶ୍ରେଣୀ ଦିଆଯାଏ ନାହିଁ। SNCU ବା ଡାକ୍ତରଙ୍କ ପରାମର୍ଶ ଅନୁସାରେ ଓଜନ କରନ୍ତୁ ଏବଂ ଶିଶୁକୁ ଉଷୁମ ରଖି ସ୍ତନ୍ୟପାନ କରାନ୍ତୁ।' },
   'gr.deleteQ': { en: 'Delete this measurement?', or: 'ଏହି ମାପ ବିଲୋପ କରିବେ?' },
   'gr.equal': { en: 'Ensure equal care for the girl child.', or: 'ବାଳିକାଙ୍କ ପାଇଁ ସମାନ ସୁବିଧା ସୁନିଶ୍ଚିତ କରନ୍ତୁ।' },
   'gr.muacNote': { en: 'MUAC applies from 6 months to 5 years: below 11.5 cm = SAM; 11.5–12.4 cm = MAM.', or: 'MUAC ୬ ମାସରୁ ୫ ବର୍ଷ ପାଇଁ: ୧୧.୫ ସେ.ମି.ରୁ କମ୍ = SAM; ୧୧.୫–୧୨.୪ ସେ.ମି. = MAM।' },
@@ -84,13 +88,15 @@ K.growth.z = (y, lms, restricted) => {
 };
 K.growth.defRange = (ageD) => (ageD <= 330 ? '1' : ageD <= 700 ? '2' : '5');
 K.growth.sex = k => (k.sex === 'm' ? 1 : k.sex === 'f' ? 2 : null);
-K.growth.ageDays = (k, date) => { const dob = K.child.useCorrected(k, date) ? K.child.correctedDob(k) : k.dob; return Math.max(0, K.d.diff(dob, date)); };
+K.growth.ageRaw = (k, date) => K.d.diff(K.child.useCorrected(k, date) ? K.child.correctedDob(k) : k.dob, date); // < 0 before term-equivalent age
+K.growth.ageDays = (k, date) => Math.max(0, K.growth.ageRaw(k, date));
 
 /* all indicators for one measurement */
 K.growth.assess = (k, m) => {
   const sex = K.growth.sex(k); if (!sex || !k.dob || !m || !m.date) return null;
-  const age = K.growth.ageDays(k, m.date); const r = { age, corrected: K.child.useCorrected(k, m.date) };
+  const raw = K.growth.ageRaw(k, m.date); const age = Math.max(0, raw); const r = { age, corrected: K.child.useCorrected(k, m.date) };
   const wt = K.num(m.wt), ht0 = K.num(m.ht), hc = K.num(m.hc), muac = K.num(m.muac); const oed = +m.oedema === 1;
+  if (raw < 0) { r.preTerm = true; r.oedema = oed; if (ht0 != null) r.ht = ht0; return r; } // before 40 weeks: no WHO grade
   if (age > 1826) r.over5 = true;
   if (wt != null && age <= 1826 && !oed) r.waz = K.growth.z(wt, K.growth.lms('wfa', sex, age), true);
   if (ht0 != null) {
@@ -98,7 +104,7 @@ K.growth.assess = (k, m) => {
     if (age < 731 && pos === 'H') ht += 0.7; else if (age >= 731 && pos === 'L') ht -= 0.7;
     r.ht = ht;
     if (age <= 1826) r.haz = K.growth.z(ht, K.growth.lms('lhfa', sex, age), false);
-    if (wt != null && !oed) { const ind = age < 731 ? 'wfl' : 'wfh'; const l = K.growth.lms(ind, sex, Math.round(ht * 10) / 10); if (l) r.whz = K.growth.z(wt, l, true); r.whInd = ind; }
+    if (wt != null && !oed && age <= 1826) { const ind = age < 731 ? 'wfl' : 'wfh'; const l = K.growth.lms(ind, sex, Math.round(ht * 10) / 10); if (l) r.whz = K.growth.z(wt, l, true); r.whInd = ind; }
     if (wt != null && !oed && age <= 1826) r.baz = K.growth.z(wt / Math.pow(ht / 100, 2), K.growth.lms('bfa', sex, age), true);
   }
   if (hc != null && age <= 1826) r.hcz = K.growth.z(hc, K.growth.lms('hcfa', sex, age), false);
@@ -123,6 +129,7 @@ K.growth.faltering = (k) => {
 };
 K.growth.headline = (r) => {
   if (!r) return null;
+  if (r.preTerm) return { tone: 'info', t: K.t('gr.preTerm') };
   if (r.sam) return { tone: 'red', t: K.t('gr.sam') };
   if (r.zone === 's') return { tone: 'red', t: K.t('gr.zone.s') };
   if (r.mam) return { tone: 'amber', t: K.t('gr.mam') };
@@ -149,7 +156,7 @@ K.growth.chart = (k, ind, range) => {
   const L = {}; [-3, -2, -1, 0, 1, 2, 3].forEach(z => { L[z] = line(z); });
   // points
   const pts = (k.growth || []).filter(m => m.date).sort(K.by('date')).map(m => {
-    const r = K.growth.assess(k, m); if (!r) return null;
+    const r = K.growth.assess(k, m); if (!r || r.preTerm) return null;
     if (ind === 'wfa' && m.wt != null && !r.oedema) return { x: r.age, y: +m.wt, m };
     if (ind === 'lhfa' && r.ht != null) return { x: r.age, y: r.ht, m };
     if (ind === 'hcfa' && m.hc != null) return { x: r.age, y: +m.hc, m };
@@ -210,7 +217,7 @@ K.route('/card/:id/child/:kid/growth', ({ id, kid }, q) => {
     title: K.t('gr.title'), sub: K.child.label(k), back, tab: 'home',
     html: h`<div class="wrap">${K.ui.phead(K.child.label(k) + ' · ' + K.d.ageText(k.dob), K.t('gr.title'), K.t('gr.monthly'))}
       ${hl ? K.ui.callout(hl.tone === 'red' ? 'danger' : hl.tone === 'amber' ? 'warn' : hl.tone === 'info' ? 'info' : '', hl.t,
-        hl.tone === 'red' ? (r.sam ? K.t('gr.samDo') : K.t('gr.adv.s')) : hl.tone === 'amber' ? K.t('gr.adv.m') : (K.growth.faltering(k) ? K.t('gr.falter') : K.t('gr.good')), hl.tone === 'teal' ? 'check' : null) : ''}
+        r.preTerm ? K.t('gr.preTermDo') : hl.tone === 'red' ? (r.sam ? K.t('gr.samDo') : K.t('gr.adv.s')) : hl.tone === 'amber' ? K.t('gr.adv.m') : (K.growth.faltering(k) ? K.t('gr.falter') : K.t('gr.good')), hl.tone === 'teal' ? 'check' : null) : ''}
       ${K.growth.faltering(k) && hl && hl.tone !== 'teal' ? h`<p></p>${K.ui.callout('warn', '', K.t('gr.falter'))}` : ''}
       <p></p>${K.ui.btn(K.t('gr.add'), { href: K.child.url(c, k, '/growth/new'), icon: 'plus', block: true })}
       <section class="sec" style="margin-top:16px">
@@ -260,14 +267,14 @@ K.growth.resultHtml = (k, r, o = {}) => {
   if (!r) return '';
   const hcp = o.stats != null ? o.stats : K.settings.isHcp(); const out = []; const hl = K.growth.headline(r);
   if (r.flag) out.push(K.ui.callout('warn', '', K.t('gr.implaus')));
-  if (hl) out.push(K.ui.callout(hl.tone === 'red' ? 'danger' : hl.tone === 'amber' ? 'warn' : hl.tone === 'info' ? 'info' : '', hl.t, hl.tone === 'red' ? (r.sam ? K.t('gr.samDo') : K.t('gr.adv.s')) : hl.tone === 'amber' ? K.t('gr.adv.m') : '', hl.tone === 'teal' ? 'check' : null));
+  if (hl) out.push(K.ui.callout(hl.tone === 'red' ? 'danger' : hl.tone === 'amber' ? 'warn' : hl.tone === 'info' ? 'info' : '', hl.t, r.preTerm ? K.t('gr.preTermDo') : hl.tone === 'red' ? (r.sam ? K.t('gr.samDo') : K.t('gr.adv.s')) : hl.tone === 'amber' ? K.t('gr.adv.m') : '', hl.tone === 'teal' ? 'check' : null));
   if (r.haz != null && r.haz < -2) out.push(K.ui.callout('warn', r.haz < -3 ? K.t('gr.stuntS') : K.t('gr.stunt'), ''));
   if (r.whz != null && r.whz > 2) out.push(K.ui.callout('info', K.t('gr.over'), ''));
   if (r.hcz != null && r.hcz < -2) out.push(K.ui.callout('warn', K.t('gr.micro'), ''));
   if (r.hcz != null && r.hcz > 2) out.push(K.ui.callout('warn', K.t('gr.macro'), ''));
   if (r.over5) out.push(K.ui.callout('info', '', K.t('gr.over5')));
   const stats = hcp ? h`<div class="stats" style="margin-top:8px">${[['WAZ', r.waz], ['HAZ', r.haz], [r.whInd === 'wfh' ? 'WHZ' : 'WLZ', r.whz], ['BAZ', r.baz], ['HCZ', r.hcz]].filter(x => x[1] != null)
-    .map(x => K.ui.stat(x[0], zs(x[1]), x[1] < -3 ? 'danger' : x[1] < -2 ? 'warn' : '', ''))}${r.corrected ? K.ui.stat(K.t('child.age'), K.d.ageText(K.d.addDays(K.d.today(), -r.age)), 'ink', K.t('gr.corrected')) : ''}</div>` : '';
+    .map(x => K.ui.stat(x[0], zs(x[1]), x[1] < -3 ? 'danger' : x[1] < -2 ? 'warn' : '', ''))}${r.corrected && !r.preTerm ? K.ui.stat(K.t('child.age'), K.d.ageText(K.d.addDays(K.d.today(), -r.age)), 'ink', K.t('gr.corrected')) : ''}</div>` : '';
   return h`<div class="stack">${out}</div>${stats}`;
 };
 K.live.grPreview = K.debounce(() => {
@@ -306,7 +313,7 @@ K.child.addSection(20, (c, k) => {
 });
 K.child.cardBits.push((c, k) => {
   const last = K.growth.latest(k); if (!last) return '';
-  const hl = K.growth.headline(K.growth.assess(k, last)); if (!hl || hl.tone === 'teal') return '';
+  const r = K.growth.assess(k, last); const hl = K.growth.headline(r); if (!hl || hl.tone === 'teal' || r.preTerm) return '';
   return K.ui.pill(hl.t.replace(/ \(.+\)/, ''), hl.tone === 'amber' ? 'due' : hl.tone === 'red' ? 'over' : 'info', 'scale');
 });
 K.due.add((c, today) => {

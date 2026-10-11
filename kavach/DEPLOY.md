@@ -30,8 +30,8 @@ Cloudflare Pages already sends `Cache-Control: public, max-age=0, must-revalidat
 
 ## Before wider use
 
-- **Odia review:** About → "Odia review sheet (CSV)" exports every English–Odia pair (about 1,550 rows) with empty status and comment columns. Text taken from the Odisha MCP card V-2023-24 is marked in the data-file headers; lines written for the app (newborn-care list, feeding headings, tool texts) need a native reviewer most.
-- **Clinical review:** the open items are listed under "Notes to carry forward" in `ROADMAP.md` (feeding amounts, fast-breathing cut-offs, the June 2026 Anaemia Mukt Bharat Abhiyaan revision, one 24-month warning sign).
+- **Odia review:** About → "Odia review sheet (CSV)" exports every English–Odia pair (about 1,580 rows) with empty status and comment columns. Text taken from the Odisha MCP card V-2023-24 is marked in the data-file headers; lines written for the app (newborn-care list, feeding headings, tool texts, the October 2026 audit fixes) need a native reviewer most.
+- **Clinical review:** an independent audit (October 2026) found 24 issues, all fixed in chunk 11. What still needs a clinician's eye is listed under "Notes to carry forward" in `ROADMAP.md`: feeding amounts, fast-breathing cut-offs, the JE catch-up interval (national footnote vs the Odisha deck), the gestation split for severe anaemia in the AMB 2026 flowchart, and one 24-month warning sign.
 - **Amounts and helplines:** each scheme on the Helplines page shows its source and the date it was checked; re-check them at least every six months.
 - The app says plainly that it is not an official government app and shows no government emblem; keep it that way.
 

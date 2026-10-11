@@ -87,12 +87,12 @@ K.route('/about', () => ({
       <ul class="ul small">
         <li>Mother and Child Protection Card, 2018 version — MoHFW & MoWCD, Government of India.</li>
         <li>ମା' ଏବଂ ଶିଶୁ ସୁରକ୍ଷା କାର୍ଡ (MCP Card) V-2023-24 — NHM & ICDS, Government of Odisha.</li>
-        <li>National Immunization Schedule (UIP), MoHFW — including fIPV-3 at 9 months and catch-up rules.</li>
+        <li>National Immunization Schedule (UIP), MoHFW, and the Immunization Handbook for Medical Officers (2017) — including fIPV-3 at 9 months and age limits; NHM Odisha UIP training deck (2024) for late starters (DPT in place of Penta, series completed by 2 years).</li>
         <li>WHO Child Growth Standards (2006): LMS tables from the WHO <span class="mono">anthro</span> package.</li>
-        <li>Anemia Mukt Bharat operational guidelines (MoHFW, 2018); HBNC and HBYC guidelines (MoHFW).</li>
+        <li>Anaemia Mukt Bharat Abhiyaan operational guidelines (MoHFW, June 2026): WHO 2024 haemoglobin cut-offs, treatment and prevention doses, deworming. HBNC and HBYC guidelines (MoHFW).</li>
         <li>MAMATA-PMMVY, Department of Women & Child Development and Mission Shakti, Odisha (effective 1 April 2025).</li>
-        <li>Anaemia Mukt Bharat training module (treatment flowcharts) as published by NHM; Anaemia Mukt Bharat Abhiyaan guidelines revised June 2026 (not yet reflected in doses).</li>
-        <li>IMNCI (WHO / MoHFW): fast-breathing cut-offs, dehydration plans A–C, zinc.</li>
+        <li>IMNCI (WHO / MoHFW) and WHO Treatment of Diarrhoea (2005): fast-breathing cut-offs, danger signs, dehydration plans A–C, zinc.</li>
+        <li>ACOG Committee Opinion 700 (2017): when an ultrasound replaces the LMP for dating.</li>
         <li>Indian Academy of Pediatrics (2022): nutritional anaemia in children, Indian Pediatrics 59:782–801.</li>
       </ul></section>
     <section class="sec">${K.ui.eyebrow(K.t('rev.title'))}<p class="small">${K.t('rev.sub')}</p>${K.ui.btn(K.t('rev.title'), { act: 'reviewCsv', tone: 'ghost', icon: 'download', size: 'sm' })}</section>

@@ -26,10 +26,12 @@ Digital Mother & Child Protection (MCP) Card, Odia + English. #CM-APP by Dr. Abh
 ## Clinical rules in code (cite the source in a comment when adding more)
 - EDD = LMP + 280 d, or USG dating. ANC windows 0–12 / 14–26 / 28–34 / 36+ wk. PMSMA on the 9th (Sunday → 10th).
 - HRP items = Odisha MCP V-2023-24 ଖ.୧ / ଖ.୨ list + national PMSMA extras (`modules/22-hrp.js`).
-- Anaemia (AMB, pregnancy): <7 severe, 7–9.9 moderate, 10–10.9 mild.
-- Immunisation = UIP National Immunization Schedule incl. fIPV-3 at 9 m, catch-up limits (see ROADMAP chunk 4 notes).
-- Growth = WHO 2006 standards, restricted z beyond ±3 SD for weight-based indicators, length/height switch at 731 days (±0.7 cm), corrected age for preterm under 2 years.
-- Fast breathing = IMNCI ≥60 / ≥50 / ≥40; anaemia = WHO cut-offs, AMB treatment flowcharts (see ROADMAP notes; AMB revised June 2026).
+- Anaemia = AMB Abhiyaan guidelines (MoHFW, June 2026) with WHO 2024 cut-offs: pregnancy severe < 7; 1st/3rd trimester mild 10–10.9, moderate 7–9.9; 2nd trimester (14–27 wk, `K.preg.tri`) mild 9.5–10.4, moderate 7–9.4. Children 6–23 m < 10.5. Doses in `modules/80-tools.js` header.
+- Immunisation = UIP National Immunization Schedule incl. fIPV-3 at 9 m; NIS limits and windows; late starters get DPT in place of Penta (`for`/`prevAlt` in data/30-vaccines). See ROADMAP notes.
+- Growth = WHO 2006 standards, restricted z beyond ±3 SD for weight-based indicators, length/height switch at 731 days (±0.7 cm), corrected age for preterm under 2 years, no grade before term-equivalent age, WHZ only to 5 years.
+- Fast breathing = IMNCI ≥60 / ≥50 / ≥40 (under 2 months = danger sign); dehydration = IMNCI/WHO 2005 with danger-sign override.
+- Postnatal = mother from delivery; SNCU/NBSU graduates days 1–42 after discharge (Odisha card p.10).
+- EDD = LMP + 280, scan replaces LMP only beyond ACOG CO 700 limits (`K.preg.datingRule`).
 
 ## Rules from the owner
 - Indian English; never "delve/crucial/…" style words; no emoji in UI; straight quotes.

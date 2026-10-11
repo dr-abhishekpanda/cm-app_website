@@ -90,9 +90,15 @@ K.anc.WINDOWS = [
   { n: 3, from: 28 * 7, to: 34 * 7, end: 36 * 7 - 1, key: 'anc.w3' },
   { n: 4, from: 36 * 7, to: 40 * 7, end: 44 * 7, key: 'anc.w4' },
 ];
-K.anc.hbClass = (hb) => hb == null ? null : hb < 7 ? { k: 'severe', tone: 'danger', en: 'Severe anaemia', or: 'ଗୁରୁତର ରକ୍ତହୀନତା' }
-  : hb < 10 ? { k: 'moderate', tone: 'warn', en: 'Moderate anaemia', or: 'ମଧ୍ୟମ ରକ୍ତହୀନତା' }
-  : hb < 11 ? { k: 'mild', tone: 'warn', en: 'Mild anaemia', or: 'ସାମାନ୍ୟ ରକ୍ତହୀନତା' } : { k: 'normal', tone: 'ok', en: 'Normal', or: 'ସ୍ୱାଭାବିକ' };
+/* Hb in pregnancy — WHO 2024 cut-offs used by the AMB Abhiyaan guidelines (June 2026):
+   1st & 3rd trimester < 11 anaemia (mild 10–10.9, moderate 7–9.9); 2nd trimester
+   (14–27 weeks here) < 10.5 (mild 9.5–10.4, moderate 7–9.4); severe < 7 throughout. */
+K.anc.hbClass = (hb, gaDays) => { if (hb == null) return null; const t2 = gaDays != null && K.preg.tri(gaDays) === 2;
+  return hb < 7 ? { k: 'severe', tone: 'danger', en: 'Severe anaemia', or: 'ଗୁରୁତର ରକ୍ତହୀନତା' }
+    : hb < (t2 ? 9.5 : 10) ? { k: 'moderate', tone: 'warn', en: 'Moderate anaemia', or: 'ମଧ୍ୟମ ରକ୍ତହୀନତା' }
+    : hb < (t2 ? 10.5 : 11) ? { k: 'mild', tone: 'warn', en: 'Mild anaemia', or: 'ସାମାନ୍ୟ ରକ୍ତହୀନତା' } : { k: 'normal', tone: 'ok', en: 'Normal', or: 'ସ୍ୱାଭାବିକ' }; };
+/* class of a dated Hb value within a pregnancy */
+K.anc.hbAt = (p, hb) => (hb ? K.anc.hbClass(hb.v, (K.preg.ga(p, hb.date) || {}).days) : null);
 
 /* flags for one visit. Returns [{tone, en, or, hrp?}] */
 K.anc.flags = (a, p, c) => {
@@ -103,16 +109,17 @@ K.anc.flags = (a, p, c) => {
   if ((sys != null && sys >= 160) || (dia != null && dia >= 110)) F('danger', 'Very high BP (≥160/110): refer to hospital today.', 'ଅତ୍ୟଧିକ ଉଚ୍ଚ ରକ୍ତଚାପ (≥୧୬୦/୧୧୦): ଆଜି ହିଁ ଡାକ୍ତରଖାନାକୁ ପଠାନ୍ତୁ।', 'k28');
   else if (highBp) F('danger', 'High BP (≥140/90): refer to a doctor; check urine albumin.', 'ଉଚ୍ଚ ରକ୍ତଚାପ (≥୧୪୦/୯୦): ଡାକ୍ତରଙ୍କ ପାଖକୁ ପଠାନ୍ତୁ; ପରିସ୍ରାରେ ଆଲ୍‌ବୁମିନ୍ ପରୀକ୍ଷା କରନ୍ତୁ।', 'k28');
   if (highBp && (alb || (a.sx || []).includes('head') || a.oedema === 'gen')) F('danger', 'Signs of pre-eclampsia (high BP with albumin, headache or swelling).', 'ପ୍ରି-ଏକ୍ଲାମ୍ପସିଆର ଲକ୍ଷଣ (ଉଚ୍ଚ ରକ୍ତଚାପ ସହ ଆଲ୍‌ବୁମିନ୍, ମୁଣ୍ଡବିନ୍ଧା ବା ଫୁଲା)।', 'k28');
-  if (sys != null && dia != null && sys < 90 && dia < 60) F('warn', 'Low BP: check for bleeding, dehydration or weakness.', 'କମ୍ ରକ୍ତଚାପ: ରକ୍ତସ୍ରାବ, ଜଳାଭାବ ବା ଦୁର୍ବଳତା ଯାଞ୍ଚ କରନ୍ତୁ।');
-  const hc = K.anc.hbClass(hb);
+  if ((sys != null && sys < 90) || (dia != null && dia < 60)) F('warn', 'Low BP (below 90/60): check for bleeding, dehydration or weakness.', 'କମ୍ ରକ୍ତଚାପ (୯୦/୬୦ ରୁ କମ୍): ରକ୍ତସ୍ରାବ, ଜଳାଭାବ ବା ଦୁର୍ବଳତା ଯାଞ୍ଚ କରନ୍ତୁ।');
+  const hc = K.anc.hbClass(hb, g.days);
   if (hc && hc.k === 'severe') F('danger', `Hb ${hb} g/dl: severe anaemia — high-risk pregnancy; refer for treatment.`, `ହିମୋଗ୍ଲୋବିନ୍ ${hb} g/dl: ଗୁରୁତର ରକ୍ତହୀନତା — ବିପଦସଙ୍କୁଳ ଗର୍ଭ; ଚିକିତ୍ସା ପାଇଁ ପଠାନ୍ତୁ।`, 'k27');
   else if (hc && hc.k !== 'normal') F('warn', `Hb ${hb} g/dl: ${hc.en.toLowerCase()} — take IFA as advised (treatment dose is 2 tablets a day).`, `ହିମୋଗ୍ଲୋବିନ୍ ${hb} g/dl: ${hc.or} — ପରାମର୍ଶ ଅନୁସାରେ ଆଇ.ଏଫ୍.ଏ. ଖାଆନ୍ତୁ (ଚିକିତ୍ସା ମାତ୍ରା ଦିନକୁ ୨ ବଟିକା)।`);
   if (alb && !highBp) F('warn', 'Albumin in urine: recheck BP and urine.', 'ପରିସ୍ରାରେ ଆଲ୍‌ବୁମିନ୍: ରକ୍ତଚାପ ଓ ପରିସ୍ରା ପୁଣି ଯାଞ୍ଚ କରନ୍ତୁ।', 'k29');
   if (a.urineSugar && a.urineSugar !== 'nil') F('warn', 'Sugar in urine: test for diabetes in pregnancy (OGTT).', 'ପରିସ୍ରାରେ ଶର୍କରା: ଗର୍ଭକାଳୀନ ମଧୁମେହ ପାଇଁ OGTT ପରୀକ୍ଷା କରନ୍ତୁ।', 'k29');
   const w = K.num(a.weight);
   if (w != null && w < 40) F('danger', 'Weight below 40 kg: high-risk pregnancy.', 'ଓଜନ ୪୦ କି.ଗ୍ରା.ରୁ କମ୍: ବିପଦସଙ୍କୁଳ ଗର୍ଭ।', 'k26');
-  if (w != null && g.days >= 13 * 7) {
-    const prev = (p.anc || []).filter(x => x !== a && x.id !== a.id && x.weight != null && K.d.diff(x.date, a.date) >= 21).sort(K.by('date', -1))[0];
+  // monthly weight gain from the 2nd trimester (Odisha ଖ.୨.୧୧): both visits at 14 weeks or later
+  if (w != null && g.days >= 14 * 7) {
+    const prev = (p.anc || []).filter(x => x !== a && x.id !== a.id && x.weight != null && K.d.diff(x.date, a.date) >= 21 && (K.preg.ga(p, x.date) || { days: 0 }).days >= 14 * 7).sort(K.by('date', -1))[0];
     if (prev) { const days = K.d.diff(prev.date, a.date); const rate = (w - prev.weight) / (days / 30.4375);
       if (rate < 0.5) F('warn', `Gaining only ${K.round(rate, 1)} kg a month (less than 0.5 kg): check diet and baby's growth.`, `ମାସକୁ କେବଳ ${K.round(rate, 1)} କି.ଗ୍ରା. ଓଜନ ବଢ଼ୁଛି (୫୦୦ ଗ୍ରାମରୁ କମ୍): ଖାଦ୍ୟ ଓ ଶିଶୁର ବୃଦ୍ଧି ଯାଞ୍ଚ କରନ୍ତୁ।`, 'k211');
       else if (rate > 3) F('warn', `Gaining ${K.round(rate, 1)} kg a month (more than 3 kg): check BP and swelling.`, `ମାସକୁ ${K.round(rate, 1)} କି.ଗ୍ରା. ଓଜନ ବଢ଼ୁଛି (୩ କି.ଗ୍ରା.ରୁ ଅଧିକ): ରକ୍ତଚାପ ଓ ଫୁଲା ଯାଞ୍ଚ କରନ୍ତୁ।`, 'k211'); }
@@ -161,7 +168,7 @@ K.anc.nextPmsma = (p, today) => {
     let s = K.d.iso(d); if (K.d.parse(s).getDay() === 0) s = K.d.addDays(s, 1); // Sunday → next working day
     const g = K.preg.ga(p, s).days;
     if (g > 40 * 7) return null;
-    if (g >= 13 * 7) return s;
+    if (g >= 14 * 7) return s; // PMSMA is for the 2nd and 3rd trimesters (from 14 weeks, as K.preg.tri)
     d.setMonth(d.getMonth() + 1);
   }
   return null;
