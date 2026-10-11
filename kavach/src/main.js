@@ -10,11 +10,14 @@
   K.bus.on('cards', () => K.ui.updateBadges());
   // no service worker on localhost while developing, unless localStorage "kavach.swdev" is set (for offline tests)
   const isLocal = /^(localhost|127\.)/.test(location.hostname); let swDev = false; try { swDev = !!localStorage.getItem('kavach.swdev'); } catch (e) {}
-  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && (!isLocal || swDev)) {
-    const hadController = !!navigator.serviceWorker.controller; // first install is not an "update"
-    navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadController) K.ui.updateReady(); });
-    navigator.serviceWorker.register('sw.js').catch(err => console.warn('SW', err));
-  }
-  if (!K.settings.get('onboarded') && K.path() !== '/welcome') { history.replaceState(null, '', '#/welcome'); }
+  // sandboxed frames and some private modes throw on navigator.serviceWorker: the app must still start
+  try {
+    if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && (!isLocal || swDev)) {
+      const hadController = !!navigator.serviceWorker.controller; // first install is not an "update"
+      navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadController) K.ui.updateReady(); });
+      navigator.serviceWorker.register('sw.js').catch(err => console.warn('SW', err));
+    }
+  } catch (e) { console.warn('SW', e); }
+  if (!K.settings.get('onboarded') && K.path() !== '/welcome') { try { history.replaceState(null, '', '#/welcome'); } catch (e) { location.hash = '#/welcome'; } }
   await K.render();
 })();

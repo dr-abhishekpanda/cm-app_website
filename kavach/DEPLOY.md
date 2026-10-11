@@ -17,7 +17,7 @@ Live address after merge: `https://dr-abhishekpanda-cm.app/kavach/`
 
 1. Build: `node kavach/tools/build.mjs` (writes `index.html` and `sw.js`; the build hash changes on every content change, which makes phones pick up the new version).
 2. Check at phone size (393 × 851) in English and Odia — the Playwright flows used during development are described in `BUILD-LOG.md`.
-3. Merge `feature/kavach` into the branch Cloudflare Pages publishes (usually `main`). The site updates within a minute or two.
+3. Merge `feature/kavach` into `main`, the branch Cloudflare Workers Builds deploys. The site updates within a minute or two; check that the "Workers Builds: cm-app-website" run on `main` succeeds.
 4. Phones that already have the app get the new version the next time they open it online; a small "new version ready — Reload" bar appears.
 
 After the first deploy, check the response headers of `/kavach/sw.js` and `/kavach/index.html` (browser dev tools → Network): they should not be cached for long (`max-age=0` or `no-cache`), or phones will be slow to see updates. If they are, add a `_headers` file with `Cache-Control: no-cache` for those two paths.

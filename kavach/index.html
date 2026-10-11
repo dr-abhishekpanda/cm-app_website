@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="421ff0133c">
+<html lang="en" data-build="10713057fd">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -935,8 +935,8 @@ details.feed-st>summary small{font-weight:400;color:var(--ink-soft);font-size:.8
    escapes interpolated values unless they are K.raw()/nested K.h results.
    ============================================================================ */
 const K = window.K = window.K || {};
-K.build = '421ff0133c';
-K.builtAt = '2026-10-11T11:51:09.100Z';
+K.build = '10713057fd';
+K.builtAt = '2026-10-11T21:07:04.128Z';
 
 class Raw { constructor(s){ this.s = s; } toString(){ return this.s; } }
 K.Raw = Raw;
@@ -7245,12 +7245,15 @@ K.acts.reloadApp = () => location.reload();
   K.bus.on('cards', () => K.ui.updateBadges());
   // no service worker on localhost while developing, unless localStorage "kavach.swdev" is set (for offline tests)
   const isLocal = /^(localhost|127\.)/.test(location.hostname); let swDev = false; try { swDev = !!localStorage.getItem('kavach.swdev'); } catch (e) {}
-  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && (!isLocal || swDev)) {
-    const hadController = !!navigator.serviceWorker.controller; // first install is not an "update"
-    navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadController) K.ui.updateReady(); });
-    navigator.serviceWorker.register('sw.js').catch(err => console.warn('SW', err));
-  }
-  if (!K.settings.get('onboarded') && K.path() !== '/welcome') { history.replaceState(null, '', '#/welcome'); }
+  // sandboxed frames and some private modes throw on navigator.serviceWorker: the app must still start
+  try {
+    if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && (!isLocal || swDev)) {
+      const hadController = !!navigator.serviceWorker.controller; // first install is not an "update"
+      navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadController) K.ui.updateReady(); });
+      navigator.serviceWorker.register('sw.js').catch(err => console.warn('SW', err));
+    }
+  } catch (e) { console.warn('SW', e); }
+  if (!K.settings.get('onboarded') && K.path() !== '/welcome') { try { history.replaceState(null, '', '#/welcome'); } catch (e) { location.hash = '#/welcome'; } }
   await K.render();
 })();
 

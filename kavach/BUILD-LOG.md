@@ -66,5 +66,6 @@ Every source the app cites was checked for a newer version (details and links in
 - Ambulance: Odisha merged 102 into 108 in June 2021; every 102 button and line now reads 108 (the sick-child page gets a 104 advice button instead).
 - HPV note: national drive from 28 February 2026, then routine immunisation days; HPV route text 0.5 ml IM deltoid, single dose.
 - ACOG CO 700 marked as reaffirmed (2025). English strings use straight quotes throughout (10 fixed).
+- Start-up hardening: the service-worker block and the first-run redirect in `main.js` sit in try/catch, so the app still opens where a browser refuses service workers (sandboxed frames, some private modes). Review copy for the owner published as a Claude artifact from the built file (no offline install, printing, file saving or reliable phone links there).
 - Checked: unit scripts (vaccines, dehydration, anaemia/ANC, growth, PNC, dating, visit plans — all pass); static sweep of 1,586 bilingual strings (no missing Odia, no banned words, no curly quotes in English, no emoji) and 48 routes × 2 languages (no raw keys, unfilled placeholders or errors); flow 10 for SSBSK/HBNC switching, 108, HPV and Odia screens; regression flows 1–9 and the offline service-worker flow pass.
 
