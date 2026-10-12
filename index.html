@@ -5,18 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <!--
   Homepage of https://dr-abhishekpanda-cm.app/
-  Content follows the CV of October 2026. Personal details on the CV (date of birth,
-  council registration number, personal email) are deliberately not shown here.
+  Content follows the CV and LinkedIn profile of October 2026. Personal details on the CV
+  (date of birth, council registration number, personal email) are deliberately not shown here.
+  Logos in assets/logos/ are the official marks of the institutions and organisations named
+  beside them, used only to identify them. Organisations without a logo file get a plain
+  initials badge (.logo.badge); to add one, drop a WebP into assets/logos/ and swap the badge
+  for <img>.
 -->
-<title>Dr. Abhishek Panda — Community Medicine, GMCH Sundargarh</title>
+<title>Dr. Abhishek Panda — Community Medicine, Digital Health &amp; AI</title>
 <meta name="author" content="Dr. Abhishek Panda" />
-<meta name="description" content="Dr. Abhishek Panda, Assistant Professor of Community Medicine at GMCH Sundargarh, Odisha. Teaching, research, talks and free #CM-APP web tools for epidemiology, biostatistics and public health." />
+<meta name="description" content="Dr. Abhishek Panda, Assistant Professor of Community Medicine at GMCH Sundargarh, Odisha. Google and Microsoft certified AI educator with a Fellowship in Digital Health. Free daily Digital &amp; AI Fluency Clinic for healthcare professionals, research, teaching and #CM-APP web tools." />
 <link rel="canonical" href="https://dr-abhishekpanda-cm.app/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Dr. Abhishek Panda" />
 <meta property="og:locale" content="en_IN" />
-<meta property="og:title" content="Dr. Abhishek Panda — Community Medicine, GMCH Sundargarh" />
-<meta property="og:description" content="Teaching, research, talks and free #CM-APP web tools in community medicine and public health, from Sundargarh, Odisha." />
+<meta property="og:title" content="Dr. Abhishek Panda — Community Medicine, Digital Health &amp; AI" />
+<meta property="og:description" content="Community medicine faculty at GMCH Sundargarh, Google and Microsoft certified AI educator, and host of a free daily Digital &amp; AI Fluency Clinic for healthcare professionals." />
 <meta property="og:url" content="https://dr-abhishekpanda-cm.app/" />
 <meta property="og:image" content="https://dr-abhishekpanda-cm.app/assets/abhishek-640.jpg" />
 <meta property="og:image:width" content="640" />
@@ -33,6 +37,7 @@
   "name": "Abhishek Panda",
   "honorificPrefix": "Dr.",
   "jobTitle": "Assistant Professor of Community Medicine",
+  "description": "Community medicine faculty at Government Medical College & Hospital, Sundargarh. Google and Microsoft certified AI educator with a Fellowship in Digital Health. Runs a free daily Digital & AI Fluency Clinic for healthcare professionals.",
   "worksFor": {
     "@type": "CollegeOrUniversity",
     "name": "Government Medical College & Hospital, Sundargarh",
@@ -48,7 +53,19 @@
   "sameAs": ["https://www.linkedin.com/in/dr-abhishekpanda"],
   "award": "Best Paper Award, APCRICON 2018",
   "knowsLanguage": ["English", "Hindi", "Odia"],
-  "knowsAbout": ["Community medicine", "Epidemiology", "Biostatistics", "Research methodology", "Evidence synthesis", "Digital health", "Artificial intelligence", "Medical education"]
+  "knowsAbout": ["Community medicine", "AI in healthcare", "AI fluency", "Digital health", "Applied epidemiology", "Evidence synthesis", "Biostatistics", "Research methodology", "Medical education"],
+  "memberOf": [
+    { "@type": "Organization", "name": "Indian Association of Preventive and Social Medicine" },
+    { "@type": "Organization", "name": "Indian Public Health Association" },
+    { "@type": "Organization", "name": "Association for Prevention and Control of Rabies in India" },
+    { "@type": "Organization", "name": "Epidemiology Foundation of India" },
+    { "@type": "Organization", "name": "Indian Society for Adult Immunization" },
+    { "@type": "Organization", "name": "Interdisciplinary Association of Medical Educationists" },
+    { "@type": "Organization", "name": "Indian College of Artificial Intelligence in Medicine" },
+    { "@type": "Organization", "name": "Indian Medical Association" },
+    { "@type": "Organization", "name": "National Medicos Organisation" },
+    { "@type": "Organization", "name": "Odisha Medical Teachers' Association" }
+  ]
 }
 </script>
 
@@ -216,8 +233,13 @@ img{max-width:100%;display:block}
   letter-spacing:-.03em;margin:0 0 18px;
 }
 .hero h1 em{font-style:italic;color:var(--primary);font-weight:500}
-.hero .role{font-size:clamp(1.02rem,1.4vw,1.18rem);font-weight:600;color:var(--ink);margin:0 0 14px}
-.hero .thesis{font-size:clamp(1rem,1.2vw,1.12rem);color:var(--ink-soft);max-width:52ch;margin:0 0 30px}
+.hero .role{font-size:clamp(1.02rem,1.4vw,1.18rem);font-weight:600;color:var(--ink);margin:0 0 10px}
+/* the LinkedIn headline, as three highlights */
+.headline{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-wrap:wrap;gap:4px 0;
+  font-size:clamp(.9rem,1.1vw,1rem);font-weight:600;line-height:1.45;color:var(--primary)}
+.headline li{display:inline-flex;align-items:center}
+.headline li:not(:last-child)::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);margin:0 12px;flex:none}
+.hero .thesis{font-size:clamp(1rem,1.2vw,1.12rem);color:var(--ink-soft);max-width:54ch;margin:0 0 30px}
 
 .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:30px}
 .btn{
@@ -236,7 +258,7 @@ img{max-width:100%;display:block}
 .creds{display:flex;flex-wrap:wrap;gap:8px 10px;font-family:var(--font-mono);font-size:.73rem}
 .creds .cred{display:inline-flex;align-items:center;gap:7px;color:var(--ink-soft);
   background:var(--card);border:1px solid var(--line);border-radius:7px;padding:6px 10px}
-.creds .cred b{color:var(--ink);font-weight:600}
+.creds .cred b{color:var(--ink);font-weight:600;flex:none;white-space:nowrap}
 .creds .cred .dot{width:5px;height:5px;border-radius:50%;background:var(--primary);flex:none}
 
 /* ---- portrait + epi-curve signature card ---- */
@@ -329,27 +351,93 @@ img{max-width:100%;display:block}
    ============================================================ */
 .career-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(32px,5vw,64px);align-items:start}
 .career-grid > *{min-width:0}
-.tl .pub{padding:18px 0;gap:18px}
-.tl .pub .meta{min-width:96px}
+.tl .pub{padding:16px 0;gap:18px;align-items:center}
 .tl .pub h3{font-size:1.06rem;margin:0 0 4px}
 .tl .pub .auth{margin:0}
 .when{display:block;margin-top:5px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.02em;color:var(--ink-faint)}
 .proj .pub .meta{min-width:96px}
-.state{display:inline-block;margin-top:8px;font-family:var(--font-mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;
+.state{display:inline-block;margin-top:7px;font-family:var(--font-mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;
   color:var(--primary);background:rgba(12,94,78,.1);border-radius:6px;padding:3px 8px}
-.cert-groups{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
+.sub-note{color:var(--ink-soft);font-size:.92rem;max-width:66ch;margin:6px 0 0}
+
+/* ---- logo cells: the official mark of the institution or issuer named beside it ---- */
+.logo{display:flex;align-items:center;justify-content:center;flex:none;
+  width:112px;height:52px;padding:5px 8px;background:#fff;
+  border:1px solid var(--line-soft);border-radius:8px}
+.logo img{width:100%;height:100%;object-fit:contain}
+.tl .logo{height:60px}
+/* organisations with no logo file: plain initials, never an imitation of a logo */
+.logo.badge{background:var(--paper-2);border:1px dashed var(--line);
+  font-family:var(--font-mono);font-size:.76rem;font-weight:600;letter-spacing:.1em;color:var(--primary)}
+
+.cert-groups{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:22px;align-items:start}
 .cert-groups > *{min-width:0}
-.cert{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px 20px 10px}
-.cert .k{display:block;font-family:var(--font-mono);font-size:.67rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:4px}
+.cert{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px 20px 8px}
+.cert .k{display:block;font-family:var(--font-mono);font-size:.67rem;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:6px}
 .cert ul{list-style:none;margin:0;padding:0}
-.cert li{padding:11px 0;border-top:1px dashed var(--line-soft)}
+.cert li{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;padding:11px 0;border-top:1px dashed var(--line-soft)}
 .cert li:first-child{border-top:0}
+.cert li > span:last-child{min-width:0}
 .cert li b{display:block;font-weight:600;font-size:.92rem;line-height:1.35;color:var(--ink)}
-.cert li span{display:block;font-size:.84rem;line-height:1.45;color:var(--ink-soft);margin-top:2px}
-.cert li time{font-family:var(--font-mono);font-size:.74rem;color:var(--ink-faint);white-space:nowrap}
-.recog{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
-.recog > *{min-width:0}
-.memb{display:flex;flex-wrap:wrap;gap:8px}
+.cert li small{display:block;font-size:.82rem;line-height:1.45;color:var(--ink-soft);margin-top:2px}
+
+.card.award{margin-top:18px;flex-direction:row;align-items:center;gap:18px}
+.award .medal{flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;
+  background:var(--accent-tint);color:var(--accent);font-family:var(--font-display);font-weight:600;font-size:1.05rem}
+.award > div{min-width:0}
+.award h3{margin:2px 0 4px}
+.memb-grid{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:12px 18px}
+.memb-grid > li{min-width:0;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 14px}
+.memb-grid b{display:block;font-weight:600;font-size:.92rem;line-height:1.35}
+.memb-grid small{display:block;margin-top:2px;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;color:var(--ink-faint)}
+
+/* ============================================================
+   EXPERTISE
+   ============================================================ */
+.xp .card{gap:9px}
+.xp .card .k{color:var(--primary)}
+.xp .proof{margin-top:auto;padding-top:12px;border-top:1px dashed var(--line-soft);
+  font-family:var(--font-mono);font-size:.72rem;line-height:1.6;color:var(--ink-faint)}
+
+/* ============================================================
+   DIGITAL & AI FLUENCY CLINIC  (teal band: the one inverted section)
+   ============================================================ */
+.section.clinic{position:relative;isolation:isolate;overflow:hidden;
+  background:var(--primary-deep);color:var(--paper);border-top:0}
+.clinic::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-image:
+    linear-gradient(to right, rgba(244,245,241,.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(244,245,241,.07) 1px, transparent 1px);
+  background-size:34px 34px}
+.clinic + .section{border-top:0}
+.clinic .eyebrow{color:var(--accent-tint)}
+.clinic .eyebrow::before{background:var(--accent-tint)}
+.clinic-grid{display:grid;grid-template-columns:1.35fr .9fr;gap:clamp(32px,5vw,64px);align-items:start}
+.clinic-grid > *{min-width:0}
+.clinic h2{font-family:var(--font-display);font-weight:500;font-size:clamp(1.9rem,4vw,2.7rem);
+  line-height:1.04;letter-spacing:-.018em;margin:0 0 12px;text-wrap:balance}
+.clinic .motto{font-family:var(--font-display);font-style:italic;font-size:clamp(1.2rem,2.2vw,1.55rem);
+  color:var(--accent-tint);margin:0 0 22px}
+.clinic-copy p{color:rgba(244,245,241,.86);max-width:62ch;margin:0 0 16px}
+.clinic-copy .pull{margin:22px 0;padding:4px 0 4px 18px;border-left:2px solid var(--accent-tint)}
+.clinic-copy .pull p{font-family:var(--font-display);font-size:clamp(1.05rem,1.6vw,1.2rem);line-height:1.45;color:var(--paper);margin:0}
+.clinic-copy .mission{color:var(--paper);font-weight:600;margin:26px 0 0}
+.topics{list-style:none;margin:22px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.topics li{font-family:var(--font-mono);font-size:.74rem;color:var(--paper);
+  border:1px solid rgba(244,245,241,.34);border-radius:100px;padding:6px 13px}
+.clinic-card{background:var(--paper);color:var(--ink);border-radius:var(--r);overflow:hidden;
+  box-shadow:0 30px 60px -36px rgba(0,0,0,.6)}
+.clinic-card .g-head{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-faint);padding:14px 20px;border-bottom:1px solid var(--line-soft);background:var(--paper-2)}
+.clinic-card dl{margin:0;padding:4px 20px 10px}
+.clinic-card .row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-bottom:1px dashed var(--line-soft)}
+.clinic-card .row:last-child{border-bottom:0}
+.clinic-card dt{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-faint);flex:none}
+.clinic-card dd{margin:0;font-weight:600;font-size:.92rem;text-align:right;min-width:0}
+.clinic-card .btn{display:flex;justify-content:center;margin:4px 20px 0}
+.clinic-card .fine{margin:14px 20px 20px;text-align:center;font-family:var(--font-mono);font-size:.68rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
 
 /* ============================================================
    CARD GRIDS  (teaching, tools)
@@ -374,6 +462,8 @@ a.card:hover{transform:translateY(-3px);border-color:var(--primary);
   letter-spacing:.06em;text-transform:uppercase;color:var(--primary);display:inline-flex;align-items:center;gap:7px}
 .card .go .arw{transition:transform .2s}
 a.card:hover .go .arw{transform:translateX(3px)}
+.card a.go{text-decoration:none;align-self:flex-start}
+.card a.go:hover .arw{transform:translateX(3px)}
 .card .pill{align-self:flex-start;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.06em;
   text-transform:uppercase;color:var(--ink-soft);background:var(--paper-2);border-radius:6px;padding:4px 9px}
 .card .pill.live{color:var(--primary);background:rgba(12,94,78,.1)}
@@ -435,11 +525,16 @@ a.card:hover .go .arw{transform:translateX(3px)}
 @media (max-width:920px){
   .hero .wrap{grid-template-columns:1fr;gap:40px}
   .id-card{max-width:380px}
-  .about-grid,.contact-grid,.career-grid{grid-template-columns:1fr;gap:34px}
+  .about-grid,.contact-grid,.career-grid,.clinic-grid{grid-template-columns:1fr;gap:34px}
+  .clinic-card{max-width:460px}
   .cards.cols-3{grid-template-columns:repeat(2,1fr)}
-  .cert-groups,.recog{grid-template-columns:1fr}
+  .cert-groups{grid-template-columns:1fr}
 }
 @media (max-width:760px){
+  .memb-grid{grid-template-columns:1fr}
+}
+/* nine menu items: switch to the menu button before they crowd the bar */
+@media (max-width:1080px){
   .nav-toggle{display:flex}
   .nav-links{
     position:absolute;top:calc(var(--nav-h) + 1px);left:0;right:0;
@@ -455,7 +550,11 @@ a.card:hover .go .arw{transform:translateX(3px)}
 @media (max-width:560px){
   .cards.cols-2,.cards.cols-3{grid-template-columns:1fr}
   .pub{grid-template-columns:1fr;gap:10px}
-  .tl .pub{gap:4px}
+  .tl .pub{grid-template-columns:auto 1fr;gap:14px}
+  .logo{width:88px;height:46px;padding:5px 6px}
+  .tl .logo{height:52px}
+  .cert{padding:18px 16px 6px}
+  .card.award{align-items:flex-start}
   .sec-head{margin-bottom:28px}
   .card.feature{padding:24px 20px 22px}
 }
@@ -483,6 +582,8 @@ a.card:hover .go .arw{transform:translateX(3px)}
     <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
     <ul class="nav-links" id="nav-links">
       <li><a href="#about">About</a></li>
+      <li><a href="#expertise">Expertise</a></li>
+      <li><a href="#clinic">AI Clinic</a></li>
       <li><a href="#career">Career</a></li>
       <li><a href="#research">Research</a></li>
       <li><a href="#teaching">Teaching</a></li>
@@ -501,16 +602,21 @@ a.card:hover .go .arw{transform:translateX(3px)}
       <span class="hero-eyebrow reveal"><span class="pin"></span>Government Medical College &amp; Hospital · Sundargarh, Odisha</span>
       <h1 class="reveal">Dr. Abhishek<br><em>Panda</em></h1>
       <p class="role reveal">Assistant Professor, Department of Community Medicine</p>
-      <p class="thesis reveal">Community physician in a tribal-majority mining district of western Odisha. I teach epidemiology and biostatistics, coordinate national health programmes, and build free web tools that make good public health practice easier to use.</p>
+      <ul class="headline reveal" aria-label="Highlights">
+        <li>Google &amp; Microsoft Certified AI Educator</li>
+        <li>Fellowship in Digital Health</li>
+        <li>Applied Epidemiology &amp; Evidence Synthesis</li>
+      </ul>
+      <p class="thesis reveal">Community physician and medical educator in a tribal-majority mining district of western Odisha. I teach epidemiology and biostatistics, coordinate national health programmes, and help healthcare professionals move from AI literacy to AI fluency through a free daily clinic and the #CM-APP web tools.</p>
       <div class="cta-row reveal">
-        <a class="btn btn-primary" href="#apps">Explore the tools <span class="arw">→</span></a>
-        <a class="btn btn-ghost" href="#contact">Get in touch <span class="arw">→</span></a>
+        <a class="btn btn-primary" href="#clinic">Join the AI Fluency Clinic <span class="arw">→</span></a>
+        <a class="btn btn-ghost" href="#apps">Explore the tools <span class="arw">→</span></a>
       </div>
       <div class="creds reveal">
-        <span class="cred"><span class="dot"></span><b>MBBS</b> SCB Medical College, Cuttack · 2014</span>
-        <span class="cred"><span class="dot"></span><b>MD</b> Community Medicine · MKCG, Berhampur · 2020</span>
-        <span class="cred"><span class="dot"></span><b>Fellowship</b> Digital Health · Medvarsity</span>
+        <span class="cred"><span class="dot"></span><b>MBBS</b> S.C.B. Medical College, Cuttack</span>
+        <span class="cred"><span class="dot"></span><b>MD</b> Community Medicine · M.K.C.G., Berhampur</span>
         <span class="cred"><span class="dot"></span><b>PG Diploma</b> Applied Epidemiology · NIHFW (pursuing)</span>
+        <span class="cred"><span class="dot"></span><b>PG Diploma</b> AI/ML in Healthcare · CLRI (pursuing)</span>
       </div>
     </div>
 
@@ -543,22 +649,21 @@ a.card:hover .go .arw{transform:translateX(3px)}
     <p class="eyebrow reveal">About</p>
     <div class="about-grid">
       <div class="about-body reveal">
-        <p class="lede">I teach and practise community medicine at GMCH Sundargarh. The district is tribal-majority, depends on mining and carries a heavy sickle cell burden, so the public health questions here are immediate.</p>
-        <p>I trained at S.C.B. Medical College, Cuttack (MBBS, 2014) and M.K.C.G. Medical College, Berhampur (MD in Community Medicine, 2020). I taught at M.K.C.G. and at Shri Jagannath Medical College, Puri, before joining GMCH Sundargarh in January 2024.</p>
-        <p>Malaria, filariasis, tuberculosis and maternal and child health fill the daily work here. I teach Community Medicine to MBBS students under the CBME curriculum, in the classroom, on clinical postings and in the field, and coordinate the college's work in NTEP, NVBDCP, RMNCAH+N and immunisation. I am a resource person and master trainer for IMNCI, NTEP, NLEP and biomedical waste management.</p>
-        <p>I sit on the Medical Education Unit and the Medical Research Unit, and serve as Nodal Officer for the Ayushman Bharat Digital Mission (ABDM). A growing share of my time goes to digital health and AI fluency: helping doctors, teachers and students use AI tools well and check what those tools produce.</p>
+        <p class="lede">I work where community medicine meets digital health. I help healthcare professionals move from AI literacy, knowing that a tool exists, to AI fluency: knowing what a tool can take over in their own work and what they must still check themselves.</p>
+        <p>I trained at S.C.B. Medical College, Cuttack (MBBS) and M.K.C.G. Medical College, Berhampur (MD in Community Medicine). I taught at M.K.C.G. and at Shri Jagannath Medical College, Puri, before joining GMCH Sundargarh in January 2024.</p>
+        <p>Sundargarh is tribal-majority, depends on mining and carries a heavy sickle cell burden. Malaria, filariasis, tuberculosis and maternal and child health fill the daily work. I teach Community Medicine to MBBS students under the CBME curriculum and coordinate the college's work in NTEP, NVBDCP, RMNCAH+N and immunisation. As a resource person and master trainer, I train others in IMNCI, NTEP, NLEP and biomedical waste management. I sit on the Medical Education Unit and the Medical Research Unit, and serve as Nodal Officer for the Ayushman Bharat Digital Mission (ABDM).</p>
+        <p>On Doctors' Day, 1 July 2026, I began a mission to promote digital literacy among current and future healthcare professionals, with a special emphasis on artificial intelligence. Six weeks later, on 15 August, it became a free online clinic that meets every evening. I am a Gemini Certified Educator and a Microsoft Elevate Educator Expert, and have completed AI in healthcare programmes from NBEMS, IIT Madras, Stanford Online and the University of Calgary.</p>
         <p>The #CM-APP tools on this site come from the same place. Each began with a real classroom or clinic problem, such as a statistic students keep misreading or a calculation a colleague needs for a dissertation.</p>
         <div class="tags" aria-label="Areas of interest">
-          <span class="tag">Epidemiology</span>
+          <span class="tag">AI in healthcare</span>
+          <span class="tag">AI fluency</span>
+          <span class="tag">Digital health · ABDM</span>
+          <span class="tag">Applied epidemiology</span>
+          <span class="tag">Evidence synthesis</span>
           <span class="tag">Biostatistics</span>
           <span class="tag">Research methodology</span>
-          <span class="tag">Evidence synthesis</span>
-          <span class="tag">Digital health · ABDM</span>
-          <span class="tag">Artificial intelligence</span>
           <span class="tag">Medical education · CBME</span>
-          <span class="tag">Tuberculosis · NTEP</span>
-          <span class="tag">Vector-borne disease</span>
-          <span class="tag">Maternal &amp; child health · IMNCI</span>
+          <span class="tag">National health programmes</span>
           <span class="tag">Tribal &amp; rural health</span>
         </div>
       </div>
@@ -572,10 +677,100 @@ a.card:hover .go .arw{transform:translateX(3px)}
           <div class="row"><dt>Teaching since</dt><dd>2020</dd></div>
           <div class="row"><dt>Degrees</dt><dd>MBBS · MD</dd></div>
           <div class="row"><dt>Pursuing</dt><dd>PG Diplomas · NIHFW, CLRI</dd></div>
+          <div class="row"><dt>Certified</dt><dd>Google &amp; Microsoft AI Educator</dd></div>
           <div class="row"><dt>College roles</dt><dd>MEU · MRU · ABDM</dd></div>
+          <div class="row"><dt>AI Clinic</dt><dd>Daily · 7:30 PM IST</dd></div>
           <div class="row"><dt>Languages</dt><dd>English · Hindi · Odia</dd></div>
           <div class="row"><dt>Award</dt><dd>Best Paper, APCRICON 2018</dd></div>
         </dl>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ EXPERTISE ============================ -->
+<section id="expertise" class="section">
+  <div class="wrap">
+    <p class="eyebrow reveal">Areas of expertise</p>
+    <div class="sec-head reveal"><h2>What I Work On</h2></div>
+    <p class="sec-intro reveal">Most of my recent work and training has gone into digital health and AI. Epidemiology, biostatistics and programme work remain the base it grows from, and they supply most of the problems worth solving.</p>
+    <div class="cards cols-3 xp" data-stagger>
+      <div class="card">
+        <span class="k">01 · Artificial intelligence</span>
+        <h3>AI in Healthcare &amp; AI Fluency</h3>
+        <p>Responsible use of AI tools in clinical work, teaching, research and public health, with the habit of checking what they produce. I teach it to doctors, teachers and students, and every evening in the clinic.</p>
+        <p class="proof">Gemini Certified Educator · Microsoft Elevate Educator Expert · AI in healthcare programmes from NBEMS, IIT Madras, Stanford Online and the University of Calgary</p>
+      </div>
+      <div class="card">
+        <span class="k">02 · Digital health</span>
+        <h3>Digital Health</h3>
+        <p>Nodal Officer for the Ayushman Bharat Digital Mission at GMCH Sundargarh. Digital workflows for data collection and documentation, and single-file web tools that keep working offline.</p>
+        <p class="proof">Fellowship in Digital Health, Medvarsity · PG Diploma in AI/ML in Healthcare, CLRI (pursuing) · Digital Health Specialization, Imperial College London</p>
+      </div>
+      <div class="card">
+        <span class="k">03 · Epidemiology</span>
+        <h3>Applied Epidemiology &amp; Evidence Synthesis</h3>
+        <p>Field surveys and programme evaluation in the district, and systematic reviews and meta-analyses.</p>
+        <p class="proof">PG Diploma in Applied Epidemiology, NIHFW (pursuing) · Advanced Epidemiology Workshop, JIPMER · Post-MDA coverage evaluation surveys</p>
+      </div>
+      <div class="card">
+        <span class="k">04 · Research methods</span>
+        <h3>Biostatistics &amp; Research Methodology</h3>
+        <p>Study design, sample size and analysis for dissertations and manuscripts. I guide MBBS students' short-term research projects and build the statistics tools in the #CM-APP series.</p>
+        <p class="proof">Basic Course in Biomedical Research, ICMR–NIE · Biostatistics in Public Health Specialization, Johns Hopkins University</p>
+      </div>
+      <div class="card">
+        <span class="k">05 · Medical education</span>
+        <h3>Medical Education</h3>
+        <p>Competency-based teaching and assessment, faculty development, and the use of AI in teaching and assessment.</p>
+        <p class="proof">Member, Medical Education Unit · Course coordinator, NMC Basic Course in Medical Education at GMCH Sundargarh · AI for Education, Kennesaw State University</p>
+      </div>
+      <div class="card">
+        <span class="k">06 · Public health practice</span>
+        <h3>Community Medicine &amp; National Health Programmes</h3>
+        <p>Programme coordination for NTEP, NVBDCP, RMNCAH+N and immunisation in a tribal-majority mining district, and training for the staff who deliver these programmes.</p>
+        <p class="proof">Master trainer for IMNCI, NTEP, NLEP and BMWM · UNICEF-funded evaluation of maternal health services at VHSND sites</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ AI FLUENCY CLINIC ============================ -->
+<section id="clinic" class="section clinic">
+  <div class="wrap">
+    <p class="eyebrow reveal">Free · online · every evening since 15 August 2026</p>
+    <div class="clinic-grid">
+      <div class="clinic-copy reveal">
+        <h2>Digital &amp; AI Fluency Clinic for Healthcare Professionals</h2>
+        <p class="motto">Bring a problem. Get a workflow.</p>
+        <p>Each evening we take one or two real digital problems that healthcare professionals face and work through them live on Google Meet. We look at the workflow, find the right digital or AI-assisted solution, demonstrate it and practise it. No lectures on what AI is, and no lists of fifty tools.</p>
+        <blockquote class="pull">
+          <p>Literacy is knowing that a tool exists. Fluency is being able to look at your everyday work and ask: can this be done more efficiently?</p>
+        </blockquote>
+        <p>Most of the problems are old ones. Better use of familiar tools, plus newer capabilities including AI, usually solves them:</p>
+        <ul class="topics" aria-label="Problems the clinic works on">
+          <li>Designing data collection tools</li>
+          <li>Analysing data</li>
+          <li>Searching and synthesising literature</li>
+          <li>Preparing academic and research documents</li>
+          <li>Creating teaching material</li>
+          <li>Reducing repetitive documentation</li>
+          <li>Using AI appropriately</li>
+        </ul>
+        <p class="mission">Less digital burden. Smarter workflows. Better learning. More AI-fluent healthcare professionals.</p>
+      </div>
+
+      <aside class="clinic-card reveal" aria-label="Clinic details">
+        <div class="g-head">Clinic details</div>
+        <dl>
+          <div class="row"><dt>When</dt><dd>Daily, except holidays</dd></div>
+          <div class="row"><dt>Time</dt><dd>7:30–8:30 PM IST</dd></div>
+          <div class="row"><dt>Where</dt><dd>Google Meet</dd></div>
+          <div class="row"><dt>Fee</dt><dd>Free</dd></div>
+          <div class="row"><dt>Open to</dt><dd>Healthcare professionals, educators, researchers, managers and students</dd></div>
+        </dl>
+        <a class="btn btn-primary" href="https://forms.gle/xkDrNrBbvfobqeng9" target="_blank" rel="noopener">Register for the Clinic <span class="arw">→</span></a>
+        <p class="fine">Learn · Apply · Automate · Verify</p>
       </aside>
     </div>
   </div>
@@ -592,38 +787,45 @@ a.card:hover .go .arw{transform:translateX(3px)}
         <h3 class="sub-h">Experience</h3>
         <ol class="pubs tl">
           <li class="pub">
-            <div class="meta"><span class="yr">2024 – now</span></div>
+            <div class="meta"><span class="logo"><img src="assets/logos/gmch.webp" width="59" height="56" alt="" loading="lazy" /></span></div>
             <div>
               <h3>Assistant Professor, Community Medicine</h3>
               <p class="auth">Government Medical College &amp; Hospital, Sundargarh</p><span class="when">Jan 2024 – present</span>
             </div>
           </li>
           <li class="pub">
-            <div class="meta"><span class="yr">2022 – 2024</span></div>
+            <div class="meta"><span class="logo"><img src="assets/logos/sjmch.webp" width="49" height="56" alt="" loading="lazy" /></span></div>
             <div>
               <h3>Assistant Professor, Community Medicine</h3>
               <p class="auth">Shri Jagannath Medical College &amp; Hospital, Puri</p><span class="when">Apr 2022 – Jan 2024</span>
             </div>
           </li>
           <li class="pub">
-            <div class="meta"><span class="yr">2021 – 2022</span></div>
+            <div class="meta"><span class="logo"><img src="assets/logos/sjmch.webp" width="49" height="56" alt="" loading="lazy" /></span></div>
             <div>
               <h3>Senior Resident / Tutor, Community Medicine</h3>
               <p class="auth">Shri Jagannath Medical College &amp; Hospital, Puri</p><span class="when">Mar 2021 – Apr 2022</span>
             </div>
           </li>
           <li class="pub">
-            <div class="meta"><span class="yr">2020 – 2021</span></div>
+            <div class="meta"><span class="logo"><img src="assets/logos/mkcg.webp" width="51" height="56" alt="" loading="lazy" /></span></div>
             <div>
               <h3>Senior Resident / Tutor, Community Medicine</h3>
               <p class="auth">M.K.C.G. Medical College &amp; Hospital, Berhampur</p><span class="when">Jul 2020 – Mar 2021</span>
             </div>
           </li>
           <li class="pub">
-            <div class="meta"><span class="yr">2017 – 2020</span></div>
+            <div class="meta"><span class="logo"><img src="assets/logos/mkcg.webp" width="51" height="56" alt="" loading="lazy" /></span></div>
             <div>
               <h3>Junior Resident, MD Community Medicine</h3>
               <p class="auth">M.K.C.G. Medical College &amp; Hospital, Berhampur</p><span class="when">Jun 2017 – Jun 2020</span>
+            </div>
+          </li>
+          <li class="pub">
+            <div class="meta"><span class="logo"><img src="assets/logos/scb.webp" width="56" height="56" alt="" loading="lazy" /></span></div>
+            <div>
+              <h3>House Officer (Internship)</h3>
+              <p class="auth">S.C.B. Medical College &amp; Hospital, Cuttack</p><span class="when">Sep 2014 – Sep 2015</span>
             </div>
           </li>
         </ol>
@@ -633,38 +835,38 @@ a.card:hover .go .arw{transform:translateX(3px)}
         <h3 class="sub-h">Qualifications</h3>
         <ol class="pubs tl">
           <li class="pub">
-            <div class="meta"><span class="yr">Pursuing</span></div>
+            <div class="meta"><span class="logo"><img src="assets/logos/nihfw.webp" width="56" height="56" alt="" loading="lazy" /></span></div>
             <div>
               <h3>PG Diploma in Applied Epidemiology</h3>
-              <p class="auth">National Institute of Health &amp; Family Welfare (NIHFW), New Delhi</p>
+              <p class="auth">National Institute of Health &amp; Family Welfare (NIHFW), New Delhi</p><span class="state">Pursuing</span>
             </div>
           </li>
           <li class="pub">
-            <div class="meta"><span class="yr">Pursuing</span></div>
+            <div class="meta"><span class="logo"><img src="assets/logos/clri.webp" width="150" height="28" alt="" loading="lazy" /></span></div>
             <div>
               <h3>PG Diploma in AI/ML in Healthcare</h3>
-              <p class="auth">Clini Launch Research Institute (CLRI)</p>
+              <p class="auth">Clini Launch Research Institute (CLRI)</p><span class="state">Pursuing</span>
             </div>
           </li>
           <li class="pub">
-            <div class="meta"><span class="yr">Completed</span></div>
+            <div class="meta"><span class="logo"><img src="assets/logos/medvarsity.webp" width="150" height="36" alt="" loading="lazy" /></span></div>
             <div>
               <h3>Fellowship in Digital Health</h3>
               <p class="auth">Medvarsity</p>
             </div>
           </li>
           <li class="pub">
-            <div class="meta"><span class="yr">2020</span></div>
+            <div class="meta"><span class="logo"><img src="assets/logos/mkcg.webp" width="51" height="56" alt="" loading="lazy" /></span></div>
             <div>
               <h3>MD, Community Medicine</h3>
-              <p class="auth">M.K.C.G. Medical College, Berhampur, Odisha</p>
+              <p class="auth">M.K.C.G. Medical College, Berhampur, Odisha</p><span class="when">2020</span>
             </div>
           </li>
           <li class="pub">
-            <div class="meta"><span class="yr">2014</span></div>
+            <div class="meta"><span class="logo"><img src="assets/logos/scb.webp" width="56" height="56" alt="" loading="lazy" /></span></div>
             <div>
               <h3>MBBS</h3>
-              <p class="auth">S.C.B. Medical College, Cuttack, Odisha</p>
+              <p class="auth">S.C.B. Medical College, Cuttack, Odisha</p><span class="when">2014</span>
             </div>
           </li>
         </ol>
@@ -672,57 +874,82 @@ a.card:hover .go .arw{transform:translateX(3px)}
     </div>
 
     <h3 class="sub-h block-h reveal">Certifications &amp; Continuing Professional Development</h3>
+    <p class="sub-note reveal">Course names and issuers only, and not the full list: on Coursera alone there are more than 75 course certificates.</p>
     <div class="cert-groups" data-stagger>
-      <div class="cert">
-        <span class="k">Medical education &amp; research</span>
-        <ul>
-          <li><b>Basic Course in Medical Education (BCME)</b><span>S.C.B. Medical College, Cuttack (Regional Centre) · <time>Jun 2025</time></span></li>
-          <li><b>Basic Course in Biomedical Research (BCBR)</b><span>ICMR–NIE, SWAYAM–NPTEL · <time>Aug 2025</time></span></li>
-          <li><b>Advanced Epidemiology Workshop</b><span>JIPMER International School of Public Health, Puducherry · <time>Oct 2025</time></span></li>
-          <li><b>Essential Epidemiologic Tools for Public Health Practice</b><span>Johns Hopkins University</span></li>
-          <li><b>Data and Health Indicators in Public Health Practice</b><span>Johns Hopkins University</span></li>
-        </ul>
-      </div>
       <div class="cert">
         <span class="k">AI in healthcare</span>
         <ul>
-          <li><b>AI in Healthcare (Certificate Programme)</b><span>NBEMS, MoHFW, Government of India · <time>Jan–Jun 2026</time></span></li>
-          <li><b>AI for Clinicians</b><span>Wadhwani School of AI, IIT Madras · <time>Apr–May 2026</time></span></li>
-          <li><b>AI in Healthcare</b><span>EICTA, IIT Kanpur</span></li>
-          <li><b>AI in Healthcare</b><span>EICTA, MNIT Jaipur</span></li>
-          <li><b>Foundation and Potential of AI in Healthcare</b><span>University of Colorado System</span></li>
-          <li><b>Generative AI for Healthcare</b><span>Google Cloud</span></li>
-          <li><b>Introduction to Using Generative AI in Public Health</b><span>Johns Hopkins University</span></li>
+          <li><span class="logo"><img src="assets/logos/ucalgary.webp" width="74" height="56" alt="" loading="lazy" /></span><span><b>AI in Medicine: Practical Applications for Healthcare Professionals</b><small>University of Calgary · Calgary Neonatal NeuroCritical Care Program</small></span></li>
+          <li><span class="logo"><img src="assets/logos/nbe.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>AI in Healthcare (Certificate Programme)</b><small>National Board of Examinations in Medical Sciences (NBEMS), MoHFW</small></span></li>
+          <li><span class="logo"><img src="assets/logos/iitm.webp" width="72" height="72" alt="" loading="lazy" /></span><span><b>AI for Clinicians</b><small>Wadhwani School of AI, IIT Madras</small></span></li>
+          <li><span class="logo"><img src="assets/logos/stanford.webp" width="150" height="32" alt="" loading="lazy" /></span><span><b>AI in Healthcare Specialization</b><small>Stanford Online</small></span></li>
+          <li><span class="logo"><img src="assets/logos/cu.webp" width="150" height="29" alt="" loading="lazy" /></span><span><b>AI for Healthcare Systems Specialization</b><small>University of Colorado System</small></span></li>
+          <li><span class="logo"><img src="assets/logos/iitk.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>AI in Healthcare</b><small>EICTA, IIT Kanpur</small></span></li>
+          <li><span class="logo"><img src="assets/logos/mnit.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>AI in Healthcare</b><small>EICTA, MNIT Jaipur</small></span></li>
+          <li><span class="logo"><img src="assets/logos/gcloud.webp" width="69" height="56" alt="" loading="lazy" /></span><span><b>Generative AI for Healthcare</b><small>Google Cloud</small></span></li>
+          <li><span class="logo"><img src="assets/logos/jhu.webp" width="150" height="26" alt="" loading="lazy" /></span><span><b>Introduction to Using Generative AI in Public Health</b><small>Johns Hopkins University</small></span></li>
         </ul>
       </div>
       <div class="cert">
-        <span class="k">AI tools for teaching &amp; work</span>
+        <span class="k">Generative AI &amp; productivity</span>
         <ul>
-          <li><b>Google AI Professional Certificate</b><span>Google · 8 courses</span></li>
-          <li><b>Google Prompting Essentials</b><span>Google · 4 courses</span></li>
-          <li><b>Microsoft Copilot: Your Everyday AI Companion</b><span>Microsoft · 3 courses</span></li>
-          <li><b>Fundamentals of Microsoft 365 Generative AI</b><span>Microsoft</span></li>
-          <li><b>Data Analysis and Visualization with Generative AI in Excel</b><span>Microsoft</span></li>
-          <li><b>AI for Education, Basic &amp; Advanced</b><span>Kennesaw State University</span></li>
-          <li><b>ChatGPT Foundations for Teachers</b><span>OpenAI</span></li>
+          <li><span class="logo"><img src="assets/logos/google.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>Google AI Professional Certificate</b><small>Google</small></span></li>
+          <li><span class="logo"><img src="assets/logos/google.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>Google AI Essentials</b><small>Google</small></span></li>
+          <li><span class="logo"><img src="assets/logos/google.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>Google Prompting Essentials</b><small>Google</small></span></li>
+          <li><span class="logo"><img src="assets/logos/microsoft.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>Microsoft 365 with Generative AI Professional Certificate</b><small>Microsoft</small></span></li>
+          <li><span class="logo"><img src="assets/logos/microsoft.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>Microsoft Copilot: Your Everyday AI Companion</b><small>Microsoft</small></span></li>
+          <li><span class="logo"><img src="assets/logos/microsoft.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>Generative AI Foundations Certificate Program</b><small>Microsoft</small></span></li>
+          <li><span class="logo"><img src="assets/logos/vanderbilt.webp" width="150" height="33" alt="" loading="lazy" /></span><span><b>Generative AI Strategic Leader Specialization</b><small>Vanderbilt University</small></span></li>
+          <li><span class="logo"><img src="assets/logos/anthropic.webp" width="150" height="17" alt="" loading="lazy" /></span><span><b>Claude 101</b><small>Anthropic</small></span></li>
+          <li><span class="logo"><img src="assets/logos/cambridge.webp" width="150" height="32" alt="" loading="lazy" /></span><span><b>Ethical AI: AI essentials for everyone</b><small>University of Cambridge</small></span></li>
+        </ul>
+      </div>
+      <div class="cert">
+        <span class="k">Digital health, epidemiology &amp; research</span>
+        <ul>
+          <li><span class="logo"><img src="assets/logos/imperial.webp" width="150" height="16" alt="" loading="lazy" /></span><span><b>Digital Health Specialization</b><small>Imperial College London</small></span></li>
+          <li><span class="logo"><img src="assets/logos/imperial.webp" width="150" height="16" alt="" loading="lazy" /></span><span><b>Epidemiology for Public Health Specialization</b><small>Imperial College London</small></span></li>
+          <li><span class="logo"><img src="assets/logos/jhu.webp" width="150" height="26" alt="" loading="lazy" /></span><span><b>Epidemiology in Public Health Practice Specialization</b><small>Johns Hopkins University</small></span></li>
+          <li><span class="logo"><img src="assets/logos/jhu.webp" width="150" height="26" alt="" loading="lazy" /></span><span><b>Biostatistics in Public Health Specialization</b><small>Johns Hopkins University</small></span></li>
+          <li><span class="logo"><img src="assets/logos/jhu.webp" width="150" height="26" alt="" loading="lazy" /></span><span><b>Introduction to Systematic Review and Meta-Analysis</b><small>Johns Hopkins University</small></span></li>
+          <li><span class="logo"><img src="assets/logos/nie.webp" width="150" height="50" alt="" loading="lazy" /></span><span><b>Basic Course in Biomedical Research (BCBR)</b><small>ICMR–National Institute of Epidemiology, through SWAYAM–NPTEL</small></span></li>
+          <li><span class="logo"><img src="assets/logos/jipmer.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>Advanced Epidemiology Workshop</b><small>JIPMER International School of Public Health, Puducherry</small></span></li>
+        </ul>
+      </div>
+      <div class="cert">
+        <span class="k">Teaching &amp; medical education</span>
+        <ul>
+          <li><span class="logo"><img src="assets/logos/nmc.webp" width="55" height="56" alt="" loading="lazy" /></span><span><b>Basic Course in Medical Education (BCME)</b><small>National Medical Commission · Regional Centre, S.C.B. Medical College, Cuttack</small></span></li>
+          <li><span class="logo"><img src="assets/logos/google.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>Gemini Certified Educator</b><small>Google for Education</small></span></li>
+          <li><span class="logo"><img src="assets/logos/microsoft.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>Microsoft Elevate Educator Expert</b><small>Microsoft</small></span></li>
+          <li><span class="logo"><img src="assets/logos/ksu.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>AI for Education (Basic, Intermediate &amp; Advanced)</b><small>Kennesaw State University</small></span></li>
+          <li><span class="logo"><img src="assets/logos/openai.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>ChatGPT Foundations for Teachers</b><small>OpenAI</small></span></li>
+          <li><span class="logo"><img src="assets/logos/vanderbilt.webp" width="150" height="33" alt="" loading="lazy" /></span><span><b>Innovative Teaching with ChatGPT</b><small>Vanderbilt University</small></span></li>
         </ul>
       </div>
     </div>
 
-    <div class="recog" data-stagger>
-      <div class="card">
+    <h3 class="sub-h block-h reveal">Award &amp; Memberships</h3>
+    <div class="card award reveal">
+      <span class="medal"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8.6 13.9 7.2 21l4.8-2.6 4.8 2.6-1.4-7.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+      <div>
         <span class="k">Award</span>
         <h3>Best Paper Award, APCRICON 2018</h3>
         <p>20th Annual National Conference of the Association for Prevention and Control of Rabies in India, New Delhi, 7–8 July 2018.</p>
       </div>
-      <div class="card">
-        <span class="k">Professional memberships</span>
-        <div class="memb">
-          <span class="tag">IAPSM</span><span class="tag">IPHA</span><span class="tag">APCRI</span><span class="tag">EFI</span><span class="tag">ISAI</span>
-          <span class="tag">IAME</span><span class="tag">ICAIM</span><span class="tag">IMA</span><span class="tag">NMO</span><span class="tag">OMTA</span>
-        </div>
-      </div>
     </div>
+    <ul class="memb-grid" data-stagger aria-label="Professional memberships">
+      <li><span class="logo"><img src="assets/logos/iapsm.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>Indian Association of Preventive and Social Medicine</b><small>IAPSM</small></span></li>
+      <li><span class="logo"><img src="assets/logos/ipha.webp" width="55" height="56" alt="" loading="lazy" /></span><span><b>Indian Public Health Association</b><small>IPHA</small></span></li>
+      <li><span class="logo badge">APCRI</span><span><b>Association for Prevention and Control of Rabies in India</b></span></li>
+      <li><span class="logo badge">EFI</span><span><b>Epidemiology Foundation of India</b></span></li>
+      <li><span class="logo badge">ISAI</span><span><b>Indian Society for Adult Immunization</b></span></li>
+      <li><span class="logo"><img src="assets/logos/iame.webp" width="56" height="44" alt="" loading="lazy" /></span><span><b>Interdisciplinary Association of Medical Educationists</b><small>IAME</small></span></li>
+      <li><span class="logo badge">ICAIM</span><span><b>Indian College of Artificial Intelligence in Medicine</b></span></li>
+      <li><span class="logo"><img src="assets/logos/ima.webp" width="150" height="53" alt="" loading="lazy" /></span><span><b>Indian Medical Association</b><small>IMA</small></span></li>
+      <li><span class="logo badge">NMO</span><span><b>National Medicos Organisation</b></span></li>
+      <li><span class="logo badge">OMTA</span><span><b>Odisha Medical Teachers' Association</b></span></li>
+    </ul>
   </div>
 </section>
 
@@ -828,7 +1055,8 @@ a.card:hover .go .arw{transform:translateX(3px)}
       <div class="card">
         <span class="k">Digital health</span>
         <h3>Digital Health &amp; AI Fluency</h3>
-        <p>Nodal Officer for the Ayushman Bharat Digital Mission. Sessions for doctors, teachers and students on using AI tools in teaching, assessment and research, and on checking their output. Runs the Digital &amp; AI Fluency Clinic for Healthcare Professionals, a WhatsApp learning group.</p>
+        <p>Nodal Officer for the Ayushman Bharat Digital Mission. Sessions for doctors, teachers and students on using AI tools in teaching, assessment and research, and on checking their output. Runs the free daily Digital &amp; AI Fluency Clinic for Healthcare Professionals.</p>
+        <a class="go" href="#clinic">About the clinic <span class="arw">→</span></a>
       </div>
     </div>
   </div>
@@ -992,10 +1220,12 @@ a.card:hover .go .arw{transform:translateX(3px)}
   <div class="wrap">
     <div class="f-brand">
       <b>Dr. Abhishek Panda</b>
-      <p>Assistant Professor of Community Medicine, GMCH Sundargarh.</p>
+      <p>Assistant Professor of Community Medicine, GMCH Sundargarh. Google &amp; Microsoft Certified AI Educator.</p>
     </div>
     <nav aria-label="Footer">
       <a href="#about">About</a>
+      <a href="#expertise">Expertise</a>
+      <a href="#clinic">AI Clinic</a>
       <a href="#career">Career</a>
       <a href="#research">Research</a>
       <a href="#teaching">Teaching</a>
