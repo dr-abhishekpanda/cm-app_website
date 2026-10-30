@@ -2,6 +2,26 @@
 
 Newest entry first. Each entry records what changed, how it was checked, and anything left open.
 
+## 2026-10-31 · Phase 1b: Sample Size and Power
+
+Branch `feature/research-app-1b`, stacked on Phase 1a.
+
+### Built
+
+- **Engine** (`engine/samplesize.js`): estimation of a proportion (absolute or relative precision, finite population correction) and of a mean; Buderer's sensitivity and specificity; Fleiss's two proportions with unequal allocation and the continuity correction, with its exact inverse for power; case-control (odds ratio) and cohort (risk ratio) through it; two means, paired means and one mean by the exact noncentral-t search, with the normal formula alongside; one proportion; Connor's paired proportions; correlation by Fisher's z; one-way ANOVA and multiple regression by the noncentral F; Schoenfeld's events for the log-rank test; non-inferiority for proportions and means; design effect and non-response adjustments.
+- **Sample Size and Power tool**: 17 designs, the formula for each, the working, adjustments for clustering (cluster size and ICC, or a design effect) and loss, a power curve, and a protocol sentence that marks each assumption needing a citation with [INSERT: source].
+- **References**: Lwanga and Lemeshow (WHO 1991), Fleiss, Levin and Paik (2003), Buderer (1996), Connor (1987), Schoenfeld (1983), Julious (2004), Chow, Shao and Wang (2008), Cohen (1988), Killip and colleagues (2004), Charan and Biswas (2013), each checked on PubMed or a library catalogue.
+
+### Checked
+
+| Check | Result |
+|---|---|
+| Engine tests (`npm test`) | 44 of 44 pass |
+| Against statsmodels | t-test and ANOVA sample sizes to 1e-6 relative, power at fixed n to 1e-9 |
+| Against the published formulas, rewritten independently in Python | estimation, Buderer, Fleiss (with and without correction), case-control, Connor, correlation, Schoenfeld, non-inferiority: 1e-12 |
+| Worked values | 30% prevalence ±5 points gives 323; 35% vs 20% gives 151 per group with Fleiss's correction (138 without); one-way ANOVA f = 0.25, 3 groups gives 159 in total; a hazard ratio of 0.7 needs 247 events |
+| Browser smoke test | 56 of 56 pass |
+
 ## 2026-10-31 · Phase 1a: Describe Your Data, Choose and Run a Test
 
 Branch `feature/research-app-1a`, stacked on Phase 0.

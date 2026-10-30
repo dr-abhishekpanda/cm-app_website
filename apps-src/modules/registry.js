@@ -7,6 +7,7 @@ import PValuesLesson from './learn/p-values.jsx';
 import PValuesPractice from './practice/p-values.jsx';
 import DescribeTool from './tools/describe.jsx';
 import TestsTool from './tools/tests.jsx';
+import SampleSizeTool from './tools/samplesize.jsx';
 
 export const STAGES = [
   { id: 'plan', label: 'Plan', blurb: 'Frame the question, search the literature, set objectives.' },
@@ -39,7 +40,12 @@ export const MODULES = [
 
   { id: 'design-chooser', stage: 'design', phase: 2, apps: ['research', 'epi', 'cm-epi-bio'], tag: 'Epidemiology', title: 'Study Design Chooser', summary: 'Three questions about how participants were selected decide the design and the right measures.' },
   { id: 'sampling', stage: 'design', phase: 3, apps: R, tag: 'Workflow', title: 'Sampling and Randomisation', summary: 'Probability and non-probability sampling, cluster and PPS selection, randomisation lists.' },
-  { id: 'sample-size', stage: 'design', phase: 1, apps: ALL, tag: 'Statistics', title: 'Sample Size and Power', summary: 'Every common design, with the formula, its reference and a sentence for the protocol.' },
+  {
+    id: 'sample-size', stage: 'design', status: 'ready', apps: ALL, tag: 'Statistics', title: 'Sample Size and Power',
+    summary: 'Seventeen designs, from a prevalence survey to a non-inferiority trial, with the formula, its source, a power curve and a protocol sentence.',
+    keywords: 'sample size power prevalence proportion mean case control cohort odds ratio risk ratio trial survival log rank anova correlation regression non-inferiority design effect cluster icc non response fleiss',
+    tool: SampleSizeTool,
+  },
   { id: 'trials', stage: 'design', phase: 3, apps: R, tag: 'Workflow', title: 'Trials and Operational Research', summary: 'Parallel, cluster, crossover and stepped-wedge trials; OR and implementation frameworks.' },
   { id: 'qualitative', stage: 'design', phase: 3, apps: R, tag: 'Workflow', title: 'Qualitative and Mixed Methods', summary: 'Designs, saturation, interview and FGD guides, thematic analysis, COREQ and SRQR.' },
 
