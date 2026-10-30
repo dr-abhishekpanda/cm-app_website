@@ -1,0 +1,3 @@
+# Files Cloudflare does not upload (same format as .gitignore).
+# apps-src holds the shared source, tests and notes; only the built app folders are served.
+apps-src

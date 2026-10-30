@@ -3,3 +3,5 @@
 # on their next online visit (the app keeps its own offline copy through imnci/sw.js).
 /imnci/*
   Cache-Control: no-cache
+/research-app/*
+  Cache-Control: no-cache
