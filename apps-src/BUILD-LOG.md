@@ -30,6 +30,7 @@ Branch `feature/research-app`.
 - Fonts embedded as latin subsets only; Greek letters and superscripts use the system font, as they would with hosted fonts.
 - `.assetsignore` at the site root keeps `apps-src/` (source, tests, docs) out of the public upload.
 - Playwright is used from the machine's own install for icons and the smoke test, not added as a dependency.
+- The page runs edge to edge when installed (viewport-fit=cover); the top bar, side gutters and footer add the phone's safe-area insets so nothing sits under a notch.
 
 ### Open
 

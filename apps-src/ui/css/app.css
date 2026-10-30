@@ -1,7 +1,9 @@
 /* App layer on top of brand/ews.css (inlined first by the build). EWS tokens only;
    the dark theme below derives from them and is opt-in through Settings or the system. */
 
-:root{ --top-h:60px; --ok-tint:rgba(12,94,78,.08); --danger-tint:#F3DEDA; color-scheme:light; }
+:root{ --top-h:60px; --ok-tint:rgba(12,94,78,.08); --danger-tint:#F3DEDA; color-scheme:light;
+  /* Installed on a phone with a notch, the app runs edge to edge (viewport-fit=cover): keep content clear of it. */
+  --gutter-l:max(var(--gutter), env(safe-area-inset-left, 0px)); --gutter-r:max(var(--gutter), env(safe-area-inset-right, 0px)); }
 
 /* ---------------------------------------------------------- dark theme --- */
 @media (prefers-color-scheme: dark){
@@ -21,17 +23,17 @@
 :root[data-theme="dark"] .pill.teal, :root[data-theme="dark"] .btn.ghost:hover{background:rgba(92,184,162,.12)}
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .pill.teal{background:rgba(92,184,162,.12)} }
 
-html{scroll-padding-top:calc(var(--top-h) + 16px)}
+html{scroll-padding-top:calc(var(--top-h) + 16px + env(safe-area-inset-top, 0px))}
 body{min-height:100vh}
 .app{display:flex;flex-direction:column;min-height:100vh}
-main.page{flex:1;width:100%;max-width:var(--maxw);margin-inline:auto;padding:clamp(20px,4vw,40px) var(--gutter) 56px}
+main.page{flex:1;width:100%;max-width:var(--maxw);margin-inline:auto;padding:clamp(20px,4vw,40px) var(--gutter-r) 56px var(--gutter-l)}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .skip{position:absolute;left:12px;top:-60px;z-index:50;background:var(--primary);color:var(--paper);padding:10px 14px;border-radius:var(--r-sm);text-decoration:none}
 .skip:focus{top:10px}
 
 /* ---------------------------------------------------------- top bar ------ */
-.top{position:sticky;top:0;z-index:20;background:var(--paper);background:color-mix(in srgb, var(--paper) 92%, transparent);backdrop-filter:saturate(1.2) blur(6px);-webkit-backdrop-filter:saturate(1.2) blur(6px);border-bottom:1px solid var(--line-soft)}
-.top .in{max-width:var(--maxw);margin-inline:auto;padding:0 var(--gutter);height:var(--top-h);display:flex;align-items:center;gap:14px}
+.top{position:sticky;top:0;z-index:20;padding-top:env(safe-area-inset-top, 0px);background:var(--paper);background:color-mix(in srgb, var(--paper) 92%, transparent);backdrop-filter:saturate(1.2) blur(6px);-webkit-backdrop-filter:saturate(1.2) blur(6px);border-bottom:1px solid var(--line-soft)}
+.top .in{max-width:var(--maxw);margin-inline:auto;padding:0 var(--gutter-r) 0 var(--gutter-l);height:var(--top-h);display:flex;align-items:center;gap:14px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;min-width:0}
 .brand .mark{width:30px;height:30px;border-radius:8px;background:var(--primary);color:var(--paper);display:grid;place-items:center;font-family:var(--font-display);font-weight:600;font-size:18px;flex:none;position:relative}
 .brand .mark::after{content:"";position:absolute;width:6px;height:6px;border-radius:50%;background:var(--accent);top:5px;right:5px}
@@ -147,7 +149,7 @@ math[display="block"]{display:block math}
 
 /* ---------------------------------------------------------- footer ------- */
 .foot{border-top:1px solid var(--line-soft);margin-top:auto}
-.foot .in{max-width:var(--maxw);margin-inline:auto;padding:26px var(--gutter) 32px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.foot .in{max-width:var(--maxw);margin-inline:auto;padding:26px var(--gutter-r) calc(32px + env(safe-area-inset-bottom, 0px)) var(--gutter-l);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .credit p{margin:0;font-size:.84rem;color:var(--ink-soft);max-width:none}
 .credit p:first-child{color:var(--ink);font-weight:500}
 .credit a{color:var(--primary)}
