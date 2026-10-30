@@ -2,6 +2,55 @@
 
 Newest entry first. Each entry records what changed, how it was checked, and anything left open.
 
+## 2026-10-31 · Phase 1c: Regression and Survival Analysis
+
+Branch `feature/research-app-1c`, stacked on Phase 1b.
+
+### Built
+
+- **Engine**:
+  - `linalg.js`: Householder QR least squares, Cholesky solves and inverses.
+  - `regression.js`:
+    - design matrices with dummy coding, a chosen reference category and an optional two-way interaction;
+    - ordinary least squares with leverage, Cook's distance, VIF and drop-term F tests;
+    - logistic regression by IRLS with step-halving and a separation check;
+    - likelihood-ratio tests, McFadden, Cox-Snell and Nagelkerke R²;
+    - Hosmer-Lemeshow (deciles of risk, as R's `hoslem.test`);
+    - ROC area with DeLong's SE, classification at 0.5, and events per variable.
+  - `survival.js`:
+    - Kaplan-Meier with Greenwood variance and log(−log) limits;
+    - median survival with the Brookmeyer-Crowley interval;
+    - the log-rank test for k groups;
+    - Cox proportional hazards with Efron ties and Harrell's C.
+- **Regression tool**: linear and logistic models from dataset columns, with:
+  - numeric or categorical predictors, a choice of reference category, and an interaction;
+  - coefficient and odds-ratio tables, and term tests;
+  - checks for residuals, collinearity, influence, events per variable, calibration and separation;
+  - residual and Q-Q plots, a ROC curve, and sentences for the results section.
+- **Survival tool**:
+  - Kaplan-Meier curves with censoring marks and numbers at risk;
+  - median survival and survival at chosen times with 95% CIs;
+  - the log-rank test with observed and expected events;
+  - Cox hazard ratios, unadjusted or adjusted for chosen covariates.
+- **Example data**: a simulated cohort of 160 adults on TB treatment, labelled as simulated.
+- **Display**: odds, risk and hazard ratios print to two decimals (more below 0.1, one decimal from 10).
+
+### Checked
+
+| Check | Result |
+|---|---|
+| Engine tests (`npm test`) | 48 of 48 pass |
+| OLS against statsmodels | coefficients, SEs, CIs, R², F, leverage and Cook's distance to 1e-9 or better |
+| Logistic against statsmodels and scikit-learn | coefficients and SEs to 1e-7; LR test, McFadden R², AUC; DeLong SE and Hosmer-Lemeshow against their definitions |
+| Kaplan-Meier, log-rank and Cox against lifelines | survival and limits to 1e-9, medians and their intervals exact; log-rank to 1e-10; Cox coefficients to 1e-6 (lifelines refitted with tight convergence) |
+| Browser smoke test | 62 of 62 pass |
+
+### Decisions
+
+- The null log-likelihood is the closed form; statsmodels fits it iteratively, so the two agree to about 1e-10.
+- Wald intervals for odds ratios, labelled as such; the page notes that sparse data call for profile-likelihood or exact methods.
+- Models with an interaction show the interaction's test and explain how to read the main effects.
+
 ## 2026-10-31 · Phase 1b: Sample Size and Power
 
 Branch `feature/research-app-1b`, stacked on Phase 1a.

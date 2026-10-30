@@ -49,9 +49,28 @@ export function exampleCsv() {
   return rows.map((row) => row.join(',')).join('\n');
 }
 
+/** A simulated cohort of 160 adults treated for drug-sensitive TB, followed for 6 months:
+ * months to an unfavourable outcome (death or loss to follow-up). Not real patients. */
+export function exampleTbCsv() {
+  const r = mulberry32(2024);
+  const norm = () => { let u = 0, v = 0; while (u === 0) u = r(); while (v === 0) v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+  const rows = [['ID', 'Age', 'Sex', 'HIV', 'Diabetes', 'Months', 'Unfavourable_outcome']];
+  for (let i = 1; i <= 160; i++) {
+    const age = Math.round(Math.min(75, Math.max(18, 38 + 13 * norm())));
+    const male = r() < 0.65, hiv = r() < 0.15, dm = r() < 0.2;
+    const rate = 0.028 * Math.exp(1.0 * hiv + 0.55 * dm + 0.02 * (age - 38) + 0.2 * male);
+    const tEvent = -Math.log(1 - r()) / rate;
+    const tOut = r() < 0.08 ? 0.5 + 5 * r() : 6;
+    const t = Math.min(tEvent, tOut);
+    rows.push([`TB${String(i).padStart(3, '0')}`, age, male ? 'Male' : 'Female', hiv ? 'Positive' : 'Negative', dm ? 'Yes' : 'No',
+      Math.max(0.1, Math.round(t * 10) / 10), tEvent <= tOut ? 1 : 0]);
+  }
+  return rows.map((row) => row.join(',')).join('\n');
+}
+
 /* ------------------------------------------------------------ the panel --- */
 
-export function DataPanel({ compact }) {
+export function DataPanel({ compact, examples = [{ label: 'Load example data', csv: exampleCsv, source: 'example' }] }) {
   const ds = useDataset();
   const [text, setText] = useState('');
   const [open, setOpen] = useState(!ds);
@@ -77,7 +96,7 @@ export function DataPanel({ compact }) {
     <section class="panel datapanel" aria-labelledby="data-h">
       <div class="dp-head">
         <h2 id="data-h">Your data</h2>
-        {ds ? <p class="small">{count(ds.n)} rows {'·'} {ds.columns.length} columns {'·'} {ds.source === 'example' ? 'example data (simulated, not real patients)' : ds.source}</p> : null}
+        {ds ? <p class="small">{count(ds.n)} rows {'·'} {ds.columns.length} columns {'·'} {ds.source === 'example' ? 'example data (simulated, not real patients)' : ds.source === 'example-tb' ? 'example TB cohort (simulated, not real patients)' : ds.source}</p> : null}
         {ds ? <button type="button" class="btn ghost small" onClick={() => setOpen((v) => !v)} aria-expanded={open ? 'true' : 'false'}>{open ? 'Hide' : 'Replace or view'}</button> : null}
       </div>
       {ds && !compact ? (
@@ -100,7 +119,7 @@ export function DataPanel({ compact }) {
             <button type="button" class="btn primary small" onClick={() => load(text, 'pasted data')} disabled={!text.trim()}>Use pasted data</button>
             <label class="btn ghost small" for={fileId}>Open a CSV file</label>
             <input id={fileId} type="file" accept=".csv,.tsv,.txt,text/csv,text/plain" class="vh" onChange={onFile} />
-            <button type="button" class="btn ghost small" onClick={() => load(exampleCsv(), 'example')}>Load example data</button>
+            {examples.map((ex) => <button type="button" class="btn ghost small" onClick={() => load(ex.csv(), ex.source)}>{ex.label}</button>)}
             {ds ? <button type="button" class="btn ghost small" onClick={() => { setDataset(null); setText(''); }}>Clear</button> : null}
           </div>
           {ds ? <Preview ds={ds} /> : null}

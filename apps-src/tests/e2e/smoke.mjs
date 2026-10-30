@@ -141,6 +141,23 @@ try {
     check(`${label}: no sideways scroll on sample size`, await noSideScroll(page));
     await shot(page, `${label}-samplesize`);
 
+    // Phase 1c: regression and survival on the example data.
+    await page.goto(`${base}#/tool/regression`);
+    await page.getByLabel('Outcome', { exact: true }).selectOption('Hb_registration');
+    await page.getByLabel('Residence', { exact: true }).check();
+    const lin = await text(page, '.verdict-line');
+    check(`${label}: linear regression runs`, /^R² = 0\.\d{3}, F\(1, 118\)/.test(lin), lin);
+    await page.goto(`${base}#/tool/survival`);
+    await page.getByRole('button', { name: 'Replace or view' }).click();
+    await page.getByRole('button', { name: 'Load example TB cohort' }).click();
+    await page.getByLabel('Follow-up time').selectOption('Months');
+    await page.getByLabel('Event', { exact: true }).selectOption('Unfavourable_outcome');
+    await page.getByLabel('Compare groups (optional)').selectOption('HIV');
+    const km = await text(page, '.verdict-line');
+    check(`${label}: log-rank test on the TB example`, km.startsWith('Log-rank χ² = 5.93'), km);
+    check(`${label}: no sideways scroll on survival`, await noSideScroll(page));
+    await shot(page, `${label}-survival`);
+
     await page.goto(`${base}#/`);
     await page.getByRole('button', { name: 'Settings' }).click();
     await page.getByRole('button', { name: 'Dark', exact: true }).click();

@@ -77,3 +77,11 @@ export const dpFor = (d) => Math.min(4, Math.max(1, (d || 0) + 1));
 
 /** "a to b" interval text, the form journals prefer over "a-b" when values can be negative. */
 export const interval = (ci, d = 2, f = fixed) => `${f(ci[0], d)} to ${f(ci[1], d)}`;
+
+/** Odds, risk and hazard ratios as journals print them: two decimals, more below 0.1, one decimal from 10. */
+export function ratio(x) {
+  if (!Number.isFinite(x)) return x === Infinity ? '∞' : '—';
+  if (x < 0.1) return sig(x, 2);
+  if (x < 10) return fixed(x, 2);
+  return fixed(x, 1);
+}
