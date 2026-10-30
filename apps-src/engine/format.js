@@ -58,6 +58,8 @@ export function pValue(p) {
   const exact = p >= 1e-4 ? sig(p, 4) : sci(p, 3);
   if (p < 0.001) return { report: 'p < 0.001', exact, value: p };
   if (p > 0.999) return { report: 'p > 0.999', exact, value: p };
+  // Just below 0.05 would print as "0.050"; a fourth decimal keeps the reader from misreading it.
+  if (p < 0.05 && p >= 0.0495) return { report: `p = ${p.toFixed(4)}`, exact, value: p };
   return { report: `p = ${p.toFixed(3)}`, exact, value: p };
 }
 
@@ -69,3 +71,9 @@ export function parseNumber(text) {
   if (s === '' || !/^[-+]?(\d+\.?\d*|\.\d+)(e[-+]?\d+)?$/i.test(s)) return NaN;
   return Number(s);
 }
+
+/** Decimal places for a summary of data recorded to `d` decimals: one more than the data, 1 to 4. */
+export const dpFor = (d) => Math.min(4, Math.max(1, (d || 0) + 1));
+
+/** "a to b" interval text, the form journals prefer over "a-b" when values can be negative. */
+export const interval = (ci, d = 2, f = fixed) => `${f(ci[0], d)} to ${f(ci[1], d)}`;
