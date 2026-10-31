@@ -6,7 +6,7 @@ import { kaplanMeier, logRank, cox } from '../../engine/survival.js';
 import { buildDesign } from '../../engine/regression.js';
 import { isMissing, parseNumberList } from '../../engine/data.js';
 import { fixed, pValue, count, interval, sig, ratio } from '../../engine/format.js';
-import { PageHead, Callout, AtLevel, SelectField } from '../../ui/core.jsx';
+import { PageHead, Callout, AtLevel, SelectField, TextField } from '../../ui/core.jsx';
 import { DataPanel, useDataset, ColumnSelect, col, exampleCsv, exampleTbCsv } from '../../ui/data.jsx';
 import { DataTable, Report, Stats, Refs } from '../../ui/results.jsx';
 import { KMPlot, seriesColour } from '../../ui/plot.jsx';
@@ -129,8 +129,8 @@ export default function SurvivalTool() {
               <ColumnSelect ds={ds} label="Event" value={eName} onChange={(v) => { setE(v); setEv(null); }} kind="group" minLevels={2} maxLevels={2} />
               {ec ? <SelectField label="Value meaning the event happened" value={ev} onChange={setEv} options={ec.levels.map((l) => ({ value: l, label: l }))} /> : null}
               <ColumnSelect ds={ds} label="Compare groups (optional)" value={gName} onChange={setG} kind="group" maxLevels={8} allowNone exclude={[eName].filter(Boolean)} />
-              <div class="field"><label>Time unit</label><input value={unit} onInput={(e) => setUnit(e.currentTarget.value)} /></div>
-              <div class="field"><label>Survival at times</label><input value={timesText} onInput={(e) => setTimes(e.currentTarget.value)} placeholder="For example 3, 6" /><div class="hint">Blank: half-way and the end</div></div>
+              <TextField label="Time unit" value={unit} onInput={setUnit} />
+              <TextField label="Survival at times" value={timesText} onInput={setTimes} placeholder="For example 3, 6" hint="Blank: half-way and the end" />
             </div>
             {tName && eName ? (
               <details class="disclose" style="padding:10px 14px">

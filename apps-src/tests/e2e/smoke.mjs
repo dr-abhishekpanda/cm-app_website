@@ -158,6 +158,44 @@ try {
     check(`${label}: no sideways scroll on survival`, await noSideScroll(page));
     await shot(page, `${label}-survival`);
 
+    // Phase 1d: agreement and meta-analysis.
+    await page.goto(`${base}#/tool/agreement`);
+    await page.getByRole('button', { name: 'Replace or view' }).click();
+    await page.getByRole('button', { name: 'Load example screening-camp data' }).click();
+    await page.getByLabel('First rater').selectOption('Pallor_MO1');
+    await page.getByLabel('Second rater').selectOption('Pallor_MO2');
+    check(`${label}: Cohen's kappa on the pallor example`, (await text(page, '#kr-h')) === "Cohen's kappa = 0.54", await text(page, '#kr-h'));
+    await page.getByRole('button', { name: 'Quadratic', exact: true }).click();
+    check(`${label}: quadratic-weighted kappa`, (await text(page, '#kr-h')) === 'Quadratic-weighted kappa = 0.63', await text(page, '#kr-h'));
+    await page.getByRole('button', { name: 'Three or more raters' }).click();
+    for (const r of ['Pallor MO1', 'Pallor MO2', 'Pallor MO3']) await page.getByLabel(r, { exact: true }).check();
+    const fk = await text(page, '#fr-h');
+    check(`${label}: Fleiss' kappa with bootstrap CI`, fk === "Fleiss' kappa = 0.49" && /bootstrap CI 0\.\d\d to 0\.\d\d/.test(await text(page, '.verdict-line')), fk);
+    await page.getByRole('button', { name: 'ICC', exact: true }).click();
+    for (const r of ['MUAC AWW1', 'MUAC AWW2', 'MUAC AWW3']) await page.getByLabel(r, { exact: true }).check();
+    check(`${label}: ICC(A,1) for MUAC`, (await text(page, '#icr-h')) === 'ICC(A,1) = 0.88', await text(page, '#icr-h'));
+    await page.getByRole('button', { name: 'Bland-Altman', exact: true }).click();
+    await page.getByLabel('New method (A)').selectOption('Hb_HemoCue');
+    await page.getByLabel('Reference method (B)').selectOption('Hb_lab');
+    check(`${label}: Bland-Altman bias for HemoCue`, (await text(page, '#bar-h')) === 'Bias 0.30', await text(page, '#bar-h'));
+    check(`${label}: Bland-Altman plot draws`, (await page.locator('svg.plot circle.pt').count()) === 100);
+    await page.getByRole('button', { name: "Cronbach's alpha", exact: true }).click();
+    for (let j = 1; j <= 6; j++) await page.getByLabel(`Item${j}`, { exact: true }).check();
+    check(`${label}: Cronbach's alpha with weak item flagged`, (await text(page, '#car-h')) === "Cronbach's alpha = 0.78" && (await page.locator('.checks li.no').count()) >= 1, await text(page, '#car-h'));
+    check(`${label}: no sideways scroll on agreement`, await noSideScroll(page));
+    await shot(page, `${label}-agreement`);
+
+    await page.goto(`${base}#/tool/meta-analysis`);
+    const ma = await text(page, '#ma-h');
+    check(`${label}: random-effects OR on the example studies`, ma === 'Pooled odds ratio 0.63' && (await text(page, '.verdict-line')).startsWith('95% CI 0.47 to 0.84; p = 0.008'), `${ma} | ${await text(page, '.verdict-line')}`);
+    check(`${label}: forest plot draws seven studies`, (await page.locator('svg.forest rect.bar').count()) === 7);
+    await page.getByRole('button', { name: 'Add subgroups' }).click();
+    check(`${label}: subgroup test appears`, (await page.locator('caption', { hasText: 'test for subgroup differences' }).count()) === 1);
+    await page.getByRole('button', { name: 'One proportion per study' }).click();
+    check(`${label}: pooled proportion on the logit scale`, (await text(page, '#ma-h')) === 'Pooled proportion 43.2%', await text(page, '#ma-h'));
+    check(`${label}: no sideways scroll on meta-analysis`, await noSideScroll(page));
+    await shot(page, `${label}-meta`);
+
     await page.goto(`${base}#/`);
     await page.getByRole('button', { name: 'Settings' }).click();
     await page.getByRole('button', { name: 'Dark', exact: true }).click();

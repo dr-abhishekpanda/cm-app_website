@@ -3,7 +3,9 @@
  * codes are treated as missing. Pure functions; the data never leave the device. */
 import { parseNumber } from './format.js';
 
-export const MISSING = new Set(['', 'na', 'n/a', '#n/a', 'nan', 'null', 'none', 'missing', '.', '-', '--', '?', 'nil']);
+// 'None' and 'Nil' are not here: in health records they are usually real answers (education: none;
+// addictions: nil), and dropping a real category silently is worse than showing a code as a category.
+export const MISSING = new Set(['', 'na', 'n/a', '#n/a', 'nan', 'null', 'missing', '.', '-', '--', '?']);
 export const isMissing = (s) => MISSING.has(String(s).trim().toLowerCase());
 
 function detectDelimiter(text) {

@@ -37,8 +37,8 @@ export function PredictorPicker({ ds, outcome, chosen, setChosen }) {
         if (!c) return null;
         return (
           <div class="fields">
-            <div class="field"><label>{pretty(name)}</label>
-              <select value={o.type} disabled={!c.numeric} onChange={(e) => setChosen({ ...chosen, [name]: { ...o, type: e.currentTarget.value } })}>
+            <div class="field"><label for={`ptype-${name}`}>{pretty(name)}</label>
+              <select id={`ptype-${name}`} value={o.type} disabled={!c.numeric} onChange={(e) => setChosen({ ...chosen, [name]: { ...o, type: e.currentTarget.value } })}>
                 <option value="numeric">Numeric (per unit)</option><option value="categorical">Categories</option>
               </select>
             </div>

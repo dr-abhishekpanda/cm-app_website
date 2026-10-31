@@ -7,6 +7,7 @@
  */
 import { chiSquare, normal, binomial } from './dist.js';
 import { lnFactorial, brent } from './special.js';
+import { mulberry32 } from './random.js';
 
 const sumArr = (a) => a.reduce((s, v) => s + v, 0);
 
@@ -104,17 +105,6 @@ function lnChoose(n, k) {
 }
 
 /* ----------------------------------------------- Fisher's exact (R x C) --- */
-
-function mulberry32(seed) {
-  let s = seed >>> 0;
-  return () => {
-    s = (s + 0x6D2B79F5) >>> 0;
-    let t = s;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
 
 /**
  * Fisher-Freeman-Halton exact test for an R x C table. Enumerates every table with the observed
