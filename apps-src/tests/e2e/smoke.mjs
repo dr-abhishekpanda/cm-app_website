@@ -124,6 +124,14 @@ try {
     const tline = await text(page, '.verdict-line');
     check(`${label}: chooser leads to Welch's t on the example data`, tline.startsWith('t = \u22123.74, df = 56.9'), tline);
     check(`${label}: no sideways scroll on a test result`, await noSideScroll(page));
+    // Phase 1f: code export.
+    await page.getByRole('button', { name: 'R and Python code for this analysis' }).click();
+    const rCode = await page.locator('pre.code').textContent();
+    check(`${label}: R code for Welch's t`, rCode.includes('t.test(a, b, var.equal = FALSE)') && rCode.includes('read.csv("research-app-data.csv"'), rCode.slice(0, 80));
+    await page.getByRole('button', { name: 'Python', exact: true }).click();
+    const pyCode = await page.locator('pre.code').textContent();
+    check(`${label}: Python code for Welch's t`, pyCode.includes('stats.ttest_ind(a, b, equal_var=False)'), pyCode.slice(0, 80));
+    check(`${label}: no sideways scroll with code open`, await noSideScroll(page));
     await shot(page, `${label}-ttest`);
     await page.getByLabel('Choose a test').selectOption('chi');
     await page.getByRole('button', { name: 'Summary figures' }).click();
@@ -195,6 +203,8 @@ try {
     await page.getByRole('button', { name: 'One proportion per study' }).click();
     check(`${label}: pooled proportion on the logit scale`, (await text(page, '#ma-h')) === 'Pooled proportion 43.2%', await text(page, '#ma-h'));
     check(`${label}: no sideways scroll on meta-analysis`, await noSideScroll(page));
+    await page.getByRole('button', { name: 'R and Python code for this analysis' }).click();
+    check(`${label}: meta-analysis R code uses metafor`, (await page.locator('pre.code').textContent()).includes('library(metafor)'));
     await shot(page, `${label}-meta`);
     await page.locator('.restable').first().getByRole('button', { name: 'Add to my results' }).click();
 

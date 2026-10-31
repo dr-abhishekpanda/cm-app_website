@@ -9,6 +9,7 @@ import { PageHead, Seg, Callout, AtLevel, NumberField } from '../../ui/core.jsx'
 import { DataPanel, useDataset, ColumnSelect, col, exampleAgreementCsv } from '../../ui/data.jsx';
 import { DataTable, Report, Stats, Refs, Disclose } from '../../ui/results.jsx';
 import { BlandAltmanPlot } from '../../ui/plot.jsx';
+import { CodeExport } from '../../ui/code.jsx';
 import { REFS } from '../refs.js';
 
 const pretty = (s) => String(s).replace(/_/g, ' ');
@@ -166,6 +167,7 @@ function KappaPanel({ ds }) {
             { text: 'The Landis and Koch labels are conventions, not tests. Report kappa with its 95% CI and judge it against what the measurement is for.' },
           ]} />
           <Report text={`Agreement between ${names[0]} and ${names[1]} on ${count(res.n)} subjects was ${res.label} (${wName} ${f2(res.kappa)}, 95% CI ${ci2(res.ci)}; observed agreement ${pct(res.po)}%, agreement expected by chance ${pct(res.pe)}%).`} />
+          <CodeExport spec={mode === 'table' ? { kind: 'kappa', table, levels: labels, weights: w } : { kind: 'kappa', a, b, levels: labels, weights: w }} />
           <AtLevel min="advanced"><p class="small">The standard error for the CI is the large-sample one of Fleiss, Cohen and Everitt (1969); the z test uses the standard error under no agreement beyond chance. {w !== 'none' ? `Weights: ${w === 'linear' ? '1 − |i − j| / (k − 1)' : '1 − (i − j)² / (k − 1)²'} for categories i and j in the order shown.` : ''}</p></AtLevel>
           <div class="prose"><span class="label">References</span><Refs refs={REFS} ids={['cohen60', ...(w !== 'none' ? ['cohen68'] : []), 'fleissCohenEveritt', 'landisKoch']} /></div>
         </section>
@@ -236,6 +238,7 @@ function FleissPanel({ ds }) {
             { text: `The CI comes from ${count(res.B)} bootstrap resamples of subjects (fixed seed, so it repeats exactly). The asymptotic CI is not shown: it covers poorly when agreement is above zero (Zapf and colleagues 2016).` },
           ]} />
           <Report text={`Agreement among ${fmt === 'raters' ? `${res.raters} raters (${list(raterNames)})` : `${res.raters} raters`} on ${count(res.subjects)} subjects was ${res.label} (Fleiss' kappa ${f2(res.kappa)}, 95% bootstrap CI ${ci2(res.ci)}).`} />
+          {fmt === 'raters' ? <CodeExport spec={{ kind: 'fleiss', cols: picked }} /> : null}
           <AtLevel min="advanced"><p class="small">Fleiss' kappa compares the agreement among raters within each subject with the agreement expected from the overall category proportions. The p-value uses the large-sample standard error under no agreement beyond chance (Fleiss, Nee and Landis 1979); category kappas follow Fleiss (1971).</p></AtLevel>
           <div class="prose"><span class="label">References</span><Refs refs={REFS} ids={['fleiss71', 'fleissNeeLandis', 'zapf', 'landisKoch']} /></div>
         </section>
@@ -317,6 +320,7 @@ function ICCPanel({ ds }) {
             { text: 'The ICC depends on how much the subjects differ: a narrow sample (all of similar size) gives a low ICC even with careful measurement.' },
           ]} />
           <Report text={`${unit === 'single' ? 'Reliability of a single rating' : `Reliability of the mean of ${res.k} ratings`} across ${list(picked.map(pretty))} on ${count(res.n)} subjects was ${f.label}: ${ICC_NAMES[id][0]} ${f2(f.icc)} (95% CI ${ci2(f.ci)}), from a ${desc} model.`} />
+          <CodeExport spec={{ kind: 'icc', cols: picked, form: id }} />
           <AtLevel min="advanced"><p class="small">The forms follow McGraw and Wong (1996) and Shrout and Fleiss (1979): ICC(1) is their ICC(1,1), ICC(A,1) is ICC(2,1) and ICC(C,1) is ICC(3,1). The intervals use the F distribution, with Satterthwaite's degrees of freedom for absolute agreement in two-way models.</p></AtLevel>
           <div class="prose"><span class="label">References</span><Refs refs={REFS} ids={['kooLi', 'mcgrawWong', 'shroutFleiss']} /></div>
         </section>
@@ -403,6 +407,7 @@ function BAPanel({ ds }) {
           <Report text={scale === 'ratio'
             ? `Across ${count(res.n)} paired measurements, ${nA} gave values ${res.bias >= 0 ? 'higher' : 'lower'} than ${nB} by a geometric mean ratio of ${show(res.bias)} (95% CI ${show(res.ciBias[0])} to ${show(res.ciBias[1])}); 95% of ratios are expected to lie between ${show(res.loa[0])} and ${show(res.loa[1])}.`
             : `Across ${count(res.n)} paired measurements, the mean difference (${nA} − ${nB}) was ${show(res.bias)}${unitTxt} (95% CI ${show(res.ciBias[0])} to ${show(res.ciBias[1])}${unitTxt}), and the 95% limits of agreement were ${show(res.loa[0])}${unitTxt} to ${show(res.loa[1])}${unitTxt}${scale === 'percent' ? ' of the mean of the two methods' : ''}.`} />
+          <CodeExport spec={{ kind: 'ba', a, b, scale }} />
           <AtLevel min="advanced"><p class="small">Limits of agreement are the mean difference ± 1.96 SD of the differences. Their 95% CIs use the approximate standard error √(3s²/n) with t on n − 1 df, as in Bland and Altman (1999). {scale === 'ratio' ? 'Ratios are analysed as differences of logarithms and transformed back.' : ''}</p></AtLevel>
           <div class="prose"><span class="label">References</span><Refs refs={REFS} ids={['blandAltman86', 'blandAltman99']} /></div>
         </section>
@@ -457,6 +462,7 @@ function AlphaPanel({ ds }) {
             { text: 'Alpha rises with the number of items, and it measures internal consistency: it does not show that the items measure a single construct. A new scale needs a factor analysis for that.' },
           ]} />
           <Report text={`Internal consistency of the ${res.k}-item scale (${list(names)}) in ${count(res.n)} respondents: Cronbach's alpha ${f2(res.alpha)} (95% CI ${ci2(res.ci)}).${better.length ? ` Removing ${names[better[0].j]} would raise alpha to ${f2(better[0].alphaIfDeleted)}.` : ''}`} />
+          <CodeExport spec={{ kind: 'alpha', cols: picked }} />
           <AtLevel min="advanced"><p class="small">Alpha = k / (k − 1) × (1 − sum of item variances / variance of the total). The 95% CI uses Feldt's F distribution with n − 1 and (n − 1)(k − 1) df.</p></AtLevel>
           <div class="prose"><span class="label">References</span><Refs refs={REFS} ids={['cronbach51', 'feldt65', 'tavakol']} /></div>
         </section>

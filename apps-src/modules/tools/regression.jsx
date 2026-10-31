@@ -9,6 +9,7 @@ import { fixed, pValue, count, interval, sig, dpFor, ratio } from '../../engine/
 import { PageHead, Seg, Callout, AtLevel, SelectField } from '../../ui/core.jsx';
 import { DataPanel, useDataset, ColumnSelect, col } from '../../ui/data.jsx';
 import { DataTable, Report, Stats, Refs } from '../../ui/results.jsx';
+import { CodeExport } from '../../ui/code.jsx';
 import { ScatterPlot, QQPlot, LinePlot } from '../../ui/plot.jsx';
 import { REFS } from '../refs.js';
 
@@ -69,7 +70,7 @@ function prepare(ds, outcome, chosen, interaction, kind, event) {
 
 /* ------------------------------------------------------------- linear ----- */
 
-function LinearResult({ des, outcome, d }) {
+function LinearResult({ des, outcome, d, code }) {
   const f = useMemo(() => ols(des.X, des.y), [des]);
   if (f.error) return <Callout kind="warn" mark="Check"><p>{f.error}</p></Callout>;
   const v = des.X[0].length > 2 ? vif(des.X) : [];
@@ -105,6 +106,7 @@ function LinearResult({ des, outcome, d }) {
         <figure><QQPlot x={f.resid} ppf={normal.ppf} label="Normal Q-Q plot of the residuals" /><figcaption>Residuals near the line are close to normal.</figcaption></figure>
       </div>
       <Report text={say} />
+      <CodeExport spec={code} />
       <AtLevel min="intermediate"><p class="small">B is the change in {pretty(outcome)} for a one-unit increase in a numeric predictor, or for a category against its reference, holding the other predictors fixed. CIs and p-values use the t distribution with {f.df} df.</p></AtLevel>
       <div class="prose"><span class="label">References</span><Refs refs={REFS} ids={['kirkwood']} /></div>
     </section>
@@ -126,7 +128,7 @@ function rocPoints(y, s) {
   return { xs, ys };
 }
 
-function LogisticResult({ des, outcome, event }) {
+function LogisticResult({ des, outcome, event, code }) {
   const f = useMemo(() => logistic(des.X, des.y), [des]);
   if (f.error) return <Callout kind="warn" mark="Check"><p>{f.error}</p></Callout>;
   const multi = des.terms.filter((t) => t.cols.length > 1 || t.type === 'interaction');
@@ -166,6 +168,7 @@ function LogisticResult({ des, outcome, event }) {
       </div>
       <figure style="margin:0"><LinePlot xs={rp.xs} ys={rp.ys} xLabel="1 − specificity" yFmt={(t) => `${Math.round(t * 100)}%`} label="ROC curve of the fitted model" /><figcaption class="figcap">ROC curve of the predicted risks; the area is {fixed(roc.auc, 2)}.</figcaption></figure>
       <Report text={say} />
+      <CodeExport spec={code} />
       <AtLevel min="intermediate"><p class="small">Odds ratios compare the odds of "{event}" for a one-unit increase, or against the reference category, holding the other predictors fixed. CIs are Wald intervals; with sparse data, profile-likelihood or exact methods are safer.</p></AtLevel>
       <div class="prose"><span class="label">References</span><Refs refs={REFS} ids={['hosmer', 'peduzzi', 'nagelkerke', 'delong']} /></div>
     </section>
@@ -190,7 +193,14 @@ export default function RegressionTool() {
   else if (!oc) body = <p class="small">Choose the outcome.</p>;
   else if (!names.length) body = <p class="small">Choose at least one predictor.</p>;
   else if (!des || des.X.length < des.X[0].length + 2) body = <Callout kind="warn" mark="Check"><p>Too few complete rows for this many coefficients.</p></Callout>;
-  else body = kind === 'linear' ? <LinearResult des={des} outcome={outcome} d={dpFor(oc.decimals)} /> : <LogisticResult des={des} outcome={outcome} event={ev} />;
+  else {
+    const code = {
+      kind: kind === 'linear' ? 'lm' : 'logit', y: outcome, yNumeric: oc.numeric, event: ev,
+      terms: names.filter((n) => col(ds, n)).map((n) => { const c = col(ds, n), o = chosen[n]; return { name: n, type: o.type, numeric: c.numeric, ref: o.type === 'numeric' ? undefined : o.ref && c.levels.includes(o.ref) ? o.ref : c.levels[0] }; }),
+      interaction: interA && interB && interA !== interB ? [interA, interB] : null,
+    };
+    body = kind === 'linear' ? <LinearResult des={des} outcome={outcome} d={dpFor(oc.decimals)} code={code} /> : <LogisticResult des={des} outcome={outcome} event={ev} code={code} />;
+  }
   return (
     <div>
       <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Analyse' }]} eyebrow="Analyse" title="Regression"
