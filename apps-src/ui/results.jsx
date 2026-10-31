@@ -2,10 +2,13 @@
  * and the method note every result carries. */
 import { useState } from 'preact/hooks';
 import { Icon, CopyButton } from './core.jsx';
+import { AddToResults, notebookHtml } from './notebook.jsx';
 
 /** A results table with a "Copy table" button that puts tab-separated text on the clipboard. */
-export function DataTable({ columns, rows, caption, note, numeric = [] }) {
-  const tsv = [columns.join('\t'), ...rows.map((r) => r.map((c) => (typeof c === 'object' && c?.text !== undefined ? c.text : c)).join('\t'))].join('\n');
+export function DataTable({ columns, rows, caption, note, numeric = [], add = true }) {
+  const plain = rows.map((r) => r.map((c) => String(typeof c === 'object' && c?.text !== undefined ? c.text : c ?? '')));
+  const tsv = [columns.join('\t'), ...plain.map((r) => r.join('\t'))].join('\n');
+  const item = { kind: 'table', title: caption || '', columns, rows: plain, note: note || '' };
   return (
     <div class="restable">
       <div class="tablewrap">
@@ -22,7 +25,8 @@ export function DataTable({ columns, rows, caption, note, numeric = [] }) {
       </div>
       <div class="copyrow">
         {note ? <p class="small" style="margin:0;flex:1">{note}</p> : <span style="flex:1" />}
-        <CopyButton text={tsv} label="Copy table" />
+        <CopyButton text={tsv} html={() => notebookHtml([item])} label="Copy table" />
+        {add ? <AddToResults item={item} label="Add to my results" /> : null}
       </div>
     </div>
   );
@@ -35,7 +39,7 @@ export function Report({ text, label = 'For your results section' }) {
     <div class="report">
       <p class="label">{label}</p>
       <p class="say">{text}</p>
-      <div class="copyrow"><CopyButton text={text} /></div>
+      <div class="copyrow"><CopyButton text={text} /><AddToResults item={{ kind: 'text', text }} /></div>
     </div>
   );
 }

@@ -243,3 +243,13 @@ table.entry input:focus{border-color:var(--primary);outline:none}
 .orderlist .btn{min-width:36px;justify-content:center}
 table.entry td.rm{width:1%;white-space:nowrap}
 table.entry input.name{min-width:120px}
+.sumrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.sumrow span{min-width:150px;font-size:.92rem}
+.sumrow select{max-width:100%}
+.nblist{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.nbitem{border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;background:var(--card);min-width:0}
+.nbhead{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.nbhead .mono{color:var(--ink-soft);overflow-wrap:anywhere}
+.nbbtns{display:flex;gap:4px}
+textarea.nbtext{min-height:84px;font-family:var(--font-body);font-size:.92rem}
+.copyrow > p.small{flex:1 1 260px!important}

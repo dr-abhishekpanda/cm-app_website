@@ -2,6 +2,36 @@
 
 Newest entry first. Each entry records what changed, how it was checked, and anything left open.
 
+## 2026-10-31 · Phase 1e: Results to Text and Table 1
+
+Branch `feature/research-app-1e`, stacked on Phase 1d.
+
+### Built
+
+- **Engine** (`table1.js`):
+  - Table 1 overall and by a group of up to 8 levels: mean (SD), median (IQR, quartiles as in SPSS or R) or n (%); one more decimal than the data; a row for missing values;
+  - a suggested summary for each variable (categories for 6 or fewer values, the median when Shapiro-Wilk rejects normality in any group);
+  - optional tests chosen as in the test runner (Welch's t or ANOVA, Mann-Whitney or Kruskal-Wallis, chi-square with Yates' correction for 2 x 2, Fisher or Fisher-Freeman-Halton when Cochran's rule fails), marked with footnote letters.
+- **Results to Text and Table 1 tool**:
+  - the Table 1 builder with per-variable summaries and a first-draft participants paragraph;
+  - "My results": every sentence and table added from any tool, kept in this browser, editable, reorderable, copied for Word in one go or downloaded as a page that opens in Word.
+- **Every result sentence and table** now has "Add to my results"; "Copy table" puts a real table on the clipboard as well as tab-separated text, so Word and Excel paste rows and columns intact.
+- **A caution before p-values in Table 1**, citing the CONSORT 2010 and STROBE explanation papers.
+
+### Checked
+
+| Check | Result |
+|---|---|
+| Engine tests (`npm test`) | 55 of 55 pass |
+| Table 1 against NumPy, SciPy and pingouin | means, SDs and quartiles (types 6 and 7) to 1e-10; Welch's ANOVA and t, Kruskal-Wallis, Mann-Whitney, chi-square and Yates' chi-square to 1e-8; counts, missing rows and dropped participants exact |
+| Browser smoke test | 100 of 100 pass, including Table 1 and My results at 360 px and 1280 px |
+
+### Decisions
+
+- p-values in Table 1 are off by default, with a caution, because both CONSORT and STROBE advise against them in baseline and descriptive tables.
+- Results are kept in browser storage under the app's own key; if storage is blocked, the page says so and the list lasts for the session.
+- Code export moves to its own wave, 1f, so that each script can be run against the app's numbers before release.
+
 ## 2026-10-31 · Phase 1d: Agreement, Reliability and Meta-Analysis
 
 Branch `feature/research-app-1d`, stacked on Phase 1c.
