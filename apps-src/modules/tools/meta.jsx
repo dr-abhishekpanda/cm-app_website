@@ -194,8 +194,7 @@ export default function MetaTool() {
     const say = `A ${modelText} of ${count(k)} studies${N ? ` (${count(N)} participants)` : ''} gave a pooled ${mName} of ${show(est)} (95% CI ${showCI(ci)}${isProp ? '' : `; ${P(p)}`}), with I² = ${pct(fit.I2)}%${Number.isFinite(fit.I2ci[0]) ? ` (95% CI ${pct(fit.I2ci[0])}% to ${pct(fit.I2ci[1])}%)` : ''}${random ? ` and τ² = ${sig(fit.tau2, 3)}` : ''}.${random && k >= 3 ? ` The 95% prediction interval for the ${isProp ? 'proportion in a new setting' : 'effect in a new study'} was ${showCI(fit.pi)}.` : ''}${sg ? ` The test for subgroup differences gave χ² = ${fixed(sg.Q, 2)}, df = ${sg.df} (${P(sg.p)}).` : ''}`;
     body = (
       <section class="panel stack result-panel" aria-labelledby="ma-h">
-        <div><p class="eyebrow" style="margin-bottom:8px">Result</p>
-          <h2 id="ma-h" style="margin-bottom:6px">Pooled {mName} {show(est)}</h2>
+        <div><h2 id="ma-h" style="margin-bottom:6px">Pooled {mName} {show(est)}</h2>
           <p class="verdict-line mono">95% CI {showCI(ci)}{isProp ? '' : `; ${P(p)}`}; {random ? 'random effects' : 'fixed effect'}</p></div>
         <Stats items={[['Studies', count(k)], N ? ['Participants', count(N)] : null, ['Heterogeneity Q', `${fixed(fit.Q, 2)} on ${fit.df} df, ${P(fit.pQ)}`],
           ['I² (95% CI)', `${pct(fit.I2)}%${Number.isFinite(fit.I2ci[0]) ? ` (${pct(fit.I2ci[0])}% to ${pct(fit.I2ci[1])}%)` : ''}`],
@@ -232,7 +231,7 @@ export default function MetaTool() {
           </Disclose>
         ) : null}
         <div>
-          <span class="label">Checks</span>
+          <h3 class="sub">Checks</h3>
           <ul class="checks">
             {excluded.length ? <li class="info"><span class="mk">Note</span><span>Left out of the {mName}: {excluded.join('; ')}. Such a study carries no information on a ratio; a risk difference can use it.</span></li> : null}
             {studies.some((s) => s.corrected) ? <li class="info"><span class="mk">Note</span><span>0.5 was added to every cell of {studies.filter((s) => s.corrected).length === 1 ? 'one study' : `${studies.filter((s) => s.corrected).length} studies`} with a zero cell, the usual correction (Cochrane Handbook); it pulls those estimates slightly towards no effect.</span></li> : null}
@@ -249,7 +248,7 @@ export default function MetaTool() {
           studies: rows.filter((r) => r.study.trim() || r.vals.some((x) => String(x).trim())).map((r, i) => ({ name: r.study.trim() || `Study ${i + 1}`, vals: r.vals.map((x) => parseNumber(x)), sub: useSub ? r.sub.trim() || 'Not given' : '' })),
         }} />
         <AtLevel min="advanced"><p class="small">Study weights are 1 / (v + τ²) for random effects and 1 / v for the fixed effect, with v the within-study variance on the analysis scale (log for ratios, logit for proportions). τ² by {METHOD_NAME[method]}{method === 'PM' ? ' (iterated until the generalised Q equals k − 1)' : method === 'REML' ? ' (maximising the restricted likelihood)' : ' (method of moments)'}, truncated at 0, with the Q-profile 95% CI. {hksj ? 'The Hartung-Knapp-Sidik-Jonkman CI scales the standard error by the weighted residual variance and uses t on k − 1 df. ' : ''}The prediction interval uses t on k − 2 df. The I² interval is the Higgins and Thompson test-based one.</p></AtLevel>
-        <div class="prose"><span class="label">References</span><Refs refs={REFS} ids={['cochraneHandbook', ...(random ? [method === 'PM' ? 'pauleMandel' : method === 'REML' ? 'viechtbauer05' : 'dersimonian', 'veroniki', 'viechtbauer07'] : []), ...(random && hksj ? ['inthout'] : []), 'higginsI2', ...(random && k >= 3 ? ['higgins09'] : []), ...(sg ? ['borensteinHiggins'] : []), ...(eg ? ['egger', 'sterne11'] : [])]} /></div>
+        <div class="prose"><h3 class="sub">References</h3><Refs refs={REFS} ids={['cochraneHandbook', ...(random ? [method === 'PM' ? 'pauleMandel' : method === 'REML' ? 'viechtbauer05' : 'dersimonian', 'veroniki', 'viechtbauer07'] : []), ...(random && hksj ? ['inthout'] : []), 'higginsI2', ...(random && k >= 3 ? ['higgins09'] : []), ...(sg ? ['borensteinHiggins'] : []), ...(eg ? ['egger', 'sterne11'] : [])]} /></div>
       </section>
     );
   }
@@ -258,7 +257,7 @@ export default function MetaTool() {
   const loadExample = () => setRows(toRows(EX[exKey(type, measure)]));
   return (
     <div>
-      <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Synthesise' }]} eyebrow="Synthesise" title="Meta-Analysis"
+      <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Synthesise' }]} title="Meta-Analysis"
         lede="Pool the results of several studies: odds and risk ratios, risk and mean differences, standardised mean differences, single proportions, or estimates reported with a CI. Fixed and random effects, heterogeneity, subgroups, forest and funnel plots, and a sentence for your paper." />
       <div class="stack">
         <section class="panel stack" aria-labelledby="mi-h">

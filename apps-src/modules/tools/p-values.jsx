@@ -366,7 +366,7 @@ export default function PValuesTool() {
   const [tab, setTab] = useState('p');
   return (
     <div>
-      <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Analyse' }]} eyebrow="Analyse"
+      <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Analyse' }]}
         title="p-Values and Critical Values"
         lede="Turn a test statistic into an exact p-value, find the critical value for a test, or work out exact binomial and Poisson probabilities." />
       <div style="margin-bottom:18px">

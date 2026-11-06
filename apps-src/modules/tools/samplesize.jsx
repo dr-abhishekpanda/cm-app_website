@@ -293,7 +293,7 @@ export default function SampleSizeTool() {
 
   return (
     <div>
-      <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Design' }]} eyebrow="Design"
+      <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Design' }]}
         title="Sample Size and Power"
         lede="Seventeen designs, each with its formula and source, adjustments for clustering and non-response, a power curve and a sentence for your protocol." />
       <div class="split">

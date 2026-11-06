@@ -2,6 +2,12 @@
 
 Newest entry first. Each entry records what changed, how it was checked, and anything left open.
 
+## 2026-11-07 · Headings Instead of Eyebrow Labels; Phase 0 and 1 Merged
+
+- The owner asked Claude to merge PRs #4 to #10; all seven merged into `main` with merge commits, in order.
+- Eyebrow labels removed across the app, at the owner's request: page headers are breadcrumb, title, optional subheading and lede; home sections have proper headings (Plan, Design, Prepare, Analyse, Synthesise, Report); result panels open with the result as their heading; "Checks" and "References" are subheadings; breadcrumbs, field labels and card tags are in normal case, and card tags sit below the card text. `brand/ews.css` is unchanged (EWS v1.0); the change lives in the app layer.
+- Browser smoke test: 108 of 108 pass.
+
 ## 2026-10-31 · Phase 1f: R and Python Code Export
 
 Branch `feature/research-app-1f`, stacked on Phase 1e. Phase 1 (statistics) is complete with this wave.

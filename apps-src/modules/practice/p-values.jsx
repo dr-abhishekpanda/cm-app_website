@@ -128,12 +128,12 @@ export default function PValuesPractice() {
 
   return (
     <div>
-      <PageHead crumbs={[{ label: 'Practice', href: '#/practice' }, { label: 'Analyse' }]} eyebrow="Practice · Analyse"
+      <PageHead crumbs={[{ label: 'Practice', href: '#/practice' }, { label: 'Analyse' }]}
         title="p-Values, Critical Values and Degrees of Freedom"
         lede="Eight questions with new numbers every set. Work them out with tables, a calculator or the p-value tool, then check." />
       <div class="split">
         <section class="panel q" aria-labelledby="q-h">
-          <p class="eyebrow" id="q-h">Question {i + 1} of {set.length}<span class="muted">· set {seed}</span></p>
+          <h2 id="q-h" class="qhead">Question {i + 1} of {set.length} <span class="small">(set {seed})</span></h2>
           <p class="stem">{q.stem}</p>
           <p><strong>{q.ask}</strong></p>
           <div class="fields" style="max-width:340px">

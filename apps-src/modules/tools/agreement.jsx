@@ -25,7 +25,7 @@ function Checks({ items }) {
   if (!xs.length) return null;
   return (
     <div>
-      <span class="label">Checks</span>
+      <h3 class="sub">Checks</h3>
       <ul class="checks">{xs.map((c) => <li class={c.ok === true ? 'ok' : c.ok === false ? 'no' : 'info'}><span class="mk">{c.ok === true ? 'OK' : c.ok === false ? 'Check' : 'Note'}</span><span>{c.text}</span></li>)}</ul>
     </div>
   );
@@ -154,7 +154,7 @@ function KappaPanel({ ds }) {
       {err ? <Callout kind="warn" mark="Check"><p>{err}</p></Callout> : null}
       {res ? (
         <section class="panel stack result-panel" aria-labelledby="kr-h">
-          <div><p class="eyebrow" style="margin-bottom:8px">Result</p><h2 id="kr-h" style="margin-bottom:6px">{wName[0].toUpperCase() + wName.slice(1)} = {f2(res.kappa)}</h2>
+          <div><h2 id="kr-h" style="margin-bottom:6px">{wName[0].toUpperCase() + wName.slice(1)} = {f2(res.kappa)}</h2>
             <p class="verdict-line mono">95% CI {ci2(res.ci)}; {res.label} agreement on the Landis and Koch scale</p></div>
           <Stats items={[['Subjects', count(res.n)], [w === 'none' ? 'Observed agreement' : 'Weighted observed agreement', `${pct(res.po)}%`], ['Expected by chance', `${pct(res.pe)}%`], ['z (kappa = 0)', fixed(res.z, 2)], ['p', pValue(res.p).exact], dropped ? ['Left out (a rating missing)', count(dropped)] : null]} />
           <DataTable caption={`${names[0]} (rows) by ${names[1]} (columns)`} columns={['', ...labels, 'Total']}
@@ -169,7 +169,7 @@ function KappaPanel({ ds }) {
           <Report text={`Agreement between ${names[0]} and ${names[1]} on ${count(res.n)} subjects was ${res.label} (${wName} ${f2(res.kappa)}, 95% CI ${ci2(res.ci)}; observed agreement ${pct(res.po)}%, agreement expected by chance ${pct(res.pe)}%).`} />
           <CodeExport spec={mode === 'table' ? { kind: 'kappa', table, levels: labels, weights: w } : { kind: 'kappa', a, b, levels: labels, weights: w }} />
           <AtLevel min="advanced"><p class="small">The standard error for the CI is the large-sample one of Fleiss, Cohen and Everitt (1969); the z test uses the standard error under no agreement beyond chance. {w !== 'none' ? `Weights: ${w === 'linear' ? '1 − |i − j| / (k − 1)' : '1 − (i − j)² / (k − 1)²'} for categories i and j in the order shown.` : ''}</p></AtLevel>
-          <div class="prose"><span class="label">References</span><Refs refs={REFS} ids={['cohen60', ...(w !== 'none' ? ['cohen68'] : []), 'fleissCohenEveritt', 'landisKoch']} /></div>
+          <div class="prose"><h3 class="sub">References</h3><Refs refs={REFS} ids={['cohen60', ...(w !== 'none' ? ['cohen68'] : []), 'fleissCohenEveritt', 'landisKoch']} /></div>
         </section>
       ) : null}
     </>
@@ -226,7 +226,7 @@ function FleissPanel({ ds }) {
       {err ? <Callout kind="warn" mark="Check"><p>{err}</p></Callout> : null}
       {res ? (
         <section class="panel stack result-panel" aria-labelledby="fr-h">
-          <div><p class="eyebrow" style="margin-bottom:8px">Result</p><h2 id="fr-h" style="margin-bottom:6px">Fleiss' kappa = {f2(res.kappa)}</h2>
+          <div><h2 id="fr-h" style="margin-bottom:6px">Fleiss' kappa = {f2(res.kappa)}</h2>
             <p class="verdict-line mono">95% bootstrap CI {ci2(res.ci)}; {res.label} agreement on the Landis and Koch scale</p></div>
           <Stats items={[['Subjects', count(res.subjects)], ['Raters per subject', count(res.raters)], ['Categories', count(res.k)], ['Observed agreement', `${pct(res.Pbar)}%`], ['Expected by chance', `${pct(res.Pe)}%`], ['p (kappa = 0)', pValue(res.p).exact], dropped ? ['Left out (incomplete)', count(dropped)] : null]} />
           <DataTable caption="Agreement by category" columns={['Category', 'Share of all ratings', 'Kappa for the category']}
@@ -240,7 +240,7 @@ function FleissPanel({ ds }) {
           <Report text={`Agreement among ${fmt === 'raters' ? `${res.raters} raters (${list(raterNames)})` : `${res.raters} raters`} on ${count(res.subjects)} subjects was ${res.label} (Fleiss' kappa ${f2(res.kappa)}, 95% bootstrap CI ${ci2(res.ci)}).`} />
           {fmt === 'raters' ? <CodeExport spec={{ kind: 'fleiss', cols: picked }} /> : null}
           <AtLevel min="advanced"><p class="small">Fleiss' kappa compares the agreement among raters within each subject with the agreement expected from the overall category proportions. The p-value uses the large-sample standard error under no agreement beyond chance (Fleiss, Nee and Landis 1979); category kappas follow Fleiss (1971).</p></AtLevel>
-          <div class="prose"><span class="label">References</span><Refs refs={REFS} ids={['fleiss71', 'fleissNeeLandis', 'zapf', 'landisKoch']} /></div>
+          <div class="prose"><h3 class="sub">References</h3><Refs refs={REFS} ids={['fleiss71', 'fleissNeeLandis', 'zapf', 'landisKoch']} /></div>
         </section>
       ) : picked.length < 2 && !err ? <p class="small">Choose at least two {fmt === 'raters' ? 'rater' : 'category'} columns.</p> : null}
     </>
@@ -308,7 +308,7 @@ function ICCPanel({ ds }) {
       {err ? <Callout kind="warn" mark="Check"><p>{err}</p></Callout> : null}
       {f ? (
         <section class="panel stack result-panel" aria-labelledby="icr-h">
-          <div><p class="eyebrow" style="margin-bottom:8px">Result</p><h2 id="icr-h" style="margin-bottom:6px">{ICC_NAMES[id][0]} = {f2(f.icc)}</h2>
+          <div><h2 id="icr-h" style="margin-bottom:6px">{ICC_NAMES[id][0]} = {f2(f.icc)}</h2>
             <p class="verdict-line mono">95% CI {ci2(f.ci)}; {f.label} reliability (Koo and Li)</p></div>
           <Stats items={[['Subjects', count(res.n)], ['Raters or occasions', count(res.k)], ['Model', desc], ['F test (ICC = 0)', `F(${f.df1}, ${f.df2}) = ${fixed(f.F, 2)}`], ['p', pValue(f.p).exact], dropped ? ['Left out (incomplete)', count(dropped)] : null]} />
           <DataTable caption="All six forms (your choice highlighted)" columns={['Form', 'Model', 'ICC', '95% CI', 'Reliability']}
@@ -322,7 +322,7 @@ function ICCPanel({ ds }) {
           <Report text={`${unit === 'single' ? 'Reliability of a single rating' : `Reliability of the mean of ${res.k} ratings`} across ${list(picked.map(pretty))} on ${count(res.n)} subjects was ${f.label}: ${ICC_NAMES[id][0]} ${f2(f.icc)} (95% CI ${ci2(f.ci)}), from a ${desc} model.`} />
           <CodeExport spec={{ kind: 'icc', cols: picked, form: id }} />
           <AtLevel min="advanced"><p class="small">The forms follow McGraw and Wong (1996) and Shrout and Fleiss (1979): ICC(1) is their ICC(1,1), ICC(A,1) is ICC(2,1) and ICC(C,1) is ICC(3,1). The intervals use the F distribution, with Satterthwaite's degrees of freedom for absolute agreement in two-way models.</p></AtLevel>
-          <div class="prose"><span class="label">References</span><Refs refs={REFS} ids={['kooLi', 'mcgrawWong', 'shroutFleiss']} /></div>
+          <div class="prose"><h3 class="sub">References</h3><Refs refs={REFS} ids={['kooLi', 'mcgrawWong', 'shroutFleiss']} /></div>
         </section>
       ) : picked.length < 2 && !err ? <p class="small">Choose at least two numeric columns.</p> : null}
     </>
@@ -386,8 +386,7 @@ function BAPanel({ ds }) {
       {err ? <Callout kind="warn" mark="Check"><p>{err}</p></Callout> : null}
       {res ? (
         <section class="panel stack result-panel" aria-labelledby="bar-h">
-          <div><p class="eyebrow" style="margin-bottom:8px">Result</p>
-            <h2 id="bar-h" style="margin-bottom:6px">{scale === 'ratio' ? `Mean ratio ${show(res.bias)}` : `Bias ${show(res.bias)}${unitTxt}`}</h2>
+          <div><h2 id="bar-h" style="margin-bottom:6px">{scale === 'ratio' ? `Mean ratio ${show(res.bias)}` : `Bias ${show(res.bias)}${unitTxt}`}</h2>
             <p class="verdict-line mono">95% limits of agreement {show(res.loa[0])}{unitTxt} to {show(res.loa[1])}{unitTxt}</p></div>
           <Stats items={[['Pairs', count(res.n)], [scale === 'ratio' ? 'Geometric mean ratio (95% CI)' : 'Mean difference (95% CI)', `${show(res.bias)}${unitTxt} (${show(res.ciBias[0])} to ${show(res.ciBias[1])})`],
             [scale === 'ratio' ? 'SD of log ratios' : 'SD of differences', scale === 'ratio' ? fixed(res.sd, 4) : `${fixed(res.sd, d)}${unitTxt}`],
@@ -409,7 +408,7 @@ function BAPanel({ ds }) {
             : `Across ${count(res.n)} paired measurements, the mean difference (${nA} − ${nB}) was ${show(res.bias)}${unitTxt} (95% CI ${show(res.ciBias[0])} to ${show(res.ciBias[1])}${unitTxt}), and the 95% limits of agreement were ${show(res.loa[0])}${unitTxt} to ${show(res.loa[1])}${unitTxt}${scale === 'percent' ? ' of the mean of the two methods' : ''}.`} />
           <CodeExport spec={{ kind: 'ba', a, b, scale }} />
           <AtLevel min="advanced"><p class="small">Limits of agreement are the mean difference ± 1.96 SD of the differences. Their 95% CIs use the approximate standard error √(3s²/n) with t on n − 1 df, as in Bland and Altman (1999). {scale === 'ratio' ? 'Ratios are analysed as differences of logarithms and transformed back.' : ''}</p></AtLevel>
-          <div class="prose"><span class="label">References</span><Refs refs={REFS} ids={['blandAltman86', 'blandAltman99']} /></div>
+          <div class="prose"><h3 class="sub">References</h3><Refs refs={REFS} ids={['blandAltman86', 'blandAltman99']} /></div>
         </section>
       ) : !ca || !cb ? <p class="small">Choose the two measurement columns.</p> : null}
     </>
@@ -449,7 +448,7 @@ function AlphaPanel({ ds }) {
       {err ? <Callout kind="warn" mark="Check"><p>{err}</p></Callout> : null}
       {res ? (
         <section class="panel stack result-panel" aria-labelledby="car-h">
-          <div><p class="eyebrow" style="margin-bottom:8px">Result</p><h2 id="car-h" style="margin-bottom:6px">Cronbach's alpha = {f2(res.alpha)}</h2>
+          <div><h2 id="car-h" style="margin-bottom:6px">Cronbach's alpha = {f2(res.alpha)}</h2>
             <p class="verdict-line mono">95% CI {ci2(res.ci)} (Feldt)</p></div>
           <Stats items={[['Respondents', count(res.n)], ['Items', count(res.k)], dropped ? ['Left out (an item missing)', count(dropped)] : null]} />
           <DataTable caption="Item statistics" columns={['Item', 'Mean', 'SD', 'Item-rest correlation', 'Alpha if item deleted']}
@@ -464,7 +463,7 @@ function AlphaPanel({ ds }) {
           <Report text={`Internal consistency of the ${res.k}-item scale (${list(names)}) in ${count(res.n)} respondents: Cronbach's alpha ${f2(res.alpha)} (95% CI ${ci2(res.ci)}).${better.length ? ` Removing ${names[better[0].j]} would raise alpha to ${f2(better[0].alphaIfDeleted)}.` : ''}`} />
           <CodeExport spec={{ kind: 'alpha', cols: picked }} />
           <AtLevel min="advanced"><p class="small">Alpha = k / (k − 1) × (1 − sum of item variances / variance of the total). The 95% CI uses Feldt's F distribution with n − 1 and (n − 1)(k − 1) df.</p></AtLevel>
-          <div class="prose"><span class="label">References</span><Refs refs={REFS} ids={['cronbach51', 'feldt65', 'tavakol']} /></div>
+          <div class="prose"><h3 class="sub">References</h3><Refs refs={REFS} ids={['cronbach51', 'feldt65', 'tavakol']} /></div>
         </section>
       ) : picked.length < 2 && !err ? <p class="small">Choose at least two item columns.</p> : null}
     </>
@@ -479,7 +478,7 @@ export default function AgreementTool() {
   const Body = { kappa: KappaPanel, fleiss: FleissPanel, icc: ICCPanel, ba: BAPanel, alpha: AlphaPanel }[tab];
   return (
     <div>
-      <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Analyse' }]} eyebrow="Analyse" title="Agreement and Reliability"
+      <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Analyse' }]} title="Agreement and Reliability"
         lede="How far raters, methods or occasions agree, and how consistent the items of a scale are: kappa, weighted kappa, Fleiss' kappa, the intraclass correlation, Bland-Altman limits and Cronbach's alpha." />
       <div class="stack">
         <DataPanel examples={[{ label: 'Load example screening-camp data', csv: exampleAgreementCsv, source: 'example-agree' }]} />
