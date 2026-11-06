@@ -1,0 +1,56 @@
+/* research-app service worker (build c3d94b88b9). Pages come from the network first, so updates reach
+ * users as soon as they are online; when the network fails or hangs for SLOW_MS, the saved copy opens.
+ * Saved responses are never redirects (Safari refuses a redirected response for a page load). */
+const CACHE = 'research-app-c3d94b88b9';
+const ROOT = new URL('./', self.location).href;
+const ASSETS = ["./","./manifest.webmanifest","./icon.svg","./icon-192.png","./icon-512.png","./icon-maskable-512.png","./apple-touch-icon.png"];
+const SLOW_MS = 4000;
+function plain(res) {
+  if (!res.redirected) return Promise.resolve(res);
+  return res.blob().then((body) => new Response(body, { status: res.status, statusText: res.statusText, headers: res.headers }));
+}
+function isAppPage(url) {
+  const root = new URL(ROOT).pathname;
+  return url.pathname === root || url.pathname === root + 'index.html';
+}
+self.addEventListener('install', (e) => {
+  e.waitUntil(caches.open(CACHE).then((cache) => Promise.all(ASSETS.map((a) =>
+    fetch(new Request(a, { cache: 'reload' })).then((res) => {
+      if (!res.ok) throw new Error('Could not save ' + a + ' (' + res.status + ')');
+      return plain(res).then((copy) => cache.put(new URL(a, self.location).href, copy));
+    })
+  ))).then(() => self.skipWaiting()));
+});
+self.addEventListener('activate', (e) => {
+  e.waitUntil(caches.keys()
+    .then((keys) => Promise.all(keys.filter((k) => k.indexOf('research-app-') === 0 && k !== CACHE).map((k) => caches.delete(k))))
+    .then(() => self.clients.claim()));
+});
+self.addEventListener('fetch', (e) => {
+  const req = e.request;
+  if (req.method !== 'GET') return;
+  const url = new URL(req.url);
+  if (url.origin !== self.location.origin) return;
+  if (req.mode === 'navigate') {
+    const network = fetch(req);
+    e.waitUntil(network.then((res) => {
+      if (res.ok && isAppPage(url) && /text\/html/.test(res.headers.get('content-type') || '')) {
+        const copy = res.clone();
+        return caches.has(CACHE).then((has) => has && plain(copy).then((c) => caches.open(CACHE).then((cache) => cache.put(ROOT, c))));
+      }
+    }).catch(() => {}));
+    e.respondWith(new Promise((resolve) => {
+      let done = false;
+      const finish = (r) => { if (!done && r) { done = true; resolve(r); } };
+      const saved = () => caches.open(CACHE).then((c) => c.match(ROOT));
+      const timer = setTimeout(() => saved().then(finish), SLOW_MS);
+      network.then((res) => {
+        if (res.status >= 500) return saved().then((hit) => { clearTimeout(timer); finish(hit || res); });
+        clearTimeout(timer);
+        finish(res);
+      }, () => saved().then((hit) => { clearTimeout(timer); finish(hit || Response.error()); }));
+    }));
+    return;
+  }
+  e.respondWith(caches.open(CACHE).then((c) => c.match(req, { ignoreSearch: true })).then((hit) => hit || fetch(req)));
+});
