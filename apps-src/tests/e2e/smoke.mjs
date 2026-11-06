@@ -130,6 +130,17 @@ try {
     const chiTitle = await text(page, '#res-h');
     check(`${label}: chi-square from typed counts`, chiTitle.startsWith('Chi-square test'), chiTitle);
 
+    // Phase 1b: sample size. 30% prevalence, +/- 5 points, 95%: 323 before the 10% non-response allowance.
+    await page.goto(`${base}#/tool/sample-size`);
+    await page.waitForSelector('.result .big');
+    const ss = await text(page, '.report .say');
+    check(`${label}: prevalence sample size is 323 (Lwanga and Lemeshow)`, ss.includes('a sample of 323'), ss.slice(0, 80));
+    await page.getByLabel('What will the study do?').selectOption('two-props');
+    const ss2 = await text(page, '.report .say');
+    check(`${label}: Fleiss with correction gives 151 per group for 35% vs 20%`, ss2.includes('151 in group 1 and 151 in group 2'), ss2.slice(0, 120));
+    check(`${label}: no sideways scroll on sample size`, await noSideScroll(page));
+    await shot(page, `${label}-samplesize`);
+
     await page.goto(`${base}#/`);
     await page.getByRole('button', { name: 'Settings' }).click();
     await page.getByRole('button', { name: 'Dark', exact: true }).click();

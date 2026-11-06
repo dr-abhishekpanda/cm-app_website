@@ -334,3 +334,30 @@ function ScatterSvg({ x, y, label, xLabel, yLabel, line, width, height }) {
     </svg>
   );
 }
+
+/** A single curve y(x) with an optional horizontal target line and a marked point. */
+export function LinePlot(props) {
+  const [ref, w] = useWidth();
+  return <div class="plotbox" ref={ref}><LineSvg {...props} width={w} height={heightFor(w, 220)} /></div>;
+}
+
+function LineSvg({ xs, ys, label, xLabel, yLabel, target, mark, yMax = 1, yFmt = (v) => `${Math.round(v * 100)}%`, width, height }) {
+  const pad = { l: 44, r: 14, t: 12, b: 40 };
+  const W = width - pad.l - pad.r, H = height - pad.t - pad.b;
+  const x0 = xs[0], x1 = xs[xs.length - 1];
+  const X = (v) => pad.l + ((v - x0) / (x1 - x0 || 1)) * W;
+  const Y = (v) => pad.t + H - (Math.max(0, Math.min(yMax, v)) / yMax) * H;
+  const path = xs.map((x, i) => `${i ? 'L' : 'M'}${X(x).toFixed(1)},${Y(ys[i]).toFixed(1)}`).join('');
+  return (
+    <svg class="plot" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label}>
+      <title>{label}</title>
+      {[0, 0.25, 0.5, 0.75, 1].map((t) => <g><line class="grid" x1={pad.l} x2={pad.l + W} y1={Y(t * yMax)} y2={Y(t * yMax)} /><text class="tick" x={pad.l - 6} y={Y(t * yMax) + 4} text-anchor="end">{yFmt(t * yMax)}</text></g>)}
+      {target != null ? <line class="ref" x1={pad.l} x2={pad.l + W} y1={Y(target)} y2={Y(target)} /> : null}
+      <path class="curve" d={path} />
+      {mark ? <g><line class="mark" x1={X(mark.x)} x2={X(mark.x)} y1={pad.t} y2={pad.t + H} /><circle class="pt" cx={X(mark.x)} cy={Y(mark.y)} r="4" /><text class="lab" x={X(mark.x) + (X(mark.x) > pad.l + W * 0.7 ? -6 : 6)} y={pad.t + 12} text-anchor={X(mark.x) > pad.l + W * 0.7 ? 'end' : 'start'}>{mark.label}</text></g> : null}
+      <line class="axis" x1={pad.l} x2={pad.l + W} y1={pad.t + H} y2={pad.t + H} />
+      {niceTicks(x0, x1, width < 420 ? 4 : 7).map((t) => <text class="tick" x={X(t)} y={pad.t + H + 16} text-anchor="middle">{sig(t, 4)}</text>)}
+      {xLabel ? <text class="lab" x={pad.l + W / 2} y={height - 4} text-anchor="middle">{xLabel}</text> : null}
+    </svg>
+  );
+}
