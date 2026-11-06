@@ -253,3 +253,5 @@ table.entry input.name{min-width:120px}
 .nbbtns{display:flex;gap:4px}
 textarea.nbtext{min-height:84px;font-family:var(--font-body);font-size:.92rem}
 .copyrow > p.small{flex:1 1 260px!important}
+pre.code{margin:0;max-height:440px;overflow:auto;background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 14px;font-family:var(--font-mono);font-size:.78rem;line-height:1.55;white-space:pre;tab-size:2;color:var(--ink);min-width:0}
+pre.code:focus{outline:2px solid var(--primary);outline-offset:2px}

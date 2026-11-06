@@ -13,6 +13,7 @@ import SurvivalTool from './tools/survival.jsx';
 import AgreementTool from './tools/agreement.jsx';
 import MetaTool from './tools/meta.jsx';
 import ResultsTool from './tools/results.jsx';
+import CodeTool from './tools/code.jsx';
 
 export const STAGES = [
   { id: 'plan', label: 'Plan', blurb: 'Frame the question, search the literature, set objectives.' },
@@ -112,7 +113,12 @@ export const MODULES = [
   },
   { id: 'reporting', stage: 'report', phase: 3, apps: R, tag: 'Workflow', title: 'Reporting Checklists and Appraisal', summary: 'STROBE, CONSORT, STARD, PRISMA and more; critical appraisal checklists.' },
   { id: 'writing', stage: 'report', phase: 3, apps: R, tag: 'Workflow', title: 'Writing and Publishing', summary: 'IMRAD scaffold, journal checks, authorship and AI-disclosure statements.' },
-  { id: 'code-export', stage: 'report', phase: 1, apps: RB, tag: 'Statistics', title: 'Code Export', summary: 'Every analysis as a ready-to-run R or Python script.' },
+  {
+    id: 'code-export', stage: 'report', status: 'ready', apps: RB, tag: 'Statistics', title: 'Code Export',
+    summary: 'Every analysis as an R or Python script that reproduces the result, with the data file it reads.',
+    keywords: 'code export r python script reproducible syntax spss stata rerun download csv metafor survival statsmodels scipy',
+    tool: CodeTool,
+  },
 ];
 
 export function modulesFor(appId, { includePlanned }) {

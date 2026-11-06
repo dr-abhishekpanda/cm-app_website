@@ -10,6 +10,7 @@ import { fixed, pValue, count, sig, parseNumber, ratio } from '../../engine/form
 import { PageHead, Seg, Callout, AtLevel, TextField } from '../../ui/core.jsx';
 import { DataTable, Report, Stats, Refs, Disclose } from '../../ui/results.jsx';
 import { ForestPlot, FunnelPlot } from '../../ui/plot.jsx';
+import { CodeExport } from '../../ui/code.jsx';
 import { REFS } from '../refs.js';
 
 const Z = 1.959963984540054;
@@ -243,6 +244,10 @@ export default function MetaTool() {
           </ul>
         </div>
         <Report text={say} />
+        <CodeExport spec={{
+          kind: 'meta', type, measure, model, method, hksj, subgroups: !!sg,
+          studies: rows.filter((r) => r.study.trim() || r.vals.some((x) => String(x).trim())).map((r, i) => ({ name: r.study.trim() || `Study ${i + 1}`, vals: r.vals.map((x) => parseNumber(x)), sub: useSub ? r.sub.trim() || 'Not given' : '' })),
+        }} />
         <AtLevel min="advanced"><p class="small">Study weights are 1 / (v + τ²) for random effects and 1 / v for the fixed effect, with v the within-study variance on the analysis scale (log for ratios, logit for proportions). τ² by {METHOD_NAME[method]}{method === 'PM' ? ' (iterated until the generalised Q equals k − 1)' : method === 'REML' ? ' (maximising the restricted likelihood)' : ' (method of moments)'}, truncated at 0, with the Q-profile 95% CI. {hksj ? 'The Hartung-Knapp-Sidik-Jonkman CI scales the standard error by the weighted residual variance and uses t on k − 1 df. ' : ''}The prediction interval uses t on k − 2 df. The I² interval is the Higgins and Thompson test-based one.</p></AtLevel>
         <div class="prose"><span class="label">References</span><Refs refs={REFS} ids={['cochraneHandbook', ...(random ? [method === 'PM' ? 'pauleMandel' : method === 'REML' ? 'viechtbauer05' : 'dersimonian', 'veroniki', 'viechtbauer07'] : []), ...(random && hksj ? ['inthout'] : []), 'higginsI2', ...(random && k >= 3 ? ['higgins09'] : []), ...(sg ? ['borensteinHiggins'] : []), ...(eg ? ['egger', 'sterne11'] : [])]} /></div>
       </section>

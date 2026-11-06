@@ -2,6 +2,31 @@
 
 Newest entry first. Each entry records what changed, how it was checked, and anything left open.
 
+## 2026-10-31 · Phase 1f: R and Python Code Export
+
+Branch `feature/research-app-1f`, stacked on Phase 1e. Phase 1 (statistics) is complete with this wave.
+
+### Built
+
+- **Engine** (`codegen.js`): R and Python scripts from an analysis spec for 29 kinds of analysis: describe; t-tests (from data or summary figures), Mann-Whitney, Wilcoxon (one-sample and paired), ANOVA with Welch and post hoc tests, Kruskal-Wallis with Dunn, Friedman, repeated-measures ANOVA, chi-square (data or typed table), McNemar, Cochran's Q, one and two proportions, correlation, adjusted p-values; linear and logistic regression with reference categories and interactions; Kaplan-Meier, log-rank and Cox; kappa (data or table), Fleiss' kappa with the bootstrap CI, ICC, Bland-Altman (three scales), Cronbach's alpha; meta-analysis for every data type, estimator and option.
+- **Matching the app on purpose**: R's exact rules for Mann-Whitney and Wilcoxon carried into Python; Spearman by the t approximation in R (`exact = FALSE`); meta-analysis effect sizes written out with the app's zero-cell rules and RevMan's Hedges' g; the prediction interval on k − 2 df; Wald CIs for odds ratios.
+- **"R and Python code for this analysis"** under every result in Describe, Run a Test, Regression, Survival, Agreement and Meta-Analysis: copy, download the script, and download the data as `research-app-data.csv`.
+- **Code Export page**: how the scripts work, what each analysis uses, and the data download.
+- **Example data generators** moved to `engine/examples.js` so tests can use them (the data are unchanged).
+
+### Checked
+
+| Check | Result |
+|---|---|
+| Engine tests (`npm test`) | 55 of 55 pass |
+| Generated Python scripts (`npm run test:code`) | 50 scripts run on the example data; 117 numbers compared with the app's engine, all within 1e-8 (Cox coefficients within 2e-4: lifelines' default convergence) |
+| R scripts | produced for every case and read through; not run (no R in the build environment) |
+| Browser smoke test | 108 of 108 pass, including the code panels at 360 px and 1280 px |
+
+### Open
+
+- Run the R scripts once on a machine with R (or allow an R runtime in the build environment) and add them to `npm run test:code`.
+
 ## 2026-10-31 · Phase 1e: Results to Text and Table 1
 
 Branch `feature/research-app-1e`, stacked on Phase 1d.

@@ -435,7 +435,7 @@ export function runCorrelation({ x, y, names, method = 'auto' }) {
     tables: [],
     checks: [why ? { ok: null, text: why } : null, { ok: null, text: 'Correlation measures a straight-line (Pearson) or monotonic (Spearman, Kendall) association; check the scatter plot for curves, clusters and outliers. It does not show cause.' }].filter(Boolean),
     sentence: `${pretty(names[0])} and ${pretty(names[1])} showed a ${strength} ${est >= 0 ? 'positive' : 'negative'} correlation (${label} = ${fixed(est, 2)}${r.ci ? `, 95% CI ${interval(r.ci, 2)}` : ''}; ${P(r.p)}; n = ${count(n)}).`,
-    plot: { kind: 'scatter', x, y, names, line: m === 'pearson' },
+    plot: { kind: 'scatter', x, y, names, line: m === 'pearson' }, method: m,
     refs: ['kirkwood', ...(m === 'spearman' ? ['bonettWright'] : [])],
     notes: ['Strength labels (under 0.1 negligible, 0.1 to 0.3 weak, 0.3 to 0.5 moderate, 0.5 to 0.7 strong, above 0.7 very strong) are a convention, not a rule; say what the size means for your question.'],
   };

@@ -11,6 +11,7 @@ import { DataPanel, useDataset, ColumnSelect, col, exampleCsv, exampleTbCsv } fr
 import { DataTable, Report, Stats, Refs } from '../../ui/results.jsx';
 import { KMPlot, seriesColour } from '../../ui/plot.jsx';
 import { PredictorPicker } from './regression.jsx';
+import { CodeExport } from '../../ui/code.jsx';
 import { REFS } from '../refs.js';
 
 const pretty = (s) => String(s).replace(/_/g, ' ');
@@ -110,6 +111,10 @@ export default function SurvivalTool() {
           </ul>
         </div>
         <Report text={say} />
+        <CodeExport spec={{
+          kind: 'surv', time: tName, event: eName, eventLevel: ev, eventNumeric: ec.numeric, group: gc && groups.length > 1 ? gName : null, groupLevels: groups, groupNumeric: gc ? gc.numeric : false, times: atTimes,
+          covars: covNames.map((n) => { const c = col(ds, n), o = chosen[n]; return o.type === 'numeric' ? { name: n, type: 'numeric' } : { name: n, type: 'categorical', ref: o.ref && c.levels.includes(o.ref) ? o.ref : c.levels[0], levels: c.levels, numeric: c.numeric }; }),
+        }} />
         <AtLevel min="advanced"><p class="small">Survival uses the product-limit estimator with Greenwood's variance; the 95% limits use the log(−log) transformation, and the median's interval comes from where those limits cross 50% (Brookmeyer and Crowley). Tied event times in the Cox model use Efron's method.</p></AtLevel>
         <div class="prose"><span class="label">References</span><Refs refs={REFS} ids={['kaplanMeier', 'mantelLogrank', 'brookmeyer', 'coxPH', 'efron', 'kirkwood']} /></div>
       </section>

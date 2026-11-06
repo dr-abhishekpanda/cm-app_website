@@ -9,6 +9,7 @@ import { fixed, pValue, count, dpFor, interval } from '../../engine/format.js';
 import { PageHead, Seg, Callout, AtLevel, useSettings } from '../../ui/core.jsx';
 import { DataPanel, useDataset, ColumnSelect, col } from '../../ui/data.jsx';
 import { DataTable, Report, Refs } from '../../ui/results.jsx';
+import { CodeExport } from '../../ui/code.jsx';
 import { Histogram, BoxPlot, QQPlot, PercentBars } from '../../ui/plot.jsx';
 import { REFS } from '../refs.js';
 
@@ -199,6 +200,7 @@ export default function DescribeTool() {
                 <h2 id="num-h">Numeric summaries</h2>
                 <NumericTable rows={blocks.flatMap((b) => b.rows)} grouped={!!group} />
                 {blocks.map((b) => <Report label={`${pretty(b.name)}: sentence for your results`} text={sentenceNumeric(b.name, b.rows)} />)}
+                <CodeExport spec={{ kind: 'describe', numeric: chosen, categorical: chosenCats.filter((n) => col(ds, n)), group: groupName, qtype }} />
                 <AtLevel min="intermediate">
                   <Callout mark="Mean or median">
                     <p>"Summarise with" combines the Shapiro-Wilk test with skewness and kurtosis. Below 300 values a distribution is treated as approximately normal when Shapiro-Wilk p is at least 0.05 and the skewness and kurtosis z-scores stay under 1.96 (n below 50) or 3.29 (n of 50 to 299); from 300 values, when skewness is under 2 and excess kurtosis under 7 in absolute value. Look at the histogram and Q-Q plot too: tests alone over-react in large samples and miss problems in small ones.</p>

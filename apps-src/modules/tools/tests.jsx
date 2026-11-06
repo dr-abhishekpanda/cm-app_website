@@ -10,6 +10,7 @@ import { PageHead, Seg, Callout, AtLevel, NumberField, SelectField, TextField, u
 import { DataPanel, useDataset, ColumnSelect, col } from '../../ui/data.jsx';
 import { DataTable, Report, Stats, Refs } from '../../ui/results.jsx';
 import { BoxPlot, Histogram, PercentBars, ScatterPlot } from '../../ui/plot.jsx';
+import { CodeExport } from '../../ui/code.jsx';
 import { REFS } from '../refs.js';
 import * as R from './tests/run.js';
 
@@ -144,6 +145,7 @@ function ResultView({ res, onAlt }) {
         </div>
       ) : null}
       <Report text={res.sentence} />
+      {res.code ? <CodeExport spec={res.code} /> : null}
       {res.alt && byId[res.alt] && onAlt ? <p class="small">Want the alternative? <button type="button" class="linkbtn" onClick={() => onAlt(res.alt)}>{byId[res.alt].name}</button></p> : null}
       <AtLevel min="intermediate">
         {res.notes?.length ? <div class="prose small">{res.notes.map((n) => <p>{n}</p>)}</div> : null}
@@ -183,6 +185,7 @@ function TwoGroupsRunner({ id, ds, mode }) {
     const ok = g.every((x) => x.n >= 2 && Number.isInteger(x.n) && Number.isFinite(x.mean) && x.sd > 0);
     const d = dpFor(decimalsOf(s.m1, s.m2, s.sd1, s.sd2));
     const res = ok ? R.runTwoGroups({ labels: [s.l1, s.l2], outcome: 'the outcome', d, equalVar: eq === 'student', fromSummary: g }) : { error: 'Enter n (2 or more), mean and SD (above 0) for both groups.' };
+    if (!res.error) res.code = { kind: 't2s', groups: [{ label: s.l1, ...g[0] }, { label: s.l2, ...g[1] }], equalVar: eq === 'student' };
     const f = (k) => (v) => setS({ ...s, [k]: v });
     return (
       <>
@@ -213,6 +216,7 @@ function TwoGroupsRunner({ id, ds, mode }) {
     else {
       const d = dpFor(oc.decimals);
       res = id === 'mw' ? R.runMannWhitney({ g1, g2, labels: [a, b], outcome, d }) : R.runTwoGroups({ g1, g2, labels: [a, b], outcome, d, equalVar: eq === 'student' });
+      if (!res.error) res.code = { kind: id === 'mw' ? 'mw' : 't2', y: outcome, g: group, levels: [a, b], gNumeric: gc.numeric, equalVar: eq === 'student' };
     }
   }
   return (
@@ -267,6 +271,7 @@ function OneSampleRunner({ id, ds, mode }) {
     const x = cc.numbers.filter((v) => v !== null && Number.isFinite(v));
     const d = dpFor(cc.decimals);
     res = x.length < 3 ? { error: 'Needs at least three values.' } : id === 'w1' ? R.runOneSampleWilcoxon({ x, mu0, outcome: c, d }) : R.runOneSample({ x, mu0, outcome: c, d });
+    if (!res.error) res.code = { kind: id, y: c, mu: mu0 };
   }
   return (
     <>
@@ -309,6 +314,7 @@ function PairedRunner({ id, ds, mode }) {
       const first = rows.map((r) => r[0]), second = rows.map((r) => r[1]);
       const d = dpFor(Math.max(ca.decimals, cb.decimals));
       res = rows.length < 3 ? { error: 'Needs at least three complete pairs.' } : id === 'wp' ? R.runPairedWilcoxon({ first, second, names: [a, b], d }) : R.runPaired({ first, second, names: [a, b], d });
+      if (!res.error) res.code = { kind: id, a, b };
       if (dropped && !res.error) res.checks = [{ ok: null, text: `${dropped} row${dropped === 1 ? '' : 's'} with a missing value in either column left out.` }, ...res.checks];
     }
   }
@@ -371,6 +377,7 @@ function ManyGroupsRunner({ id, ds, mode }) {
       const d = dpFor(oc.decimals);
       const groups = keep.map(([g]) => g), labels = keep.map(([, l]) => l);
       res = id === 'kw' ? R.runKruskal({ groups, labels, outcome, d, adjustMethod: adj }) : R.runAnova({ groups, labels, outcome, d, posthoc: ph });
+      if (!res.error) res.code = id === 'kw' ? { kind: 'kw', y: outcome, g: group, adjust: adj } : { kind: 'aov', y: outcome, g: group, levels: labels, gNumeric: gc.numeric };
     }
   }
   return (
@@ -412,6 +419,7 @@ function RepeatedRunner({ id, ds }) {
     else {
       const d = dpFor(Math.max(...cs.map((c) => c.decimals)));
       res = id === 'fr' ? R.runFriedman({ rows, names, d, adjustMethod: adj }) : R.runRepeated({ rows, names, d, adjustMethod: adj });
+      if (!res.error) res.code = { kind: id === 'fr' ? 'fr' : 'rm', cols: names };
       if (dropped) res.checks = [{ ok: null, text: `${dropped} participant${dropped === 1 ? '' : 's'} with a missing measurement left out.` }, ...res.checks];
     }
   } else if (names.length) res = { error: 'Pick at least three measurement columns, in time order.' };
@@ -435,6 +443,7 @@ function TableRunner({ ds, mode }) {
     const cells = t.cells.map((r) => r.map((v) => num(v)));
     const ok = cells.every((r) => r.every((v) => Number.isInteger(v) && v >= 0)) && cells.every((r) => r.some((v) => v > 0)) && cells[0].every((_, j) => cells.some((r) => r[j] > 0));
     const res = ok ? R.runTable({ table: cells, rowLevels: t.rows, colLevels: t.cols, rowName: null, colName: null, eventCol: 0 }) : { error: 'Enter whole-number counts; every row and every column needs at least one count above zero.' };
+    if (!res.error) res.code = { kind: 'chiT', table: cells, rows: t.rows, cols: t.cols };
     const setCell = (i, j, v) => setT({ ...t, cells: t.cells.map((r, a) => (a === i ? r.map((x, b) => (b === j ? v : x)) : r)) });
     const R2 = t.rows.length, C2 = t.cols.length;
     return (
@@ -475,6 +484,7 @@ function TableRunner({ ds, mode }) {
       const evName = ev ?? guessEvent(colLevels);
       if (table.length < 2 || colLevels.length < 2) res = { error: 'Needs at least two groups and two outcome categories with data.' };
       else res = R.runTable({ table, rowLevels, colLevels, rowName: rv, colName: cv, eventCol: Math.max(0, colLevels.indexOf(evName)) });
+      if (!res.error) res.code = { kind: 'chi', r: rv, c: cv };
       if (x.dropped && !res.error) res.checks = [{ ok: null, text: `${x.dropped} row${x.dropped === 1 ? '' : 's'} with a missing value left out.` }, ...res.checks];
     }
   }
@@ -500,6 +510,7 @@ function TwoPropRunner({ ds, mode }) {
     const v = { x1: num(s.x1), n1: num(s.n1), x2: num(s.x2), n2: num(s.n2) };
     const ok = [v.x1, v.n1, v.x2, v.n2].every((q) => Number.isInteger(q) && q >= 0) && v.n1 > 0 && v.n2 > 0 && v.x1 <= v.n1 && v.x2 <= v.n2;
     const res = ok ? R.runTwoProportions({ ...v, labels: [s.l1, s.l2], what: 'The outcome' }) : { error: 'Enter whole numbers: events cannot exceed the group size.' };
+    if (!res.error) res.code = { kind: 'p2', ...v };
     return (
       <>
         <section class="panel stack"><h2>Counts</h2>
@@ -527,6 +538,7 @@ function TwoPropRunner({ ds, mode }) {
       const n = x.table.map((r) => r.reduce((a, b) => a + b, 0));
       if (j < 0) res = { error: `No "${evName}" values in ${pretty(outcome)}.` };
       else res = R.runTwoProportions({ x1: x.table[0][j], n1: n[0], x2: x.table[1][j], n2: n[1], labels: x.rowLevels, what: `${pretty(outcome)} "${evName}"` });
+      if (!res.error) res.code = { kind: 'p2', x1: x.table[0][j], n1: n[0], x2: x.table[1][j], n2: n[1] };
     }
   }
   return (
@@ -551,6 +563,7 @@ function McNemarRunner({ ds, mode }) {
     const v = ['a', 'b', 'c', 'd'].map((k) => num(s[k]));
     const ok = v.every((q) => Number.isInteger(q) && q >= 0) && v.reduce((x, y) => x + y, 0) > 0;
     const res = ok ? R.runMcNemar({ a: v[0], b: v[1], c: v[2], d: v[3], labels: [s.l1, s.l2], names: [s.n1, s.n2] }) : { error: 'Enter whole-number counts for the four cells.' };
+    if (!res.error) res.code = { kind: 'mcn', a: v[0], b: v[1], c: v[2], d: v[3] };
     const F = (k, label, numeric = true) => (numeric ? <NumberField label={label} value={s[k]} onInput={(q) => setS({ ...s, [k]: q })} inputMode="numeric" />
       : <TextField label={label} value={s[k]} onInput={(v) => setS({ ...s, [k]: v })} />);
     return (
@@ -582,6 +595,7 @@ function McNemarRunner({ ds, mode }) {
         if (v === p0 && w === p0) A++; else if (v === p0) B++; else if (w === p0) C++; else D++;
       });
       res = R.runMcNemar({ a: A, b: B, c: C, d: D, labels: [p0, other], names: [a, b] });
+      if (!res.error) res.code = { kind: 'mcn', a: A, b: B, c: C, d: D };
       if (dropped) res.checks = [{ ok: null, text: `${dropped} participant${dropped === 1 ? '' : 's'} with a missing value left out.` }, ...res.checks];
     }
   }
@@ -619,6 +633,7 @@ function CochranRunner({ ds }) {
         data.push(vals.map((v) => (v === p0 ? 1 : 0)));
       }
       res = data.length < 2 ? { error: 'Needs complete data on at least two participants.' } : R.runCochranQ({ data, names, positive: p0, adjustMethod: adj });
+      if (!res.error) res.code = { kind: 'cq', cols: names, positive: p0 };
       if (dropped && !res.error) res.checks = [{ ok: null, text: `${dropped} participant${dropped === 1 ? '' : 's'} with a missing value left out.` }];
     }
   } else if (names.length) res = { error: 'Pick at least three columns.' };
@@ -647,6 +662,7 @@ function OnePropRunner({ ds, mode }) {
     const x = num(s.x), n = num(s.n);
     const ok = Number.isInteger(x) && Number.isInteger(n) && n > 0 && x >= 0 && x <= n && p0 > 0 && p0 < 1;
     res = ok ? R.runOneProportion({ x, n, p0, what: 'the outcome' }) : { error: 'Enter whole numbers (events no more than n) and an expected percentage between 0 and 100.' };
+    if (!res.error) res.code = { kind: 'p1', x, n, p0 };
     return (
       <>
         <section class="panel stack"><h2>Counts</h2>
@@ -666,6 +682,7 @@ function OnePropRunner({ ds, mode }) {
     const evName = ev ?? guessEvent(cc.levels);
     const present = cc.raw.filter((v) => !isMissing(v));
     res = R.runOneProportion({ x: present.filter((v) => v === evName).length, n: present.length, p0, what: `${pretty(c)} "${evName}"` });
+    if (!res.error) res.code = { kind: 'p1', x: present.filter((v) => v === evName).length, n: present.length, p0 };
   }
   return (
     <>
@@ -692,6 +709,7 @@ function CorrRunner({ ds }) {
     else {
       const { rows, dropped } = completeRows([ca, cb]);
       res = rows.length < 4 ? { error: 'Needs at least four complete pairs.' } : R.runCorrelation({ x: rows.map((r) => r[0]), y: rows.map((r) => r[1]), names: [a, b], method: m });
+      if (!res.error) res.code = { kind: 'cor', x: a, y: b, method: res.method };
       if (dropped && !res.error) res.checks = [{ ok: null, text: `${dropped} row${dropped === 1 ? '' : 's'} with a missing value left out.` }, ...res.checks];
     }
   }
@@ -725,6 +743,7 @@ function AdjustRunner() {
   const good = items.filter((x) => !x.bad);
   const res = bad.length ? { error: `Not read as a p-value: ${bad.slice(0, 3).map((x) => `"${x.bad}"`).join(', ')}. Put one p-value per line, optionally after a label and a comma.` }
     : good.length < 2 ? { error: 'Enter at least two p-values.' } : R.runAdjust({ items: good, method: m });
+  if (!res.error) res.code = { kind: 'adj', items: good, method: m };
   return (
     <>
       <section class="panel stack"><h2>p-values</h2>
