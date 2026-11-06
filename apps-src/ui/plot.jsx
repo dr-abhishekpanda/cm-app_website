@@ -401,3 +401,162 @@ function KMSvg({ series, label, unit = '', band, width, height }) {
     </svg>
   );
 }
+
+/* --------------------------------------------- agreement and synthesis --- */
+
+/** Bland-Altman plot: difference against mean, with bias and limits of agreement. */
+export function BlandAltmanPlot(props) {
+  const [ref, w] = useWidth();
+  return <div class="plotbox" ref={ref}><BASvg {...props} width={w} height={heightFor(w, 260)} /></div>;
+}
+
+function BASvg({ avg, diff, bias, loa, label, ref0 = 0, yLabel, width, height }) {
+  const pad = { l: 46, r: 70, t: 12, b: 40 };
+  const W = width - pad.l - pad.r, H = height - pad.t - pad.b;
+  let x0 = Math.min(...avg), x1 = Math.max(...avg);
+  let y0 = Math.min(...diff, loa[0], ref0), y1 = Math.max(...diff, loa[1], ref0);
+  const px = (x1 - x0) * 0.05 || 1, py = (y1 - y0) * 0.08 || 1;
+  x0 -= px; x1 += px; y0 -= py; y1 += py;
+  const X = (v) => pad.l + ((v - x0) / (x1 - x0)) * W;
+  const Y = (v) => pad.t + H - ((v - y0) / (y1 - y0)) * H;
+  const hline = (v, cls, text) => <g><line class={cls} x1={pad.l} x2={pad.l + W} y1={Y(v)} y2={Y(v)} /><text class="lab" x={pad.l + W + 4} y={Y(v) + 4}>{text}</text></g>;
+  return (
+    <svg class="plot" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label}>
+      <title>{label}</title>
+      {niceTicks(y0, y1, 5).map((t) => <g><line class="grid" x1={pad.l} x2={pad.l + W} y1={Y(t)} y2={Y(t)} /><text class="tick" x={pad.l - 6} y={Y(t) + 4} text-anchor="end">{sig(t, 3)}</text></g>)}
+      {avg.map((a, i) => <circle class="pt" cx={X(a)} cy={Y(diff[i])} r="2.6" />)}
+      {hline(bias, 'curve', sig(bias, 3))}
+      {hline(loa[0], 'ref', sig(loa[0], 3))}
+      {hline(loa[1], 'ref', sig(loa[1], 3))}
+      <line class="axis" x1={pad.l} x2={pad.l + W} y1={pad.t + H} y2={pad.t + H} />
+      {niceTicks(x0, x1, width < 420 ? 4 : 6).map((t) => <text class="tick" x={X(t)} y={pad.t + H + 16} text-anchor="middle">{sig(t, 4)}</text>)}
+      <line class="axis" x1={pad.l} x2={pad.l + W} y1={Y(ref0)} y2={Y(ref0)} opacity="0.5" />
+      <text class="lab" x={pad.l + W / 2} y={height - 4} text-anchor="middle">Mean of the two methods</text>
+      {yLabel ? <text class="lab" x={12} y={pad.t + H / 2} text-anchor="middle" transform={`rotate(-90 12 ${pad.t + H / 2})`}>{yLabel}</text> : null}
+    </svg>
+  );
+}
+
+function ratioTicks(lo, hi) {
+  let t = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100].filter((v) => v >= lo && v <= hi);
+  if (t.length < 3) t = [0.01, 0.02, 0.03, 0.05, 0.07, 0.1, 0.15, 0.2, 0.3, 0.5, 0.7, 1, 1.5, 2, 3, 5, 7, 10, 15, 20, 30, 50, 70, 100].filter((v) => v >= lo && v <= hi);
+  return t.length >= 2 ? t : [lo, hi];
+}
+
+/** Tick positions and labels for an axis on the log (ratio), logit (proportion) or linear scale. */
+function scaleTicks(scale, lo, hi, n) {
+  if (scale === 'log') return ratioTicks(Math.exp(lo), Math.exp(hi)).map((v) => [Math.log(v), sig(v, 2)]);
+  if (scale === 'logit') {
+    const inv = (x) => 1 / (1 + Math.exp(-x));
+    let t = [0.01, 0.02, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 0.98, 0.99].filter((p) => p >= inv(lo) && p <= inv(hi));
+    while (t.length > n) t = t.filter((_, i) => i % 2 === 0);
+    return t.map((p) => [Math.log(p / (1 - p)), `${Math.round(100 * p)}%`]);
+  }
+  return niceTicks(lo, hi, n).map((v) => [v, sig(v, 3)]);
+}
+
+/**
+ * Forest plot. items: [{ kind: 'study' | 'pooled' | 'head', label, est, lo, hi, weight?, pi? }] on the display
+ * scale (OR, proportion, mean difference); axis 'log' plots ratios on a log scale; nullAt is the no-effect value
+ * (1 or 0), or null when there is none; sides are the captions either side of it; fmt prints a value.
+ */
+export function ForestPlot(props) {
+  const [ref, w] = useWidth();
+  return <div class="plotbox" ref={ref}><ForestSvg {...props} width={w} height={30 + props.items.length * 21 + 34} /></div>;
+}
+
+function ForestSvg({ items, axis = 'linear', nullAt = 0, sides, label, fmt = (v) => sig(v, 3), tickFmt = (v) => sig(v, 3), width, height }) {
+  const narrow = width < 600;
+  const labelW = Math.round(Math.min(190, width * (narrow ? 0.36 : 0.26)));
+  const textW = narrow ? 0 : 200;
+  const pad = { l: labelW, r: textW + 10, t: 24, b: 34 };
+  const W = Math.max(60, width - pad.l - pad.r);
+  const tf = (v) => (axis === 'log' ? Math.log(v) : v);
+  const vals = items.flatMap((r) => [r.lo, r.hi, ...(r.pi || [])]).filter((v) => Number.isFinite(v) && (axis !== 'log' || v > 0)).map(tf);
+  if (nullAt !== null) vals.push(tf(nullAt));
+  let lo = Math.min(...vals), hi = Math.max(...vals);
+  const padX = (hi - lo) * 0.06 || 0.5;
+  lo -= padX; hi += padX;
+  const X = (v) => pad.l + ((Math.max(lo, Math.min(hi, tf(v))) - lo) / (hi - lo)) * W;
+  const studyW = items.filter((r) => r.kind === 'study').map((r) => r.weight || 0);
+  const maxW = Math.max(...studyW, 1e-9);
+  const ticks = axis === 'log' ? ratioTicks(Math.exp(lo), Math.exp(hi)) : niceTicks(lo, hi, narrow ? 4 : 6);
+  const yRow = (i) => pad.t + i * 21 + 10;
+  const yAxis = pad.t + items.length * 21 + 4;
+  const maxChars = Math.max(6, Math.floor((labelW - 8) / 7));
+  const cut = (t) => (String(t).length > maxChars ? `${String(t).slice(0, maxChars - 1)}…` : String(t));
+  const name = (r) => cut(narrow && r.short ? r.short : r.label);
+  return (
+    <svg class="plot forest" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label}>
+      <title>{label}</title>
+      <text class="tick" x={4} y={14}>Study</text>
+      {!narrow ? <text class="tick" x={width - textW} y={14}>Estimate (95% CI)</text> : null}
+      {!narrow ? <text class="tick" x={width - 4} y={14} text-anchor="end">Weight</text> : null}
+      {nullAt !== null ? <line class="grid" x1={X(nullAt)} x2={X(nullAt)} y1={pad.t - 6} y2={yAxis} /> : null}
+      {items.map((r, i) => {
+        const y = yRow(i);
+        if (r.kind === 'head') return <text class="lab" x={4} y={y + 4} font-weight="600">{name(r)}</text>;
+        const txt = Number.isFinite(r.est) ? `${fmt(r.est)} (${fmt(r.lo)} to ${fmt(r.hi)})` : '';
+        if (r.kind === 'pooled') {
+          return (
+            <g>
+              <text class="lab" x={4} y={y + 4} font-weight="600">{name(r)}</text>
+              {r.pi ? <line class="ref" x1={X(r.pi[0])} x2={X(r.pi[1])} y1={y} y2={y} /> : null}
+              <path class="diamond" d={`M${X(r.lo)},${y}L${X(r.est)},${y - 7}L${X(r.hi)},${y}L${X(r.est)},${y + 7}Z`} />
+              {!narrow ? <text class="lab" x={width - textW} y={y + 4} font-weight="600">{txt}</text> : null}
+              {!narrow && r.weight !== undefined ? <text class="lab" x={width - 4} y={y + 4} text-anchor="end" font-weight="600">{`${(100 * r.weight).toFixed(1)}%`}</text> : null}
+            </g>
+          );
+        }
+        const s = 4 + 9 * Math.sqrt((r.weight || 0) / maxW);
+        return (
+          <g>
+            <text class="lab" x={4} y={y + 4}>{name(r)}</text>
+            <line class="whisker" x1={X(r.lo)} x2={X(r.hi)} y1={y} y2={y} />
+            <rect class="bar hot" x={X(r.est) - s / 2} y={y - s / 2} width={s} height={s} />
+            {!narrow ? <text class="lab" x={width - textW} y={y + 4}>{txt}</text> : null}
+            {!narrow && r.weight !== undefined ? <text class="lab" x={width - 4} y={y + 4} text-anchor="end">{`${(100 * r.weight).toFixed(1)}%`}</text> : null}
+          </g>
+        );
+      })}
+      <line class="axis" x1={pad.l} x2={pad.l + W} y1={yAxis} y2={yAxis} />
+      {ticks.map((t) => <text class="tick" x={X(t)} y={yAxis + 14} text-anchor="middle">{tickFmt(t)}</text>)}
+      {sides && nullAt !== null && X(nullAt) - 6 - sides[0].length * 6.6 >= 0 && X(nullAt) + 6 + sides[1].length * 6.6 <= width ? [
+        // Drawn only when both fit (mono 11px is about 6.6px a character); the figure caption says it too.
+        <text class="tick" x={X(nullAt) - 6} y={height - 3} text-anchor="end">{sides[0]}</text>,
+        <text class="tick" x={X(nullAt) + 6} y={height - 3}>{sides[1]}</text>,
+      ] : null}
+    </svg>
+  );
+}
+
+/**
+ * Funnel plot on the analysis scale: effect against standard error (inverted), with pseudo 95% limits
+ * around the pooled estimate. scale: 'log' (ratios), 'logit' (proportions) or 'linear' sets the axis labels.
+ */
+export function FunnelPlot(props) {
+  const [ref, w] = useWidth();
+  return <div class="plotbox" ref={ref}><FunnelSvg {...props} width={w} height={heightFor(w, 260)} /></div>;
+}
+
+function FunnelSvg({ y, se, centre, xLabel = 'Effect', scale = 'linear', label, width, height }) {
+  const pad = { l: 46, r: 14, t: 12, b: 40 };
+  const W = width - pad.l - pad.r, H = height - pad.t - pad.b;
+  const smax = Math.max(...se) * 1.1;
+  const xs = [...y, centre - 1.96 * smax, centre + 1.96 * smax];
+  const lo = Math.min(...xs), hi = Math.max(...xs);
+  const X = (v) => pad.l + ((v - lo) / (hi - lo)) * W;
+  const Y = (s) => pad.t + (s / smax) * H;
+  return (
+    <svg class="plot" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label}>
+      <title>{label}</title>
+      {niceTicks(0, smax, 4).map((t) => <g><line class="grid" x1={pad.l} x2={pad.l + W} y1={Y(t)} y2={Y(t)} /><text class="tick" x={pad.l - 6} y={Y(t) + 4} text-anchor="end">{sig(t, 2)}</text></g>)}
+      <path class="ref" fill="none" d={`M${X(centre - 1.96 * smax)},${Y(smax)}L${X(centre)},${Y(0)}L${X(centre + 1.96 * smax)},${Y(smax)}`} />
+      <line class="mark" x1={X(centre)} x2={X(centre)} y1={Y(0)} y2={Y(smax)} />
+      {y.map((v, i) => <circle class="pt" cx={X(v)} cy={Y(se[i])} r="3" />)}
+      <line class="axis" x1={pad.l} x2={pad.l + W} y1={pad.t + H} y2={pad.t + H} />
+      {scaleTicks(scale, lo, hi, width < 420 ? 4 : 7).map(([t, txt]) => <text class="tick" x={X(t)} y={pad.t + H + 16} text-anchor="middle">{txt}</text>)}
+      <text class="lab" x={pad.l + W / 2} y={height - 4} text-anchor="middle">{xLabel}; standard error, inverted, on the vertical axis</text>
+    </svg>
+  );
+}

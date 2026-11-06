@@ -6,7 +6,7 @@ import { parseNumber, fixed, pValue, dpFor } from '../../engine/format.js';
 import { splitBy, completeRows, crossTab, isMissing } from '../../engine/data.js';
 import { normal } from '../../engine/dist.js';
 import { ADJUST_METHODS } from '../../engine/multiplicity.js';
-import { PageHead, Seg, Callout, AtLevel, NumberField, SelectField, useId } from '../../ui/core.jsx';
+import { PageHead, Seg, Callout, AtLevel, NumberField, SelectField, TextField, useId } from '../../ui/core.jsx';
 import { DataPanel, useDataset, ColumnSelect, col } from '../../ui/data.jsx';
 import { DataTable, Report, Stats, Refs } from '../../ui/results.jsx';
 import { BoxPlot, Histogram, PercentBars, ScatterPlot } from '../../ui/plot.jsx';
@@ -189,7 +189,7 @@ function TwoGroupsRunner({ id, ds, mode }) {
         <section class="panel stack"><h2>Summary figures</h2>
           {[1, 2].map((i) => (
             <div class="fields four">
-              <div class="field"><label>Group {i}</label><input value={s[`l${i}`]} onInput={(e) => f(`l${i}`)(e.currentTarget.value)} /></div>
+              <TextField label={`Group ${i}`} value={s[`l${i}`]} onInput={f(`l${i}`)} />
               <NumberField label="n" value={s[`n${i}`]} onInput={f(`n${i}`)} inputMode="numeric" />
               <NumberField label="Mean" value={s[`m${i}`]} onInput={f(`m${i}`)} />
               <NumberField label="SD" value={s[`sd${i}`]} onInput={f(`sd${i}`)} />
@@ -344,7 +344,7 @@ function ManyGroupsRunner({ id, ds, mode }) {
         <section class="panel stack"><h2>Summary figures</h2>
           {rows.map((r, i) => (
             <div class="fields four">
-              <div class="field"><label>Group {i + 1}</label><input value={r.l} onInput={(e) => upd(i, 'l', e.currentTarget.value)} /></div>
+              <TextField label={`Group ${i + 1}`} value={r.l} onInput={(v) => upd(i, 'l', v)} />
               <NumberField label="n" value={r.n} onInput={(v) => upd(i, 'n', v)} inputMode="numeric" />
               <NumberField label="Mean" value={r.m} onInput={(v) => upd(i, 'm', v)} />
               <NumberField label="SD" value={r.sd} onInput={(v) => upd(i, 'sd', v)} />
@@ -505,7 +505,7 @@ function TwoPropRunner({ ds, mode }) {
         <section class="panel stack"><h2>Counts</h2>
           {[1, 2].map((i) => (
             <div class="fields">
-              <div class="field"><label>Group {i}</label><input value={s[`l${i}`]} onInput={(e) => setS({ ...s, [`l${i}`]: e.currentTarget.value })} /></div>
+              <TextField label={`Group ${i}`} value={s[`l${i}`]} onInput={(v) => setS({ ...s, [`l${i}`]: v })} />
               <NumberField label="With the outcome" value={s[`x${i}`]} onInput={(q) => setS({ ...s, [`x${i}`]: q })} inputMode="numeric" />
               <NumberField label="Group size" value={s[`n${i}`]} onInput={(q) => setS({ ...s, [`n${i}`]: q })} inputMode="numeric" />
             </div>
@@ -552,7 +552,7 @@ function McNemarRunner({ ds, mode }) {
     const ok = v.every((q) => Number.isInteger(q) && q >= 0) && v.reduce((x, y) => x + y, 0) > 0;
     const res = ok ? R.runMcNemar({ a: v[0], b: v[1], c: v[2], d: v[3], labels: [s.l1, s.l2], names: [s.n1, s.n2] }) : { error: 'Enter whole-number counts for the four cells.' };
     const F = (k, label, numeric = true) => (numeric ? <NumberField label={label} value={s[k]} onInput={(q) => setS({ ...s, [k]: q })} inputMode="numeric" />
-      : <div class="field"><label>{label}</label><input value={s[k]} onInput={(e) => setS({ ...s, [k]: e.currentTarget.value })} /></div>);
+      : <TextField label={label} value={s[k]} onInput={(v) => setS({ ...s, [k]: v })} />);
     return (
       <>
         <section class="panel stack"><h2>Paired counts</h2>

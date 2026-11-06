@@ -113,6 +113,16 @@ export function NumberField({ label, value, onInput, hint, error, placeholder, i
   );
 }
 
+/** A labelled text box (names, units, free text). */
+export function TextField({ label, value, onInput, hint, placeholder }) {
+  const id = useId('t');
+  return (
+    <Field label={label} hint={hint} id={id}>
+      <input id={id} type="text" value={value} placeholder={placeholder} aria-describedby={hint ? `${id}-hint` : undefined} onInput={(e) => onInput(e.currentTarget.value)} />
+    </Field>
+  );
+}
+
 export function SelectField({ label, value, onChange, options, hint }) {
   const id = useId('s');
   return (

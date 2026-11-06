@@ -10,6 +10,8 @@ import TestsTool from './tools/tests.jsx';
 import SampleSizeTool from './tools/samplesize.jsx';
 import RegressionTool from './tools/regression.jsx';
 import SurvivalTool from './tools/survival.jsx';
+import AgreementTool from './tools/agreement.jsx';
+import MetaTool from './tools/meta.jsx';
 
 export const STAGES = [
   { id: 'plan', label: 'Plan', blurb: 'Frame the question, search the literature, set objectives.' },
@@ -81,7 +83,12 @@ export const MODULES = [
     keywords: 'survival kaplan meier log rank cox proportional hazards hazard ratio median survival censoring time to event',
     tool: SurvivalTool,
   },
-  { id: 'agreement', stage: 'analyse', phase: 1, apps: RB, tag: 'Statistics', title: 'Agreement and Reliability', summary: "Kappa, weighted kappa, ICC, Bland–Altman and Cronbach's alpha." },
+  {
+    id: 'agreement', stage: 'analyse', status: 'ready', apps: RB, tag: 'Statistics', title: 'Agreement and Reliability',
+    summary: "Cohen's and weighted kappa, Fleiss' kappa, the intraclass correlation with a guide to its forms, Bland-Altman limits of agreement and Cronbach's alpha.",
+    keywords: 'agreement reliability kappa cohen weighted fleiss inter-rater intra-rater observer icc intraclass correlation bland altman limits of agreement method comparison cronbach alpha internal consistency scale items questionnaire validation',
+    tool: AgreementTool,
+  },
   { id: 'measures', stage: 'analyse', phase: 2, apps: RE, tag: 'Epidemiology', title: 'Frequency, Association and Impact', summary: 'Rates and proportions; OR, RR and PR with CIs; attributable and preventable fractions.' },
   { id: 'diagnostic', stage: 'analyse', phase: 2, apps: RE, tag: 'Epidemiology', title: 'Diagnostic Accuracy and ROC', summary: 'Sensitivity, specificity, predictive values at any prevalence, likelihood ratios, ROC curves.' },
   { id: 'stratified', stage: 'analyse', phase: 2, apps: RE, tag: 'Epidemiology', title: 'Confounding and Standardisation', summary: 'Mantel–Haenszel estimates, effect modification, direct and indirect standardisation.' },
@@ -89,7 +96,12 @@ export const MODULES = [
   { id: 'economics', stage: 'analyse', phase: 3, apps: R, tag: 'Workflow', title: 'Health Economics Basics', summary: 'Costing, ICER, DALYs and QALYs.' },
 
   { id: 'srma', stage: 'synthesise', phase: 3, apps: R, tag: 'Workflow', title: 'Systematic Review Workflow', summary: 'Protocol, search, screening, extraction, risk of bias, GRADE and the PRISMA flow diagram.' },
-  { id: 'meta-analysis', stage: 'synthesise', phase: 1, apps: R, tag: 'Statistics', title: 'Meta-Analysis', summary: 'Fixed and random effects, heterogeneity, forest and funnel plots.' },
+  {
+    id: 'meta-analysis', stage: 'synthesise', status: 'ready', apps: R, tag: 'Statistics', title: 'Meta-Analysis',
+    summary: 'Pool odds ratios, risk ratios, mean differences, SMDs, proportions or reported estimates: fixed and random effects, heterogeneity, subgroups, forest and funnel plots.',
+    keywords: 'meta-analysis meta analysis systematic review srma pooled forest plot funnel plot heterogeneity i2 tau random effects fixed effect dersimonian laird paule mandel reml hartung knapp prediction interval subgroup egger publication bias prevalence pooled proportion',
+    tool: MetaTool,
+  },
 
   { id: 'results-text', stage: 'report', phase: 1, apps: RB, tag: 'Statistics', title: 'Results to Text and Table 1', summary: 'Publication tables and result sentences built from your analyses.' },
   { id: 'reporting', stage: 'report', phase: 3, apps: R, tag: 'Workflow', title: 'Reporting Checklists and Appraisal', summary: 'STROBE, CONSORT, STARD, PRISMA and more; critical appraisal checklists.' },

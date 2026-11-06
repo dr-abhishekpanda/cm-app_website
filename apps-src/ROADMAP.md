@@ -7,8 +7,8 @@ Five apps from one shared source. #RESEARCH-APP leads; the other four are subset
 | Phase | Scope | Main deliverables | Status |
 |---|---|---|---|
 | 0 | Foundations | Shared engine (special functions, distributions), UI kit, build to one offline file, service worker, icons, tests, first module (p-values: tool, lesson, practice) | Done (PR #4) |
-| 1 | Statistics engine and tools | Describe data (upload or paste), test chooser and runner with effect sizes and CIs, sample size and power, regression (linear, logistic), survival (Kaplan-Meier, log-rank), agreement and reliability (kappa, weighted kappa, ICC, Bland-Altman, Cronbach's alpha), meta-analysis (fixed and random effects, heterogeneity, forest and funnel plots), results-to-text and Table 1, R and Python code export | In progress: 1a (describe, tests), 1b (sample size) and 1c (regression, survival) done |
-| 2 | Epidemiology engine and tools | Study design chooser; frequency, association and impact measures with exact and Mantel-Haenszel CIs; diagnostic accuracy and ROC; confounding, effect modification, direct and indirect standardisation; vaccine efficacy and effectiveness, screening programmes; outbreak toolkit (for #EPI-APP and #CM-APP) | Planned |
+| 1 | Statistics engine and tools | Describe data (upload or paste), test chooser and runner with effect sizes and CIs, sample size and power, regression (linear, logistic), survival (Kaplan-Meier, log-rank), agreement and reliability (kappa, weighted kappa, ICC, Bland-Altman, Cronbach's alpha), meta-analysis (fixed and random effects, heterogeneity, forest and funnel plots), results-to-text and Table 1, R and Python code export | In progress: 1a (describe, tests), 1b (sample size), 1c (regression, survival) and 1d (agreement, meta-analysis) done; 1e (results to text, Table 1, code export) next |
+| 2 | Epidemiology engine and tools | Study design chooser; frequency, association and impact measures with exact and Mantel-Haenszel CIs (Mantel-Haenszel and Peto pooling then join the meta-analysis tool); diagnostic accuracy and ROC; confounding, effect modification, direct and indirect standardisation; vaccine efficacy and effectiveness, screening programmes; outbreak toolkit (for #EPI-APP and #CM-APP) | Planned |
 | 3 | Research workflow | Research question builder (FINER, PICO, PECO, SPIDER); literature search and references; objectives and hypotheses; sampling and randomisation; questionnaire design and validation; data management (codebook, CRF); ethics and registration (ICMR 2017, consent forms, CTRI); protocol and synopsis builder with DOCX export; trials and operational research; qualitative and mixed methods; systematic review workflow (PRISMA, risk of bias, GRADE); reporting checklists and appraisal; writing and publishing; grant and project tools; health economics basics | Planned |
 | 4 | Learn and Practice | A lesson at three depths and a seeded practice set for every module; teacher set numbers | Planned |
 | 5 | AI Mode | Restricted-access research assistant: marking typed answers, tutor, plan review, biostatistician chat. Coach by default; drafting only for faculty codes, with an AI-disclosure reminder. Individual access codes, a server-side proxy and usage limits | Planned |
@@ -34,6 +34,8 @@ Five apps from one shared source. #RESEARCH-APP leads; the other four are subset
 - Benchmarks carry their source and date.
 - `/imnci/` and `/kavach/` stay where they are.
 - Old builds retire when their replacements go live.
+- Meta-analysis defaults: random effects with the Paule-Mandel estimate of τ² and the Hartung-Knapp-Sidik-Jonkman CI (Veroniki 2016; IntHout 2014); REML and DerSimonian-Laird and the normal CI remain available.
+- "None" and "Nil" are read as answers, not as missing values: in health records they are usually real categories.
 
 ## Defects To Fix From The Earlier Builds
 

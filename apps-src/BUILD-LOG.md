@@ -2,6 +2,51 @@
 
 Newest entry first. Each entry records what changed, how it was checked, and anything left open.
 
+## 2026-10-31 · Phase 1d: Agreement, Reliability and Meta-Analysis
+
+Branch `feature/research-app-1d`, stacked on Phase 1c.
+
+### Built
+
+- **Engine**:
+  - `agreement.js`:
+    - Cohen's kappa, unweighted, linear or quadratic weights, with the Fleiss-Cohen-Everitt standard errors;
+    - Fleiss' kappa with the Fleiss-Nee-Landis null standard error, category kappas and a percentile bootstrap CI (2,000 resamples of subjects, fixed seed);
+    - the six intraclass correlations with F tests and CIs;
+    - Bland-Altman bias and limits of agreement with their CIs and a proportional-bias slope, on the raw, percentage or ratio scale;
+    - Cronbach's alpha with Feldt's CI, item-rest correlations and alpha if an item is deleted.
+  - `meta.js`:
+    - effect sizes: log OR, log RR and RD from 2 x 2 counts (0.5 added to zero cells; double-zero studies left out of ratios), MD and Hedges' g (RevMan formulas), logit proportions, and estimates reported with a CI;
+    - inverse-variance fixed and random effects, with τ² by Paule-Mandel, REML or DerSimonian-Laird, the Q-profile CI for τ², the Hartung-Knapp-Sidik-Jonkman CI, the Higgins-Thompson I² interval and the prediction interval;
+    - subgroup analysis with the test for subgroup differences, leave-one-out analysis and Egger's test.
+  - `random.js`: the seeded generator, now shared by the Monte Carlo Fisher test and the bootstrap.
+- **Agreement and Reliability tool**: five tabs (two raters, three or more raters, ICC, Bland-Altman, Cronbach's alpha); kappa from columns or a typed table, with category order for weighted kappa; Fleiss' kappa from one column per rater or per category; a guide to choosing the ICC form (Koo and Li); an optional acceptable limit for Bland-Altman; checks, sentences and references for each.
+- **Meta-Analysis tool**: a study table for four kinds of data, typed or pasted from Excel; group and measure names; random or fixed effects; forest plot with subgroups and the prediction interval; summary, subgroup and leave-one-out tables; funnel plot with Egger's test; checks and a results sentence.
+- **Example data**: a simulated screening camp of 100 children (pallor graded by three medical officers, haemoglobin by laboratory and HemoCue, MUAC by three Anganwadi workers, a six-item scale with one weak item), labelled as simulated. The meta-analysis examples are labelled as illustrative, not real studies.
+- **Fixes**: "None" and "Nil" are no longer read as missing (they are usually real answers); text boxes across the tools now have proper labels; hidden table text no longer widens the page on phones.
+- **References**: 16 added, each checked on PubMed, the publisher, RePEc, NIST or the Cochrane site (74 in all).
+
+### Checked
+
+| Check | Result |
+|---|---|
+| Engine tests (`npm test`) | 53 of 53 pass |
+| Kappa and Fleiss' kappa against statsmodels | kappa and SEs to 1e-10 |
+| Fleiss-Nee-Landis null SE against 20,000 simulations | 0.02977 against 0.02967 (0.3%) |
+| Bootstrap CI against an independent NumPy bootstrap | within 0.015 |
+| ICC and Cronbach's alpha against pingouin | estimates to 1e-11; CIs to pingouin's rounding |
+| Pooling against statsmodels | fixed and random effects, τ², I² and HKSJ to 1e-9 (Paule-Mandel 1e-6) |
+| REML against direct maximisation of the restricted likelihood (SciPy) | τ² to 1e-6 |
+| Q-profile CI and subgroup test against SciPy root-finding and the formulas | to 1e-9 |
+| Two pooled examples in the browser against statsmodels | MD 0.37 (0.07 to 0.67), RD −0.066 (−0.098 to −0.034): identical |
+| Browser smoke test | 88 of 88 pass (phone and desktop) |
+
+### Decisions
+
+- Fleiss' kappa shows a bootstrap CI, not the asymptotic one, after Zapf and colleagues (2016) found the asymptotic CI covers poorly.
+- Meta-analysis defaults to random effects, Paule-Mandel and HKSJ (Veroniki 2016; IntHout 2014), with a note on reproducing RevMan 5's DerSimonian-Laird analysis.
+- Mantel-Haenszel and Peto pooling wait for the Phase 2 stratified-analysis engine, so both modules share one tested implementation.
+
 ## 2026-10-31 · Phase 1c: Regression and Survival Analysis
 
 Branch `feature/research-app-1c`, stacked on Phase 1b.
