@@ -106,6 +106,30 @@ try {
     await page.waitForSelector('.q .stem');
     await shot(page, `${label}-practice`);
 
+    // Phase 1: describe the example data, then choose and run a test on it.
+    await page.goto(`${base}#/tool/describe`);
+    await page.getByRole('button', { name: 'Load example data' }).click();
+    await page.waitForSelector('text=Numeric variables');
+    check(`${label}: describe summarises the example data`, (await page.locator('.restable table').count()) >= 2);
+    check(`${label}: no sideways scroll on describe`, await noSideScroll(page));
+    await shot(page, `${label}-describe`);
+    await page.goto(`${base}#/tool/tests`);
+    await page.waitForSelector('h1');
+    for (const name of ['Compare groups or measurements', 'Numeric (a measurement or score)', 'Two', 'Independent groups', 'Yes']) {
+      await page.getByRole('button', { name, exact: true }).click();
+    }
+    await page.getByRole('button', { name: 'Run this test' }).click();
+    await page.getByLabel('Outcome (numeric)').selectOption('Hb_registration');
+    await page.getByLabel('Groups', { exact: true }).selectOption('Residence');
+    const tline = await text(page, '.verdict-line');
+    check(`${label}: chooser leads to Welch's t on the example data`, tline.startsWith('t = \u22123.74, df = 56.9'), tline);
+    check(`${label}: no sideways scroll on a test result`, await noSideScroll(page));
+    await shot(page, `${label}-ttest`);
+    await page.getByLabel('Choose a test').selectOption('chi');
+    await page.getByRole('button', { name: 'Summary figures' }).click();
+    const chiTitle = await text(page, '#res-h');
+    check(`${label}: chi-square from typed counts`, chiTitle.startsWith('Chi-square test'), chiTitle);
+
     await page.goto(`${base}#/`);
     await page.getByRole('button', { name: 'Settings' }).click();
     await page.getByRole('button', { name: 'Dark', exact: true }).click();

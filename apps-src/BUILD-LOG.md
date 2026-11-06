@@ -2,6 +2,44 @@
 
 Newest entry first. Each entry records what changed, how it was checked, and anything left open.
 
+## 2026-10-31 · Phase 1a: Describe Your Data, Choose and Run a Test
+
+Branch `feature/research-app-1a`, stacked on Phase 0.
+
+### Built
+
+- **Engine**, each file with reference tests:
+  - `noncentral.js`: noncentral t (AS 243 as refined in R), chi-square and F, for effect-size intervals now and power later;
+  - `range.js`: studentized range (R's ptukey) for Tukey-Kramer and Games-Howell;
+  - `describe.js`: summaries, quartiles (SPSS type 6 or R type 7), bias-adjusted skewness and kurtosis, the order-statistic CI for a median, Shapiro-Wilk (AS R94), Wilson intervals;
+  - `compare.js`: one-sample, paired, Student and Welch t-tests with exact CIs for Cohen's d; one-way and Welch ANOVA; Levene and Brown-Forsythe; Tukey-Kramer; Games-Howell; repeated-measures ANOVA with Mauchly's test and Greenhouse-Geisser and Huynh-Feldt corrections;
+  - `nonparam.js`: Mann-Whitney U and Wilcoxon signed-rank (exact p for small samples without ties, as in R), Hodges-Lehmann estimates and CIs, Kruskal-Wallis with Dunn's comparisons, Friedman;
+  - `tables.js`: Pearson and likelihood-ratio chi-square, Yates, adjusted residuals, Cramer's V; Fisher's exact test with the conditional MLE odds ratio and exact CI; Fisher-Freeman-Halton (exact enumeration, seeded Monte Carlo beyond two million tables); McNemar; linear-by-linear trend; Cochran's Q;
+  - `correlate.js`: Pearson, Spearman (Bonett-Wright CI), Kendall tau-b (exact or tie-corrected);
+  - `proportions.js`: Wilson and Clopper-Pearson CIs, exact binomial test, Newcombe's interval for a difference;
+  - `multiplicity.js`: Bonferroni, Holm, Hochberg, Benjamini-Hochberg, Benjamini-Yekutieli;
+  - `data.js`: pasted cells, CSV files and number lists into typed columns.
+- **Describe Your Data**: numeric summaries with the shape check and the summary to report (Kim 2013 cut-offs), frequency tables with Wilson CIs, cross-tabulation by group, histogram with normal curve, Q-Q plot, box plots, sentences for the results section, copyable tables.
+- **Choose and Run a Test**: a five-question chooser and 17 runners (t-tests, ANOVA family, rank tests, chi-square and Fisher, two proportions, McNemar, Cochran's Q, one proportion, correlation, p-value adjustment), from dataset columns or typed summary figures, each with the estimate and 95% CI, effect size, checks, post hoc table, plot, sentence and references.
+- **Example dataset**: a simulated antenatal anaemia follow-up of 120 women (12 variables), labelled as simulated wherever it appears.
+- **References**: `modules/refs.js` holds every cited source with where and when it was checked (PubMed, publisher or R documentation).
+
+### Checked
+
+| Check | Result |
+|---|---|
+| Engine tests (`npm test`) | 39 of 39 pass: SciPy 1.18.1, statsmodels 0.15.0, pingouin 0.7.0, scikit-posthocs 0.17.1, mpmath (noncentral t integrals) and brute-force enumeration |
+| Notable agreements | Shapiro-Wilk W to 1e-6 and p to 2e-4 (SciPy runs the same algorithm in single precision); Tukey and Games-Howell p to 1e-5; everything else to 1e-8 or better |
+| Monte Carlo Fisher-Freeman-Halton | Three seeds of 200,000 tables give 0.0355 to 0.0358 against the exact 0.03550 |
+| Browser smoke test | 50 of 50 pass at 360 px and 1280 px, including describe and test flows on the example data |
+| Every runner on the example data | 18 runs, results and sentences reviewed by hand; no console errors |
+
+### Decisions
+
+- Mauchly's p uses the second-order correction in R's `mauchly.test`, so it matches R and pingouin rather than the first-order chi-square some packages print.
+- Display: a p-value from 0.0495 to just under 0.05 prints with four decimals, so it is never shown as "0.050" while being called significant.
+- Two-way and factorial ANOVA go with regression in Phase 1c, where the linear model handles unbalanced designs.
+
 ## 2026-10-31 · Phase 0: Foundations · #RESEARCH-APP v0.1.0
 
 Branch `feature/research-app`.

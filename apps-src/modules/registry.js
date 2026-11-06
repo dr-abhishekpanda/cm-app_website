@@ -5,6 +5,8 @@
 import PValuesTool from './tools/p-values.jsx';
 import PValuesLesson from './learn/p-values.jsx';
 import PValuesPractice from './practice/p-values.jsx';
+import DescribeTool from './tools/describe.jsx';
+import TestsTool from './tools/tests.jsx';
 
 export const STAGES = [
   { id: 'plan', label: 'Plan', blurb: 'Frame the question, search the literature, set objectives.' },
@@ -47,8 +49,18 @@ export const MODULES = [
   { id: 'protocol', stage: 'prepare', phase: 3, apps: R, tag: 'Workflow', title: 'Protocol and Synopsis Builder', summary: 'Section by section, exported as DOCX in the format your university or IEC uses.' },
   { id: 'grant', stage: 'prepare', phase: 3, apps: R, tag: 'Workflow', title: 'Grant and Project Tools', summary: 'Timeline, budget, and ICMR proposal structures.' },
 
-  { id: 'describe', stage: 'analyse', phase: 1, apps: RB, tag: 'Statistics', title: 'Describe Your Data', summary: 'Upload or paste a dataset; summaries, frequency tables, charts and normality checks.' },
-  { id: 'tests', stage: 'analyse', phase: 1, apps: RB, tag: 'Statistics', title: 'Choose and Run a Test', summary: 'A guided choice of test, then the result with effect size, confidence interval and a report sentence.' },
+  {
+    id: 'describe', stage: 'analyse', status: 'ready', apps: RB, tag: 'Statistics', title: 'Describe Your Data',
+    summary: 'Paste or open a dataset: summaries, the shape of each distribution, frequency tables and plots, by group if you like.',
+    keywords: 'descriptive mean median sd iqr normality shapiro wilk histogram box plot frequency table percentage skewness',
+    tool: DescribeTool,
+  },
+  {
+    id: 'tests', stage: 'analyse', status: 'ready', apps: RB, tag: 'Statistics', title: 'Choose and Run a Test',
+    summary: 'A guided choice of test, then the result with its 95% CI, effect size, checks, post hoc comparisons and a sentence for your paper.',
+    keywords: 't test anova mann whitney wilcoxon kruskal friedman chi square fisher mcnemar cochran correlation pearson spearman kendall proportion tukey bonferroni holm',
+    tool: TestsTool,
+  },
   { id: 'regression', stage: 'analyse', phase: 1, apps: RB, tag: 'Statistics', title: 'Regression', summary: 'Linear and logistic regression with adjusted estimates and model checks.' },
   { id: 'survival', stage: 'analyse', phase: 1, apps: RB, tag: 'Statistics', title: 'Survival Analysis', summary: 'Kaplan–Meier curves, median survival and the log-rank test.' },
   { id: 'agreement', stage: 'analyse', phase: 1, apps: RB, tag: 'Statistics', title: 'Agreement and Reliability', summary: "Kappa, weighted kappa, ICC, Bland–Altman and Cronbach's alpha." },

@@ -1,0 +1,31 @@
+/* References cited by the tools, in Vancouver style. Every entry was checked before use:
+ * `checked` names the source (PubMed, the publisher's page, or the R documentation that cites it)
+ * and the date. Add a reference here only after checking it the same way. */
+export const REFS = {
+  kirkwood: { text: 'Kirkwood BR, Sterne JAC. Essential medical statistics. 2nd ed. Oxford: Blackwell Science; 2003.', checked: 'publisher, 2026-10' },
+  altmanAbsence: { text: 'Altman DG, Bland JM. Absence of evidence is not evidence of absence. BMJ. 1995;311(7003):485.', doi: '10.1136/bmj.311.7003.485', checked: 'PubMed 7647644, 2026-10-31' },
+  asa: { text: "Wasserstein RL, Lazar NA. The ASA's statement on p-values: context, process, and purpose. Am Stat. 2016;70(2):129-33.", doi: '10.1080/00031305.2016.1154108', checked: 'publisher, 2026-10' },
+  ghasemi: { text: 'Ghasemi A, Zahediasl S. Normality tests for statistical analysis: a guide for non-statisticians. Int J Endocrinol Metab. 2012;10(2):486-9.', doi: '10.5812/ijem.3505', checked: 'PubMed 23843808, 2026-10-31' },
+  kimSkew: { text: 'Kim HY. Statistical notes for clinical researchers: assessing normal distribution (2) using skewness and kurtosis. Restor Dent Endod. 2013;38(1):52-4.', doi: '10.5395/rde.2013.38.1.52', checked: 'PubMed 23495371, 2026-10-31' },
+  royston: { text: 'Royston P. Remark AS R94: a remark on algorithm AS 181: the W-test for normality. J R Stat Soc Ser C Appl Stat. 1995;44(4):547-51.', checked: 'R documentation (shapiro.test), 2026-10-31' },
+  hyndman: { text: 'Hyndman RJ, Fan Y. Sample quantiles in statistical packages. Am Stat. 1996;50(4):361-5.', checked: 'R documentation (quantile), 2026-10-31' },
+  campbellGardner: { text: 'Campbell MJ, Gardner MJ. Calculating confidence intervals for some non-parametric analyses. Br Med J (Clin Res Ed). 1988;296(6634):1454-6.', doi: '10.1136/bmj.296.6634.1454', checked: 'PubMed 3132290, 2026-10-31' },
+  cumming: { text: 'Cumming G, Finch S. A primer on the understanding, use, and calculation of confidence intervals that are based on central and noncentral distributions. Educ Psychol Meas. 2001;61(4):532-74.', doi: '10.1177/0013164401614003', checked: 'publisher, 2026-10-31' },
+  welch: { text: 'Welch BL. On the comparison of several mean values: an alternative approach. Biometrika. 1951;38(3/4):330-6.', checked: 'R documentation (oneway.test), 2026-10-31' },
+  kramer: { text: 'Kramer CY. Extension of multiple range tests to group means with unequal numbers of replications. Biometrics. 1956;12(3):307-10.', checked: 'secondary listings, 2026-10-31' },
+  gamesHowell: { text: "Games PA, Howell JF. Pairwise multiple comparison procedures with unequal n's and/or variances: a Monte Carlo study. J Educ Stat. 1976;1(2):113-25.", doi: '10.3102/10769986001002113', checked: 'publisher, 2026-10-31' },
+  levene: { text: 'Levene H. Robust tests for equality of variances. In: Olkin I, editor. Contributions to probability and statistics. Stanford: Stanford University Press; 1960. p. 278-92.', checked: 'R documentation, 2026-10-31' },
+  greenhouse: { text: 'Greenhouse SW, Geisser S. On methods in the analysis of profile data. Psychometrika. 1959;24(2):95-112.', doi: '10.1007/BF02289823', checked: 'publisher, 2026-10-31' },
+  hodgesLehmann: { text: 'Hodges JL, Lehmann EL. Estimates of location based on rank tests. Ann Math Stat. 1963;34(2):598-611.', checked: 'Project Euclid, 2026-10-31' },
+  dunn: { text: 'Dunn OJ. Multiple comparisons using rank sums. Technometrics. 1964;6(3):241-52.', checked: 'publisher archive, 2026-10-31' },
+  holm: { text: 'Holm S. A simple sequentially rejective multiple test procedure. Scand J Stat. 1979;6(2):65-70.', checked: 'secondary listings, 2026-10-31' },
+  bh: { text: 'Benjamini Y, Hochberg Y. Controlling the false discovery rate: a practical and powerful approach to multiple testing. J R Stat Soc Series B Stat Methodol. 1995;57(1):289-300.', checked: 'secondary listings, 2026-10-31' },
+  cochranRule: { text: 'Cochran WG. Some methods for strengthening the common chi-square tests. Biometrics. 1954;10(4):417-51.', checked: 'secondary listings, 2026-10-31' },
+  freemanHalton: { text: 'Freeman GH, Halton JH. Note on an exact treatment of contingency, goodness of fit and other problems of significance. Biometrika. 1951;38(1/2):141-9.', checked: 'secondary listings, 2026-10-31' },
+  mantel: { text: 'Mantel N. Chi-square tests with one degree of freedom; extensions of the Mantel-Haenszel procedure. J Am Stat Assoc. 1963;58(303):690-700.', checked: 'secondary listings, 2026-10-31' },
+  mcnemar: { text: 'McNemar Q. Note on the sampling error of the difference between correlated proportions or percentages. Psychometrika. 1947;12(2):153-7.', doi: '10.1007/BF02295996', checked: 'publisher, 2026-10-31' },
+  wilson: { text: 'Wilson EB. Probable inference, the law of succession, and statistical inference. J Am Stat Assoc. 1927;22(158):209-12.', checked: 'secondary listings, 2026-10-31' },
+  clopper: { text: 'Clopper CJ, Pearson ES. The use of confidence or fiducial limits illustrated in the case of the binomial. Biometrika. 1934;26(4):404-13.', checked: 'secondary listings, 2026-10-31' },
+  newcombe: { text: 'Newcombe RG. Interval estimation for the difference between independent proportions: comparison of eleven methods. Stat Med. 1998;17(8):873-90.', checked: 'PubMed 9595617, 2026-10-31' },
+  bonettWright: { text: 'Bonett DG, Wright TA. Sample size requirements for estimating Pearson, Kendall and Spearman correlations. Psychometrika. 2000;65(1):23-8.', checked: 'publisher, 2026-10-31' },
+};
