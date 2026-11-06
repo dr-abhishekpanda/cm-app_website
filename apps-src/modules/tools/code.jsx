@@ -10,14 +10,14 @@ const ROWS = [
   ['t-tests (two groups, one sample, paired)', 't.test', 'scipy.stats.ttest_ind, ttest_1samp, ttest_rel'],
   ['Mann-Whitney and Wilcoxon tests', 'wilcox.test', 'scipy.stats.mannwhitneyu, wilcoxon (with R\'s exact rule)'],
   ['ANOVA, Welch, Tukey, Games-Howell', 'aov, oneway.test, TukeyHSD', 'scipy.stats.f_oneway, tukey_hsd; pingouin'],
-  ['Kruskal-Wallis with Dunn', 'kruskal.test; FSA::dunnTest', 'scipy.stats.kruskal; scikit-posthocs'],
-  ['Friedman; repeated-measures ANOVA', 'friedman.test; aov with Error()', 'scipy.stats.friedmanchisquare; pingouin.rm_anova'],
+  ['Kruskal-Wallis with Dunn', 'kruskal.test; Dunn\'s test written out', 'scipy.stats.kruskal; scikit-posthocs'],
+  ['Friedman; repeated-measures ANOVA', 'friedman.test; aov with Error(); afex for Greenhouse-Geisser', 'scipy.stats.friedmanchisquare; pingouin.rm_anova'],
   ['Chi-square, Fisher, McNemar, Cochran\'s Q', 'chisq.test, fisher.test, mcnemar.test, binom.test', 'scipy.stats.chi2_contingency, fisher_exact; statsmodels'],
   ['Proportions', 'binom.test, prop.test (Wilson), Newcombe by formula', 'scipy.stats.binomtest; statsmodels confint_proportions_2indep'],
   ['Correlation; adjusted p-values', 'cor.test; p.adjust', 'scipy.stats pearsonr, spearmanr, kendalltau; statsmodels multipletests'],
-  ['Linear and logistic regression', 'lm, glm, drop1; car, ResourceSelection, pROC', 'statsmodels formula API'],
+  ['Linear and logistic regression', 'lm, glm, drop1; car, pROC; Hosmer-Lemeshow written out', 'statsmodels formula API'],
   ['Survival', 'survival: survfit, survdiff, coxph', 'lifelines'],
-  ['Kappa, Fleiss\' kappa, ICC, alpha', 'psych::cohen.kappa, irr::kappam.fleiss, irr::icc, psych::alpha', 'statsmodels inter_rater; pingouin'],
+  ['Kappa, Fleiss\' kappa, ICC, alpha', 'psych::cohen.kappa, psych::ICC, psych::alpha; Fleiss\' kappa written out', 'statsmodels inter_rater; pingouin'],
   ['Bland-Altman', 'base R', 'numpy, statsmodels'],
   ['Meta-analysis', 'metafor::rma (effect sizes written out as in the app)', 'numpy and SciPy (written out as in the app)'],
 ];
@@ -38,7 +38,7 @@ export default function CodeTool() {
       <div class="stack">
         <Callout mark="How it works">
           <p>The script reads your data from <span class="mono">{DATA_FILE}</span>, so keep the two in one folder. Analyses from typed numbers (a table of counts, summary figures, a meta-analysis study table) carry the numbers inside the script.</p>
-          <p>Before every release, each Python script is run on the example data and its numbers compared with the app's. The R scripts take the same steps with base R and long-established packages; they have been checked by reading, not yet by running.</p>
+          <p>Before every release, each R and Python script is run on the example data and its numbers compared with the app's. The R scripts use base R and a few long-established packages (survival, psych, metafor, car, pROC, afex).</p>
         </Callout>
         <DataPanel compact />
         {ds ? <div class="btn-row"><button type="button" class="btn primary small" onClick={download}>Download the data ({DATA_FILE})</button></div> : null}

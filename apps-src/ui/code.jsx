@@ -33,9 +33,7 @@ function CodeBody({ spec }) {
       </div>
       <p class="small">
         {sc.usesData ? <>Keep the script and <span class="mono">{DATA_FILE}</span> in one folder. </> : <>The numbers are written into the script. </>}
-        {lang === 'py'
-          ? 'Python scripts are run on the example data and compared with the app before every release.'
-          : 'R scripts follow the same steps with base R and long-established packages; they are checked by reading, not yet by running.'}
+        {'Before every release, each R and Python script is run on the example data and its numbers compared with the app\'s.'}
         {sc.packages.length ? ` Packages: ${sc.packages.join(', ')}.` : ''}
       </p>
     </div>

@@ -169,6 +169,32 @@ const add = (name, data, spec, checks) => cases.push({ name, data, spec, checks 
   add('meta reported fixed', null, { kind: 'meta', type: 'reported', measure: 'ratio', studies: rep.map((r, i) => ({ name: `R${i + 1}`, vals: r })), model: 'fixed', method: 'DL', hksj: false }, [['fe', fr.fe], ['ci_fe[0]', fr.ciFE[0]], ['Q', fr.Q]]);
 }
 
+/* ------------------------------------------- the same checks in R --- */
+// Each Python check has an R twin; null where the R script reports the number differently.
+function rExpr(spec, e) {
+  const k = spec.kind;
+  const direct = {
+    'res.statistic': k === 'cor' ? 'res$estimate' : 'res$statistic', 'welch["p_unc"].iloc[0]': 'welch$p.value',
+    'aov_rm["p_unc"].iloc[0]': 'summary(fit)[["Error: id:time"]][[1]][["Pr(>F)"]][1]', 'aov_rm["p_GG_corr"].iloc[0]': 'rm$anova_table[["Pr(>F)"]][1]',
+    'exact.pvalue': 'exact$p.value', 'asym.pvalue': 'res$p.value', 'ci[0]': 'ci[["lower"]]', 'ci[1]': 'ci[["upper"]]',
+    'm.rsquared': 'summary(m)$r.squared', 'm.params.iloc[1]': 'coef(m)[2]', 'm.bse.iloc[2]': 'coef(summary(m))[3, 2]', 'm.llr': 'm$null.deviance - m$deviance',
+    'lr.p_value': 'lr$pvalue', 'cph.params_["Age"]': 'coef(cox)[2]', 'cph.params_["HIV_Positive"]': 'coef(cox)[1]',
+    kappa: 'kappa', bias: 'bias', 'loa[0]': 'loa[1]', 'loa[1]': 'loa[2]', 'slope.pvalues[1]': 'summary(lm(diff ~ avg))$coefficients[2, 4]', alpha: 'res$total$raw_alpha',
+    'x.mean()': 'mean(x)', q1: `unname(quantile(x, 0.25, type = ${spec.qtype || 6}))`, q3: `unname(quantile(x, 0.75, type = ${spec.qtype || 6}))`, 'sw.pvalue': 'shapiro.test(x)$p.value', 'len(d)': 'nrow(d)',
+    re: 'c(res$b)', tau2: 'res$tau2', 'ci_re[0]': 'res$ci.lb', 'ci_re[1]': 'res$ci.ub', Q: 'res$QE', 'pred_int[1]': 'pred_int[2]',
+    fe: spec.model === 'fixed' ? 'c(res$b)' : null, 'ci_fe[0]': spec.model === 'fixed' ? 'res$ci.lb' : null,
+  };
+  if (e === 'res.pvalue') return k === 'aov' ? 'summary(fit)[[1]][["Pr(>F)"]][1]' : k === 't2s' || k === 'cq' ? 'res[["p"]]' : 'res$p.value';
+  if (e === 'res.kappa') return spec.weights === 'none' ? 'res$kappa' : 'res$weighted.kappa';
+  if (e === 'res.std_kappa') return null;
+  if (e === 'row["ICC"].iloc[0]') return `res$results$ICC[res$results$type == "${spec.form}"]`;
+  const m = /^adjusted\[(\d+)\]$/.exec(e);
+  if (m) return `adjusted[${Number(m[1]) + 1}]`;
+  return e in direct ? direct[e] : undefined;
+}
+// metafor's iterative estimators and coxph stop at their own tolerances.
+const rTol = (spec, e, rel) => (spec.kind === 'meta' && spec.method !== 'DL' && spec.model !== 'fixed' ? Math.max(rel, 5e-4) : spec.kind === 'surv' ? Math.max(rel, 1e-6) : rel);
+
 /* -------------------------------------------------------------- run --- */
 const root = mkdtempSync(join(tmpdir(), 'codegen-'));
 const manifest = cases.map((c, i) => {
@@ -178,25 +204,54 @@ const manifest = cases.map((c, i) => {
   if (!sc) throw new Error(`no generator for ${c.spec.kind}`);
   writeFileSync(join(dir, 'script.py'), sc.text);
   if (c.data) writeFileSync(join(dir, DATA_FILE), datasetCsv(DS[c.data]));
-  // Every R script must at least be produced without error.
-  if (!scriptFor(c.spec, 'r')?.text) throw new Error(`no R script for ${c.name}`);
+  const rs = scriptFor(c.spec, 'r');
+  if (!rs?.text) throw new Error(`no R script for ${c.name}`);
+  writeFileSync(join(dir, 'script.R'), rs.text);
+  c.rchecks = c.checks.map(([e, want, rel = 1e-9, abs = 1e-12]) => {
+    const r = rExpr(c.spec, e);
+    if (r === undefined) throw new Error(`no R twin for ${c.name}: ${e}`);
+    return r === null ? null : [r, want, rTol(c.spec, e, rel), abs];
+  }).filter(Boolean);
+  writeFileSync(join(dir, 'check.R'), [
+    'zz <- file(tempfile(), "w"); sink(zz); sink(zz, type = "message")',
+    '.err <- tryCatch({ source("script.R", local = globalenv()); NULL }, error = function(e) e)',
+    'sink(type = "message"); sink(); close(zz)',
+    'if (!is.null(.err)) cat("ERROR:", conditionMessage(.err), "\n") else {',
+    ...c.rchecks.map(([r]) => `  cat("VAL", tryCatch(sprintf("%.17g", as.numeric(${r})[1]), error = function(e) "NA"), "\n")`),
+    '}', ''].join('\n'));
   return { name: c.name, dir, exprs: c.checks.map((k) => k[0]) };
 });
 writeFileSync(join(root, 'manifest.json'), JSON.stringify(manifest));
 const out = spawnSync('python3', ['-I', join(here, 'check.py'), join(root, 'manifest.json')], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
 if (out.status !== 0) { console.error(out.stderr); process.exit(1); }
 const got = JSON.parse(out.stdout.trim().split('\n').pop());
-let bad = 0, n = 0;
+let bad = 0, n = 0, nr = 0;
+const close = (v, want, rel, abs) => typeof v === 'number' && Number.isFinite(v) && Math.abs(v - want) <= abs + rel * Math.abs(want);
 cases.forEach((c, i) => {
   const r = got[i];
-  if (r.error) { bad++; console.log(`FAIL ${c.name}: ${r.error.split('\n').slice(-3).join(' | ')}`); return; }
+  if (r.error) { bad++; console.log(`FAIL python ${c.name}: ${r.error.split('\n').slice(-3).join(' | ')}`); return; }
   c.checks.forEach(([expr, want, rel = 1e-9, abs = 1e-12], j) => {
     n++;
-    const v = r.values[j];
-    const ok = typeof v === 'number' && (Math.abs(v - want) <= abs + rel * Math.abs(want));
-    if (!ok) { bad++; console.log(`FAIL ${c.name}: ${expr} = ${v}, app ${want}`); }
+    if (!close(r.values[j], want, rel, abs)) { bad++; console.log(`FAIL python ${c.name}: ${expr} = ${r.values[j]}, app ${want}`); }
   });
   if (!c.checks.length) n++;
 });
-console.log(`\n${cases.length} scripts, ${n} checks, ${bad} failed`);
+// R: run each script where R is installed; skip with a note otherwise.
+const hasR = spawnSync('Rscript', ['--version'], { encoding: 'utf8' }).status === 0;
+if (hasR) {
+  cases.forEach((c, i) => {
+    const dir = manifest[i].dir;
+    const o = spawnSync('Rscript', ['--vanilla', 'check.R'], { cwd: dir, encoding: 'utf8', maxBuffer: 16 * 1024 * 1024 });
+    const lines = (o.stdout || '').split('\n');
+    const err = lines.find((l) => l.startsWith('ERROR:'));
+    if (o.status !== 0 || err) { bad++; console.log(`FAIL R ${c.name}: ${err || (o.stderr || '').split('\n').slice(-4).join(' | ')}`); return; }
+    const vals = lines.filter((l) => l.startsWith('VAL ')).map((l) => Number(l.slice(4).trim()));
+    c.rchecks.forEach(([expr, want, rel, abs], j) => {
+      nr++;
+      if (!close(vals[j], want, rel, abs)) { bad++; console.log(`FAIL R ${c.name}: ${expr} = ${vals[j]}, app ${want}`); }
+    });
+    if (!c.rchecks.length) nr++;
+  });
+}
+console.log(`\n${cases.length} Python scripts, ${n} checks; ${hasR ? `${cases.length} R scripts, ${nr} checks` : 'R not installed: R scripts produced but not run'}; ${bad} failed`);
 process.exit(bad ? 1 : 0);
