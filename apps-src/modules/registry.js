@@ -8,6 +8,8 @@ import PValuesPractice from './practice/p-values.jsx';
 import DescribeTool from './tools/describe.jsx';
 import TestsTool from './tools/tests.jsx';
 import SampleSizeTool from './tools/samplesize.jsx';
+import RegressionTool from './tools/regression.jsx';
+import SurvivalTool from './tools/survival.jsx';
 
 export const STAGES = [
   { id: 'plan', label: 'Plan', blurb: 'Frame the question, search the literature, set objectives.' },
@@ -67,8 +69,18 @@ export const MODULES = [
     keywords: 't test anova mann whitney wilcoxon kruskal friedman chi square fisher mcnemar cochran correlation pearson spearman kendall proportion tukey bonferroni holm',
     tool: TestsTool,
   },
-  { id: 'regression', stage: 'analyse', phase: 1, apps: RB, tag: 'Statistics', title: 'Regression', summary: 'Linear and logistic regression with adjusted estimates and model checks.' },
-  { id: 'survival', stage: 'analyse', phase: 1, apps: RB, tag: 'Statistics', title: 'Survival Analysis', summary: 'Kaplan–Meier curves, median survival and the log-rank test.' },
+  {
+    id: 'regression', stage: 'analyse', status: 'ready', apps: RB, tag: 'Statistics', title: 'Regression',
+    summary: 'Linear and logistic regression with categorical predictors and interactions: adjusted estimates, term tests, ROC area, Hosmer-Lemeshow and model checks.',
+    keywords: 'regression linear logistic multiple multivariable adjusted odds ratio coefficient r squared vif hosmer lemeshow roc auc two-way anova interaction',
+    tool: RegressionTool,
+  },
+  {
+    id: 'survival', stage: 'analyse', status: 'ready', apps: RB, tag: 'Statistics', title: 'Survival Analysis',
+    summary: 'Kaplan-Meier curves with numbers at risk, median survival, the log-rank test and Cox hazard ratios.',
+    keywords: 'survival kaplan meier log rank cox proportional hazards hazard ratio median survival censoring time to event',
+    tool: SurvivalTool,
+  },
   { id: 'agreement', stage: 'analyse', phase: 1, apps: RB, tag: 'Statistics', title: 'Agreement and Reliability', summary: "Kappa, weighted kappa, ICC, Bland–Altman and Cronbach's alpha." },
   { id: 'measures', stage: 'analyse', phase: 2, apps: RE, tag: 'Epidemiology', title: 'Frequency, Association and Impact', summary: 'Rates and proportions; OR, RR and PR with CIs; attributable and preventable fractions.' },
   { id: 'diagnostic', stage: 'analyse', phase: 2, apps: RE, tag: 'Epidemiology', title: 'Diagnostic Accuracy and ROC', summary: 'Sensitivity, specificity, predictive values at any prevalence, likelihood ratios, ROC curves.' },

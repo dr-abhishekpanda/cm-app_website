@@ -361,3 +361,43 @@ function LineSvg({ xs, ys, label, xLabel, yLabel, target, mark, yMax = 1, yFmt =
     </svg>
   );
 }
+
+const SERIES = ['var(--primary)', 'var(--accent)', 'var(--info)', 'var(--ink-soft)', 'var(--danger)', 'var(--primary-deep)'];
+export const seriesColour = (i) => SERIES[i % SERIES.length];
+
+/** Kaplan-Meier step curves; each series { label, steps: [{ t, S, lo, hi }], censored: [t] }. */
+export function KMPlot(props) {
+  const [ref, w] = useWidth();
+  return <div class="plotbox" ref={ref}><KMSvg {...props} width={w} height={heightFor(w, 260)} /></div>;
+}
+
+function KMSvg({ series, label, unit = '', band, width, height }) {
+  const pad = { l: 44, r: 14, t: 12, b: 40 };
+  const W = width - pad.l - pad.r, H = height - pad.t - pad.b;
+  const tmax = Math.max(...series.map((s) => Math.max(s.tmax ?? 0, ...s.steps.map((x) => x.t))), 1e-9);
+  const X = (t) => pad.l + (t / tmax) * W;
+  const Y = (v) => pad.t + H - v * H;
+  const stepPath = (steps, key, end) => {
+    let d = `M${X(0)},${Y(1)}`;
+    let prev = 1;
+    for (const s of steps.slice(1)) { d += `L${X(s.t)},${Y(prev)}L${X(s.t)},${Y(s[key])}`; prev = s[key]; }
+    return d + `L${X(end)},${Y(prev)}`;
+  };
+  return (
+    <svg class="plot" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label}>
+      <title>{label}</title>
+      {[0, 0.25, 0.5, 0.75, 1].map((t) => <g><line class="grid" x1={pad.l} x2={pad.l + W} y1={Y(t)} y2={Y(t)} /><text class="tick" x={pad.l - 6} y={Y(t) + 4} text-anchor="end">{Math.round(t * 100)}%</text></g>)}
+      {band && series.length === 1 ? <g>
+        <path d={stepPath(series[0].steps, 'lo', series[0].tmax)} fill="none" stroke={seriesColour(0)} stroke-width="1" stroke-dasharray="3 3" opacity="0.7" />
+        <path d={stepPath(series[0].steps, 'hi', series[0].tmax)} fill="none" stroke={seriesColour(0)} stroke-width="1" stroke-dasharray="3 3" opacity="0.7" />
+      </g> : null}
+      {series.map((s, i) => <g>
+        <path d={stepPath(s.steps, 'S', s.tmax)} fill="none" stroke={seriesColour(i)} stroke-width="2" />
+        {s.censored.map((t) => { const at = [...s.steps].reverse().find((x) => x.t <= t) || s.steps[0]; return <line x1={X(t)} x2={X(t)} y1={Y(at.S) - 4} y2={Y(at.S) + 4} stroke={seriesColour(i)} stroke-width="1.3" />; })}
+      </g>)}
+      <line class="axis" x1={pad.l} x2={pad.l + W} y1={pad.t + H} y2={pad.t + H} />
+      {niceTicks(0, tmax, width < 420 ? 4 : 7).map((t) => <text class="tick" x={X(t)} y={pad.t + H + 16} text-anchor="middle">{sig(t, 4)}</text>)}
+      <text class="lab" x={pad.l + W / 2} y={height - 4} text-anchor="middle">Time{unit ? ` (${unit})` : ''}</text>
+    </svg>
+  );
+}

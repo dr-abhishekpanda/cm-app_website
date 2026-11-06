@@ -10,7 +10,7 @@ import { chiSquareTest, fisher2x2, fisherRxC, mcnemar, linearByLinear, cochranQ 
 import { pearson, spearman, kendall } from '../../../engine/correlate.js';
 import { wilson, clopperPearson, binomialTest, twoProportions, proportionZ } from '../../../engine/proportions.js';
 import { adjust, ADJUST_METHODS } from '../../../engine/multiplicity.js';
-import { fixed, pValue, count, interval, sig } from '../../../engine/format.js';
+import { fixed, pValue, count, interval, sig, ratio } from '../../../engine/format.js';
 
 const P = (p) => pValue(p).report;
 // The p-value alone, for table cells: "0.032", "< 0.001", "> 0.999".
@@ -307,7 +307,7 @@ export function runTable({ table, rowLevels, colLevels, rowName, colName, eventC
     const tp = twoProportions(table[0][eventCol], rowTot[0], table[1][eventCol], rowTot[1]);
     effects.push(['Difference in proportions', `${fixed(100 * tp.diff, 1)} percentage points (${interval(tp.ci.map((v) => 100 * v), 1)})`]);
     const f2 = fisher2x2(eventCol === 0 ? table : table.map((r) => [r[1], r[0]]));
-    effects.push(['Odds ratio (conditional MLE)', `${sig(f2.orMLE, 3)} (${sig(f2.ci[0], 3)} to ${sig(f2.ci[1], 3)})`]);
+    effects.push(['Odds ratio (conditional MLE)', `${ratio(f2.orMLE)} (${ratio(f2.ci[0])} to ${ratio(f2.ci[1])})`]);
     sentence = `${evText} was recorded in ${count(table[0][eventCol])} of ${count(rowTot[0])} (${fixed(pct(table[0][eventCol], rowTot[0]), 1)}%) in ${rowLevels[0]} and ${count(table[1][eventCol])} of ${count(rowTot[1])} (${fixed(pct(table[1][eventCol], rowTot[1]), 1)}%) in ${rowLevels[1]}; difference ${fixed(100 * tp.diff, 1)} percentage points (95% CI ${interval(tp.ci.map((v) => 100 * v), 1)}; ${useExact ? `Fisher's exact test ${P(fisher.p)}` : `χ² = ${fixed(c.chi2Yates, 2)} with Yates' correction, df = 1, ${P(c.pYates)}`}).`;
   } else {
     sentence = `${colName ? pretty(colName) : 'The outcome'} ${pMain < 0.05 ? 'was associated' : 'was not clearly associated'} with ${colName ? pretty(rowName) : 'group'} (${useExact ? `${mainName}, ${P(pMain)}` : `χ² = ${fixed(c.chi2, 2)}, df = ${c.df}, ${P(c.p)}`}; Cramér's V = ${fixed(c.cramerV, 2)}; n = ${count(N)}).`;
@@ -348,7 +348,7 @@ export function runMcNemar({ a, b, c, d, labels, names }) {
   return {
     title: `McNemar's test${useExact ? ' (exact)' : ''}`, p,
     line: useExact ? `exact ${P(r.pExact)} (discordant pairs ${b} and ${c})` : `χ² = ${fixed(r.chi2, 2)}, df = 1, ${P(r.p)}`,
-    stats: [['Discordant pairs', `${b} and ${c}`], ['p (exact binomial)', pValue(r.pExact).exact], ['χ² (continuity corrected)', fixed(r.chi2, 3)], ['p (χ²)', pValue(r.p).exact], ['Odds ratio (discordant pairs)', `${sig(or, 3)} (${sig(orCi[0], 3)} to ${sig(orCi[1], 3)})`]],
+    stats: [['Discordant pairs', `${b} and ${c}`], ['p (exact binomial)', pValue(r.pExact).exact], ['χ² (continuity corrected)', fixed(r.chi2, 3)], ['p (χ²)', pValue(r.p).exact], ['Odds ratio (discordant pairs)', `${ratio(or)} (${ratio(orCi[0])} to ${ratio(orCi[1])})`]],
     tables: [{ caption: `${count(n)} pairs: rows ${pretty(names[0])}, columns ${pretty(names[1])}`, columns: [pretty(names[0]), labels[0], labels[1], 'Total'],
       rows: [[labels[0], count(a), count(b), count(a + b)], [labels[1], count(c), count(d), count(c + d)], [{ text: 'Total', cls: 'hl' }, count(a + c), count(b + d), count(n)]] }],
     checks: [{ ok: null, text: useExact ? 'Fewer than 25 discordant pairs: the exact binomial p is reported.' : '25 or more discordant pairs: the continuity-corrected chi-square is reported (the exact p is also shown).' }],
