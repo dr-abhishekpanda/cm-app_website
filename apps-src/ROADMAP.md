@@ -36,7 +36,7 @@ Five apps from one shared source. #RESEARCH-APP leads; the other four are subset
 - Old builds retire when their replacements go live.
 - Meta-analysis defaults: random effects with the Paule-Mandel estimate of τ² and the Hartung-Knapp-Sidik-Jonkman CI (Veroniki 2016; IntHout 2014); REML and DerSimonian-Laird and the normal CI remain available.
 - "None" and "Nil" are read as answers, not as missing values: in health records they are usually real categories.
-- Code export: Python scripts are run against the app before release (`npm run test:code`); R scripts are checked by reading until an R runtime is available in the build environment.
+- Code export: every R and Python script is run against the app before release (`npm run test:code`). R 4.3 and its packages come from Ubuntu's archive in the build environment; CRAN itself is not reachable, so scripts use only packages Ubuntu ships.
 
 ## Defects To Fix From The Earlier Builds
 

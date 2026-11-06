@@ -20,7 +20,7 @@ Run from `apps-src/`.
 |---|---|
 | Install dev dependencies | `npm install` |
 | Engine tests (SciPy and mpmath references) | `npm test` |
-| Run every generated Python script against the app (needs Python with SciPy, statsmodels, pingouin, lifelines, scikit-posthocs) | `npm run test:code` |
+| Run every generated R and Python script against the app (needs R with survival, psych, metafor, car, pROC, afex, and Python with SciPy, statsmodels, pingouin, lifelines, scikit-posthocs; R is skipped with a note if absent) | `npm run test:code` |
 | Build one app, or all | `npm run build -- research-app` / `npm run build` |
 | Smoke test a built app | `npm run e2e -- research-app` (add `--shots <dir>` for screenshots) |
 | Regenerate reference values | `python3 -I tools/refgen/engine_ref.py` (needs scipy, mpmath) |

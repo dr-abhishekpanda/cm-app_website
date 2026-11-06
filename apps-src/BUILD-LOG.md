@@ -2,6 +2,12 @@
 
 Newest entry first. Each entry records what changed, how it was checked, and anything left open.
 
+## 2026-11-07 · R Scripts Run and Checked
+
+- R 4.3.3 installed in the build environment from Ubuntu's archive, with survival, psych, metafor, car, pROC and afex (CRAN is not reachable from here).
+- R scripts now name their results (`res`, `fit`, `m`, `lr`, `cox`) so they can be checked, and no longer need irr, FSA or ResourceSelection: Fleiss' kappa, Dunn's test and the Hosmer-Lemeshow test are written out in base R, the ICC comes from psych, and the Greenhouse-Geisser correction from afex.
+- `npm run test:code` runs all 50 R scripts as well as the 50 Python scripts: 111 R checks and 117 Python checks match the app. Tolerances: 1e-9 for closed forms; 5e-4 for metafor's REML and Paule-Mandel and 1e-6 for coxph, which stop at their own convergence thresholds.
+
 ## 2026-11-07 · Headings Instead of Eyebrow Labels; Phase 0 and 1 Merged
 
 - The owner asked Claude to merge PRs #4 to #10; all seven merged into `main` with merge commits, in order.
