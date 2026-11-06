@@ -57,7 +57,7 @@ export function SettingsProvider({ appId, children }) {
     if (s.theme === 'system') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', s.theme);
   }, [s]);
   const update = useCallback((patch) => setS((old) => ({ ...old, ...patch })), []);
-  return <SettingsCtx.Provider value={{ ...s, update }}>{children}</SettingsCtx.Provider>;
+  return <SettingsCtx.Provider value={{ ...s, appId, update }}>{children}</SettingsCtx.Provider>;
 }
 
 export const useSettings = () => useContext(SettingsCtx);
@@ -76,6 +76,7 @@ const paths = {
   copy: 'M8 3h10a2 2 0 0 1 2 2v12h-2V5H8V3Zm-3 4h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Zm0 2v10h10V9H5Z',
   check: 'M9.5 16.2 5.3 12l-1.4 1.4 5.6 5.6L20.1 8.4 18.7 7 9.5 16.2Z',
   arrow: 'M13 5l7 7-7 7-1.4-1.4 4.6-4.6H4v-2h12.2l-4.6-4.6L13 5Z',
+  plus: 'M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5Z',
 };
 export function Icon({ name, title }) {
   return (
@@ -174,17 +175,28 @@ export function MathView({ html, block }) {
     : <span dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
-export function CopyButton({ text, label = 'Copy sentence' }) {
+/** Put text on the clipboard; with html, as rich text too (Word pastes a real table). Resolves true on success. */
+export async function copyText(text, html) {
+  if (html && typeof ClipboardItem !== 'undefined' && navigator.clipboard?.write) {
+    try {
+      await navigator.clipboard.write([new ClipboardItem({ 'text/html': new Blob([html], { type: 'text/html' }), 'text/plain': new Blob([text], { type: 'text/plain' }) })]);
+      return true;
+    } catch { /* fall back to plain text */ }
+  }
+  try { await navigator.clipboard.writeText(text); return true; } catch {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'absolute'; ta.style.left = '-9999px';
+      document.body.appendChild(ta); ta.select(); const ok = document.execCommand('copy'); ta.remove();
+      return ok;
+    } catch { return false; }
+  }
+}
+
+export function CopyButton({ text, html, label = 'Copy sentence' }) {
   const [done, setDone] = useState(false);
   const copy = async () => {
-    let ok = false;
-    try { await navigator.clipboard.writeText(text); ok = true; } catch {
-      try {
-        const ta = document.createElement('textarea');
-        ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'absolute'; ta.style.left = '-9999px';
-        document.body.appendChild(ta); ta.select(); ok = document.execCommand('copy'); ta.remove();
-      } catch { ok = false; }
-    }
+    const ok = await copyText(typeof text === 'function' ? text() : text, typeof html === 'function' ? html() : html);
     setDone(ok ? 'Copied' : 'Copy failed: select the text instead');
     setTimeout(() => setDone(false), 2200);
   };

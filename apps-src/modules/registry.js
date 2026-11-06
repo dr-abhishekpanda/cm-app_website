@@ -12,6 +12,7 @@ import RegressionTool from './tools/regression.jsx';
 import SurvivalTool from './tools/survival.jsx';
 import AgreementTool from './tools/agreement.jsx';
 import MetaTool from './tools/meta.jsx';
+import ResultsTool from './tools/results.jsx';
 
 export const STAGES = [
   { id: 'plan', label: 'Plan', blurb: 'Frame the question, search the literature, set objectives.' },
@@ -103,7 +104,12 @@ export const MODULES = [
     tool: MetaTool,
   },
 
-  { id: 'results-text', stage: 'report', phase: 1, apps: RB, tag: 'Statistics', title: 'Results to Text and Table 1', summary: 'Publication tables and result sentences built from your analyses.' },
+  {
+    id: 'results-text', stage: 'report', status: 'ready', apps: RB, tag: 'Statistics', title: 'Results to Text and Table 1',
+    summary: 'Table 1 of participant characteristics with a first-draft paragraph, and every sentence and table you add from the tools, gathered for Word.',
+    keywords: 'table 1 baseline characteristics participants demographic table results section write up word copy report sentences my results thesis dissertation manuscript',
+    tool: ResultsTool,
+  },
   { id: 'reporting', stage: 'report', phase: 3, apps: R, tag: 'Workflow', title: 'Reporting Checklists and Appraisal', summary: 'STROBE, CONSORT, STARD, PRISMA and more; critical appraisal checklists.' },
   { id: 'writing', stage: 'report', phase: 3, apps: R, tag: 'Workflow', title: 'Writing and Publishing', summary: 'IMRAD scaffold, journal checks, authorship and AI-disclosure statements.' },
   { id: 'code-export', stage: 'report', phase: 1, apps: RB, tag: 'Statistics', title: 'Code Export', summary: 'Every analysis as a ready-to-run R or Python script.' },

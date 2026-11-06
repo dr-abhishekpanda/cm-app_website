@@ -147,6 +147,7 @@ try {
     await page.getByLabel('Residence', { exact: true }).check();
     const lin = await text(page, '.verdict-line');
     check(`${label}: linear regression runs`, /^R² = 0\.\d{3}, F\(1, 118\)/.test(lin), lin);
+    await page.locator('.report').first().getByRole('button', { name: 'Add to my results' }).click();
     await page.goto(`${base}#/tool/survival`);
     await page.getByRole('button', { name: 'Replace or view' }).click();
     await page.getByRole('button', { name: 'Load example TB cohort' }).click();
@@ -195,6 +196,23 @@ try {
     check(`${label}: pooled proportion on the logit scale`, (await text(page, '#ma-h')) === 'Pooled proportion 43.2%', await text(page, '#ma-h'));
     check(`${label}: no sideways scroll on meta-analysis`, await noSideScroll(page));
     await shot(page, `${label}-meta`);
+    await page.locator('.restable').first().getByRole('button', { name: 'Add to my results' }).click();
+
+    // Phase 1e: Table 1 and My results.
+    await page.goto(`${base}#/tool/results-text`);
+    await page.getByRole('button', { name: 'Replace or view' }).click();
+    await page.getByRole('button', { name: 'Load example data', exact: true }).click();
+    await page.getByLabel('Columns by group (optional)').selectOption('Residence');
+    for (const v of ['Age', 'Hb registration', 'Trimester', 'Anaemia registration']) await page.getByLabel(v, { exact: true }).check();
+    const head = await page.locator('.restable thead').first().textContent();
+    check(`${label}: Table 1 by residence`, /Rural \(n = \d+\)/.test(head) && /Urban \(n = \d+\)/.test(head), head.replace(/\s+/g, ' '));
+    check(`${label}: Table 1 paragraph`, (await text(page, '.report .say')).startsWith('The analysis included 120 participants'), (await text(page, '.report .say')).slice(0, 60));
+    check(`${label}: trimester summarised as categories`, (await page.locator('.restable tbody th', { hasText: 'Trimester' }).count()) === 1);
+    check(`${label}: no sideways scroll on Table 1`, await noSideScroll(page));
+    await shot(page, `${label}-table1`);
+    await page.getByRole('button', { name: /^My results \(2\)$/ }).click();
+    check(`${label}: My results gathers a sentence and a table`, (await page.locator('.nbitem').count()) === 2 && (await page.locator('.nbitem textarea').count()) === 1);
+    check(`${label}: no sideways scroll on My results`, await noSideScroll(page));
 
     await page.goto(`${base}#/`);
     await page.getByRole('button', { name: 'Settings' }).click();
