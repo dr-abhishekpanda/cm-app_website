@@ -99,11 +99,11 @@ function Table1Panel({ ds }) {
       </section>
       {t ? (
         <section class="panel stack result-panel" aria-labelledby="t1r-h">
-          <div><p class="eyebrow" style="margin-bottom:8px">Result</p><h2 id="t1r-h" style="margin-bottom:6px">{caption.replace(/^Table 1\. /, '')}</h2></div>
+          <div><h2 id="t1r-h" style="margin-bottom:6px">{caption.replace(/^Table 1\. /, '')}</h2></div>
           <DataTable caption={caption} columns={t.columns} rows={t.rows.map((r) => r.all.map((c, i) => (r.kind === 'head' && i === 0 ? { text: c, cls: 'hl' } : c)))}
             numeric={t.columns.map((_, i) => i).slice(1)} note={t.footnotes.join(' ')} />
           <Report label="Participants paragraph (a first draft to edit)" text={describe(tAll)} />
-          {group && tests ? <div class="prose"><span class="label">References</span><Refs refs={REFS} ids={['consortEE10', 'strobeEE', 'kirkwood']} /></div> : null}
+          {group && tests ? <div class="prose"><h3 class="sub">References</h3><Refs refs={REFS} ids={['consortEE10', 'strobeEE', 'kirkwood']} /></div> : null}
         </section>
       ) : <p class="small">Tick the characteristics to show.</p>}
     </>
@@ -171,7 +171,7 @@ export default function ResultsTool() {
   const [tab, setTab] = useState('table1');
   return (
     <div>
-      <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Report' }]} eyebrow="Report" title="Results to Text and Table 1"
+      <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Report' }]} title="Results to Text and Table 1"
         lede="Build the participants table from your data, with a first-draft paragraph, and gather the sentences and tables you add from every tool into one list to edit and copy into Word." />
       <div class="stack">
         <div><Seg wide value={tab} onChange={setTab} options={[{ value: 'table1', label: 'Table 1' }, { value: 'mine', label: `My results (${nb.items.length})` }]} /></div>

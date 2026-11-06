@@ -86,13 +86,13 @@ function LinearResult({ des, outcome, d, code }) {
     : 'no predictor was associated with the outcome at the 5% level'}${des.terms.length > 1 ? ', each adjusted for the others' : ''}.`;
   return (
     <section class="panel stack result-panel" aria-labelledby="lin-h">
-      <div><p class="eyebrow" style="margin-bottom:8px">Result</p><h2 id="lin-h" style="margin-bottom:6px">Linear regression</h2>
+      <div><h2 id="lin-h" style="margin-bottom:6px">Linear regression</h2>
         <p class="verdict-line mono">R² = {fixed(f.r2, 3)}, F({f.df1}, {f.df}) = {fixed(f.F, 2)}, {P(f.pF)}</p></div>
       <Stats items={[['Participants', count(f.n)], des.dropped ? ['Left out (missing data)', count(des.dropped)] : null, ['R²', fixed(f.r2, 3)], ['Adjusted R²', fixed(f.adjR2, 3)], ['Residual SE', fixed(f.s, d)], ['F', `${fixed(f.F, 2)} on ${f.df1}, ${f.df} df`], ['p (model)', pValue(f.pF).exact]]} />
       <DataTable caption={`Coefficients: change in ${pretty(outcome)}`} columns={['Term', 'B', '95% CI', 'SE', 't', 'p', 'VIF']} rows={rows} numeric={[1, 2, 3, 4, 5, 6]} />
       {termTests.length ? <DataTable caption="Tests of terms with more than one coefficient" columns={['Term', 'F', 'df', 'p']} rows={termTests.map(({ t, r }) => [t.name, fixed(r.F, 2), `${r.df1}, ${r.df2}`, pCell(r.p)])} numeric={[1, 2, 3]} /> : null}
       <div>
-        <span class="label">Checks</span>
+        <h3 class="sub">Checks</h3>
         <ul class="checks">
           <li class={!(sw.p < 0.05) || f.n >= 100 ? 'ok' : 'no'}><span class="mk">{!(sw.p < 0.05) || f.n >= 100 ? 'OK' : 'Check'}</span><span>Residuals: Shapiro-Wilk {Number.isFinite(sw.p) ? P(sw.p) : 'not run'}{sw.p < 0.05 && f.n >= 100 ? '; with 100 or more participants the estimates and CIs are robust to this' : ''}. Look at the Q-Q plot.</span></li>
           <li class={maxVif < 5 ? 'ok' : 'no'}><span class="mk">{maxVif < 5 ? 'OK' : 'Check'}</span><span>Collinearity: largest VIF {v.length ? fixed(maxVif, 2) : '1.00'}{maxVif >= 5 ? '. Above 5, the predictors overlap: consider dropping or combining one.' : '.'}</span></li>
@@ -108,7 +108,7 @@ function LinearResult({ des, outcome, d, code }) {
       <Report text={say} />
       <CodeExport spec={code} />
       <AtLevel min="intermediate"><p class="small">B is the change in {pretty(outcome)} for a one-unit increase in a numeric predictor, or for a category against its reference, holding the other predictors fixed. CIs and p-values use the t distribution with {f.df} df.</p></AtLevel>
-      <div class="prose"><span class="label">References</span><Refs refs={REFS} ids={['kirkwood']} /></div>
+      <div class="prose"><h3 class="sub">References</h3><Refs refs={REFS} ids={['kirkwood']} /></div>
     </section>
   );
 }
@@ -149,7 +149,7 @@ function LogisticResult({ des, outcome, event, code }) {
   const rp = rocPoints(des.y, f.fitted);
   return (
     <section class="panel stack result-panel" aria-labelledby="log-h">
-      <div><p class="eyebrow" style="margin-bottom:8px">Result</p><h2 id="log-h" style="margin-bottom:6px">Logistic regression</h2>
+      <div><h2 id="log-h" style="margin-bottom:6px">Logistic regression</h2>
         <p class="verdict-line mono">LR χ² = {fixed(f.lr, 2)}, df = {f.dfLR}, {P(f.pLR)} · AUC {fixed(roc.auc, 2)}</p></div>
       <Stats items={[['Participants', count(f.n)], ['With the outcome', `${count(f.events)} (${fixed((100 * f.events) / f.n, 1)}%)`], des.dropped ? ['Left out (missing data)', count(des.dropped)] : null,
         ['Nagelkerke R²', fixed(f.nagelkerke, 3)], ['Cox-Snell R²', fixed(f.coxSnell, 3)], ['ROC area (DeLong 95% CI)', `${fixed(roc.auc, 3)} (${interval(roc.ci, 3)})`],
@@ -157,7 +157,7 @@ function LogisticResult({ des, outcome, event, code }) {
       <DataTable caption={`Odds ratios for ${pretty(outcome)} = "${event}"`} columns={['Term', 'OR', '95% CI', 'B', 'SE', 'z', 'p']} rows={rows} numeric={[1, 2, 3, 4, 5, 6]} />
       {termTests.length ? <DataTable caption="Likelihood-ratio tests of terms with more than one coefficient" columns={['Term', 'χ²', 'df', 'p']} rows={termTests.map(({ t, r }) => [t.name, fixed(r.chi2, 2), String(r.df), pCell(r.p)])} numeric={[1, 2, 3]} /> : null}
       <div>
-        <span class="label">Checks</span>
+        <h3 class="sub">Checks</h3>
         <ul class="checks">
           <li class={f.epv >= 10 ? 'ok' : 'no'}><span class="mk">{f.epv >= 10 ? 'OK' : 'Check'}</span><span>Events per variable: {fixed(f.epv, 1)} (the smaller outcome group per coefficient). Below 10, odds ratios can be biased and unstable (Peduzzi and colleagues).</span></li>
           {f.separation ? <li class="no"><span class="mk">Check</span><span>Some predicted probabilities are almost exactly 0 or 1 with very large coefficients: a predictor separates the outcome completely, so its odds ratio is not estimable. Merge categories or use penalised (Firth) regression.</span></li> : null}
@@ -170,7 +170,7 @@ function LogisticResult({ des, outcome, event, code }) {
       <Report text={say} />
       <CodeExport spec={code} />
       <AtLevel min="intermediate"><p class="small">Odds ratios compare the odds of "{event}" for a one-unit increase, or against the reference category, holding the other predictors fixed. CIs are Wald intervals; with sparse data, profile-likelihood or exact methods are safer.</p></AtLevel>
-      <div class="prose"><span class="label">References</span><Refs refs={REFS} ids={['hosmer', 'peduzzi', 'nagelkerke', 'delong']} /></div>
+      <div class="prose"><h3 class="sub">References</h3><Refs refs={REFS} ids={['hosmer', 'peduzzi', 'nagelkerke', 'delong']} /></div>
     </section>
   );
 }
@@ -203,7 +203,7 @@ export default function RegressionTool() {
   }
   return (
     <div>
-      <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Analyse' }]} eyebrow="Analyse" title="Regression"
+      <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Analyse' }]} title="Regression"
         lede="Linear regression for a numeric outcome and logistic regression for a yes/no outcome, with categorical predictors, an optional interaction, adjusted estimates and the model checks reviewers ask for." />
       <div class="stack">
         <DataPanel />

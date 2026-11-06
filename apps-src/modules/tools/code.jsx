@@ -33,7 +33,7 @@ export default function CodeTool() {
   };
   return (
     <div>
-      <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Report' }]} eyebrow="Report" title="Code Export"
+      <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Report' }]} title="Code Export"
         lede="Every analysis can be rerun in R or Python: open 'R and Python code for this analysis' under a result to copy or download the script." />
       <div class="stack">
         <Callout mark="How it works">

@@ -83,7 +83,7 @@ export default function SurvivalTool() {
       : `Of ${count(first.rs.length)} participants, ${count(first.km.events)} had the event; ${pct(first.km.at(atTimes[0]).S)}% (95% CI ${pct(first.km.at(atTimes[0]).lo)} to ${pct(first.km.at(atTimes[0]).hi)}) were event-free at ${sig(atTimes[0], 3)} ${unit}${Number.isFinite(first.km.median) ? `, and the median time to the event was ${fmtT(first.km.median)} ${unit}` : ''}.`;
     body = (
       <section class="panel stack result-panel" aria-labelledby="km-h">
-        <div><p class="eyebrow" style="margin-bottom:8px">Result</p><h2 id="km-h" style="margin-bottom:6px">Kaplan-Meier analysis</h2>
+        <div><h2 id="km-h" style="margin-bottom:6px">Kaplan-Meier analysis</h2>
           {lr ? <p class="verdict-line mono">Log-rank χ² = {fixed(lr.chi2, 2)}, df = {lr.df}, {P(lr.p)}</p> : null}</div>
         <Stats items={[['Participants', count(data.rows.length)], ['Events', count(data.rows.filter((r) => r.e).length)], data.dropped ? ['Left out (missing data)', count(data.dropped)] : null, data.negative ? ['Left out (negative time)', count(data.negative)] : null]} />
         <figure style="margin:0">
@@ -103,7 +103,7 @@ export default function SurvivalTool() {
           </>
         )) : null}
         <div>
-          <span class="label">Checks</span>
+          <h3 class="sub">Checks</h3>
           <ul class="checks">
             <li class="info"><span class="mk">Note</span><span>Censoring must be unrelated to the outcome (non-informative): people lost to follow-up should have the same prospects as those who stay.</span></li>
             {coxRes && !coxRes.error ? <li class="info"><span class="mk">Note</span><span>Hazard ratios assume proportional hazards: curves that cross, or whose gap grows and shrinks, break this assumption.</span></li> : null}
@@ -116,13 +116,13 @@ export default function SurvivalTool() {
           covars: covNames.map((n) => { const c = col(ds, n), o = chosen[n]; return o.type === 'numeric' ? { name: n, type: 'numeric' } : { name: n, type: 'categorical', ref: o.ref && c.levels.includes(o.ref) ? o.ref : c.levels[0], levels: c.levels, numeric: c.numeric }; }),
         }} />
         <AtLevel min="advanced"><p class="small">Survival uses the product-limit estimator with Greenwood's variance; the 95% limits use the log(−log) transformation, and the median's interval comes from where those limits cross 50% (Brookmeyer and Crowley). Tied event times in the Cox model use Efron's method.</p></AtLevel>
-        <div class="prose"><span class="label">References</span><Refs refs={REFS} ids={['kaplanMeier', 'mantelLogrank', 'brookmeyer', 'coxPH', 'efron', 'kirkwood']} /></div>
+        <div class="prose"><h3 class="sub">References</h3><Refs refs={REFS} ids={['kaplanMeier', 'mantelLogrank', 'brookmeyer', 'coxPH', 'efron', 'kirkwood']} /></div>
       </section>
     );
   }
   return (
     <div>
-      <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Analyse' }]} eyebrow="Analyse" title="Survival Analysis"
+      <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Analyse' }]} title="Survival Analysis"
         lede="Kaplan-Meier curves with numbers at risk, median survival and survival at chosen times, the log-rank test, and hazard ratios from a Cox model." />
       <div class="stack">
         <DataPanel examples={[{ label: 'Load example TB cohort', csv: exampleTbCsv, source: 'example-tb' }, { label: 'Load anaemia example', csv: exampleCsv, source: 'example' }]} />

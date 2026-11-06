@@ -164,10 +164,6 @@ export function Callout({ kind = 'info', mark, children }) {
 
 export const Chip = ({ lb, vl }) => <span class="datachip"><span class="lb">{lb}</span><span class="vl">{vl}</span></span>;
 
-export function Eyebrow({ children, muted }) {
-  return <p class="eyebrow">{children}{muted ? <span class="muted">{muted}</span> : null}</p>;
-}
-
 /** Static formula rendered to MathML at build time (tex`...` in source becomes an HTML string). */
 export function MathView({ html, block }) {
   return block
@@ -208,16 +204,18 @@ export function CopyButton({ text, html, label = 'Copy sentence' }) {
 }
 
 /* -------------------------------------------------------------- headers --- */
-export function PageHead({ crumbs = [], eyebrow, title, lede }) {
+/** Page header: breadcrumb, the title (h1), an optional subheading and the lede. No eyebrow labels:
+ * the owner prefers proper headings and subheadings (November 2026). */
+export function PageHead({ crumbs = [], title, subhead, lede }) {
   return (
     <header class="head">
       {crumbs.length ? (
         <nav class="crumbs" aria-label="Breadcrumb">
-          {crumbs.map((c, i) => [i ? <span aria-hidden="true">/</span> : null, c.href ? <a href={c.href}>{c.label}</a> : <span>{c.label}</span>])}
+          {crumbs.map((c, i) => [i ? <span aria-hidden="true">›</span> : null, c.href ? <a href={c.href}>{c.label}</a> : <span>{c.label}</span>])}
         </nav>
       ) : null}
-      {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
       <h1>{title}</h1>
+      {subhead ? <p class="subhead">{subhead}</p> : null}
       {lede ? <p class="lede">{lede}</p> : null}
     </header>
   );

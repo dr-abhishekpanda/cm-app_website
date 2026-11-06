@@ -10,7 +10,7 @@ export default function PValuesLesson() {
   const p = studentT.twoSided(2.1, 18);
   return (
     <div>
-      <PageHead crumbs={[{ label: 'Learn', href: '#/learn' }, { label: 'Analyse' }]} eyebrow="Lesson · Analyse"
+      <PageHead crumbs={[{ label: 'Learn', href: '#/learn' }, { label: 'Analyse' }]}
         title="Reading a p-Value"
         lede="What a p-value measures, what it does not, and how to report one so a reader can judge the finding." />
       <div class="levels">

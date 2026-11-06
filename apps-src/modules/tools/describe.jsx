@@ -162,7 +162,7 @@ export default function DescribeTool() {
 
   return (
     <div>
-      <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Analyse' }]} eyebrow="Analyse"
+      <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Analyse' }]}
         title="Describe Your Data"
         lede="Summaries for every variable, a check of each distribution's shape with the summary to report, frequency tables and plots. Your data stay on this device." />
       <div class="stack">

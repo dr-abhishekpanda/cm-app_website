@@ -46,7 +46,7 @@ The build writes `../<app-path>/`: `index.html` (one file, fonts and formulas in
 3. **No silent wrong answers.** Validate every input inline; never `alert()`. Use exact methods where the sample is small (exact p for small-sample nonparametric tests, t not z for t statistics), and say which method ran.
 4. **Every result is reportable.** Give the estimate, its confidence interval where one exists, a report sentence with a copy button, and the method's reference.
 5. **Benchmarks carry their source and date** (NFHS-5, SRS bulletin year, HMIS year). No benchmark without a citation.
-6. **Brand.** EWS v1.0 tokens from `brand/ews.css`; app layer in `ui/css/app.css`. The epidemic curve appears only in the outbreak module. Footer credit stays exactly as in `ui/shell.jsx`.
+6. **Brand.** EWS v1.0 tokens from `brand/ews.css`; app layer in `ui/css/app.css`. The epidemic curve appears only in the outbreak module. Footer credit stays exactly as in `ui/shell.jsx`. No eyebrow labels (small uppercase labels above headings): use the page title, section headings and subheadings, in normal case (owner's preference, November 2026; `brand/ews.css` stays at v1.0 until the owner issues v1.1).
 7. **Language.** Indian English (programme, analyse, randomisation), straight quotes, no emoji. Avoid the owner's banned words (delve, intricate, pivotal, underscore, crucial, landscape, realm, tapestry, testament, meticulous, commendable, foster, navigate, showcase, paramount, resonate, unwavering, compelling, elevate, surpass, holistic, seamless; "robust" only in its statistical sense).
 8. **References are verified.** Cite only sources checked against PubMed, the publisher, or the government portal. Never invent a DOI, PMID, page range or guideline clause.
 9. **Storage** goes through `store` in `ui/core.jsx` (wrapped in try/catch); keys start with the app id (`research:`).
@@ -54,7 +54,7 @@ The build writes `../<app-path>/`: `index.html` (one file, fonts and formulas in
 
 ## Git
 
-- One feature branch and pull request per phase; the owner merges. Never push to `main`.
+- One feature branch and pull request per phase. Merge only when the owner asks (on 7 November 2026 the owner asked Claude to merge the Phase 0 and 1 stack). Never push to `main` directly.
 - The clone is shallow: `git fetch origin main` before pushing or opening a PR.
 - Never commit `node_modules`. Keep `package.json` inside `apps-src/` (a root `package.json` makes Workers Builds install and upload dependencies).
 - Commit the built app folders; Cloudflare serves them as plain files.

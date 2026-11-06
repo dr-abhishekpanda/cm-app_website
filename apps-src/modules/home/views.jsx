@@ -1,6 +1,6 @@
 /* Index views: the Tools catalogue (home), the Learn and Practice indexes, About and Not found. */
 import { useState } from 'preact/hooks';
-import { Icon, PageHead, Eyebrow, Callout } from '../../ui/core.jsx';
+import { Icon, PageHead, Callout } from '../../ui/core.jsx';
 
 function matches(m, q) {
   if (!q) return true;
@@ -12,19 +12,17 @@ function ModuleCard({ m, href, cta, phase }) {
   if (m.status !== 'ready') {
     return (
       <div class="card planned" aria-disabled="true">
-        <div class="meta"><span class="pill ink">{m.tag}</span><span class="pill amber">Phase {phase || m.phase}</span></div>
         <h3>{m.title}</h3>
         <p>{m.summary}</p>
-        <span class="go" style="color:var(--ink-faint)">In build</span>
+        <div class="foot"><span class="meta"><span class="pill ink">{m.tag}</span><span class="pill amber">Phase {phase || m.phase}</span></span><span class="go" style="color:var(--ink-faint)">In build</span></div>
       </div>
     );
   }
   return (
     <a class="card" href={href}>
-      <div class="meta"><span class="pill teal">{m.tag}</span></div>
       <h3>{m.title}</h3>
       <p>{m.summary}</p>
-      <span class="go">{cta} <span class="arw">{'→'}</span></span>
+      <div class="foot"><span class="meta"><span class="pill teal">{m.tag}</span></span><span class="go">{cta} <span class="arw">{'→'}</span></span></div>
     </a>
   );
 }
@@ -48,8 +46,8 @@ function Catalogue({ config, stages, modules, kind }) {
         if (!list.length) return null;
         return (
           <section class="stage" aria-labelledby={`st-${st.id}`}>
-            <Eyebrow>{st.label}</Eyebrow>
-            <p id={`st-${st.id}`}>{st.blurb}</p>
+            <h2 id={`st-${st.id}`}>{st.label}</h2>
+            <p>{st.blurb}</p>
             <div class="cards">{list.map((m) => <ModuleCard m={m} href={hrefFor(m)} cta={cta} phase={kind === 'tool' ? null : 4} />)}</div>
           </section>
         );
@@ -62,7 +60,7 @@ function Catalogue({ config, stages, modules, kind }) {
 export function ToolsHome({ config, stages, modules }) {
   return (
     <div>
-      <PageHead eyebrow={config.eyebrow} title={<span>{config.headline[0]} <em>{config.headline[1]}</em></span>} lede={config.lede} />
+      <PageHead title={<span>{config.headline[0]} <em>{config.headline[1]}</em></span>} subhead={config.tagline} lede={config.lede} />
       {config.showPlanned ? (
         <div class="notice"><span>Review build: cards marked "In build" show what each phase adds. Only ready tools are live.</span><a class="sec-link" href="#/about">About</a></div>
       ) : null}
@@ -74,7 +72,7 @@ export function ToolsHome({ config, stages, modules }) {
 export function LearnIndex({ config, stages, modules }) {
   return (
     <div>
-      <PageHead eyebrow="Learn" title="Lessons" lede="Short lessons tied to each tool. Set the depth in Settings: Basic, Intermediate or Advanced." />
+      <PageHead title="Lessons" lede="Short lessons tied to each tool. Set the depth in Settings: Basic, Intermediate or Advanced." />
       <Catalogue config={config} stages={stages} modules={modules} kind="lesson" />
     </div>
   );
@@ -83,7 +81,7 @@ export function LearnIndex({ config, stages, modules }) {
 export function PracticeIndex({ config, stages, modules }) {
   return (
     <div>
-      <PageHead eyebrow="Practice" title="Practice Sets" lede="Problems with fresh numbers every time, checked as you go, with the full working." />
+      <PageHead title="Practice Sets" lede="Problems with fresh numbers every time, checked as you go, with the full working." />
       <Catalogue config={config} stages={stages} modules={modules} kind="practice" />
     </div>
   );
@@ -92,7 +90,7 @@ export function PracticeIndex({ config, stages, modules }) {
 export function About({ config }) {
   return (
     <div>
-      <PageHead crumbs={[{ label: 'Tools', href: '#/' }]} eyebrow="About" title={config.name} lede={config.description} />
+      <PageHead crumbs={[{ label: 'Tools', href: '#/' }]} title={config.name} lede={config.description} />
       <div class="prose">
         <h2>How it works</h2>
         <p>Everything runs on your phone or computer. Nothing you type or upload leaves the device, and the app keeps working without internet once it has opened once.</p>

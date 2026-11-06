@@ -125,7 +125,6 @@ function ResultView({ res, onAlt }) {
   return (
     <section class="panel stack result-panel" aria-labelledby="res-h" aria-live="polite">
       <div>
-        <p class="eyebrow" style="margin-bottom:8px">Result</p>
         <h2 id="res-h" style="margin-bottom:6px">{res.title}</h2>
         <p class="verdict-line mono">{res.line}</p>
       </div>
@@ -140,7 +139,7 @@ function ResultView({ res, onAlt }) {
       {res.extra ? <AtLevel min="intermediate"><DataTable caption={res.extra.caption} columns={res.extra.columns} rows={res.extra.rows} numeric={res.extra.columns.map((_, i) => i).slice(1)} /></AtLevel> : null}
       {res.checks?.length ? (
         <div>
-          <span class="label">Checks</span>
+          <h3 class="sub">Checks</h3>
           <ul class="checks">{res.checks.map((c) => <li class={c.ok === true ? 'ok' : c.ok === false ? 'no' : 'info'}><span class="mk">{c.ok === true ? 'OK' : c.ok === false ? 'Check' : 'Note'}</span><span>{c.text}</span></li>)}</ul>
         </div>
       ) : null}
@@ -150,7 +149,7 @@ function ResultView({ res, onAlt }) {
       <AtLevel min="intermediate">
         {res.notes?.length ? <div class="prose small">{res.notes.map((n) => <p>{n}</p>)}</div> : null}
       </AtLevel>
-      {res.refs?.length ? <div class="prose"><span class="label">References</span><Refs refs={REFS} ids={[...new Set(res.refs)]} /></div> : null}
+      {res.refs?.length ? <div class="prose"><h3 class="sub">References</h3><Refs refs={REFS} ids={[...new Set(res.refs)]} /></div> : null}
     </section>
   );
 }
@@ -796,7 +795,7 @@ export default function TestsTool() {
   const run = (id) => { setTestId(id); setTab('run'); window.scrollTo(0, 0); };
   return (
     <div>
-      <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Analyse' }]} eyebrow="Analyse"
+      <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Analyse' }]}
         title="Choose and Run a Test"
         lede="Answer four questions to find the right test, then run it on your data or on summary figures. Every result gives the estimate with its 95% CI, the test, an effect size, the checks, and a sentence for your paper." />
       <div style="margin-bottom:18px">
