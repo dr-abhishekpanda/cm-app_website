@@ -367,6 +367,7 @@ footer address strong{color:var(--ink);font-weight:600}
         <li><a href="ai-luminated-diwali-status-1080x1920.jpg" download>Status Image, 1080 × 1920</a></li>
         <li><a href="ai-luminated-diwali-card-1080x1620.jpg" download>Five Diyas Card, 1080 × 1620</a></li>
       </ul>
+      <p class="hint" id="dlSay" aria-live="polite" style="font-size:.88em;color:var(--ink-soft)"></p>
     </div>
     <video class="film" controls preload="none" playsinline poster="ai-luminated-diwali-status-1080x1920.jpg" aria-label="The Diya Network film: a network of diyas learns to draw a diya">
       <source src="ai-luminated-diwali-2026.mp4" type="video/mp4">
@@ -1060,6 +1061,25 @@ footer address strong{color:var(--ink);font-weight:600}
       render();
     });
     render();
+  })();
+
+  // ---------- downloads: plain links on the website; inside the Claude viewer, its confirmed save ----------
+  (async function downloads() {
+    if (!window.claude || typeof window.claude.use !== 'function') return;
+    const say = document.getElementById('dlSay');
+    let dl = null; try { dl = await window.claude.use('downloads'); } catch (e) { dl = null; }
+    document.querySelectorAll('.dl a[download]').forEach(a => a.addEventListener('click', async ev => {
+      ev.preventDefault();
+      if (!dl) { say.textContent = 'Downloads open on dr-abhishekpanda-cm.app/diwali/.'; return; }
+      try {
+        say.textContent = 'Preparing the file...';
+        const blob = await (await fetch(a.getAttribute('href'))).blob();
+        await dl.save({ filename: a.getAttribute('href'), data: blob });
+        say.textContent = 'Saved.';
+      } catch (e) {
+        say.textContent = e && e.code === 'declined' ? 'Download cancelled.' : 'This view cannot save files. Downloads open on dr-abhishekpanda-cm.app/diwali/.';
+      }
+    }));
   })();
 
   // ---------- sharing ----------
