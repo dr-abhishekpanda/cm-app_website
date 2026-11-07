@@ -14,6 +14,7 @@ import AgreementTool from './tools/agreement.jsx';
 import MetaTool from './tools/meta.jsx';
 import ResultsTool from './tools/results.jsx';
 import CodeTool from './tools/code.jsx';
+import MeasuresTool from './tools/measures.jsx';
 
 export const STAGES = [
   { id: 'plan', label: 'Plan', blurb: 'Frame the question, search the literature, set objectives.' },
@@ -91,7 +92,12 @@ export const MODULES = [
     keywords: 'agreement reliability kappa cohen weighted fleiss inter-rater intra-rater observer icc intraclass correlation bland altman limits of agreement method comparison cronbach alpha internal consistency scale items questionnaire validation',
     tool: AgreementTool,
   },
-  { id: 'measures', stage: 'analyse', phase: 2, apps: RE, tag: 'Epidemiology', title: 'Frequency, Association and Impact', summary: 'Rates and proportions; OR, RR and PR with CIs; attributable and preventable fractions.' },
+  {
+    id: 'measures', stage: 'analyse', status: 'ready', apps: RE, tag: 'Epidemiology', title: 'Frequency, Association and Impact',
+    summary: 'Prevalence, risks and rates with CIs; the risk, odds, prevalence or rate ratio your design supports; attributable and prevented fractions; the number needed to treat.',
+    keywords: 'prevalence incidence risk rate attack rate case fatality person time person years relative risk risk ratio odds ratio prevalence ratio rate ratio risk difference attributable risk ar% par par% population attributable fraction preventable prevented fraction number needed to treat nnt nnh cohort case control cross sectional matched pairs mcnemar levin miettinen 2x2 two by two',
+    tool: MeasuresTool,
+  },
   { id: 'diagnostic', stage: 'analyse', phase: 2, apps: RE, tag: 'Epidemiology', title: 'Diagnostic Accuracy and ROC', summary: 'Sensitivity, specificity, predictive values at any prevalence, likelihood ratios, ROC curves.' },
   { id: 'stratified', stage: 'analyse', phase: 2, apps: RE, tag: 'Epidemiology', title: 'Confounding and Standardisation', summary: 'Mantel–Haenszel estimates, effect modification, direct and indirect standardisation.' },
   { id: 'vaccines', stage: 'analyse', phase: 2, apps: RE, tag: 'Epidemiology', title: 'Vaccine and Screening Measures', summary: 'Vaccine efficacy and effectiveness, serial and parallel testing.' },

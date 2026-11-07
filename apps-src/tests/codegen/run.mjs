@@ -1,7 +1,7 @@
-/* Runs every generated Python script on the example data and compares its numbers with the app's
- * engine. Needs Python 3 with numpy, scipy, pandas, statsmodels, pingouin, lifelines and
- * scikit-posthocs.   npm run test:code
- * R scripts are not run here (no R in the build environment); they follow the same steps.
+/* Runs every generated R and Python script on the example data and compares its numbers with the
+ * app's engine. Needs Python 3 with numpy, scipy, pandas, statsmodels, pingouin, lifelines and
+ * scikit-posthocs, and R with survival, psych, metafor, car, pROC and afex (the R half is skipped
+ * with a note when R is absent).   npm run test:code
  */
 import { mkdtempSync, writeFileSync, mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -22,6 +22,7 @@ import { buildDesign, ols, logistic } from '../../engine/regression.js';
 import { logRank, cox } from '../../engine/survival.js';
 import { cohenKappa, fleissKappa, icc, blandAltman, cronbach } from '../../engine/agreement.js';
 import { binaryEffect, continuousEffect, proportionEffect, reportedEffect, pool, subgroups } from '../../engine/meta.js';
+import { proportion, rate, twoByTwo, personTime, matchedPairs, populationFraction } from '../../engine/epi.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const DS = { A: readDataset(exampleCsv()), T: readDataset(exampleTbCsv()), G: readDataset(exampleAgreementCsv()) };
@@ -169,9 +170,89 @@ const add = (name, data, spec, checks) => cases.push({ name, data, spec, checks 
   add('meta reported fixed', null, { kind: 'meta', type: 'reported', measure: 'ratio', studies: rep.map((r, i) => ({ name: `R${i + 1}`, vals: r })), model: 'fixed', method: 'DL', hksj: false }, [['fe', fr.fe], ['ci_fe[0]', fr.ciFE[0]], ['Q', fr.Q]]);
 }
 
+/* ---------------------------------- frequency, association and impact --- */
+// These scripts name their results identically in R and Python (est, lo, hi, p_main, ...).
+{
+  // Two-level columns as the tool counts them: exposed level and outcome level against the rest.
+  const table = (k, e, el, o, ol) => {
+    const ce = col(k, e), co = col(k, o), t = [[0, 0], [0, 0]];
+    for (let i = 0; i < DS[k].n; i++) {
+      const x = ce.raw[i], y = co.raw[i];
+      if (isMissing(x) || isMissing(y)) continue;
+      t[x === el ? 0 : 1][y === ol ? 0 : 1]++;
+    }
+    return t;
+  };
+  const pr = proportion(17, 120);
+  add('proportion (Wilson)', null, { kind: 'freqP', x: 17, n: 120, method: 'wilson' }, [['est', pr.p], ['lo', pr.ci[0]], ['hi', pr.ci[1]]]);
+  const reg = col('A', 'Anaemia_registration');
+  const nReg = reg.raw.filter((v) => !isMissing(v)).length, xReg = reg.raw.filter((v) => v === 'Yes').length;
+  const pe = proportion(xReg, nReg, { method: 'exact' });
+  add('proportion from data (exact)', 'A', { kind: 'freqP', col: 'Anaemia_registration', level: 'Yes', numeric: false, method: 'exact' }, [['est', pe.p], ['lo', pe.ci[0]], ['hi', pe.ci[1]]]);
+  const rt = rate(12, 3456.5);
+  add('rate', null, { kind: 'freqR', x: 12, t: 3456.5 }, [['est', rt.rate], ['lo', rt.ci[0]], ['hi', rt.ci[1]]]);
+  {
+    const ev = col('T', 'Unfavourable_outcome'), tm = col('T', 'Months');
+    let x = 0, t = 0;
+    for (let i = 0; i < DS.T.n; i++) { if (isMissing(ev.raw[i]) || tm.numbers[i] === null) continue; t += tm.numbers[i]; if (ev.raw[i] === '1') x++; }
+    const r = rate(x, t);
+    add('rate from data', 'T', { kind: 'freqR', col: 'Unfavourable_outcome', level: '1', numeric: true, time: 'Months' }, [['est', r.rate], ['lo', r.ci[0]], ['hi', r.ci[1]]]);
+  }
+  const twoChecks = (o, extra = []) => [['est', o.rr.est], ['lo', o.rr[o.rr.auto][0]], ['hi', o.rr[o.rr.auto][1]], ['rd', o.rd.est], ['rd_lo', o.rd.newcombe[0]], ['rd_hi', o.rd.newcombe[1]],
+    ['p_main', o.tests.exact ? o.tests.pFisher : o.tests.pYates], ['odds_ratio', o.or.est], ['afe', o.afe.est], ...extra];
+  const fracChecks = (f) => [['paf', f.est], ['paf_lo', f.ci[0]], ['paf_hi', f.ci[1]]];
+  {
+    const t = table('A', 'IFA_adherence', 'Poor', 'Anaemia_6_months', 'Yes'), o = twoByTwo(t);
+    add('2x2 cohort from data', 'A', { kind: 'epi2x2', design: 'cohort', exposure: 'IFA_adherence', exposed: 'Poor', outcome: 'Anaemia_6_months', event: 'Yes', numericE: false, numericO: false },
+      [...twoChecks(o), ...fracChecks(o.paf), ['nnt', o.nnt.value]]);
+  }
+  {
+    const t = table('A', 'Residence', 'Rural', 'Anaemia_registration', 'Yes'), o = twoByTwo(t, { design: 'cross' });
+    add('2x2 cross-sectional from data', 'A', { kind: 'epi2x2', design: 'cross', exposure: 'Residence', exposed: 'Rural', outcome: 'Anaemia_registration', event: 'Yes', numericE: false, numericO: false },
+      [...twoChecks(o), ...fracChecks(o.paf)]);
+  }
+  {
+    const o = twoByTwo([[3, 7], [1, 9]]);
+    add('2x2 cohort, small cells (score, Fisher)', null, { kind: 'epi2x2', design: 'cohort', table: [[3, 7], [1, 9]] }, [...twoChecks(o), ...fracChecks(o.paf)]);
+  }
+  {
+    const o = twoByTwo([[10, 90], [30, 70]]);
+    add('2x2 cohort, protective', null, { kind: 'epi2x2', design: 'cohort', table: [[10, 90], [30, 70]] }, [...twoChecks(o), ...fracChecks(o.paf)]);
+  }
+  {
+    const o = twoByTwo([[40, 60], [20, 80]]), lev = populationFraction({ est: o.rr.est, ci: o.rr[o.rr.auto], pe: 0.25 });
+    add("2x2 cohort, Levin's formula", null, { kind: 'epi2x2', design: 'cohort', table: [[40, 60], [20, 80]], pe: 0.25 }, [...twoChecks(o), ...fracChecks(lev)]);
+  }
+  const ccChecks = (o) => [['est', o.or.est], ['lo', o.or[o.or.auto][0]], ['hi', o.or[o.or.auto][1]], ['p_main', o.tests.exact ? o.tests.pFisher : o.tests.pYates], ['afe', o.afe.est], ...fracChecks(o.paf)];
+  add('2x2 case-control', null, { kind: 'epi2x2', design: 'case-control', table: [[45, 30], [55, 120]] }, ccChecks(twoByTwo([[45, 30], [55, 120]], { design: 'case-control' })));
+  add('2x2 case-control, small (exact)', null, { kind: 'epi2x2', design: 'case-control', table: [[4, 10], [2, 20]] }, ccChecks(twoByTwo([[4, 10], [2, 20]], { design: 'case-control' })));
+  add('2x2 case-control, protective', null, { kind: 'epi2x2', design: 'case-control', table: [[15, 35], [30, 20]] }, ccChecks(twoByTwo([[15, 35], [30, 20]], { design: 'case-control' })));
+  {
+    const e = col('T', 'HIV'), ev = col('T', 'Unfavourable_outcome'), tm = col('T', 'Months');
+    let a = 0, t1 = 0, c = 0, t0 = 0;
+    for (let i = 0; i < DS.T.n; i++) {
+      if (isMissing(e.raw[i]) || isMissing(ev.raw[i]) || tm.numbers[i] === null) continue;
+      if (e.raw[i] === 'Positive') { t1 += tm.numbers[i]; if (ev.raw[i] === '1') a++; } else { t0 += tm.numbers[i]; if (ev.raw[i] === '1') c++; }
+    }
+    const o = personTime(a, t1, c, t0);
+    add('person-time from data', 'T', { kind: 'eptime', exposure: 'HIV', exposed: 'Positive', outcome: 'Unfavourable_outcome', event: '1', time: 'Months', numericE: false, numericO: true },
+      [['est', o.irr.est], ['lo', o.irr.exact[0]], ['hi', o.irr.exact[1]], ['p_main', o.tests.pExact]]);
+  }
+  {
+    const o = personTime(41, 28010, 15, 19017);
+    add('person-time typed', null, { kind: 'eptime', a: 41, t1: 28010, c: 15, t0: 19017 }, [['est', o.irr.est], ['lo', o.irr.exact[0]], ['hi', o.irr.exact[1]], ['p_main', o.tests.pExact]]);
+  }
+  for (const [e, f, g, h] of [[20, 30, 10, 40], [5, 9, 2, 14]]) {
+    const o = matchedPairs(e, f, g, h);
+    add(`matched pairs ${f}:${g}`, null, { kind: 'epmatch', e, f, g, h }, [['est', o.or.est], ['lo', o.or.exact[0]], ['hi', o.or.exact[1]], ['p_main', o.tests.exact ? o.tests.pExact : o.tests.p]]);
+  }
+}
+
 /* ------------------------------------------- the same checks in R --- */
 // Each Python check has an R twin; null where the R script reports the number differently.
+const SAME_NAMES = new Set(['freqP', 'freqR', 'epi2x2', 'eptime', 'epmatch']);
 function rExpr(spec, e) {
+  if (SAME_NAMES.has(spec.kind)) return e;
   const k = spec.kind;
   const direct = {
     'res.statistic': k === 'cor' ? 'res$estimate' : 'res$statistic', 'welch["p_unc"].iloc[0]': 'welch$p.value',
@@ -193,7 +274,11 @@ function rExpr(spec, e) {
   return e in direct ? direct[e] : undefined;
 }
 // metafor's iterative estimators and coxph stop at their own tolerances.
-const rTol = (spec, e, rel) => (spec.kind === 'meta' && spec.method !== 'DL' && spec.model !== 'fixed' ? Math.max(rel, 5e-4) : spec.kind === 'surv' ? Math.max(rel, 1e-6) : rel);
+// metafor's PM and REML iterations, survival's Cox fit, and fisher.test's exact odds-ratio limits (found by
+// uniroot at its default tolerance, about 1e-4) are held to looser tolerances in R.
+const fisherLimits = (spec, e) => spec.kind === 'epi2x2' && spec.design === 'case-control' && (e === 'lo' || e === 'hi');
+const rTol = (spec, e, rel) => (spec.kind === 'meta' && spec.method !== 'DL' && spec.model !== 'fixed' ? Math.max(rel, 5e-4)
+  : spec.kind === 'surv' ? Math.max(rel, 1e-6) : fisherLimits(spec, e) ? Math.max(rel, 2e-3) : rel);
 
 /* -------------------------------------------------------------- run --- */
 const root = mkdtempSync(join(tmpdir(), 'codegen-'));

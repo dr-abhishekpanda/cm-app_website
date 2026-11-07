@@ -19,11 +19,11 @@ Run from `apps-src/`.
 | Task | Command |
 |---|---|
 | Install dev dependencies | `npm install` |
-| Engine tests (SciPy and mpmath references) | `npm test` |
+| Engine tests (SciPy, statsmodels, mpmath and R references) | `npm test` |
 | Run every generated R and Python script against the app (needs R with survival, psych, metafor, car, pROC, afex, and Python with SciPy, statsmodels, pingouin, lifelines, scikit-posthocs; R is skipped with a note if absent) | `npm run test:code` |
 | Build one app, or all | `npm run build -- research-app` / `npm run build` |
 | Smoke test a built app | `npm run e2e -- research-app` (add `--shots <dir>` for screenshots) |
-| Regenerate reference values | `python3 -I tools/refgen/engine_ref.py` (needs scipy, mpmath) |
+| Regenerate reference values | `python3 -I tools/refgen/engine_ref.py` (needs scipy, mpmath); for the epidemiology measures `Rscript --vanilla tools/refgen/epi_ref.R` (needs R with epiR, epitools) and `python3 -I tools/refgen/epi_ref.py` (needs statsmodels) |
 | Draw a new app icon | `python3 -I tools/outline_icon.py E apps/epi-app/icon.svg` (needs fonttools, brotli) |
 
 The build writes `../<app-path>/`: `index.html` (one file, fonts and formulas inside), `sw.js`, `manifest.webmanifest`, `icon.svg` and four PNG icons. It also adds a `no-cache` rule for the app to the root `_headers`. The e2e test and the PNG icons use the Playwright installed on the machine; Playwright is deliberately not a dependency here.

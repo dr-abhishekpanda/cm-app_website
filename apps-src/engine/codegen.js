@@ -486,6 +486,213 @@ G.meta = (s) => {
 /* ------------------------------------------------------------------ api --- */
 
 /** The script for a spec in 'r' or 'py': { text, filename, packages, usesData }. */
+/* ------------------------------------- frequency, association, impact --- */
+// These scripts name their results the same way in R and Python (est, lo, hi, p_main, ...), so the
+// test harness can read both with the same expressions.
+
+const rLevel = (column, level, numeric) => `${rcol(column)} == ${rlit(level, numeric)}`;
+const pLevel = (column, level, numeric, rows = null) => `${rows ? `d.loc[${rows}, ${str(column)}]` : pcol(column)} == ${plit(level, numeric)}`;
+
+G.freqP = (s) => {
+  const exact = s.method === 'exact';
+  const r = s.col
+    ? [`v <- ${rcol(s.col)}; v <- v[!is.na(v)]`, `x <- sum(v == ${rlit(s.level, s.numeric)}); n <- length(v)`]
+    : [`x <- ${s.x}; n <- ${s.n}`];
+  const py = s.col
+    ? [`v = ${pcol(s.col)}.dropna()`, `x = int((v == ${plit(s.level, s.numeric)}).sum()); n = int(len(v))`]
+    : [`x, n = ${s.x}, ${s.n}`];
+  return {
+    title: `A proportion with its 95% CI${s.col ? `: ${pretty(s.col)} "${s.level}"` : ''}`, data: !!s.col,
+    r: [...r, 'est <- x / n', 'res <- binom.test(x, n)                               # exact test; Clopper-Pearson CI in res$conf.int',
+      'wilson <- prop.test(x, n, correct = FALSE)$conf.int   # Wilson score CI',
+      `lo <- ${exact ? 'res$conf.int[1]' : 'wilson[1]'}; hi <- ${exact ? 'res$conf.int[2]' : 'wilson[2]'}   # the app's ${exact ? 'exact' : 'Wilson'} interval`,
+      'c(proportion = est, lower = lo, upper = hi)'],
+    py: [...py, 'est = x / n', 'res = stats.binomtest(x, n)', `ci = res.proportion_ci(method=${str(exact ? 'exact' : 'wilson')})   # ${exact ? 'Clopper-Pearson' : 'Wilson score'}, as the app reports`,
+      'lo, hi = ci.low, ci.high', 'print(f"proportion {est:.4f}, 95% CI {lo:.4f} to {hi:.4f}")'],
+  };
+};
+
+G.freqR = (s) => {
+  const r = s.col
+    ? [`ok <- !is.na(${rcol(s.col)}) & !is.na(${rcol(s.time)})`, `x <- sum(${rcol(s.col)}[ok] == ${rlit(s.level, s.numeric)}); t <- sum(${rcol(s.time)}[ok])`]
+    : [`x <- ${s.x}; t <- ${num(s.t)}   # events and person-time`];
+  const py = s.col
+    ? [`ok = ${pcol(s.col)}.notna() & ${pcol(s.time)}.notna()`, `x = int((${pLevel(s.col, s.level, s.numeric, 'ok')}).sum()); t = float(d.loc[ok, ${str(s.time)}].sum())`]
+    : [`x, t = ${s.x}, ${pnum(s.t)}  # events and person-time`];
+  return {
+    title: 'A rate with its exact Poisson 95% CI', data: !!s.col, pyImports: ['from scipy.stats import chi2'],
+    r: [...r, 'res <- poisson.test(x, t)   # exact (Garwood) CI for the rate', 'est <- x / t; lo <- res$conf.int[1]; hi <- res$conf.int[2]',
+      'c(rate = est, lower = lo, upper = hi)   # multiply by 1000 for a rate per 1,000 units of person-time'],
+    py: [...py, 'est = x / t', 'lo = chi2.ppf(0.025, 2 * x) / (2 * t) if x > 0 else 0.0   # exact (Garwood) limits', 'hi = chi2.ppf(0.975, 2 * x + 2) / (2 * t)',
+      'print(f"rate {est:.6g}, 95% CI {lo:.6g} to {hi:.6g} (per unit of person-time)")'],
+  };
+};
+
+/** The 2 x 2 table from typed counts or from two columns. */
+function tableLines(s, colNames) {
+  const dn = `dimnames = list(c("Exposed", "Unexposed"), ${rvec(colNames)})`;
+  if (!s.exposure) {
+    const [[a, b], [c, d]] = s.table;
+    return {
+      r: [`tab <- matrix(c(${a}, ${b}, ${c}, ${d}), nrow = 2, byrow = TRUE,`, `              ${dn})`],
+      py: [`tab = np.array([[${a}, ${b}], [${c}, ${d}]])  # rows: exposed, unexposed; columns: ${colNames.join(', ').toLowerCase()}`],
+    };
+  }
+  return {
+    r: [`ok <- !is.na(${rcol(s.exposure)}) & !is.na(${rcol(s.outcome)})`,
+      `ex <- (${rLevel(s.exposure, s.exposed, s.numericE)})[ok]; ou <- (${rLevel(s.outcome, s.event, s.numericO)})[ok]`,
+      'tab <- matrix(c(sum(ex & ou), sum(ex & !ou), sum(!ex & ou), sum(!ex & !ou)), nrow = 2, byrow = TRUE,', `              ${dn})`],
+    py: [`ok = ${pcol(s.exposure)}.notna() & ${pcol(s.outcome)}.notna()`,
+      `ex = ${pLevel(s.exposure, s.exposed, s.numericE, 'ok')}; ou = ${pLevel(s.outcome, s.event, s.numericO, 'ok')}`,
+      'tab = np.array([[int((ex & ou).sum()), int((ex & ~ou).sum())], [int((~ex & ou).sum()), int((~ex & ~ou).sum())]])  # rows: exposed, unexposed'],
+  };
+}
+
+G.epi2x2 = (s) => {
+  const cc = s.design === 'case-control';
+  const name = cc ? 'Odds ratio' : s.design === 'cross' ? 'Prevalence ratio' : 'Risk ratio';
+  const t = tableLines(s, cc ? ['Cases', 'Controls'] : ['Outcome', 'No outcome']);
+  const title = `${name} from a 2 x 2 table${s.exposure ? `: ${pretty(s.outcome)} by ${pretty(s.exposure)}` : ''}`;
+  const pe = Number.isFinite(s.pe) ? s.pe : null;
+  if (cc) {
+    return {
+      title, data: !!s.exposure, pyImports: ['from scipy.stats.contingency import odds_ratio as conditional_or'],
+      r: [...t.r, 'tab', 'z <- qnorm(0.975)', 'small <- min(tab) < 5   # the app uses the exact interval when a cell is below 5',
+        'est <- (tab[1, 1] * tab[2, 2]) / (tab[1, 2] * tab[2, 1])   # odds ratio',
+        'woolf <- exp(log(est) + c(-1, 1) * z * sqrt(sum(1 / tab)))', 'ft <- fisher.test(tab)   # exact test; ft$conf.int is the exact (conditional) CI',
+        'ci <- if (small) ft$conf.int else woolf', 'lo <- ci[1]; hi <- ci[2]',
+        'chi <- suppressWarnings(chisq.test(tab))   # Yates\' correction', 'p_main <- if (any(chi$expected < 5)) ft$p.value else chi$p.value   # the app\'s choice of test',
+        '# Attributable fraction among the exposed from the OR (prevented fraction 1 - OR below 1)',
+        'afe <- if (est >= 1) (est - 1) / est else 1 - est; afe_ci <- if (est >= 1) (ci - 1) / ci else rev(1 - ci)',
+        "# Population fraction: Miettinen's formula with the proportion of cases exposed; Jewell's variance",
+        'paf <- (tab[1, 1] * tab[2, 2] - tab[1, 2] * tab[2, 1]) / (tab[2, 2] * sum(tab[, 1]))',
+        'L <- log(1 - paf); se <- sqrt(tab[1, 1] / (tab[2, 1] * sum(tab[, 1])) + tab[1, 2] / (tab[2, 2] * sum(tab[, 2])))',
+        'if (paf >= 0) paf_ci <- 1 - exp(L + c(1, -1) * z * se) else { paf <- 1 - exp(-L); paf_ci <- 1 - exp(-L + c(1, -1) * z * se) }   # prevented when protective',
+        'paf_lo <- paf_ci[1]; paf_hi <- paf_ci[2]',
+        'out <- rbind(c(est, lo, hi), c(afe, afe_ci), c(paf, paf_ci))',
+        'dimnames(out) <- list(c("Odds ratio", if (est >= 1) "Attributable fraction, exposed" else "Prevented fraction, exposed", if (L <= 0) "Attributable fraction, population" else "Prevented fraction, population"), c("estimate", "lower", "upper"))',
+        'round(out, 4)', 'p_main'],
+      py: [...t.py, 'print(tab)', 'z = stats.norm.ppf(0.975)', 'small = tab.min() < 5  # the app uses the exact interval when a cell is below 5',
+        'est = tab[0, 0] * tab[1, 1] / (tab[0, 1] * tab[1, 0])  # odds ratio',
+        'woolf = np.exp(np.log(est) + np.array([-1, 1]) * z * np.sqrt((1 / tab).sum()))',
+        'exact = conditional_or(tab, kind="conditional").confidence_interval(0.95)', 'lo, hi = (exact.low, exact.high) if small else woolf',
+        'chi = stats.chi2_contingency(tab)  # Yates\' correction', 'p_main = stats.fisher_exact(tab).pvalue if chi.expected_freq.min() < 5 else chi.pvalue',
+        'afe = (est - 1) / est if est >= 1 else 1 - est',
+        "# Population fraction: Miettinen's formula with the proportion of cases exposed; Jewell's variance",
+        'paf = (tab[0, 0] * tab[1, 1] - tab[0, 1] * tab[1, 0]) / (tab[1, 1] * tab[:, 0].sum())',
+        'L = np.log(1 - paf); se = np.sqrt(tab[0, 0] / (tab[1, 0] * tab[:, 0].sum()) + tab[0, 1] / (tab[1, 1] * tab[:, 1].sum()))',
+        'if paf >= 0:', '    paf_lo, paf_hi = 1 - np.exp(L + z * se), 1 - np.exp(L - z * se)', 'else:  # prevented fraction when the exposure protects',
+        '    paf = 1 - np.exp(-L); paf_lo, paf_hi = 1 - np.exp(-L + z * se), 1 - np.exp(-L - z * se)',
+        'print(f"odds ratio {est:.4f} (95% CI {lo:.4f} to {hi:.4f}); p = {p_main:.4g}")', 'print(f"exposed fraction {afe:.4f}; population fraction {paf:.4f} ({paf_lo:.4f} to {paf_hi:.4f})")'],
+    };
+  }
+  const cohort = s.design !== 'cross';
+  const rPaf = pe !== null
+    ? [`pe <- ${pe}   # proportion of the population exposed, entered in the app (Levin's formula)`, 'lev <- function(r) pe * (r - 1) / (1 + pe * (r - 1))',
+      'paf <- lev(est); paf_ci <- lev(ci)', 'if (paf < 0) { pf <- function(x) 1 - 1 / (1 - x); paf <- pf(paf); paf_ci <- rev(pf(paf_ci)) }   # prevented when protective']
+    : ["# Population fraction from the study's own exposure split; Jewell's variance of log(1 - PAF)",
+      'paf <- (tab[1, 1] * tab[2, 2] - tab[1, 2] * tab[2, 1]) / (sum(tab[, 1]) * n0)',
+      'L <- log(1 - paf); se <- sqrt((tab[1, 2] + paf * (tab[1, 1] + tab[2, 2])) / (sum(tab) * tab[2, 1]))',
+      'if (paf >= 0) paf_ci <- 1 - exp(L + c(1, -1) * z * se) else { paf <- 1 - exp(-L); paf_ci <- 1 - exp(-L + c(1, -1) * z * se) }   # prevented when protective'];
+  const pyPaf = pe !== null
+    ? [`pe = ${pe}  # proportion of the population exposed, entered in the app (Levin's formula)`, 'lev = lambda r: pe * (r - 1) / (1 + pe * (r - 1))',
+      'paf, paf_lo, paf_hi = lev(est), lev(lo), lev(hi)', 'if paf < 0:  # prevented fraction when the exposure protects',
+      '    pf = lambda x: 1 - 1 / (1 - x)', '    paf, paf_lo, paf_hi = pf(paf), pf(paf_hi), pf(paf_lo)']
+    : ["# Population fraction from the study's own exposure split; Jewell's variance of log(1 - PAF)",
+      'paf = (tab[0, 0] * tab[1, 1] - tab[0, 1] * tab[1, 0]) / (tab[:, 0].sum() * n0)',
+      'L = np.log(1 - paf); se = np.sqrt((tab[0, 1] + paf * (tab[0, 0] + tab[1, 1])) / (tab.sum() * tab[1, 0]))',
+      'if paf >= 0:', '    paf_lo, paf_hi = 1 - np.exp(L + z * se), 1 - np.exp(L - z * se)', 'else:  # prevented fraction when the exposure protects',
+      '    paf = 1 - np.exp(-L); paf_lo, paf_hi = 1 - np.exp(-L + z * se), 1 - np.exp(-L - z * se)'];
+  return {
+    title, data: !!s.exposure, pyPkgs: ['statsmodels'],
+    pyImports: ['from scipy.optimize import brentq', 'from statsmodels.stats.proportion import confint_proportions_2indep'],
+    r: [...t.r, 'tab', 'z <- qnorm(0.975)', 'x1 <- tab[1, 1]; n1 <- sum(tab[1, ]); x0 <- tab[2, 1]; n0 <- sum(tab[2, ])',
+      'small <- min(tab) < 5   # the app uses the score interval for the ratio when a cell is below 5',
+      'r1 <- x1 / n1; r0 <- x0 / n0', `est <- r1 / r0   # ${name.toLowerCase()}`,
+      'wald <- exp(log(est) + c(-1, 1) * z * sqrt(1 / x1 - 1 / n1 + 1 / x0 - 1 / n0))   # Katz, log scale',
+      "koopman <- function(l) {   # Koopman's score statistic for the ratio exp(l), minus z^2",
+      '  phi <- exp(l); N <- n1 + n0; B <- phi * (n1 + x0) + x1 + n0; C <- x1 + x0',
+      '  p0 <- 2 * C / (B + sqrt(max(0, B^2 - 4 * phi * N * C))); p1 <- phi * p0',
+      '  (x1 / n1 - phi * x0 / n0)^2 / (p1 * (1 - p1) / n1 + phi^2 * p0 * (1 - p0) / n0) - z^2', '}',
+      's <- if (x1 > 0 && x0 > 0) log(est) else log(((x1 + 0.5) / (n1 + 1)) / ((x0 + 0.5) / (n0 + 1)))',
+      'score <- c(if (x1 == 0) 0 else exp(uniroot(koopman, c(s - 30, s), tol = 1e-12)$root),',
+      '           if (x0 == 0) Inf else exp(uniroot(koopman, c(s, s + 30), tol = 1e-12)$root))',
+      'ci <- if (small) score else wald', 'lo <- ci[1]; hi <- ci[2]',
+      "# Difference with Newcombe's hybrid score interval",
+      'wilson <- function(x, n) { p <- x / n; (p + z^2 / (2 * n) + c(-1, 1) * z * sqrt(p * (1 - p) / n + z^2 / (4 * n^2))) / (1 + z^2 / n) }',
+      'w1 <- wilson(x1, n1); w0 <- wilson(x0, n0)', 'rd <- r1 - r0',
+      'rd_lo <- rd - sqrt((r1 - w1[1])^2 + (w0[2] - r0)^2); rd_hi <- rd + sqrt((w1[2] - r1)^2 + (r0 - w0[1])^2)',
+      ...(cohort ? ['nnt <- 1 / abs(rd)   # number needed to treat or to harm; round up for planning'] : []),
+      'odds_ratio <- (tab[1, 1] * tab[2, 2]) / (tab[1, 2] * tab[2, 1])',
+      'ft <- fisher.test(tab)   # exact test; ft$conf.int is the exact CI for the odds ratio',
+      'chi <- suppressWarnings(chisq.test(tab))   # Yates\' correction', 'p_main <- if (any(chi$expected < 5)) ft$p.value else chi$p.value   # the app\'s choice of test',
+      `afe <- if (est >= 1) (est - 1) / est else 1 - est   # attributable fraction among the exposed (prevented below 1)`,
+      'afe_ci <- if (est >= 1) (ci - 1) / ci else rev(1 - ci)',
+      ...rPaf, 'paf_lo <- paf_ci[1]; paf_hi <- paf_ci[2]',
+      `out <- rbind(c(est, lo, hi), c(100 * rd, 100 * rd_lo, 100 * rd_hi), c(odds_ratio, ft$conf.int), c(afe, afe_ci), c(paf, paf_ci))`,
+      `dimnames(out) <- list(c(${str(name)}, "Difference (percentage points)", "Odds ratio (exact CI)", "Fraction among the exposed", "Fraction in the population"), c("estimate", "lower", "upper"))`,
+      'round(out, 4)', 'p_main', ...(cohort ? ['nnt'] : [])],
+    py: [...t.py, 'print(tab)', 'z = stats.norm.ppf(0.975)', 'x1, n1, x0, n0 = int(tab[0, 0]), int(tab[0].sum()), int(tab[1, 0]), int(tab[1].sum())',
+      'small = tab.min() < 5  # the app uses the score interval for the ratio when a cell is below 5',
+      'r1, r0 = x1 / n1, x0 / n0', `est = r1 / r0 if x0 > 0 else np.inf  # ${name.toLowerCase()}`,
+      'wald = np.exp(np.log(est) + np.array([-1, 1]) * z * np.sqrt(1 / x1 - 1 / n1 + 1 / x0 - 1 / n0)) if x1 > 0 and x0 > 0 else (np.nan, np.nan)  # Katz',
+      '', '', "def koopman(l):  # Koopman's score statistic for the ratio exp(l), minus z^2",
+      '    phi = np.exp(l)', '    N, B, C = n1 + n0, phi * (n1 + x0) + x1 + n0, x1 + x0',
+      '    p0 = 2 * C / (B + np.sqrt(max(0.0, B * B - 4 * phi * N * C)))', '    p1 = phi * p0',
+      '    return (x1 / n1 - phi * x0 / n0) ** 2 / (p1 * (1 - p1) / n1 + phi ** 2 * p0 * (1 - p0) / n0) - z ** 2', '', '',
+      's = np.log(est) if x1 > 0 and x0 > 0 else np.log(((x1 + 0.5) / (n1 + 1)) / ((x0 + 0.5) / (n0 + 1)))',
+      'score = (0.0 if x1 == 0 else np.exp(brentq(koopman, s - 30, s, xtol=1e-12)), np.inf if x0 == 0 else np.exp(brentq(koopman, s, s + 30, xtol=1e-12)))',
+      'lo, hi = score if small else wald',
+      'rd = r1 - r0', 'rd_lo, rd_hi = confint_proportions_2indep(x1, n1, x0, n0, method="newcomb", compare="diff")  # Newcombe',
+      ...(cohort ? ['nnt = 1 / abs(rd)  # number needed to treat or to harm; round up for planning'] : []),
+      'odds_ratio = tab[0, 0] * tab[1, 1] / (tab[0, 1] * tab[1, 0])',
+      'chi = stats.chi2_contingency(tab)  # Yates\' correction', 'p_main = stats.fisher_exact(tab).pvalue if chi.expected_freq.min() < 5 else chi.pvalue',
+      'afe = (est - 1) / est if est >= 1 else 1 - est  # attributable fraction among the exposed (prevented below 1)',
+      ...pyPaf,
+      `print(f"${name.toLowerCase()} {est:.4f} (95% CI {lo:.4f} to {hi:.4f}); difference {100 * rd:.2f} points ({100 * rd_lo:.2f} to {100 * rd_hi:.2f}); p = {p_main:.4g}")`,
+      'print(f"odds ratio {odds_ratio:.4f}; exposed fraction {afe:.4f}; population fraction {paf:.4f} ({paf_lo:.4f} to {paf_hi:.4f})")'],
+  };
+};
+
+G.eptime = (s) => {
+  const r = s.exposure
+    ? [`ok <- !is.na(${rcol(s.exposure)}) & !is.na(${rcol(s.outcome)}) & !is.na(${rcol(s.time)})`,
+      `ex <- (${rLevel(s.exposure, s.exposed, s.numericE)})[ok]; ev <- (${rLevel(s.outcome, s.event, s.numericO)})[ok]; tt <- ${rcol(s.time)}[ok]`,
+      'a <- sum(ex & ev); t1 <- sum(tt[ex]); c0 <- sum(!ex & ev); t0 <- sum(tt[!ex])']
+    : [`a <- ${s.a}; t1 <- ${num(s.t1)}   # events and person-time, exposed`, `c0 <- ${s.c}; t0 <- ${num(s.t0)}   # unexposed`];
+  const py = s.exposure
+    ? [`ok = ${pcol(s.exposure)}.notna() & ${pcol(s.outcome)}.notna() & ${pcol(s.time)}.notna()`,
+      `ex = ${pLevel(s.exposure, s.exposed, s.numericE, 'ok')}; ev = ${pLevel(s.outcome, s.event, s.numericO, 'ok')}; tt = d.loc[ok, ${str(s.time)}]`,
+      'a, t1 = int((ex & ev).sum()), float(tt[ex].sum()); c0, t0 = int((~ex & ev).sum()), float(tt[~ex].sum())']
+    : [`a, t1 = ${s.a}, ${pnum(s.t1)}  # events and person-time, exposed`, `c0, t0 = ${s.c}, ${pnum(s.t0)}  # unexposed`];
+  return {
+    title: `Rate ratio from events and person-time${s.exposure ? `: ${pretty(s.outcome)} by ${pretty(s.exposure)}` : ''}`, data: !!s.exposure,
+    r: [...r, 'res <- poisson.test(c(a, c0), c(t1, t0))   # exact CI and test for the rate ratio, conditional on the events', 'res',
+      'est <- unname(res$estimate); lo <- res$conf.int[1]; hi <- res$conf.int[2]; p_main <- res$p.value',
+      'ird <- a / t1 - c0 / t0; ird_se <- sqrt(a / t1^2 + c0 / t0^2)', 'ird_ci <- ird + c(-1, 1) * qnorm(0.975) * ird_se   # rate difference, Wald',
+      'c(rate_exposed = a / t1, rate_unexposed = c0 / t0, rate_ratio = est, lower = lo, upper = hi)'],
+    py: [...py, 'res = stats.binomtest(a, a + c0, t1 / (t1 + t0))  # exact, conditional on the events (as R poisson.test)', 'ci = res.proportion_ci(method="exact")',
+      'to_irr = lambda p: p / (1 - p) * t0 / t1 if p < 1 else np.inf',
+      'est = (a / t1) / (c0 / t0) if c0 > 0 else np.inf', 'lo, hi = to_irr(ci.low), to_irr(ci.high)', 'p_main = res.pvalue',
+      'ird = a / t1 - c0 / t0', 'ird_se = np.sqrt(a / t1 ** 2 + c0 / t0 ** 2)',
+      'print(f"rates {a / t1:.6g} and {c0 / t0:.6g}; rate ratio {est:.4f} (95% CI {lo:.4f} to {hi:.4f}); exact p = {p_main:.4g}")'],
+  };
+};
+
+G.epmatch = (s) => ({
+  title: 'Matched case-control pairs (1:1): matched odds ratio', data: false, pyPkgs: ['statsmodels'], pyImports: ['from statsmodels.stats.contingency_tables import mcnemar'],
+  r: [`tab <- matrix(c(${s.e}, ${s.f}, ${s.g}, ${s.h}), nrow = 2, byrow = TRUE,   # pairs`, '              dimnames = list(Case = c("Exposed", "Unexposed"), Control = c("Exposed", "Unexposed")))', 'tab',
+    'f <- tab[1, 2]; g <- tab[2, 1]   # discordant pairs', 'est <- f / g   # matched odds ratio',
+    'bt <- binom.test(f, f + g)   # exact, conditional on the discordant pairs', 'lo <- bt$conf.int[1] / (1 - bt$conf.int[1]); hi <- bt$conf.int[2] / (1 - bt$conf.int[2])',
+    'mc <- mcnemar.test(tab)   # continuity corrected', 'p_main <- if (f + g < 25) bt$p.value else mc$p.value   # exact below 25 discordant pairs, as the app',
+    'c(odds_ratio = est, lower = lo, upper = hi, p = p_main)'],
+  py: [`tab = np.array([[${s.e}, ${s.f}], [${s.g}, ${s.h}]])  # pairs: rows case exposed, unexposed; columns control exposed, unexposed`,
+    'f, g = int(tab[0, 1]), int(tab[1, 0])  # discordant pairs', 'est = f / g if g > 0 else np.inf  # matched odds ratio',
+    'bt = stats.binomtest(f, f + g)', 'ci = bt.proportion_ci(method="exact")', 'lo, hi = ci.low / (1 - ci.low), (ci.high / (1 - ci.high) if ci.high < 1 else np.inf)',
+    'mc = mcnemar(tab, exact=False, correction=True)', 'p_main = bt.pvalue if f + g < 25 else mc.pvalue  # exact below 25 discordant pairs, as the app',
+    'print(f"matched odds ratio {est:.4f} (95% CI {lo:.4f} to {hi:.4f}); p = {p_main:.4g}")'],
+});
+
 export function scriptFor(spec, lang) {
   const gen = G[spec?.kind];
   if (!gen) return null;
