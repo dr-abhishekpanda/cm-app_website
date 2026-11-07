@@ -4,15 +4,16 @@ import { useState } from 'preact/hooks';
 import { Icon, CopyButton } from './core.jsx';
 import { AddToResults, notebookHtml } from './notebook.jsx';
 
-/** A results table with a "Copy table" button that puts tab-separated text on the clipboard. */
-export function DataTable({ columns, rows, caption, note, numeric = [], add = true }) {
+/** A results table with a "Copy table" button that puts tab-separated text on the clipboard.
+ * wrap: let the row labels and headings wrap, so a narrow table fits a phone without scrolling. */
+export function DataTable({ columns, rows, caption, note, numeric = [], add = true, wrap = false }) {
   const plain = rows.map((r) => r.map((c) => String(typeof c === 'object' && c?.text !== undefined ? c.text : c ?? '')));
   const tsv = [columns.join('\t'), ...plain.map((r) => r.join('\t'))].join('\n');
   const item = { kind: 'table', title: caption || '', columns, rows: plain, note: note || '' };
   return (
     <div class="restable">
       <div class="tablewrap">
-        <table class="table compact">
+        <table class={`table compact${wrap ? ' wrap1' : ''}`}>
           {caption ? <caption>{caption}</caption> : null}
           <thead><tr>{columns.map((c, i) => <th scope="col" class={numeric.includes(i) ? 'num' : undefined}>{c}</th>)}</tr></thead>
           <tbody>

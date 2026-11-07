@@ -2,6 +2,31 @@
 
 Newest entry first. Each entry records what changed, how it was checked, and anything left open.
 
+## 2026-11-07 · Phase 2a: Frequency, Association and Impact
+
+Branch `feature/research-app-2a`, stacked on the R testing branch. First wave of Phase 2 (epidemiology).
+
+### Built
+
+- **Engine** (`engine/epi.js`): a proportion with the Wilson or Clopper-Pearson CI; a rate with the exact Poisson CI (Garwood); the 2 × 2 table by design, with the risk or prevalence ratio (Katz; Koopman's score interval, found by root-finding so zero and full cells work), the odds ratio (Woolf; exact conditional; mid-p), the difference (Wald; Newcombe), the NNT from the counts as an exact fraction with Altman's CI through infinity; attributable and prevented fractions among the exposed and in the population (Jewell's variances for cohort and case-control data, Miettinen's formula for case-control data); person-time with exact and mid-p CIs conditional on the events and an exact CI for the population fraction; 1:1 matched pairs; Levin's and Miettinen's formulas for a published ratio.
+- **Tool** (`modules/tools/measures.jsx`): five panels: proportion or rate; two groups (2 × 2) by design; person-time; matched pairs; population impact. Each works from typed numbers or from columns of the loaded data, shows every interval with the reported one highlighted, lists checks (common outcomes, small cells, crude measures, what the design cannot estimate), and writes a report sentence. Tables are two columns wide so they fit a phone.
+- **Code export**: five new kinds (proportion, rate, 2 × 2 by design, person-time, matched pairs); R in base R with Koopman's and Newcombe's intervals written out; Python with SciPy and statsmodels. Results carry the same names in both languages.
+- **References**: 18 added, each checked on PubMed or a publisher or library record.
+
+### Checked
+
+| Check | Result |
+|---|---|
+| Engine tests (`npm test`) | 63 of 63 pass. Against R (stats, epiR 2.0.67, epitools), statsmodels 0.15 and SciPy 1.18: twelve 2 × 2 tables across designs, zero and full cells, protective exposures; five person-time sets; three matched sets; proportions and rates including zero counts. Jewell's cohort variance agrees with the multinomial delta method computed numerically in R |
+| Precision notes | R's `fisher.test` and epitools find limits with uniroot's default tolerance (about 1e-4), so they are held to 2e-3; SciPy's exact odds ratio limits and R's definitional mid-p limits are held to 1e-8 |
+| Code export (`npm run test:code`) | 66 Python scripts (230 checks) and 66 R scripts (224 checks), 0 failed |
+| Browser smoke test | 132 of 132 pass at 360 px and 1280 px, including every panel of the new tool |
+
+### Found on the way
+
+- epiR 2.0.67 reports a "score" risk ratio of 1.84 for 13/2176 against 5/3354, where the ratio is 4.01: its score function reads the table in the wrong order. Its Cornfield interval returns NA for large tables.
+- statsmodels' closed-form Koopman interval gives a lower limit of 1.333 for 10/10 against 5/10, where the score statistic reaches 1.96² at 1.269.
+
 ## 2026-11-07 · R Scripts Run and Checked
 
 - R 4.3.3 installed in the build environment from Ubuntu's archive, with survival, psych, metafor, car, pROC and afex (CRAN is not reachable from here).

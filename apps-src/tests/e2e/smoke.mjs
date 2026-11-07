@@ -224,6 +224,36 @@ try {
     check(`${label}: My results gathers a sentence and a table`, (await page.locator('.nbitem').count()) === 2 && (await page.locator('.nbitem textarea').count()) === 1);
     check(`${label}: no sideways scroll on My results`, await noSideScroll(page));
 
+    // Phase 2a: frequency, association and impact (the antenatal example is still loaded).
+    await page.goto(`${base}#/tool/measures`);
+    await page.getByRole('button', { name: 'A table of counts' }).click();
+    check(`${label}: cohort 2 x 2 gives RR 2.00 (Wald)`, (await text(page, '#ttr-h')) === 'Risk ratio = 2.00' && (await text(page, '.verdict-line')).startsWith('95% CI 1.26 to 3.17 (Wald); χ² with Yates\' correction, p = 0.003'), `${await text(page, '#ttr-h')} | ${await text(page, '.verdict-line')}`);
+    check(`${label}: NNH from an exact risk difference of 0.2 is 5`, (await page.locator('.restable', { hasText: 'Measures of impact' }).textContent()).includes('5.0, round up to 5'));
+    check(`${label}: no sideways scroll on the 2 x 2 result`, await noSideScroll(page));
+    await shot(page, `${label}-measures-cohort`);
+    await page.getByRole('button', { name: 'Case-control', exact: true }).click();
+    check(`${label}: case-control gives the OR only`, (await text(page, '#ttr-h')) === 'Odds ratio = 3.27' && (await page.locator('.restable', { hasText: 'Risk ratio' }).count()) === 0, await text(page, '#ttr-h'));
+    await page.getByRole('button', { name: 'Cohort or trial', exact: true }).click();
+    await page.getByRole('button', { name: 'Columns from your data' }).click();
+    await page.getByLabel('Exposure column').selectOption('IFA_adherence');
+    await page.getByLabel('Outcome column').selectOption('Anaemia_6_months');
+    check(`${label}: RR from the example data`, (await text(page, '#ttr-h')) === 'Risk ratio = 1.64' && (await text(page, '.verdict-line')).startsWith('95% CI 1.20 to 2.26 (Wald)'), `${await text(page, '#ttr-h')} | ${await text(page, '.verdict-line')}`);
+    await page.getByRole('button', { name: 'R and Python code for this analysis' }).click();
+    check(`${label}: 2 x 2 R code has Koopman's interval`, (await page.locator('pre.code').textContent()).includes('koopman <- function(l)'));
+    await page.getByRole('button', { name: 'Person-time', exact: true }).click();
+    await page.getByRole('button', { name: 'Events and person-time' }).click();
+    check(`${label}: rate ratio, exact CI`, (await text(page, '#ptr-h')) === 'Rate ratio = 1.86' && (await text(page, '.verdict-line')).startsWith('95% CI 1.01 to 3.61 (exact'), `${await text(page, '#ptr-h')} | ${await text(page, '.verdict-line')}`);
+    check(`${label}: no sideways scroll on person-time`, await noSideScroll(page));
+    await page.getByRole('button', { name: 'Matched pairs', exact: true }).click();
+    check(`${label}: matched odds ratio from discordant pairs`, (await text(page, '#mpr-h')) === 'Matched odds ratio = 3.00' && (await text(page, '.verdict-line')).startsWith('95% CI 1.43 to 6.88'), await text(page, '.verdict-line'));
+    await page.getByRole('button', { name: 'Population impact', exact: true }).click();
+    check(`${label}: Levin's PAF for RR 2 with 30% exposed`, (await text(page, '#imr-h')) === 'Population attributable fraction = 23.1%', await text(page, '#imr-h'));
+    check(`${label}: no sideways scroll on population impact`, await noSideScroll(page));
+    await page.getByRole('button', { name: 'Proportion or rate', exact: true }).click();
+    await page.getByRole('button', { name: 'Type the numbers' }).click();
+    check(`${label}: prevalence with the Wilson CI`, (await text(page, '#fqr-h')) === 'Prevalence = 14.2%' && (await text(page, '.verdict-line')) === '95% CI 9.0% to 21.5% (Wilson)', `${await text(page, '#fqr-h')} | ${await text(page, '.verdict-line')}`);
+    await shot(page, `${label}-measures-frequency`);
+
     await page.goto(`${base}#/`);
     await page.getByRole('button', { name: 'Settings' }).click();
     await page.getByRole('button', { name: 'Dark', exact: true }).click();

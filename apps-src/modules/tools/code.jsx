@@ -20,6 +20,10 @@ const ROWS = [
   ['Kappa, Fleiss\' kappa, ICC, alpha', 'psych::cohen.kappa, psych::ICC, psych::alpha; Fleiss\' kappa written out', 'statsmodels inter_rater; pingouin'],
   ['Bland-Altman', 'base R', 'numpy, statsmodels'],
   ['Meta-analysis', 'metafor::rma (effect sizes written out as in the app)', 'numpy and SciPy (written out as in the app)'],
+  ['Proportions and rates', 'binom.test, prop.test (Wilson), poisson.test', 'scipy.stats.binomtest; chi2 quantiles for the exact Poisson CI'],
+  ['Risk, prevalence and odds ratios; fractions; NNT', "Base R: Koopman's score CI and Newcombe's CI written out; fisher.test, chisq.test", 'numpy, SciPy (conditional odds ratio, brentq); statsmodels (Newcombe)'],
+  ['Rate ratio from person-time', 'poisson.test', 'scipy.stats.binomtest, conditional on the events'],
+  ['Matched pairs', 'binom.test, mcnemar.test', 'scipy.stats.binomtest; statsmodels mcnemar'],
 ];
 
 export default function CodeTool() {
