@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Diya Network</title>
+<meta name="description" content="AI-luminated Diwali: a network of diyas teaches itself to draw a diya, live in your browser. A Diwali lesson in how AI learns, from Dr. Abhishek Panda and the Digital &amp; AI Fluency Clinic for Healthcare Professionals.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AI-luminated Diwali: The Diya Network">
+<meta property="og:description" content="A network of diyas learns to draw a diya, live in your browser. A Diwali lesson in how AI learns.">
+<meta property="og:url" content="https://dr-abhishekpanda-cm.app/diwali/">
+<meta property="og:image" content="https://dr-abhishekpanda-cm.app/diwali/og-ai-luminated-diwali.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* The Epidemiologist's Worksheet (EWS) v1.0, with dark "night panels" so the diyas can glow on the paper.
+     Layout: one reading column; each lesson step pairs short prose with an interactive night panel. */
+  --paper:#F4F5F1; --paper-2:#ECEEE7; --card:#FAFBF7;
+  --ink:#15201B; --ink-soft:#4B5A52; --ink-faint:#7B877E; --line:#D7DCD1; --line-soft:#E4E7DD;
+  --primary:#0C5E4E; --primary-deep:#08493C; --accent:#BE651F; --accent-tint:#F0E2D2; --danger:#A23B2B;
+  --night:#15201B; --night-2:#1C2924; --on-night:#F4F5F1; --on-night-soft:#B9C5BD; --flame:#FFB547;
+  --display:'Fraunces', Georgia, 'Times New Roman', serif;
+  --body:'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono:'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --radius:14px; --maxw:1120px;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:clamp(15.5px, 14.6px + 0.3vw, 17px);line-height:1.62}
+.grid-bg{position:fixed;inset:0;z-index:-2;pointer-events:none;background-image:linear-gradient(to right, rgba(215,220,209,.32) 1px, transparent 1px),linear-gradient(to bottom, rgba(215,220,209,.32) 1px, transparent 1px);background-size:34px 34px;-webkit-mask-image:radial-gradient(ellipse 90% 75% at 50% 20%, #000 35%, transparent 100%);mask-image:radial-gradient(ellipse 90% 75% at 50% 20%, #000 35%, transparent 100%)}
+.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;background:radial-gradient(circle at 100% 0%, rgba(12,94,78,.06), rgba(12,94,78,0) 45%)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+a{color:var(--primary);text-underline-offset:3px}
+a:hover{color:var(--primary-deep)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);font-weight:500;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.6rem, 1.7rem + 4vw, 4.4rem);line-height:1.0;letter-spacing:-0.02em}
+h1 em{font-style:italic;color:var(--accent)}
+h1 .it{font-style:italic;color:var(--primary)}
+h1 .sub{display:block;font-size:.6em;line-height:1.15;margin-top:.2em;letter-spacing:-0.01em}
+h2{font-size:clamp(1.9rem, 1.4rem + 2vw, 2.7rem);line-height:1.06;letter-spacing:-0.01em}
+section.step h2{color:var(--primary)}
+h2 .n{font-family:var(--mono);font-size:.42em;font-weight:500;color:var(--primary);letter-spacing:.04em;border:1px solid var(--line);border-radius:6px;padding:.25em .5em;vertical-align:.35em;margin-right:.55em;background:var(--card)}
+h3{font-size:1.26rem;line-height:1.25;margin-top:1.4em}
+p{margin:.8em 0}
+.prose{max-width:65ch}
+.lead{font-size:1.14em;color:var(--ink-soft);max-width:34em}
+strong{font-weight:600}
+dfn{font-style:normal;font-weight:600}
+.mono{font-family:var(--mono)}
+.num{font-variant-numeric:tabular-nums}
+
+/* header */
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid var(--line-soft);font-size:.92em;font-weight:600;color:var(--ink-soft)}
+.top .tag{font-family:var(--mono);font-size:.88em;color:var(--primary);white-space:nowrap}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;padding:40px 0 8px}
+.hero .copy{display:flex;flex-direction:column;gap:18px;justify-content:center}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px}
+.by{font-size:.95em;color:var(--ink-soft)}
+@media (min-width: 940px){ .hero{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:48px;padding-top:56px} }
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:10px;border:1px solid var(--primary);font:600 15px/1 var(--body);text-decoration:none;cursor:pointer;background:transparent;color:var(--primary)}
+.btn:hover{background:rgba(12,94,78,.07);color:var(--primary-deep)}
+.btn.primary{background:var(--primary);color:var(--paper)}
+.btn.primary:hover{background:var(--primary-deep);color:var(--paper)}
+.btn svg{width:18px;height:18px}
+
+/* night panels */
+.night{background:radial-gradient(120% 70% at 50% 0%, #22332B 0%, var(--night) 62%);border-radius:var(--radius);color:var(--on-night);overflow:hidden;box-shadow:0 24px 48px -30px rgba(21,32,27,.65)}
+.night canvas{display:block;width:100%;touch-action:manipulation}
+.night .bar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;padding:14px 18px;border-top:1px solid rgba(244,245,241,.08);background:rgba(0,0,0,.14)}
+.night .btn{border-color:rgba(255,181,71,.7);color:var(--flame)}
+.night .btn:hover{background:rgba(255,181,71,.1);color:#FFD08A}
+.night .btn.primary{background:var(--flame);border-color:var(--flame);color:#1B140A}
+.night .btn.primary:hover{background:#FFC871;color:#1B140A}
+.night .btn:disabled{opacity:.45;cursor:default}
+.night .hint{font-size:.88em;color:var(--on-night-soft)}
+.stats{display:flex;flex-wrap:wrap;gap:8px 26px}
+.stat{display:flex;flex-direction:column;line-height:1.2}
+.stat .k{font-size:.78em;color:var(--on-night-soft)}
+.stat .v{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:1.25em;font-weight:600;color:#FFD27A}
+.stat .v.good{color:#9FE3B5}
+
+/* lesson sections */
+section.step{margin-top:clamp(64px, 9vw, 104px)}
+.pair{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;align-items:start;margin-top:18px}
+@media (min-width: 960px){ .pair{grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:44px} .pair.flip{grid-template-columns:minmax(0,6fr) minmax(0,5fr)} .pair.flip > .panelcol{order:-1} }
+
+/* neuron controls */
+.controls{display:grid;grid-template-columns:minmax(0,1fr);gap:14px 26px;padding:16px 18px 18px;background:rgba(0,0,0,.14);border-top:1px solid rgba(244,245,241,.08)}
+@media (min-width: 560px){ .controls{grid-template-columns:repeat(2, minmax(0,1fr))} }
+.controls fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+.controls legend{font-weight:600;font-size:.9em;color:var(--on-night);padding:0;margin-bottom:4px}
+.slider{display:grid;grid-template-columns:7.2em minmax(0,1fr) 3.6em;align-items:center;gap:10px;font-size:.9em;color:var(--on-night-soft)}
+.slider output{font-family:var(--mono);font-variant-numeric:tabular-nums;color:#FFD27A;text-align:right}
+input[type=range]{width:100%;accent-color:var(--flame);min-height:32px}
+.controls .row{display:flex;justify-content:space-between;align-items:center;gap:12px;grid-column:1/-1;flex-wrap:wrap}
+
+.seg{display:inline-flex;border:1px solid rgba(255,181,71,.55);border-radius:10px;overflow:hidden}
+.seg label{position:relative}
+.seg input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.seg span{display:flex;align-items:center;min-height:40px;padding:0 12px;font-size:.86em;color:var(--on-night-soft);cursor:pointer}
+.seg input:checked + span{background:rgba(255,181,71,.18);color:#FFD27A;font-weight:600}
+.seg input:focus-visible + span{outline:3px solid var(--accent);outline-offset:-3px}
+.check{display:inline-flex;align-items:center;gap:8px;font-size:.88em;color:var(--on-night-soft);min-height:40px;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--flame)}
+
+.note{background:var(--accent-tint);border:1px solid #E5CCB1;border-radius:var(--radius);padding:16px 18px;margin:18px 0}
+.note p{margin:.35em 0}
+.formula{font-family:var(--mono);font-size:.92em;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:2px 6px;white-space:nowrap}
+
+/* tables */
+.table-wrap{overflow-x:auto;margin-top:18px;border:1px solid var(--line);border-radius:var(--radius);background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:560px}
+th,td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line-soft)}
+tr:last-child td{border-bottom:0}
+thead th{font-weight:600;background:var(--paper-2);border-bottom:1px solid var(--line)}
+tbody th{font-weight:600}
+.cards3{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;margin-top:20px}
+@media (min-width: 820px){ .cards3{grid-template-columns:repeat(3, minmax(0,1fr))} }
+.cards3 article{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.cards3 h3{margin:0 0 .3em}
+.cards3 p{margin:.3em 0;color:var(--ink-soft)}
+
+/* closing */
+.closing{margin-top:clamp(72px, 10vw, 120px)}
+.closing .night{display:grid;grid-template-columns:minmax(0,1fr);align-items:center}
+@media (min-width: 860px){ .closing .night{grid-template-columns:minmax(0,5fr) minmax(0,6fr)} }
+.closing .say{padding:28px 26px 30px;display:flex;flex-direction:column;gap:14px}
+.closing h2{color:var(--on-night)}
+.closing h2 em{font-style:italic;color:var(--flame)}
+.closing p{color:var(--on-night-soft);margin:0}
+.closing .actions .btn{min-width:10em}
+.share{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;align-items:start;margin-top:28px}
+@media (min-width: 760px){ .share{grid-template-columns:minmax(0,1fr) minmax(0,320px)} }
+.share h3{margin:0 0 .3em}
+.share p{margin:.3em 0;color:var(--ink-soft)}
+.dl{margin:.6em 0 0;padding-left:1.2em}
+.dl li{margin:.35em 0}
+.film{display:block;width:100%;max-width:320px;aspect-ratio:9/16;background:var(--night);border-radius:var(--radius);justify-self:center}
+footer{margin:56px 0 40px;padding-top:18px;border-top:1px solid var(--line);font-size:.9em;color:var(--ink-soft);display:grid;grid-template-columns:minmax(0,1fr);gap:16px;justify-items:center;text-align:center}
+@media (min-width: 760px){ footer{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:28px;align-items:start;justify-items:stretch;text-align:left} footer .reach{text-align:right} footer > .tag{justify-self:center;text-align:center} }
+footer .tag{font-family:var(--mono);font-size:.88em;color:var(--primary);white-space:nowrap;font-weight:600;font-style:italic}
+footer address{font-style:normal;line-height:1.6}
+footer address strong{color:var(--ink);font-weight:600}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion: reduce){ *{animation:none !important;transition:none !important;scroll-behavior:auto !important} }
+</style>
+</head>
+<body>
+<div class="grid-bg" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="wrap">
+
+<header class="top">
+  <span>Digital &amp; AI Fluency Clinic for Healthcare Professionals</span>
+  <span class="tag">Diwali 2026</span>
+</header>
+
+<main>
+<section class="hero" aria-labelledby="t-hero">
+  <div class="copy">
+    <h1 id="t-hero"><span class="it">AI-luminated<br>Diwali,</span> <span class="sub">from a Network of <em>Diyas</em></span></h1>
+    <p class="lead">Every diya on this page is an artificial Neuron. Wired together, they learn to draw a diya, right here in your browser.<br>Five short steps take you from one flame to the idea behind ChatGPT.</p>
+    <div class="actions">
+      <a class="btn primary" href="#neuron">Start with One Diya</a>
+      <a class="btn" href="#train">Watch It Learn</a>
+    </div>
+    <p class="by">With warm wishes from Dr. Abhishek Panda and the Digital &amp; AI Fluency Clinic.</p>
+  </div>
+  <figure class="night" style="margin:0">
+    <canvas id="hero" role="img" aria-label="A glowing diya drawn by a small neural network. Below it, the network itself: rows of small diyas joined by golden threads, with light flowing upwards from two input lamps to one output lamp."></canvas>
+    <figcaption class="bar"><span class="hint">This diya was drawn by the 361-parameter network below, after 2,000 Epochs of training.<br>The ring shows the dot it is checking; the top lamp lights when that dot belongs to the diya.</span></figcaption>
+  </figure>
+</section>
+
+<section class="step" id="neuron" aria-labelledby="t1">
+  <h2 id="t1"><span class="n">01</span>One Diya Is One Neuron</h2>
+  <div class="pair">
+    <div class="prose">
+      <p>An artificial <dfn>Neuron</dfn> does three small things. It takes some <dfn>Inputs</dfn>, multiplies each one by a <dfn>Weight</dfn> that says how much that input counts, and adds the results together with its own <dfn>Bias</dfn>.</p>
+      <p>Then an <dfn>Activation Function</dfn> turns that total into the neuron's output. Here the Sigmoid curve squeezes any total into a brightness between 0 and 1.</p>
+      <p>Try it. More oil and a longer wick brighten the flame. Breeze has a negative weight, so it dims the flame. Raise the bias and the lamp lights more easily.</p>
+      <div class="note">
+        <p><strong>Recognise the Formula?</strong> One neuron with a Sigmoid activation computes <span class="formula">1 / (1 + e<sup>−(b + Σ wx)</sup>)</span>.</p>
+        <p>That is <strong>Logistic Regression</strong>, the same model behind many clinical prediction tools.<br>You already know the arithmetic of AI.</p>
+      </div>
+    </div>
+    <div class="panelcol">
+      <div class="night">
+        <canvas id="neuronCanvas" role="img" aria-label="One diya with three input threads: oil, wick and breeze. Thread thickness shows each weight; the flame shows the neuron's output."></canvas>
+        <div class="controls">
+          <fieldset>
+            <legend>Inputs</legend>
+            <div class="slider"><label for="in0">Oil Level</label><input id="in0" type="range" min="0" max="1" step="0.01" value="0.9"><output for="in0" id="in0v">0.90</output></div>
+            <div class="slider"><label for="in1">Wick Length</label><input id="in1" type="range" min="0" max="1" step="0.01" value="0.7"><output for="in1" id="in1v">0.70</output></div>
+            <div class="slider"><label for="in2">Breeze</label><input id="in2" type="range" min="0" max="1" step="0.01" value="0.3"><output for="in2" id="in2v">0.30</output></div>
+          </fieldset>
+          <fieldset>
+            <legend>Weights and Bias</legend>
+            <div class="slider"><label for="w0">Oil Weight</label><input id="w0" type="range" min="-2" max="2" step="0.05" value="1.2"><output for="w0" id="w0v">1.20</output></div>
+            <div class="slider"><label for="w1">Wick Weight</label><input id="w1" type="range" min="-2" max="2" step="0.05" value="0.5"><output for="w1" id="w1v">0.50</output></div>
+            <div class="slider"><label for="w2">Breeze Weight</label><input id="w2" type="range" min="-2" max="2" step="0.05" value="-0.8"><output for="w2" id="w2v">−0.80</output></div>
+            <div class="slider"><label for="b0">Bias</label><input id="b0" type="range" min="-3" max="3" step="0.05" value="0.2"><output for="b0" id="b0v">0.20</output></div>
+          </fieldset>
+          <div class="row">
+            <p class="hint" style="margin:0" aria-live="polite" id="neuronSay">Total 1.39, brightness 0.80</p>
+            <button class="btn" type="button" id="neuronReset">Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="step" id="network" aria-labelledby="t2">
+  <h2 id="t2"><span class="n">02</span>Many Diyas Make a Network</h2>
+  <div class="pair flip">
+    <div class="prose">
+      <p>Put neurons in rows and feed each row's outputs into the next row, and you have a <dfn>Neural Network</dfn>. Ours has two inputs, three <dfn>Hidden Layers</dfn> of twelve diyas and one output: 361 weights and biases in all.</p>
+      <p>Its job is simple to state. Give it the position of a dot, <span class="mono">(x, y)</span>, and it answers how sure it is that the dot belongs to a picture of a diya, from 0 to 1.</p>
+      <p>Tap the square to pick a dot. Light flows up the network, layer by layer, to the answer. That journey is a <dfn>Forward Pass</dfn>, and it is all a trained network does when it makes a prediction, which is called <dfn>Inference</dfn>.</p>
+      <p>Its weights start out random, so for now its answers are guesses. Train it in step 3, then come back and tap again.</p>
+    </div>
+    <div class="panelcol">
+      <div class="night">
+        <canvas id="netCanvas" role="img" aria-label="Top: a square showing what the network currently draws, with a ring at the chosen dot. Bottom: the network, with light flowing from the two input lamps to the output lamp."></canvas>
+        <div class="bar">
+          <p class="hint" style="margin:0" aria-live="polite" id="netSay">Dot (0.00, 0.40). The network says 0.52, a guess.</p>
+          <button class="btn primary" type="button" id="passBtn">Pass the Light</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="step" id="train" aria-labelledby="t3">
+  <h2 id="t3"><span class="n">03</span>Teach It to Draw a Diya</h2>
+  <div class="pair">
+    <div class="prose">
+      <p>Training needs examples with answers. We give the network 1,600 dots on a grid, each with a <dfn>Label</dfn>: gold if it belongs to the diya, violet if it does not. A rangoli starts from a dot grid too.</p>
+      <p>Each <dfn>Epoch</dfn> is one pass over all 1,600 dots:</p>
+      <ol>
+        <li>A forward pass gives an answer for every dot.</li>
+        <li>The <dfn>Loss</dfn> scores how wrong those answers are. Red rings mark outright mistakes.</li>
+        <li><dfn>Backpropagation</dfn> works out how much each weight added to the loss.</li>
+        <li><dfn>Gradient Descent</dfn> nudges every weight a little to reduce it.</li>
+      </ol>
+      <p>Press <strong>Train</strong> and watch the guesses turn into a lamp. With the steady setting, the mistakes reach zero in about 1,000 epochs.</p>
+      <h3>Try a Different Learning Rate</h3>
+      <p>The <dfn>Learning Rate</dfn> sets the size of each nudge. Too slow and the diya takes ages to appear. Too fast and the network overshoots; the mistakes bounce around instead of settling.</p>
+      <h3>Test It on Dots It Never Saw</h3>
+      <p>After training, tap anywhere on the drawing, including the gaps between the training dots. Getting new cases right is <dfn>Generalisation</dfn>, the whole point of learning. A model that only fits its own examples suffers from <dfn>Overfitting</dfn>.</p>
+    </div>
+    <div class="panelcol">
+      <div class="night">
+        <canvas id="fieldCanvas" role="img" aria-label="What the network draws: a square map, dark where it says not diya and golden where it says diya, with the 1,600 labelled training dots on top and red rings on its mistakes."></canvas>
+        <div class="bar">
+          <div class="stats" aria-live="polite">
+            <div class="stat"><span class="k">Epoch</span><span class="v" id="sEpoch">0</span></div>
+            <div class="stat"><span class="k">Mistakes</span><span class="v" id="sWrong">665 of 1,600</span></div>
+            <div class="stat"><span class="k">Loss</span><span class="v" id="sLoss">0.734</span></div>
+          </div>
+          <div class="actions" style="margin:0">
+            <button class="btn primary" type="button" id="trainBtn">Train</button>
+            <button class="btn" type="button" id="stepBtn">One Epoch</button>
+          </div>
+        </div>
+        <canvas id="lossCanvas" role="img" aria-label="Loss against epoch, on a log scale. It falls as the network learns."></canvas>
+        <div class="bar">
+          <div class="seg" role="radiogroup" aria-label="Learning rate">
+            <label><input type="radio" name="lr" value="0.002" id="lrSlow"><span>Slow 0.002</span></label>
+            <label><input type="radio" name="lr" value="0.02" id="lrMid" checked><span>Steady 0.02</span></label>
+            <label><input type="radio" name="lr" value="0.3" id="lrFast"><span>Too fast 0.3</span></label>
+          </div>
+          <label class="check"><input type="checkbox" id="dotsChk" checked> Show Dots</label>
+          <div class="actions" style="margin:0">
+            <button class="btn" type="button" id="resetBtn">Reset</button>
+            <button class="btn" type="button" id="seedBtn">New Random Start</button>
+          </div>
+        </div>
+      </div>
+      <p class="hint" style="font-size:.88em;color:var(--ink-soft)" id="trainSay" aria-live="polite">Untrained: its first guesses come from random weights.</p>
+    </div>
+  </div>
+</section>
+
+<section class="step" id="scale" aria-labelledby="t4">
+  <h2 id="t4"><span class="n">04</span>From 361 Numbers to Billions</h2>
+  <div class="prose">
+    <p>A ChatGPT-style language model is built from the same parts you have just used: neurons, weights, a loss, backpropagation and gradient descent. What changes is the job and the scale.</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th scope="col">&nbsp;</th><th scope="col">Our Diya Network</th><th scope="col">A ChatGPT-Style Model</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Its Job</th><td>Say whether a dot belongs to a diya</td><td>Predict the next token, a word or part of a word, again and again</td></tr>
+        <tr><th scope="row">Learns From</th><td>1,600 labelled dots</td><td>Trillions of tokens of text, then further tuning with human feedback</td></tr>
+        <tr><th scope="row">Parameters</th><td class="num">361</td><td>Billions; exact counts are often not disclosed</td></tr>
+        <tr><th scope="row">Training Time</th><td>A few seconds in your browser</td><td>Weeks to months on thousands of specialised chips</td></tr>
+        <tr><th scope="row">Built From</th><td colspan="2">The same recipe: forward pass, loss, backpropagation, gradient descent, repeat</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>What This Means When You Use AI at Work</h3>
+  <div class="cards3">
+    <article><h3>It Predicts</h3><p>A language model writes the most likely next words. Fluent is not the same as correct, so check clinical facts, doses and references against primary sources.</p></article>
+    <article><h3>It Inherits Its Data</h3><p>Patterns, gaps and biases in the training data carry into the answers. Be careful with groups and settings that published data under-represents.</p></article>
+    <article><h3>It Needs Your Judgement</h3><p>Use it to draft, summarise and explain, then decide yourself. Never paste identifiable patient information into a public AI tool.</p></article>
+  </div>
+</section>
+
+<section class="step" id="words" aria-labelledby="t5">
+  <h2 id="t5"><span class="n">05</span>Words to Keep</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th scope="col">Term</th><th scope="col">What It Means</th><th scope="col">In the Diya Network</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Neuron</th><td>Multiplies its inputs by weights, adds a bias and passes the total through an activation function</td><td>Each diya</td></tr>
+        <tr><th scope="row">Weight</th><td>How strongly one input counts; it can be negative</td><td>Each thread: gold for positive, violet for negative, thicker for stronger</td></tr>
+        <tr><th scope="row">Bias</th><td>A constant added before the activation; it shifts how easily the neuron fires</td><td>The lamp's own oil</td></tr>
+        <tr><th scope="row">Activation function</th><td>Turns the total into the output: sigmoid gives 0 to 1, tanh gives −1 to 1</td><td>How brightly the flame burns</td></tr>
+        <tr><th scope="row">Layer</th><td>A row of neurons that all take the previous row's outputs</td><td>A row of diyas</td></tr>
+        <tr><th scope="row">Forward pass, inference</th><td>Running inputs through every layer to get an output</td><td>Light flowing upwards</td></tr>
+        <tr><th scope="row">Label</th><td>The correct answer attached to a training example</td><td>Gold or violet dot</td></tr>
+        <tr><th scope="row">Loss</th><td>One number for how wrong the outputs are; here, binary cross-entropy</td><td>Falls as the diya appears</td></tr>
+        <tr><th scope="row">Backpropagation</th><td>Works out each weight's share of the loss, its gradient, layer by layer from the output back</td><td>The error travelling back down the threads</td></tr>
+        <tr><th scope="row">Gradient descent</th><td>Moves every weight a small step in the direction that lowers the loss; Adam, used here, is a popular variant</td><td>The nudge after each epoch</td></tr>
+        <tr><th scope="row">Learning rate</th><td>The size of each step</td><td>Slow, steady or too fast in step 3</td></tr>
+        <tr><th scope="row">Epoch</th><td>One pass through all the training examples</td><td>One update over all 1,600 dots</td></tr>
+        <tr><th scope="row">Parameters</th><td>All the weights and biases a model learns</td><td class="num">361</td></tr>
+        <tr><th scope="row">Generalisation</th><td>Getting new, unseen cases right</td><td>Correct answers between the training dots</td></tr>
+        <tr><th scope="row">Overfitting</th><td>Fitting the training examples, noise included, so closely that new cases suffer</td><td>A risk with small, noisy data sets</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="closing" aria-labelledby="t6">
+  <div class="night">
+    <canvas id="closingCanvas" role="img" aria-label="The diya the network learned to draw, lit and flickering."></canvas>
+    <div class="say">
+      <h2 id="t6">AI-luminated <em>Diwali</em></h2>
+      <p>An old prayer from the Brihadaranyaka Upanishad (1.3.28) asks, "Lead me from darkness to light."<br>Every Epoch of training is a small step in that direction, with a little less error and a little more light.</p>
+      <p>May this Diwali bring light, health and learning to you and your families.</p>
+      <div class="actions">
+        <a class="btn primary" id="waShare" href="https://wa.me/?text=AI-luminated%20Diwali" target="_blank" rel="noopener">Share on WhatsApp</a>
+        <button class="btn" type="button" id="copyBtn" hidden>Copy Link</button>
+      </div>
+      <p class="hint" id="copySay" aria-live="polite" style="font-size:.88em"></p>
+    </div>
+  </div>
+  <div class="share">
+    <div class="share-copy">
+      <h3>Watch and Share</h3>
+      <p>The 90-second film follows the same network from one diya to a trained lamp.<br>Forward it, or post the images on WhatsApp.</p>
+      <ul class="dl">
+        <li><a href="ai-luminated-diwali-2026.mp4" download>Video, MP4 (vertical, with sound)</a></li>
+        <li><a href="ai-luminated-diwali-status-1080x1920.jpg" download>Status Image, 1080 × 1920</a></li>
+        <li><a href="ai-luminated-diwali-card-1080x1620.jpg" download>Five Diyas Card, 1080 × 1620</a></li>
+      </ul>
+    </div>
+    <video class="film" controls preload="none" playsinline poster="ai-luminated-diwali-status-1080x1920.jpg" aria-label="The Diya Network film: a network of diyas learns to draw a diya">
+      <source src="ai-luminated-diwali-2026.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>
+</main>
+
+<footer>
+  <address class="who">
+    <strong>Dr. Abhishek Panda, MD</strong><br>
+    Assistant Professor in Community Medicine<br>
+    Government Medical College &amp; Hospital<br>
+    Sundaragada, Odisha, India
+  </address>
+  <span class="tag">Diwali 2026</span>
+  <address class="reach">
+    <strong>Digital &amp; AI Fluency Clinic for Healthcare Professionals</strong><br>
+    <strong>Email:</strong> <a href="mailto:support@dr-abhishekpanda-cm.app">support@dr-abhishekpanda-cm.app</a><br>
+    <strong>WhatsApp:</strong> <a href="https://wa.me/917008909595" target="_blank" rel="noopener">(+91) 700-890-9595</a><br>
+    <strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/dr-abhishekpanda/" target="_blank" rel="noopener">dr-abhishekpanda</a>
+  </address>
+</footer>
+</div>
+
+<script>
+/* Diya Network engine: shared by the video renderer and the interactive page.
+   A real multilayer perceptron (tanh hidden layers, sigmoid output, cross-entropy loss, Adam)
+   that learns to draw a diya from labelled dots, plus canvas drawing helpers. */
+(function (root) {
+  'use strict';
+  const E = {};
+
+  // ---------- small maths helpers ----------
+  E.mulberry32 = function (a) {
+    return function () {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  };
+  E.gaussFrom = R => () => { let u = 0; while (!u) u = R(); const v = R(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+  E.clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+  E.lerp = (a, b, t) => a + (b - a) * t;
+  E.smooth = t => { t = E.clamp(t); return t * t * (3 - 2 * t); };
+  E.ease = t => { t = E.clamp(t); return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+  E.easeOut = t => { t = E.clamp(t); return 1 - Math.pow(1 - t, 3); };
+  E.easeIn = t => { t = E.clamp(t); return t * t * t; };
+  E.ramp = (t, a, b) => E.clamp((t - a) / (b - a));
+  E.env = (t, a, b, fi = 0.45, fo = 0.45) => Math.min(E.smooth((t - a) / fi), E.smooth((b - t) / fo));
+  E.flick = (t, ph) => 0.5 * Math.sin(t * 9.1 + ph) + 0.3 * Math.sin(t * 14.7 + ph * 1.7) + 0.2 * Math.sin(t * 23.3 + ph * 2.3);
+  E.sigmoid = z => 1 / (1 + Math.exp(-z));
+
+  // ---------- the training data: dots labelled "part of a diya" or not ----------
+  function teardrop(x, y, cx, cy, h, a, m) {
+    const yp = (y - cy) / h; if (yp < -1 || yp > 1) return false;
+    const t = Math.acos(yp); const hw = a * Math.sin(t) * Math.pow(Math.sin(t / 2), m);
+    return Math.abs(x - cx) < hw;
+  }
+  E.diyaShape = function (x, y) {
+    if (teardrop(x, y, 0, 0.36, 0.36, 0.30, 1.2)) return 1;                 // flame
+    const ex = x / 0.66, ey = (y + 0.12) / 0.46; if (y <= -0.12 && ex * ex + ey * ey < 1) return 1; // bowl
+    const bx = x / 0.70, by = (y + 0.12) / 0.06; if (bx * bx + by * by < 1) return 1;              // rim
+    return 0;
+  };
+  // g x g dots on a lightly jittered grid (like the dot grid a rangoli starts from)
+  E.makeData = function (g, seed, jitter = 0.32) {
+    const R = E.mulberry32(seed); const n = g * g;
+    const X = new Float64Array(2 * n), Y = new Float64Array(n); let k = 0;
+    for (let i = 0; i < g; i++) for (let j = 0; j < g; j++) {
+      const x = -1 + 2 * (i + 0.5 + (R() - 0.5) * jitter) / g;
+      const y = -1 + 2 * (j + 0.5 + (R() - 0.5) * jitter) / g;
+      X[2 * k] = x; X[2 * k + 1] = y; Y[k] = E.diyaShape(x, y); k++;
+    }
+    return { X, Y, n };
+  };
+
+  // ---------- the neural network ----------
+  // params layout: for each layer l: W (fo x fi, row-major by output) then b (fo)
+  E.MLP = class {
+    constructor(sizes, seed) {
+      this.sizes = sizes; this.L = sizes.length - 1; this.offW = []; this.offB = []; let n = 0;
+      for (let l = 0; l < this.L; l++) { this.offW.push(n); n += sizes[l] * sizes[l + 1]; this.offB.push(n); n += sizes[l + 1]; }
+      this.n = n; this.p = new Float64Array(n);
+      const R = E.mulberry32(seed), G = E.gaussFrom(R);
+      for (let l = 0; l < this.L; l++) {
+        const fi = sizes[l], fo = sizes[l + 1], s = Math.sqrt(1 / fi);
+        for (let k = 0; k < fi * fo; k++) this.p[this.offW[l] + k] = G() * s;
+      }
+      this.acts = sizes.map(s => new Float64Array(s));
+      this.deltas = sizes.map(s => new Float64Array(s));
+    }
+    w(p, l, o, i) { return p[this.offW[l] + o * this.sizes[l] + i]; }
+    forward(x, y, p = this.p, acts = this.acts) {
+      acts[0][0] = x; acts[0][1] = y;
+      for (let l = 0; l < this.L; l++) {
+        const fi = this.sizes[l], fo = this.sizes[l + 1], a = acts[l], out = acts[l + 1], ow = this.offW[l], ob = this.offB[l];
+        const last = l === this.L - 1;
+        for (let o = 0; o < fo; o++) {
+          let z = p[ob + o]; const r = ow + o * fi;
+          for (let i = 0; i < fi; i++) z += p[r + i] * a[i];
+          out[o] = last ? 1 / (1 + Math.exp(-z)) : Math.tanh(z);
+        }
+      }
+      return acts[this.L][0];
+    }
+    // evaluate loss (binary cross-entropy) and number of mistakes on data with params p
+    evaluate(data, p = this.p) {
+      let loss = 0, wrong = 0;
+      for (let k = 0; k < data.n; k++) {
+        const pr = this.forward(data.X[2 * k], data.X[2 * k + 1], p); const y = data.Y[k];
+        loss += -(y * Math.log(pr + 1e-12) + (1 - y) * Math.log(1 - pr + 1e-12));
+        if ((pr > 0.5) !== (y > 0.5)) wrong++;
+      }
+      return { loss: loss / data.n, wrong };
+    }
+    // one optimiser state for incremental training (used live on the page)
+    makeAdam() { return { m: new Float64Array(this.n), v: new Float64Array(this.n), g: new Float64Array(this.n), t: 0 }; }
+    // one full-batch step of Adam (one epoch); returns {loss, wrong} measured before the update
+    step(data, lr, st, idx = null, batch = 0) {
+      const n = this.n, g = st.g, L = this.L, sz = this.sizes, p = this.p, acts = this.acts, deltas = this.deltas;
+      g.fill(0); let loss = 0, wrong = 0;
+      const N = batch && idx ? batch : data.n;
+      for (let kk = 0; kk < N; kk++) {
+        const k = idx ? idx[kk] : kk;
+        const pr = this.forward(data.X[2 * k], data.X[2 * k + 1]); const y = data.Y[k];
+        loss += -(y * Math.log(pr + 1e-12) + (1 - y) * Math.log(1 - pr + 1e-12));
+        if ((pr > 0.5) !== (y > 0.5)) wrong++;
+        deltas[L][0] = pr - y;
+        for (let l = L - 1; l >= 0; l--) {
+          const fi = sz[l], fo = sz[l + 1], a = acts[l], d = deltas[l + 1], ow = this.offW[l], ob = this.offB[l];
+          for (let o = 0; o < fo; o++) { const dv = d[o]; g[ob + o] += dv; const r = ow + o * fi; for (let i = 0; i < fi; i++) g[r + i] += dv * a[i]; }
+          if (l > 0) {
+            const dd = deltas[l];
+            for (let i = 0; i < fi; i++) { let s = 0; for (let o = 0; o < fo; o++) s += p[ow + o * fi + i] * d[o]; dd[i] = s * (1 - a[i] * a[i]); }
+          }
+        }
+      }
+      st.t++; const b1 = 0.9, b2 = 0.999, eps = 1e-8, c1 = 1 - Math.pow(b1, st.t), c2 = 1 - Math.pow(b2, st.t);
+      for (let j = 0; j < n; j++) {
+        const gj = g[j] / N; st.m[j] = b1 * st.m[j] + (1 - b1) * gj; st.v[j] = b2 * st.v[j] + (1 - b2) * gj * gj;
+        p[j] -= lr * (st.m[j] / c1) / (Math.sqrt(st.v[j] / c2) + eps);
+      }
+      return { loss: loss / N, wrong };
+    }
+    // train for `steps` epochs, keeping a snapshot of every set of weights (for replay)
+    trainWithSnapshots(data, steps, lr) {
+      const snaps = new Float32Array((steps + 1) * this.n), metrics = new Float32Array((steps + 1) * 2);
+      snaps.set(this.p, 0); const st = this.makeAdam();
+      for (let s = 1; s <= steps; s++) {
+        const m = this.step(data, lr, st);
+        metrics[2 * (s - 1)] = m.loss; metrics[2 * (s - 1) + 1] = m.wrong;
+        snaps.set(this.p, s * this.n);
+      }
+      const fin = this.evaluate(data); metrics[2 * steps] = fin.loss; metrics[2 * steps + 1] = fin.wrong;
+      return { snaps, metrics, steps };
+    }
+  };
+  // weights interpolated between two consecutive training snapshots (visual smoothing of one nudge)
+  E.paramsAt = function (net, rec, e, out) {
+    const k = Math.max(0, Math.min(rec.steps, Math.floor(e))), f = Math.min(1, Math.max(0, e - k)), n = net.n;
+    const a = k * n, b = Math.min(rec.steps, k + 1) * n;
+    for (let j = 0; j < n; j++) out[j] = rec.snaps[a + j] + (rec.snaps[b + j] - rec.snaps[a + j]) * f;
+    return out;
+  };
+
+  // ---------- colour helpers ----------
+  E.hex = h => { h = h.replace('#', ''); return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)]; };
+  E.lut = function (stops) { // stops: [[pos, '#rrggbb'], ...]
+    const out = new Uint8ClampedArray(256 * 3); const S = stops.map(s => [s[0], E.hex(s[1])]);
+    for (let i = 0; i < 256; i++) {
+      const t = i / 255; let k = 0; while (k < S.length - 2 && t > S[k + 1][0]) k++;
+      const [p0, c0] = S[k], [p1, c1] = S[k + 1]; const f = E.clamp((t - p0) / (p1 - p0));
+      for (let c = 0; c < 3; c++) out[3 * i + c] = c0[c] + (c1[c] - c0[c]) * f;
+    }
+    return out;
+  };
+  E.LUT_FIELD = E.lut([[0, '#0d0a1c'], [0.30, '#24102f'], [0.5, '#7a2418'], [0.66, '#d9591a'], [0.84, '#ffa834'], [1, '#ffd98a']]);
+
+  // compute the network's drawing (probability of "diya") on a res x res grid into an ImageData
+  E.fieldInto = function (net, p, res, img, lut = E.LUT_FIELD, store = null) {
+    const d = img.data; const acts = net.sizes.map(s => new Float64Array(s));
+    for (let j = 0; j < res; j++) {
+      const y = 1 - 2 * (j + 0.5) / res;
+      for (let i = 0; i < res; i++) {
+        const x = -1 + 2 * (i + 0.5) / res; const v = net.forward(x, y, p, acts);
+        if (store) store[j * res + i] = v;
+        const q = Math.round(v * 255) * 3, o = 4 * (j * res + i);
+        d[o] = lut[q]; d[o + 1] = lut[q + 1]; d[o + 2] = lut[q + 2]; d[o + 3] = 255;
+      }
+    }
+    return img;
+  };
+
+  // ---------- drawing helpers (browser only) ----------
+  const spriteCache = {};
+  E.glowSprite = function (color) {
+    const key = color.join(','); if (spriteCache[key]) return spriteCache[key];
+    const S = 128, c = document.createElement('canvas'); c.width = c.height = S; const g = c.getContext('2d');
+    const grd = g.createRadialGradient(S / 2, S / 2, 0, S / 2, S / 2, S / 2); const [r, gg, b] = color;
+    grd.addColorStop(0, `rgba(${r},${gg},${b},1)`); grd.addColorStop(0.15, `rgba(${r},${gg},${b},0.6)`);
+    grd.addColorStop(0.4, `rgba(${r},${gg},${b},0.18)`); grd.addColorStop(0.7, `rgba(${r},${gg},${b},0.05)`); grd.addColorStop(1, `rgba(${r},${gg},${b},0)`);
+    g.fillStyle = grd; g.fillRect(0, 0, S, S); spriteCache[key] = c; return c;
+  };
+  E.glow = function (ctx, x, y, r, color, alpha) {
+    if (alpha <= 0.003 || r <= 0.5) return;
+    const s = E.glowSprite(color); const op = ctx.globalCompositeOperation, ga = ctx.globalAlpha;
+    ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = Math.min(1, alpha * ga);
+    ctx.drawImage(s, x - r, y - r, 2 * r, 2 * r); ctx.globalAlpha = ga; ctx.globalCompositeOperation = op;
+  };
+
+  function tear(ctx, x, yb, h, fw, sway) {
+    const tx = x + sway;
+    ctx.beginPath(); ctx.moveTo(tx, yb - h);
+    ctx.bezierCurveTo(x + fw * 0.30 + sway * 0.55, yb - h * 0.66, x + fw * 1.06, yb - h * 0.34, x + fw * 0.95, yb - h * 0.12);
+    ctx.bezierCurveTo(x + fw * 0.84, yb + h * 0.04, x + fw * 0.40, yb + h * 0.08, x, yb + h * 0.08);
+    ctx.bezierCurveTo(x - fw * 0.40, yb + h * 0.08, x - fw * 0.84, yb + h * 0.04, x - fw * 0.95, yb - h * 0.12);
+    ctx.bezierCurveTo(x - fw * 1.06, yb - h * 0.34, x - fw * 0.30 + sway * 0.55, yb - h * 0.66, tx, yb - h);
+    ctx.closePath();
+  }
+  E.tear = tear;
+
+  // flame alone (used for the diya and for sparks); base at (x, yb)
+  E.drawFlame = function (ctx, x, yb, w, lit, t, ph) {
+    if (lit < 0.015) return;
+    const f = E.flick(t, ph);
+    const h = w * (0.30 + 0.62 * lit) * (1 + 0.07 * f), fw = w * (0.085 + 0.075 * lit) * (1 - 0.03 * f);
+    const sway = w * 0.035 * Math.sin(t * 3.3 + ph) + w * 0.015 * f;
+    const a = E.smooth(lit * 4);
+    E.glow(ctx, x, yb - h * 0.45, h * 1.5, [255, 150, 50], 0.55 * lit);
+    ctx.save(); ctx.globalAlpha *= a;
+    tear(ctx, x, yb, h, fw, sway);
+    let g = ctx.createRadialGradient(x, yb - h * 0.25, 0, x, yb - h * 0.25, h * 0.85);
+    g.addColorStop(0, 'rgba(255,214,120,1)'); g.addColorStop(0.45, 'rgba(255,140,35,0.95)'); g.addColorStop(1, 'rgba(240,70,10,0.35)');
+    ctx.fillStyle = g; ctx.fill();
+    ctx.globalCompositeOperation = 'lighter';
+    tear(ctx, x, yb, h * 0.66, fw * 0.58, sway * 0.6);
+    ctx.fillStyle = 'rgba(255,226,150,0.9)'; ctx.fill();
+    tear(ctx, x, yb, h * 0.36, fw * 0.36, sway * 0.3);
+    ctx.fillStyle = 'rgba(255,252,235,0.95)'; ctx.fill();
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.beginPath(); ctx.ellipse(x, yb + h * 0.02, fw * 0.45, h * 0.07, 0, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(90,130,255,0.35)'; ctx.fill();
+    ctx.restore();
+  };
+
+  // A diya. (x, y) = centre of the rim; w = width of the bowl; lit = 0..1 brightness
+  E.drawDiya = function (ctx, x, y, w, lit, t, ph = 0, opt = {}) {
+    lit = E.clamp(lit); const detail = opt.detail !== undefined ? opt.detail : w >= 70;
+    const rx = w / 2, ry = w * 0.12, d = w * 0.42;
+    if (lit > 0.01) {
+      E.glow(ctx, x, y - w * 0.25, w * (1.0 + 2.6 * lit), [255, 130, 40], 0.42 * lit);
+      E.glow(ctx, x, y + d * 0.2, w * (0.7 + 0.6 * lit), [255, 120, 50], 0.22 * lit);
+    }
+    // body
+    ctx.save();
+    ctx.beginPath(); ctx.moveTo(x - rx, y);
+    ctx.bezierCurveTo(x - rx * 0.95, y + d * 0.72, x - rx * 0.48, y + d, x, y + d);
+    ctx.bezierCurveTo(x + rx * 0.48, y + d, x + rx * 0.95, y + d * 0.72, x + rx, y);
+    ctx.ellipse(x, y, rx, ry, 0, 0, Math.PI, false); ctx.closePath();
+    let g = ctx.createLinearGradient(x - rx, y, x + rx, y + d);
+    g.addColorStop(0, '#d9773c'); g.addColorStop(0.45, '#b4502a'); g.addColorStop(1, '#5c2111');
+    ctx.fillStyle = g; ctx.fill();
+    if (detail) {
+      ctx.save(); ctx.clip();
+      ctx.lineWidth = Math.max(1, w * 0.016); ctx.strokeStyle = 'rgba(255,205,110,0.85)';
+      ctx.beginPath(); ctx.moveTo(x - rx * 0.92, y + d * 0.18); ctx.quadraticCurveTo(x, y + d * 0.52, x + rx * 0.92, y + d * 0.18); ctx.stroke();
+      ctx.fillStyle = 'rgba(255,214,120,0.95)';
+      for (let k = -4; k <= 4; k++) {
+        const u = k / 4.6, px = x + u * rx * 0.86, py = y + d * 0.18 + (1 - u * u) * d * 0.17 + d * 0.16;
+        ctx.beginPath(); ctx.arc(px, py, w * 0.016, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.strokeStyle = 'rgba(160,30,40,0.7)'; ctx.lineWidth = Math.max(1, w * 0.012);
+      ctx.beginPath();
+      for (let k = 0; k <= 16; k++) { const u = -0.82 + 1.64 * k / 16, px = x + u * rx, py = y + d * 0.62 + (1 - u * u) * d * 0.18 + (k % 2 ? -d * 0.07 : d * 0.03); k ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+      ctx.stroke();
+      ctx.restore();
+    }
+    // warm light on the clay
+    if (lit > 0.01) {
+      ctx.globalCompositeOperation = 'lighter';
+      const lg = ctx.createRadialGradient(x, y - w * 0.05, 0, x, y, rx * 1.1);
+      lg.addColorStop(0, `rgba(255,150,60,${0.30 * lit})`); lg.addColorStop(1, 'rgba(255,120,40,0)');
+      ctx.fillStyle = lg; ctx.fill(); ctx.globalCompositeOperation = 'source-over';
+    }
+    // rim and oil
+    ctx.beginPath(); ctx.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2); ctx.fillStyle = '#e8925a'; ctx.fill();
+    ctx.beginPath(); ctx.ellipse(x, y + ry * 0.08, rx * 0.86, ry * 0.68, 0, 0, Math.PI * 2);
+    const og = ctx.createRadialGradient(x, y, 0, x, y, rx * 0.86);
+    og.addColorStop(0, `rgba(${90 + 120 * lit | 0},${45 + 80 * lit | 0},${12 + 20 * lit | 0},1)`); og.addColorStop(1, '#2a1207');
+    ctx.fillStyle = og; ctx.fill();
+    // wick
+    ctx.strokeStyle = '#2e1a0e'; ctx.lineWidth = Math.max(1, w * 0.022); ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x, y + ry * 0.1); ctx.lineTo(x + w * 0.006, y - w * 0.06); ctx.stroke();
+    ctx.restore();
+    if (lit < 0.2) E.glow(ctx, x, y - w * 0.06, w * 0.10, [255, 80, 30], 0.9 * (1 - lit / 0.2) + 0.1);
+    E.drawFlame(ctx, x + w * 0.006, y - w * 0.05, w, lit, t, ph);
+  };
+
+  // ---------- fireworks: stateless, so any frame can be drawn on its own ----------
+  E.makeBursts = function (list, seed) {
+    const R = E.mulberry32(seed); const palettes = [[255, 200, 90], [255, 90, 170], [80, 230, 220], [255, 245, 220], [255, 140, 50], [180, 140, 255]];
+    return list.map(b => {
+      const n = b.n || 150, col = palettes[b.c !== undefined ? b.c : Math.floor(R() * palettes.length)];
+      const col2 = palettes[Math.floor(R() * palettes.length)];
+      const parts = []; for (let i = 0; i < n; i++) {
+        const ang = R() * Math.PI * 2, sp = (b.ring ? 0.92 + 0.08 * R() : Math.pow(R(), 0.5)) * (b.v || 520);
+        parts.push({ vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp, tw: R() * 10, c: R() < 0.75 ? col : col2, life: 1.6 + R() * 1.1 });
+      }
+      return Object.assign({ parts, rise: b.rise || 0.9 }, b);
+    });
+  };
+  E.drawBursts = function (ctx, bursts, t, alphaMul = 1) {
+    const G = 260, k = 1.6;
+    for (const b of bursts) {
+      const tb = t - b.t; if (tb < -b.rise || tb > 3.2) continue;
+      if (tb < 0) { // rocket rising
+        const u = 1 + tb / b.rise, sx = b.x0 !== undefined ? b.x0 : b.x, sy = 1960;
+        const px = E.lerp(sx, b.x, E.easeOut(u)), py = E.lerp(sy, b.y, E.easeOut(u));
+        E.glow(ctx, px, py, 22, [255, 200, 120], 0.9 * alphaMul);
+        for (let j = 1; j < 6; j++) { const uu = Math.max(0, u - j * 0.03); E.glow(ctx, E.lerp(sx, b.x, E.easeOut(uu)), E.lerp(sy, b.y, E.easeOut(uu)), 12, [255, 160, 80], 0.35 * (1 - j / 6) * alphaMul); }
+        continue;
+      }
+      if (tb < 0.25) E.glow(ctx, b.x, b.y, 260 * (1 - tb / 0.25) + 60, [255, 230, 180], 0.55 * (1 - tb / 0.25) * alphaMul);
+      for (const p of b.parts) {
+        if (tb > p.life) continue;
+        const fade = Math.pow(1 - tb / p.life, 1.6), tw = 0.65 + 0.35 * Math.sin(tb * 30 + p.tw);
+        for (let j = 0; j < 4; j++) {
+          const tt = Math.max(0, tb - j * 0.035); const e = (1 - Math.exp(-k * tt)) / k;
+          const x = b.x + p.vx * e, y = b.y + p.vy * e + 0.5 * G * tt * tt * 0.55;
+          E.glow(ctx, x, y, (j ? 9 : 15) * (b.size || 1), p.c, (j ? 0.4 * (1 - j / 4) : 1) * fade * tw * alphaMul);
+          if (!j && fade > 0.5) E.glow(ctx, x, y, 4 * (b.size || 1), [255, 255, 240], 0.9 * fade * tw * alphaMul);
+        }
+      }
+    }
+  };
+
+  root.E = E;
+  if (typeof module !== 'undefined' && module.exports) module.exports = E;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+(function () {
+  'use strict';
+  const E = window.E;
+  const reduce = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const DPR = Math.min(2, window.devicePixelRatio || 1);
+  const SIZES = [2, 12, 12, 12, 1];
+  const DATA = E.makeData(40, 11);
+  const TRAINED = Float64Array.from([-0.084365,1.471064,-4.148716,-1.21287,-1.984448,0.862607,-2.617874,-0.61394,-0.316049,-1.59221,1.485436,0.313451,-0.236577,0.824374,-0.641082,-1.361865,0.536146,-5.59789,0.131232,1.246608,-2.317338,0.073999,2.223879,-2.2023,-0.592372,0.952199,1.20655,0.921693,-0.345736,0.457222,-0.781083,-0.489993,-0.25773,-0.089409,-0.151095,1.333322,-0.819048,-0.644163,-1.997985,-0.908536,2.485246,-1.212326,-0.254089,1.895804,-0.517936,-1.175162,0.104457,-0.453312,-0.164478,0.090089,-0.101474,0.238293,-0.05371,-0.153663,-0.648017,0.314727,-0.940217,-0.056715,-0.068392,0.023856,-0.728737,-1.824582,0.332814,-0.527665,-0.579687,1.032326,-1.663308,-0.496118,0.501343,0.077566,-1.204761,2.012479,0.930155,-1.420143,-0.849782,-0.98944,0.512698,0.263245,0.522587,0.074903,-0.803088,0.301697,-0.910796,-0.452804,-0.262471,0.267075,0.427422,0.438167,2.098256,-1.018003,0.82871,1.954684,2.802613,-1.70307,-0.182299,0.21263,0.848014,1.283161,0.173541,0.748082,-0.539705,-0.584906,0.471408,-0.290535,-1.460392,1.772231,0.093657,-0.556555,0.174998,-0.222111,-0.220326,-0.757442,-0.190894,0.412429,0.439974,-0.087487,1.6364,0.168737,0.348909,-0.126482,0.674013,-0.922915,0.311759,-0.265984,0.073563,0.3108,0.304277,-0.193759,0.758739,0.531601,-0.203127,-0.948692,-0.491079,-0.80658,0.041382,0.385407,1.352993,-0.632592,-0.609742,1.354478,-0.675028,-1.600666,1.185905,0.830841,-0.063694,0.166896,0.345476,-0.641252,-0.292697,-0.563712,0.33962,-0.635234,1.453941,-0.093708,0.165002,-0.07971,0.054932,-0.15508,0.050914,-0.142567,-0.238047,-0.100281,0.763984,-0.214791,1.024865,0.197248,0.427534,-0.018089,-0.080643,0.550584,-0.0408,-0.146139,-0.595955,0.008252,0.72046,-0.057362,0.266086,0.125815,-0.23071,0.236254,0.547553,0.620294,0.302332,-0.150482,-0.611237,-0.541293,-0.546202,0.294949,0.072624,-0.471449,-0.523262,-0.449421,-2.140924,-0.534125,1.056037,-1.005735,1.707171,0.80229,1.141958,-0.562419,-1.096927,0.947037,0.209207,0.620915,-2.938232,-0.648017,1.483557,-1.419443,2.267661,1.18955,1.684769,-0.84448,-1.455284,1.38146,0.56551,0.642462,-2.40621,-0.559901,1.280188,-0.841606,1.804809,1.219185,1.296542,-1.135494,-1.342957,1.430368,0.910914,0.189069,2.151317,0.417386,-1.088219,1.226516,-1.726192,-0.585696,-1.087844,0.607259,1.34222,-0.733138,-0.849529,-0.52802,-2.263659,-0.728602,1.152546,-0.953507,1.663475,0.7656,0.756512,-0.586808,-1.162412,1.134339,0.485774,0.421425,-2.462187,-0.563066,1.333743,-1.272395,1.773367,0.801868,1.001543,-0.300026,-0.947339,0.832955,0.918126,0.527194,-3.764209,-0.657032,0.123146,-0.962651,1.596148,-0.435943,0.869729,0.773974,0.902908,1.804838,1.048224,0.773759,2.849337,0.565173,-1.428404,1.325952,-2.186493,-1.041657,-1.382461,0.910091,1.605488,-1.588234,-0.436867,-0.712754,-2.60132,-1.028066,1.299319,-1.342236,2.094189,0.921038,1.330505,-0.752495,-1.431823,1.07716,0.153228,0.551904,-2.103922,-0.272357,1.137198,-0.778998,1.719458,0.895165,1.055059,-0.427188,-0.921262,0.920294,0.261732,0.542111,2.384736,0.988001,-1.291974,1.408923,-1.709563,-1.064812,-1.086463,0.616337,1.25547,-1.559562,-0.346324,-0.217216,2.122481,0.728058,-1.128557,1.154603,-1.551442,-0.890057,-0.864031,0.332279,0.973212,-1.280693,-0.239005,-0.522244,-0.447138,-0.551564,-0.169804,0.406475,-0.482632,-0.481822,-0.523933,0.724261,-0.632965,-0.463769,0.562215,0.443445,3.170692,3.157087,5.44244,-2.710467,3.567691,2.701581,3.088778,-4.537996,6.20271,4.246821,-3.266135,-2.631433,-0.394707]);
+  const NIGHT_TOP = '#22332B', NIGHT = '#15201B';
+  const fmt = (v, d = 2) => (v < 0 ? '−' : '') + Math.abs(v).toFixed(d);
+  const fmtInt = n => Math.round(n).toLocaleString('en-IN');
+
+  // ---------- canvas stages: logical coordinates scaled to the element's width ----------
+  function stage(canvas, lw, lh) {
+    const ctx = canvas.getContext('2d'); const s = { canvas, ctx, lw, lh, k: 1, onResize: null };
+    function fit() {
+      const w = canvas.clientWidth || lw; const k = w / lw;
+      if (Math.abs(k - s.k) < 1e-6 && canvas.width) return;
+      s.k = k; canvas.width = Math.round(w * DPR); canvas.height = Math.round(lh * k * DPR); canvas.style.height = (lh * k) + 'px';
+      if (s.onResize) s.onResize();
+    }
+    s.begin = () => { ctx.setTransform(s.k * DPR, 0, 0, s.k * DPR, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; };
+    s.point = ev => { const r = canvas.getBoundingClientRect(); return [(ev.clientX - r.left) / s.k, (ev.clientY - r.top) / s.k]; };
+    s.fit = fit; fit();
+    if (window.ResizeObserver) new ResizeObserver(fit).observe(canvas); else window.addEventListener('resize', fit);
+    return s;
+  }
+  function nightBg(s) {
+    const { ctx, lw, lh } = s; const g = ctx.createLinearGradient(0, 0, 0, lh);
+    g.addColorStop(0, NIGHT_TOP); g.addColorStop(0.55, NIGHT); g.addColorStop(1, '#121B17');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, lw, lh);
+  }
+  // run fn(t) every frame while the element is on screen (once, if motion is reduced)
+  function whileVisible(el, fn) {
+    let vis = false, raf = 0; const t0 = performance.now();
+    const draw = now => fn((now - t0) / 1000);
+    const tick = now => { raf = 0; if (!vis) return; draw(now); if (!reduce) raf = requestAnimationFrame(tick); };
+    const kick = () => { if (vis && !raf) raf = requestAnimationFrame(tick); };
+    if ('IntersectionObserver' in window) new IntersectionObserver(es => { vis = es[0].isIntersecting; kick(); }, { rootMargin: '120px' }).observe(el);
+    else { vis = true; kick(); }
+    draw(performance.now());   // a complete resting frame straight away
+    return { redraw: () => { if (!vis) return; if (reduce) draw(performance.now()); else kick(); } };   // off screen: the loop redraws on the way in
+  }
+
+  // ---------- network drawing (shared by the hero and step 2) ----------
+  function layout(x0, x1, rowsY, widths) {
+    const NX = SIZES.map((n, l) => l === 0 ? [E.lerp(x0, x1, 0.38), E.lerp(x0, x1, 0.62)] : l === SIZES.length - 1 ? [(x0 + x1) / 2] : Array.from({ length: n }, (_, i) => x0 + i * (x1 - x0) / (n - 1)));
+    return { NX, ROWY: rowsY, NW: widths };
+  }
+  const PH = SIZES.map((n, l) => Array.from({ length: n }, (_, i) => (l * 7.3 + i * 2.1) % 6.28));
+  function brightness(l, v) { if (l === 0) return 0.25 + 0.7 * (v + 1) / 2; if (l === SIZES.length - 1) return 0.06 + 0.94 * v; return 0.05 + 0.95 * Math.pow((v + 1) / 2, 1.4); }
+  function drawNet(ctx, net, p, L, acts, t, o = {}) {
+    const nodeOut = (l, i) => [L.NX[l][i], L.ROWY[l] - 0.1 * L.NW[l]];
+    const nodeIn = (l, i) => [L.NX[l][i], L.ROWY[l] + 0.42 * L.NW[l] + 2];
+    ctx.lineCap = 'round'; ctx.globalCompositeOperation = 'lighter';
+    for (let l = 0; l < net.L; l++) for (let oo = 0; oo < SIZES[l + 1]; oo++) for (let i = 0; i < SIZES[l]; i++) {
+      const w = net.w(p, l, oo, i), m = Math.min(1, Math.abs(w) / 2.4);
+      const [x1, y1] = nodeOut(l, i), [x2, y2] = nodeIn(l + 1, oo);
+      ctx.strokeStyle = w >= 0 ? `rgba(255,182,84,${0.07 + 0.45 * m})` : `rgba(135,148,255,${0.07 + 0.45 * m})`;
+      ctx.lineWidth = (0.7 + 2.6 * m) * (o.lw || 1); ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    }
+    if (o.pulse && !reduce) {
+      const { gap, u } = o.pulse;
+      for (let oo = 0; oo < SIZES[gap + 1]; oo++) for (let i = 0; i < SIZES[gap]; i++) {
+        const w = net.w(p, gap, oo, i), s = 0.3 + 0.7 * Math.min(1, Math.abs(w) * (Math.abs(acts[gap][i]) + 0.15) / 0.5);
+        const [x1, y1] = nodeOut(gap, i), [x2, y2] = nodeIn(gap + 1, oo); const x = E.lerp(x1, x2, u), y = E.lerp(y1, y2, u);
+        E.glow(ctx, x, y, (10 + 12 * s) * (o.ps || 1), [255, 196, 100], 0.8 * s); E.glow(ctx, x, y, 4 * (o.ps || 1), [255, 255, 245], 0.9 * s);
+      }
+    }
+    ctx.globalCompositeOperation = 'source-over';
+    for (let l = 0; l < SIZES.length; l++) for (let i = 0; i < SIZES[l]; i++) {
+      const reached = o.reached ? o.reached(l) : 1;
+      E.drawDiya(ctx, L.NX[l][i], L.ROWY[l], L.NW[l], E.lerp(0.04, brightness(l, acts[l][i]), reached), t, PH[l][i], { detail: L.NW[l] >= 60 });
+    }
+  }
+
+  // ---------- the learned diya, lit (built from the network's own output) ----------
+  function buildLit(net, p, FR) {
+    const pf = new Float32Array(FR * FR); const tmp = new ImageData(FR, FR); E.fieldInto(net, p, FR, tmp, E.LUT_FIELD, pf);
+    const R = Math.max(2, Math.round(FR * 7 / 256)), q = new Float32Array(FR * FR), q2 = new Float32Array(FR * FR);
+    for (let j = 0; j < FR; j++) for (let i = 0; i < FR; i++) { let s = 0, c = 0; for (let d = -R; d <= R; d++) { const ii = i + d; if (ii >= 0 && ii < FR) { s += pf[j * FR + ii]; c++; } } q2[j * FR + i] = s / c; }
+    for (let j = 0; j < FR; j++) for (let i = 0; i < FR; i++) { let s = 0, c = 0; for (let d = -R; d <= R; d++) { const jj = j + d; if (jj >= 0 && jj < FR) { s += q2[jj * FR + i]; c++; } } q[j * FR + i] = s / c; }
+    const bowl = new ImageData(FR, FR), flame = new ImageData(FR, FR);
+    const terr = E.lut([[0, '#f0a066'], [0.18, '#d9773c'], [0.55, '#a9462a'], [1, '#4f1c0f']]);
+    const fl = E.lut([[0, '#b8320a'], [0.28, '#f2601a'], [0.5, '#ff8f2a'], [0.68, '#ffbd4f'], [0.84, '#ffe7a6'], [1, '#fffaee']]);
+    for (let j = 0; j < FR; j++) for (let i = 0; i < FR; i++) {
+      const k = j * FR + i, y = 1 - 2 * (j + 0.5) / FR, a = E.smooth((pf[k] - 0.15) / 0.7); if (a <= 0) continue;
+      if (y < -0.035) { const v = E.clamp((-0.04 - y) / 0.56), sh = 0.7 + 0.36 * q[k], c = Math.round(v * 255) * 3; bowl.data[4 * k] = terr[c] * sh; bowl.data[4 * k + 1] = terr[c + 1] * sh; bowl.data[4 * k + 2] = terr[c + 2] * sh; bowl.data[4 * k + 3] = 255 * a; }
+      else { const hf = E.clamp(y / 0.72), c = Math.round(E.clamp(Math.pow(E.clamp(q[k] * 1.12), 1.5) * (1 - 0.42 * hf)) * 255) * 3; flame.data[4 * k] = fl[c]; flame.data[4 * k + 1] = fl[c + 1]; flame.data[4 * k + 2] = fl[c + 2]; flame.data[4 * k + 3] = 255 * a; }
+    }
+    const bowlC = document.createElement('canvas'), flameC = document.createElement('canvas'); bowlC.width = bowlC.height = flameC.width = flameC.height = FR;
+    bowlC.getContext('2d').putImageData(bowl, 0, 0); flameC.getContext('2d').putImageData(flame, 0, 0);
+    const g = bowlC.getContext('2d'); g.globalCompositeOperation = 'source-atop'; const u = FR / 512;
+    const px = x => (x + 1) / 2 * FR, py = y => (1 - y) / 2 * FR;
+    g.fillStyle = 'rgba(40,14,6,0.92)'; g.beginPath(); g.ellipse(px(0), py(-0.115), 0.58 * FR / 2, 0.045 * FR / 2, 0, 0, 6.3); g.fill();
+    g.strokeStyle = 'rgba(255,205,110,0.9)'; g.lineWidth = 4.4 * u; g.beginPath(); g.moveTo(px(-0.6), py(-0.22)); g.quadraticCurveTo(px(0), py(-0.36), px(0.6), py(-0.22)); g.stroke();
+    g.fillStyle = 'rgba(255,214,120,0.95)'; for (let k = -5; k <= 5; k++) { const v = k / 5.6; g.beginPath(); g.arc(px(v * 0.55), py(-0.30 - (1 - v * v) * 0.07), 4.8 * u, 0, 6.3); g.fill(); }
+    g.strokeStyle = 'rgba(150,25,35,0.75)'; g.lineWidth = 4 * u; g.beginPath();
+    for (let k = 0; k <= 18; k++) { const v = -0.86 + 1.72 * k / 18, x = px(v * 0.5), y = py(-0.42 - (1 - v * v) * 0.06 + (k % 2 ? 0.035 : -0.02)); k ? g.lineTo(x, y) : g.moveTo(x, y); }
+    g.stroke();
+    return { bowlC, flameC, FR };
+  }
+  function drawLit(ctx, D, cx, cy, S, t) {
+    const x0 = cx - S / 2, y0 = cy - S / 2, fy = cy - 0.36 * S / 2, f = reduce ? 0 : E.flick(t, 1.3), FR = D.FR;
+    E.glow(ctx, cx, fy, 0.74 * S * (1 + 0.04 * f), [255, 130, 40], 0.5); E.glow(ctx, cx, fy, 0.33 * S, [255, 200, 110], 0.55);
+    ctx.drawImage(D.bowlC, x0, y0, S, S);
+    const N = 48, base = FR * 0.5, tip = FR * 0.12;
+    for (let s = 0; s < N; s++) {
+      const sy = s * FR / N, sh = FR / N; if (sy > base + 2) break;
+      const hf = E.clamp((base - sy) / (base - tip)), sway = reduce ? 0 : (Math.sin(t * 3.1 + sy * 0.09) * 9 + f * 5) * Math.pow(hf, 1.7) * S / 760;
+      ctx.drawImage(D.flameC, 0, sy, FR, sh + 0.6, x0 + sway, y0 + sy * S / FR, S, (sh + 0.6) * S / FR);
+    }
+    ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 0.22 + 0.06 * f; ctx.drawImage(D.flameC, 0, 0, FR, FR * 0.52, x0, y0, S, S * 0.52);
+    ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+    E.glow(ctx, cx, fy + 0.066 * S, 0.12 * S, [255, 250, 225], 0.35);
+  }
+
+  // ---------- the trained network (hero and closing) ----------
+  const heroNet = new E.MLP(SIZES, 1); heroNet.p.set(TRAINED);
+  const LIT = buildLit(heroNet, heroNet.p, 220);
+
+  (function hero() {
+    const S = stage(document.getElementById('hero'), 1000, 1180), L = layout(90, 910, [1100, 995, 890, 785, 680], [46, 30, 30, 30, 56]);
+    const A = SIZES.map(n => new Float64Array(n));
+    const probe = t => { const a = t * 0.55 - Math.PI / 2; return [0.48 * Math.cos(a), -0.05 + 0.5 * Math.sin(a)]; };
+    const loop = whileVisible(S.canvas, t => {
+      const { ctx } = S; S.begin(); nightBg(S);
+      const tt = reduce ? 3.8 : t; const [qx, qy] = reduce ? [0, 0.3] : probe(tt);
+      heroNet.forward(qx, qy, heroNet.p, A);
+      const D = 560, cx = 500, cy = 300; drawLit(ctx, LIT, cx, cy, D, tt);
+      const sx = cx + qx * D / 2, sy = cy - qy * D / 2;
+      ctx.strokeStyle = 'rgba(255,255,255,0.9)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(sx, sy, 12, 0, 6.3); ctx.stroke(); E.glow(ctx, sx, sy, 28, [255, 255, 255], 0.4);
+      const cyc = (tt % 1.6) / 1.6 * 4.6, gap = Math.floor(cyc);
+      drawNet(ctx, heroNet, heroNet.p, L, A, tt, { pulse: gap < 4 ? { gap, u: cyc - gap } : null });
+      ctx.font = '600 30px "IBM Plex Mono", monospace'; ctx.fillStyle = '#FFD27A'; ctx.textAlign = 'left';
+      ctx.fillText(A[4][0].toFixed(2), L.NX[4][0] + 58, 680 + 12);
+    });
+    S.onResize = loop.redraw;
+  })();
+
+  (function closing() {
+    const S = stage(document.getElementById('closingCanvas'), 1000, 760);
+    const loop = whileVisible(S.canvas, t => { S.begin(); nightBg(S); drawLit(S.ctx, LIT, 500, 400, 760, t); });
+    S.onResize = loop.redraw;
+  })();
+
+  // ---------- step 1: one neuron ----------
+  (function neuron() {
+    const S = stage(document.getElementById('neuronCanvas'), 1000, 960);
+    const ids = ['in0', 'in1', 'in2', 'w0', 'w1', 'w2', 'b0'], el = {}; ids.forEach(id => { el[id] = document.getElementById(id); el[id + 'v'] = document.getElementById(id + 'v'); });
+    const defaults = { in0: 0.9, in1: 0.7, in2: 0.3, w0: 1.2, w1: 0.5, w2: -0.8, b0: 0.2 };
+    const names = ['Oil', 'Wick', 'Breeze'];
+    const IN = [{ x: 170, y: 780, cx: 230, cy: 600 }, { x: 500, y: 820, cx: 500, cy: 690 }, { x: 830, y: 780, cx: 770, cy: 600 }];
+    const TG = { x: 500, y: 600 };
+    const qpt = (a, c, b, u) => ({ x: (1 - u) * (1 - u) * a.x + 2 * (1 - u) * u * c.x + u * u * b.x, y: (1 - u) * (1 - u) * a.y + 2 * (1 - u) * u * c.y + u * u * b.y });
+    let shown = null;
+    const vals = () => { const v = {}; ids.forEach(id => v[id] = parseFloat(el[id].value)); return v; };
+    const loop = whileVisible(S.canvas, t => {
+      const { ctx } = S; S.begin(); nightBg(S);
+      const v = vals(), x = [v.in0, v.in1, v.in2], w = [v.w0, v.w1, v.w2];
+      const z = v.b0 + x[0] * w[0] + x[1] * w[1] + x[2] * w[2], a = E.sigmoid(z);
+      shown = shown === null ? a : E.lerp(shown, a, reduce ? 1 : 0.18);
+      // threads and sparks
+      ctx.lineCap = 'round';
+      IN.forEach((s, k) => {
+        const neg = w[k] < 0, m = Math.abs(w[k]), col = neg ? '150,160,255' : '255,190,95';
+        ctx.globalCompositeOperation = 'lighter';
+        for (const [wd, al] of [[(2 + 4.4 * m) * 3, 0.10], [2 + 4.4 * m, 0.85]]) {
+          ctx.strokeStyle = `rgba(${col},${al * (0.25 + 0.75 * Math.min(1, m / 0.3))})`; ctx.lineWidth = wd; ctx.beginPath();
+          for (let j = 0; j <= 40; j++) { const p = qpt(s, { x: s.cx, y: s.cy }, TG, j / 40); j ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y); } ctx.stroke();
+        }
+        ctx.globalCompositeOperation = 'source-over';
+        if (!reduce && x[k] > 0.02) for (let j = 0; j < 2; j++) { const u = ((t * (0.35 + 0.5 * x[k]) + j * 0.5 + k * 0.17) % 1); const p = qpt(s, { x: s.cx, y: s.cy }, TG, u); E.glow(ctx, p.x, p.y, 26, neg ? [150, 160, 255] : [255, 200, 110], 0.85 * x[k]); E.glow(ctx, p.x, p.y, 8, [255, 250, 230], x[k]); }
+        E.glow(ctx, s.x, s.y, 56, [255, 170, 70], 0.25 + 0.4 * x[k]); E.glow(ctx, s.x, s.y, 18, [255, 235, 190], 0.4 + 0.6 * x[k]);
+        ctx.textAlign = 'center'; ctx.fillStyle = '#F4F5F1'; ctx.font = '600 34px "IBM Plex Sans", sans-serif'; ctx.fillText(names[k], s.x, s.y + 62);
+        ctx.fillStyle = '#FFD27A'; ctx.font = '500 30px "IBM Plex Mono", monospace'; ctx.fillText(fmt(x[k]), s.x, s.y + 98);
+        const mpt = qpt(s, { x: s.cx, y: s.cy }, TG, 0.5); const off = k === 0 ? -70 : k === 2 ? 70 : 84;
+        ctx.fillStyle = neg ? '#AAB4FF' : '#FFC65A'; ctx.font = '600 32px "IBM Plex Mono", monospace'; ctx.fillText('×' + fmt(w[k]), mpt.x + off, mpt.y + 10);
+      });
+      // the diya
+      E.drawDiya(ctx, 500, 500, 230, shown, t, 0.7, { detail: true });
+      ctx.textAlign = 'left'; ctx.fillStyle = '#FFE9A6'; ctx.font = '600 28px "IBM Plex Mono", monospace'; ctx.fillText('bias ' + fmt(v.b0), 640, 548);
+      // formula
+      const fw = v => v < 0 ? '(' + fmt(v) + ')' : fmt(v);
+      const parts = [[fmt(x[0]), '#F4F5F1'], ['×', '#8E9A92'], [fw(w[0]), w[0] < 0 ? '#AAB4FF' : '#FFC65A'], [' + ', '#8E9A92'], [fmt(x[1]), '#F4F5F1'], ['×', '#8E9A92'], [fw(w[1]), w[1] < 0 ? '#AAB4FF' : '#FFC65A'], [' + ', '#8E9A92'], [fmt(x[2]), '#F4F5F1'], ['×', '#8E9A92'], [fw(w[2]), w[2] < 0 ? '#AAB4FF' : '#FFC65A'], [' + ', '#8E9A92'], [fmt(v.b0), '#FFE9A6'], [' = ', '#8E9A92'], [fmt(z), '#FFFFFF']];
+      ctx.font = '500 31px "IBM Plex Mono", monospace'; const ws = parts.map(p => ctx.measureText(p[0]).width), tot = ws.reduce((a, b) => a + b, 0);
+      let fx = 500 - tot / 2; parts.forEach((p, k) => { ctx.fillStyle = p[1]; ctx.fillText(p[0], fx, 70); fx += ws[k]; });
+      // sigmoid
+      const cx = 500, cy = 190, sw = 420, sh = 120, Xz = q => cx - sw / 2 + (q + 6) / 12 * sw, Yv = q => cy + sh / 2 - q * sh;
+      ctx.strokeStyle = 'rgba(244,245,241,0.22)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(Xz(-6), Yv(0)); ctx.lineTo(Xz(6), Yv(0)); ctx.stroke();
+      ctx.strokeStyle = '#FFC65A'; ctx.lineWidth = 4; ctx.beginPath(); for (let j = 0; j <= 80; j++) { const q = -6 + 12 * j / 80; j ? ctx.lineTo(Xz(q), Yv(E.sigmoid(q))) : ctx.moveTo(Xz(q), Yv(E.sigmoid(q))); } ctx.stroke();
+      const zc = E.clamp(z, -6, 6), px = Xz(zc), py = Yv(E.sigmoid(zc));
+      ctx.setLineDash([5, 7]); ctx.strokeStyle = 'rgba(255,233,166,0.6)'; ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px, Yv(0)); ctx.moveTo(px, py); ctx.lineTo(Xz(-6), py); ctx.stroke(); ctx.setLineDash([]);
+      E.glow(ctx, px, py, 34, [255, 200, 110], 0.9); E.glow(ctx, px, py, 9, [255, 255, 240], 1);
+      ctx.textAlign = 'right'; ctx.fillStyle = '#FFC65A'; ctx.font = '600 30px "IBM Plex Mono", monospace'; ctx.fillText(a.toFixed(2), Xz(-6) - 14, py + 10);
+      ctx.fillStyle = 'rgba(244,245,241,0.6)'; ctx.font = '500 22px "IBM Plex Sans", sans-serif'; ctx.fillText('Brightness', Xz(-6) - 14, py - 24);
+      ctx.textAlign = 'center'; ctx.fillStyle = 'rgba(244,245,241,0.75)'; ctx.font = '500 24px "IBM Plex Mono", monospace'; ctx.fillText('Total ' + fmt(z), px, Yv(0) + 34);
+      document.getElementById('neuronSay').textContent = `Total ${fmt(z)}, brightness ${a.toFixed(2)}`;
+    });
+    S.onResize = loop.redraw;
+    ids.forEach(id => el[id].addEventListener('input', () => { const v = parseFloat(el[id].value); el[id + 'v'].textContent = fmt(v); loop.redraw(); }));
+    document.getElementById('neuronReset').addEventListener('click', () => { ids.forEach(id => { el[id].value = defaults[id]; el[id + 'v'].textContent = fmt(defaults[id]); }); loop.redraw(); });
+  })();
+
+  // ---------- the lesson model, shared by steps 2 and 3 ----------
+  const M = { net: null, st: null, epoch: 0, lr: 0.02, hist: [], last: null, version: 0, seed: 3, running: false };
+  function resetModel(seed) {
+    M.seed = seed; M.net = new E.MLP(SIZES, seed); M.st = M.net.makeAdam(); M.epoch = 0; M.hist = []; M.last = M.net.evaluate(DATA); M.hist.push(M.last.loss); M.version++;
+  }
+  resetModel(3);
+  const listeners = []; const changed = () => { M.version++; listeners.forEach(f => f()); };
+
+  // ---------- step 2: forward pass on a chosen dot ----------
+  (function network() {
+    const S = stage(document.getElementById('netCanvas'), 1000, 1110), L = layout(80, 920, [1035, 930, 825, 720, 610], [46, 30, 30, 30, 56]);
+    const PAD = { x: 285, y: 40, s: 430 }, A = SIZES.map(n => new Float64Array(n));
+    const padC = document.createElement('canvas'); padC.width = padC.height = 86; const padImg = padC.getContext('2d').createImageData(86, 86); let padVer = -1;
+    let probe = [0, 0.4], anim = reduce ? 99 : 0, last = performance.now() / 1000;
+    const say = document.getElementById('netSay');
+    function verdict() { const p = A[4][0]; const lab = M.epoch === 0 ? ', a guess' : p > 0.5 ? ': part of the diya' : ': not part of the diya'; say.textContent = `Dot (${fmt(probe[0])}, ${fmt(probe[1])}). The network says ${p.toFixed(2)}${lab}.`; }
+    const loop = whileVisible(S.canvas, t => {
+      const { ctx } = S; S.begin(); nightBg(S);
+      const now = performance.now() / 1000; if (!reduce) anim = Math.min(99, anim + (now - last) / 0.42); last = now;
+      if (padVer !== M.version) { E.fieldInto(M.net, M.net.p, 86, padImg); padC.getContext('2d').putImageData(padImg, 0, 0); padVer = M.version; }
+      ctx.save(); ctx.beginPath(); ctx.roundRect ? ctx.roundRect(PAD.x, PAD.y, PAD.s, PAD.s, 18) : ctx.rect(PAD.x, PAD.y, PAD.s, PAD.s); ctx.clip();
+      ctx.imageSmoothingEnabled = true; ctx.drawImage(padC, PAD.x, PAD.y, PAD.s, PAD.s); ctx.restore();
+      ctx.strokeStyle = 'rgba(255,205,130,0.4)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(PAD.x, PAD.y, PAD.s, PAD.s, 18) : ctx.rect(PAD.x, PAD.y, PAD.s, PAD.s); ctx.stroke();
+      const sx = PAD.x + (probe[0] + 1) / 2 * PAD.s, sy = PAD.y + (1 - probe[1]) / 2 * PAD.s;
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(sx, sy, 13, 0, 6.3); ctx.stroke(); E.glow(ctx, sx, sy, 30, [255, 255, 255], 0.45);
+      ctx.fillStyle = 'rgba(244,245,241,0.7)'; ctx.font = '500 24px "IBM Plex Sans", sans-serif'; ctx.textAlign = 'left'; ctx.fillText('What it draws now. Tap to pick a dot.', PAD.x, PAD.y + PAD.s + 34);
+      M.net.forward(probe[0], probe[1], M.net.p, A);
+      const reached = l => E.clamp(anim - l + 1);
+      const g = Math.floor(anim), pulse = anim < 4 ? { gap: g, u: anim - g } : null;
+      drawNet(ctx, M.net, M.net.p, L, A, t, { pulse, reached });
+      if (anim >= 4) { ctx.font = '600 32px "IBM Plex Mono", monospace'; ctx.fillStyle = '#FFD27A'; ctx.textAlign = 'left'; ctx.fillText(A[4][0].toFixed(2), L.NX[4][0] + 58, 610 + 12); }
+      ctx.font = '500 24px "IBM Plex Sans", sans-serif'; ctx.fillStyle = 'rgba(244,245,241,0.7)'; ctx.textAlign = 'center';
+      ctx.fillText('x', L.NX[0][0], 1035 + 62); ctx.fillText('y', L.NX[0][1], 1035 + 62);
+      ctx.textAlign = 'right'; ctx.fillText('Output', L.NX[4][0] - 50, 610 + 10);
+    });
+    S.onResize = loop.redraw;
+    function fire() { anim = reduce ? 99 : 0; last = performance.now() / 1000; M.net.forward(probe[0], probe[1], M.net.p, A); verdict(); loop.redraw(); }
+    S.canvas.addEventListener('pointerdown', ev => {
+      const [x, y] = S.point(ev); if (x < PAD.x || x > PAD.x + PAD.s || y < PAD.y || y > PAD.y + PAD.s) return;
+      probe = [E.clamp((x - PAD.x) / PAD.s * 2 - 1, -1, 1), E.clamp(1 - (y - PAD.y) / PAD.s * 2, -1, 1)]; fire();
+    });
+    document.getElementById('passBtn').addEventListener('click', fire);
+    listeners.push(() => { M.net.forward(probe[0], probe[1], M.net.p, A); verdict(); loop.redraw(); });
+    M.net.forward(probe[0], probe[1], M.net.p, A); verdict();
+  })();
+
+  // ---------- step 3: live training ----------
+  (function training() {
+    const S = stage(document.getElementById('fieldCanvas'), 1000, 1000), LS = stage(document.getElementById('lossCanvas'), 1000, 240);
+    const RES = 100, fC = document.createElement('canvas'); fC.width = fC.height = RES; const fimg = fC.getContext('2d').createImageData(RES, RES);
+    const preds = new Float32Array(DATA.n), tests = []; let fieldVer = -1, showDots = true;
+    const ui = { epoch: document.getElementById('sEpoch'), wrong: document.getElementById('sWrong'), loss: document.getElementById('sLoss'), say: document.getElementById('trainSay'), train: document.getElementById('trainBtn'), step: document.getElementById('stepBtn') };
+    const P = 30, SZ = 1000 - 2 * P, dpx = x => P + (x + 1) / 2 * SZ, dpy = y => P + (1 - y) / 2 * SZ;
+    let perEpoch = 4, holdSay = 0;
+    function readouts() {
+      ui.epoch.textContent = fmtInt(M.epoch); ui.wrong.textContent = `${M.last.wrong} of 1,600`; ui.wrong.classList.toggle('good', M.last.wrong === 0);
+      ui.loss.textContent = M.last.loss >= 0.01 ? M.last.loss.toFixed(3) : M.last.loss.toFixed(4);
+    }
+    function drawField() {
+      const { ctx } = S; S.begin(); nightBg(S);
+      if (fieldVer !== M.version) { E.fieldInto(M.net, M.net.p, RES, fimg); fC.getContext('2d').putImageData(fimg, 0, 0); for (let k = 0; k < DATA.n; k++) preds[k] = M.net.forward(DATA.X[2 * k], DATA.X[2 * k + 1]); fieldVer = M.version; }
+      ctx.save(); ctx.beginPath(); ctx.roundRect ? ctx.roundRect(P, P, SZ, SZ, 20) : ctx.rect(P, P, SZ, SZ); ctx.clip();
+      ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'; ctx.drawImage(fC, P, P, SZ, SZ);
+      if (showDots) {
+        ctx.fillStyle = 'rgba(175,165,225,0.45)'; ctx.beginPath(); for (let k = 0; k < DATA.n; k++) if (DATA.Y[k] < 0.5) { const x = dpx(DATA.X[2 * k]), y = dpy(DATA.X[2 * k + 1]); ctx.moveTo(x + 3.6, y); ctx.arc(x, y, 3.6, 0, 6.2832); } ctx.fill();
+        ctx.fillStyle = '#FFC85A'; ctx.beginPath(); for (let k = 0; k < DATA.n; k++) if (DATA.Y[k] > 0.5) { const x = dpx(DATA.X[2 * k]), y = dpy(DATA.X[2 * k + 1]); ctx.moveTo(x + 4.6, y); ctx.arc(x, y, 4.6, 0, 6.2832); } ctx.fill();
+        for (const [lw, col] of [[9, 'rgba(255,40,70,0.22)'], [3.4, 'rgba(255,80,96,0.95)']]) {
+          ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.beginPath();
+          for (let k = 0; k < DATA.n; k++) if ((preds[k] > 0.5) !== (DATA.Y[k] > 0.5)) { const x = dpx(DATA.X[2 * k]), y = dpy(DATA.X[2 * k + 1]); ctx.moveTo(x + 8, y); ctx.arc(x, y, 8, 0, 6.2832); }
+          ctx.stroke();
+        }
+      }
+      // test dots
+      ctx.font = '600 30px "IBM Plex Mono", monospace';
+      for (const tp of tests) {
+        const v = M.net.forward(tp[0], tp[1]), x = dpx(tp[0]), y = dpy(tp[1]);
+        ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(x, y, 15, 0, 6.3); ctx.stroke(); E.glow(ctx, x, y, 34, [255, 255, 255], 0.45);
+        const txt = v > 0.5 ? `diya ${Math.round(v * 100)}%` : `not diya ${Math.round((1 - v) * 100)}%`, wdt = ctx.measureText(txt).width;
+        const lx = Math.min(1000 - P - wdt - 26, x + 24), ly = Math.max(P + 40, y - 18);
+        ctx.fillStyle = 'rgba(10,14,12,0.78)'; ctx.fillRect(lx - 8, ly - 30, wdt + 16, 42); ctx.fillStyle = v > 0.5 ? '#FFD27A' : '#C9C3F0'; ctx.textAlign = 'left'; ctx.fillText(txt, lx, ly);
+      }
+      ctx.restore();
+      ctx.strokeStyle = 'rgba(255,205,130,0.35)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(P, P, SZ, SZ, 20) : ctx.rect(P, P, SZ, SZ); ctx.stroke();
+      // legend
+      if (showDots) {
+        ctx.font = '500 25px "IBM Plex Sans", sans-serif'; ctx.textAlign = 'left'; let lx = P + 24; const ly = P + 44;
+        for (const [col, txt, ring] of [['#FFC85A', 'Diya', 0], ['rgba(175,165,225,0.9)', 'Not Diya', 0], ['rgba(255,80,96,0.95)', 'Mistake', 1]]) {
+          ctx.fillStyle = 'rgba(10,14,12,0.55)'; const w = ctx.measureText(txt).width; ctx.fillRect(lx - 8, ly - 26, w + 44, 36);
+          if (ring) { ctx.strokeStyle = col; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(lx + 9, ly - 8, 7, 0, 6.3); ctx.stroke(); } else { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(lx + 9, ly - 8, 7, 0, 6.3); ctx.fill(); }
+          ctx.fillStyle = '#F4F5F1'; ctx.fillText(txt, lx + 24, ly); lx += w + 58;
+        }
+      }
+    }
+    function drawLoss() {
+      const { ctx } = LS; LS.begin(); ctx.fillStyle = '#18241F'; ctx.fillRect(0, 0, 1000, 240);
+      const x0 = 86, x1 = 970, y0 = 24, y1 = 196, lo = Math.log10(0.0002), hi = Math.log10(1.2);
+      const Y = v => y1 - (Math.log10(Math.max(0.0002, v)) - lo) / (hi - lo) * (y1 - y0);
+      const maxE = Math.max(2000, M.hist.length - 1), X = e => x0 + e / maxE * (x1 - x0);
+      ctx.font = '500 20px "IBM Plex Mono", monospace'; ctx.textAlign = 'right';
+      for (const v of [1, 0.1, 0.01, 0.001]) { const y = Y(v); ctx.strokeStyle = 'rgba(244,245,241,0.08)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x1, y); ctx.stroke(); ctx.fillStyle = 'rgba(244,245,241,0.55)'; ctx.fillText(String(v), x0 - 10, y + 7); }
+      ctx.textAlign = 'center'; for (const e of [0, maxE / 2, maxE]) ctx.fillText(fmtInt(e), X(e), 228);
+      ctx.textAlign = 'left'; ctx.fillStyle = 'rgba(244,245,241,0.7)'; ctx.fillText('Loss (log scale) by Epoch', x0 + 8, y0 + 18);
+      const H = M.hist; if (H.length > 1) {
+        ctx.beginPath(); const step = Math.max(1, Math.floor(H.length / 900));
+        for (let e = 0; e < H.length; e += step) { const x = X(e), y = Y(H[e]); e ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+        ctx.lineTo(X(H.length - 1), Y(H[H.length - 1]));
+        ctx.strokeStyle = '#FFC65A'; ctx.lineWidth = 3; ctx.stroke();
+        ctx.lineTo(X(H.length - 1), y1); ctx.lineTo(X(0), y1); ctx.closePath(); ctx.fillStyle = 'rgba(255,198,90,0.10)'; ctx.fill();
+      }
+      const e = H.length - 1, x = X(e), y = Y(H[e]); E.glow(ctx, x, y, 22, [255, 200, 110], 0.9); ctx.fillStyle = '#FFF2CC'; ctx.beginPath(); ctx.arc(x, y, 5, 0, 6.3); ctx.fill();
+    }
+    function render() { drawField(); drawLoss(); readouts(); }
+    S.onResize = render; LS.onResize = drawLoss;
+    function epochs(n) {
+      for (let i = 0; i < n; i++) { const m = M.net.step(DATA, M.lr, M.st); M.epoch++; M.hist[M.epoch - 1] = m.loss; }
+      M.last = M.net.evaluate(DATA); M.hist[M.epoch] = M.last.loss; changed();
+    }
+    function setRunning(on) {
+      M.running = on; ui.train.textContent = on ? 'Pause' : (M.epoch ? 'Resume' : 'Train'); ui.train.setAttribute('aria-pressed', on ? 'true' : 'false');
+      if (on) requestAnimationFrame(frame);
+    }
+    function frame() {
+      if (!M.running) return;
+      const t0 = performance.now(); epochs(perEpoch); const dt = performance.now() - t0;
+      perEpoch = Math.max(1, Math.min(24, Math.round(perEpoch * (14 / Math.max(1, dt)) * 0.5 + perEpoch * 0.5)));
+      if (M.last.wrong === 0 && M.last.loss < 0.003 && M.lr <= 0.05) { setRunning(false); ui.say.textContent = `Learned: no mistakes on any of the 1,600 dots after ${fmtInt(M.epoch)} epochs. Now tap the drawing to test new dots, or revisit step 2.`; }
+      else if (M.epoch >= 6000) { setRunning(false); ui.say.textContent = `Stopped at ${fmtInt(M.epoch)} epochs with ${M.last.wrong} mistakes. Try the steady learning rate, or reset.`; }
+      else if (performance.now() > holdSay) ui.say.textContent = M.lr > 0.1 ? 'Too fast: watch the mistakes bounce instead of settling.' : M.lr < 0.01 ? 'Slow: it is learning, a small step at a time.' : 'Training: every epoch nudges all 361 numbers a little.';
+      render();
+      if (M.running) requestAnimationFrame(frame);
+    }
+    ui.train.addEventListener('click', () => setRunning(!M.running));
+    ui.step.addEventListener('click', () => { if (M.running) setRunning(false); epochs(1); ui.train.textContent = 'Resume'; ui.say.textContent = `Epoch ${fmtInt(M.epoch)}: one forward pass, one backward pass, one small nudge to every weight.`; render(); });
+    document.getElementById('resetBtn').addEventListener('click', () => { setRunning(false); resetModel(3); tests.length = 0; ui.train.textContent = 'Train'; ui.say.textContent = 'Reset to the same random start as the video.'; changed(); render(); });
+    document.getElementById('seedBtn').addEventListener('click', () => { setRunning(false); resetModel(1 + Math.floor(Math.random() * 99999)); tests.length = 0; ui.train.textContent = 'Train'; ui.say.textContent = 'New random weights: a different starting guess, and a different path to the diya.'; changed(); render(); });
+    document.querySelectorAll('input[name=lr]').forEach(r => r.addEventListener('change', () => { if (r.checked) { M.lr = parseFloat(r.value); ui.say.textContent = `Learning rate set to ${r.value}.`; } }));
+    document.getElementById('dotsChk').addEventListener('change', ev => { showDots = ev.target.checked; render(); });
+    S.canvas.addEventListener('pointerdown', ev => {
+      const [x, y] = S.point(ev); if (x < P || x > P + SZ || y < P || y > P + SZ) return;
+      tests.push([E.clamp((x - P) / SZ * 2 - 1, -1, 1), E.clamp(1 - (y - P) / SZ * 2, -1, 1)]); if (tests.length > 6) tests.shift();
+      const tp = tests[tests.length - 1], v = M.net.forward(tp[0], tp[1]); holdSay = performance.now() + 3500;
+      ui.say.textContent = `Test dot (${fmt(tp[0])}, ${fmt(tp[1])}): the network says ${v.toFixed(2)}, ${v > 0.5 ? 'part of the diya' : 'not part of the diya'}${M.epoch ? '' : ', but it has not been trained yet'}.`;
+      render();
+    });
+    render();
+  })();
+
+  // ---------- sharing ----------
+  (function share() {
+    const host = location.hostname || '', here = location.href.split('#')[0];
+    const shareable = /^https:/.test(location.protocol) && !/claude|anthropic|usercontent|sandbox|localhost/i.test(host) ? here : '';
+    const text = 'AI-luminated Diwali! A network of diyas learns to draw a diya, and teaches the basics of AI along the way.' + (shareable ? ' ' + shareable : '');
+    document.getElementById('waShare').href = 'https://wa.me/?text=' + encodeURIComponent(text);
+    const copy = document.getElementById('copyBtn'), say = document.getElementById('copySay');
+    if (shareable) {
+      copy.hidden = false;
+      copy.addEventListener('click', async () => { try { await navigator.clipboard.writeText(shareable); say.textContent = 'Link copied.'; } catch (e) { say.textContent = 'Copy is blocked here. The link is ' + shareable; } });
+    }
+  })();
+})();
+</script>
+</body>
+</html>

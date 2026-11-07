@@ -5,3 +5,5 @@
   Cache-Control: no-cache
 /research-app/*
   Cache-Control: no-cache
+/diwali/*
+  Cache-Control: no-cache
