@@ -1,32 +1,86 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-<!-- ============================================================
-     SEO / SOCIAL  —  EDIT the domain once you have it
-     ============================================================ -->
-<title>Dr. Abhishek Panda — Community Medicine, GMCH Sundargarh</title>
+<!--
+  Homepage of https://dr-abhishekpanda-cm.app/
+  Content follows the CV and LinkedIn profile of October 2026. Personal details on the CV
+  (date of birth, council registration number, personal email) are deliberately not shown here.
+  Logos in assets/logos/ are the official marks of the institutions and organisations named
+  beside them, used only to identify them. Organisations without a logo file get a plain
+  initials badge (.logo.badge); to add one, drop a WebP into assets/logos/ and swap the badge
+  for <img>.
+-->
+<title>Dr. Abhishek Panda — Community Medicine, Digital Health &amp; AI</title>
 <meta name="author" content="Dr. Abhishek Panda" />
-<meta name="description" content="Personal site of Dr. Abhishek Panda — Assistant Professor of Community Medicine at GMCH Sundargarh. Research, teaching, writing, and open web tools in epidemiology and public health." />
+<meta name="description" content="Dr. Abhishek Panda, Assistant Professor of Community Medicine at GMCH Sundargarh, Odisha. Google and Microsoft certified AI educator with a Fellowship in Digital Health. Free daily Digital &amp; AI Fluency Clinic for healthcare professionals, research, teaching and #CM-APP web tools." />
+<link rel="canonical" href="https://dr-abhishekpanda-cm.app/" />
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Dr. Abhishek Panda — Community Medicine, GMCH Sundargarh" />
-<meta property="og:description" content="Research, teaching, talks, writing, and open tools in community medicine and public health." />
-<!-- EDIT: og:url + og:image once your domain is live -->
-<meta property="og:url" content="https://your-domain.com/" />
+<meta property="og:site_name" content="Dr. Abhishek Panda" />
+<meta property="og:locale" content="en_IN" />
+<meta property="og:title" content="Dr. Abhishek Panda — Community Medicine, Digital Health &amp; AI" />
+<meta property="og:description" content="Community medicine faculty at GMCH Sundargarh, Google and Microsoft certified AI educator, and host of a free daily Digital &amp; AI Fluency Clinic for healthcare professionals." />
+<meta property="og:url" content="https://dr-abhishekpanda-cm.app/" />
+<meta property="og:image" content="https://dr-abhishekpanda-cm.app/assets/abhishek-640.jpg" />
+<meta property="og:image:width" content="640" />
+<meta property="og:image:height" content="640" />
+<meta property="og:image:alt" content="Portrait of Dr. Abhishek Panda" />
 <meta name="twitter:card" content="summary" />
 <meta name="theme-color" content="#0C5E4E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230C5E4E'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Georgia,serif' font-size='27' font-weight='600' fill='%23F4F5F1'%3EAP%3C/text%3E%3C/svg%3E" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Abhishek Panda",
+  "honorificPrefix": "Dr.",
+  "jobTitle": "Assistant Professor of Community Medicine",
+  "description": "Community medicine faculty at Government Medical College & Hospital, Sundargarh. Google and Microsoft certified AI educator with a Fellowship in Digital Health. Runs a free daily Digital & AI Fluency Clinic for healthcare professionals.",
+  "worksFor": {
+    "@type": "CollegeOrUniversity",
+    "name": "Government Medical College & Hospital, Sundargarh",
+    "address": { "@type": "PostalAddress", "addressLocality": "Sundargarh", "addressRegion": "Odisha", "addressCountry": "IN" }
+  },
+  "alumniOf": [
+    { "@type": "CollegeOrUniversity", "name": "SCB Medical College, Cuttack" },
+    { "@type": "CollegeOrUniversity", "name": "MKCG Medical College, Berhampur" }
+  ],
+  "url": "https://dr-abhishekpanda-cm.app/",
+  "image": "https://dr-abhishekpanda-cm.app/assets/abhishek-640.jpg",
+  "email": "mailto:support@dr-abhishekpanda-cm.app",
+  "sameAs": ["https://www.linkedin.com/in/dr-abhishekpanda"],
+  "award": "Best Paper Award, APCRICON 2018",
+  "knowsLanguage": ["English", "Hindi", "Odia"],
+  "knowsAbout": ["Community medicine", "AI in healthcare", "AI fluency", "Digital health", "Applied epidemiology", "Evidence synthesis", "Biostatistics", "Research methodology", "Medical education"],
+  "memberOf": [
+    { "@type": "Organization", "name": "Indian Association of Preventive and Social Medicine" },
+    { "@type": "Organization", "name": "Indian Public Health Association" },
+    { "@type": "Organization", "name": "Association for Prevention and Control of Rabies in India" },
+    { "@type": "Organization", "name": "Epidemiology Foundation of India" },
+    { "@type": "Organization", "name": "Indian Society for Adult Immunization" },
+    { "@type": "Organization", "name": "Interdisciplinary Association of Medical Educationists" },
+    { "@type": "Organization", "name": "Indian College of Artificial Intelligence in Medicine" },
+    { "@type": "Organization", "name": "Indian Medical Association" },
+    { "@type": "Organization", "name": "National Medicos Organisation" },
+    { "@type": "Organization", "name": "Odisha Medical Teachers' Association" }
+  ]
+}
+</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
+<!-- content is hidden for the scroll reveal only when JavaScript runs -->
+<script>document.documentElement.classList.add('js')</script>
+
 <style>
 /* ============================================================
-   DESIGN TOKENS
-   Concept: "the epidemiologist's worksheet" — ink on graph paper,
-   a deep clinical teal as the primary voice, one warm signal accent.
+   DESIGN TOKENS  (The Epidemiologist's Worksheet, EWS v1.0)
+   Ink on graph paper, a deep clinical teal as the primary voice,
+   one warm signal accent.
    ============================================================ */
 :root{
   --paper:#F4F5F1;
@@ -110,15 +164,9 @@ img{max-width:100%;display:block}
 .sec-head h2{
   font-family:var(--font-display);font-weight:500;
   font-size:clamp(1.9rem,4vw,2.7rem);line-height:1.02;
-  letter-spacing:-.018em;margin:0;
+  letter-spacing:-.018em;margin:0;text-wrap:balance;
 }
-.sec-link{
-  font-family:var(--font-mono);font-size:.78rem;text-transform:uppercase;
-  letter-spacing:.1em;color:var(--ink-soft);text-decoration:none;
-  white-space:nowrap;border-bottom:1px solid transparent;padding-bottom:2px;
-  transition:color .2s, border-color .2s;
-}
-.sec-link:hover{color:var(--primary);border-color:var(--primary)}
+.sec-intro{color:var(--ink-soft);max-width:62ch;margin:-18px 0 36px}
 
 /* ============================================================
    NAV
@@ -169,6 +217,7 @@ img{max-width:100%;display:block}
    ============================================================ */
 .hero{padding-block:clamp(48px,8vw,92px) clamp(56px,8vw,104px)}
 .hero .wrap{display:grid;grid-template-columns:1.32fr .88fr;gap:clamp(36px,5vw,72px);align-items:center}
+.hero .wrap > *{min-width:0}
 .hero-eyebrow{
   display:inline-flex;align-items:center;gap:9px;
   font-family:var(--font-mono);font-size:.74rem;letter-spacing:.08em;
@@ -176,7 +225,7 @@ img{max-width:100%;display:block}
   border:1px solid var(--line);background:var(--card);
   padding:7px 13px;border-radius:100px;
 }
-.hero-eyebrow .pin{width:7px;height:7px;border-radius:50%;background:var(--accent);
+.hero-eyebrow .pin{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;
   box-shadow:0 0 0 4px var(--accent-tint)}
 .hero h1{
   font-family:var(--font-display);font-weight:500;
@@ -184,8 +233,13 @@ img{max-width:100%;display:block}
   letter-spacing:-.03em;margin:0 0 18px;
 }
 .hero h1 em{font-style:italic;color:var(--primary);font-weight:500}
-.hero .role{font-size:clamp(1.02rem,1.4vw,1.18rem);font-weight:600;color:var(--ink);margin:0 0 14px}
-.hero .thesis{font-size:clamp(1rem,1.2vw,1.12rem);color:var(--ink-soft);max-width:52ch;margin:0 0 30px}
+.hero .role{font-size:clamp(1.02rem,1.4vw,1.18rem);font-weight:600;color:var(--ink);margin:0 0 10px}
+/* the LinkedIn headline, as three highlights */
+.headline{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-wrap:wrap;gap:4px 0;
+  font-size:clamp(.9rem,1.1vw,1rem);font-weight:600;line-height:1.45;color:var(--primary)}
+.headline li{display:inline-flex;align-items:center}
+.headline li:not(:last-child)::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);margin:0 12px;flex:none}
+.hero .thesis{font-size:clamp(1rem,1.2vw,1.12rem);color:var(--ink-soft);max-width:54ch;margin:0 0 30px}
 
 .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:30px}
 .btn{
@@ -193,9 +247,10 @@ img{max-width:100%;display:block}
   font-weight:600;font-size:.92rem;padding:12px 20px;border-radius:100px;
   border:1.5px solid transparent;cursor:pointer;transition:transform .15s,background .2s,border-color .2s,color .2s;
 }
+.btn:active{transform:translateY(1px)}
 .btn .arw{transition:transform .2s}
 .btn:hover .arw{transform:translateX(3px)}
-.btn-primary{background:var(--primary);color:#F4F5F1;border-color:var(--primary)}
+.btn-primary{background:var(--primary);color:var(--paper);border-color:var(--primary)}
 .btn-primary:hover{background:var(--primary-deep);border-color:var(--primary-deep)}
 .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
 .btn-ghost:hover{border-color:var(--ink)}
@@ -203,8 +258,8 @@ img{max-width:100%;display:block}
 .creds{display:flex;flex-wrap:wrap;gap:8px 10px;font-family:var(--font-mono);font-size:.73rem}
 .creds .cred{display:inline-flex;align-items:center;gap:7px;color:var(--ink-soft);
   background:var(--card);border:1px solid var(--line);border-radius:7px;padding:6px 10px}
-.creds .cred b{color:var(--ink);font-weight:600}
-.creds .cred .dot{width:5px;height:5px;border-radius:50%;background:var(--primary)}
+.creds .cred b{color:var(--ink);font-weight:600;flex:none;white-space:nowrap}
+.creds .cred .dot{width:5px;height:5px;border-radius:50%;background:var(--primary);flex:none}
 
 /* ---- portrait + epi-curve signature card ---- */
 .id-card{
@@ -214,20 +269,15 @@ img{max-width:100%;display:block}
   box-shadow:0 1px 0 var(--line), 0 26px 50px -34px rgba(8,73,60,.4);
 }
 .id-card::before{ /* corner registration mark */
-  content:"";position:absolute;top:11px;right:11px;width:14px;height:14px;
+  content:"";position:absolute;top:11px;right:11px;width:14px;height:14px;z-index:1;
   border-top:1.5px solid var(--ink-faint);border-right:1.5px solid var(--ink-faint);opacity:.5;
 }
 .portrait{
-  aspect-ratio:1/1;border-radius:10px;overflow:hidden;
-  background:
-    radial-gradient(120% 120% at 30% 20%, rgba(12,94,78,.16), transparent 60%),
-    var(--paper);
-  border:1px solid var(--line);display:grid;place-items:center;
+  aspect-ratio:1/1;max-width:100%;border-radius:10px;overflow:hidden;
+  background:var(--paper);border:1px solid var(--line);
 }
-/* EDIT: drop in a real photo — replace the .monogram span below with:
-   <img src="assets/abhishek.jpg" alt="Dr. Abhishek Panda" style="width:100%;height:100%;object-fit:cover"> */
-.monogram{font-family:var(--font-display);font-weight:500;font-size:clamp(3.4rem,9vw,5rem);
-  color:var(--primary);letter-spacing:.02em}
+/* multiply turns the photo's white studio background into the paper tone */
+.portrait img{width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply}
 .id-figure{margin:14px 2px 0}
 .id-figure svg{width:100%;height:auto;display:block}
 .id-cap{display:flex;justify-content:space-between;align-items:center;margin-top:10px;
@@ -236,7 +286,7 @@ img{max-width:100%;display:block}
 
 /* epi-curve draw-on-load */
 .epi-line{fill:none;stroke:var(--primary);stroke-width:2.2;stroke-linecap:round;
-  pathLength:1;stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.7s .5s cubic-bezier(.5,0,.2,1) forwards}
+  stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.7s .5s cubic-bezier(.5,0,.2,1) forwards}
 .epi-area{fill:var(--primary);opacity:0;animation:fadein .9s 1.6s ease forwards}
 .epi-pt{opacity:0;animation:pop .5s 1.7s cubic-bezier(.2,1.4,.4,1) forwards;transform-origin:center}
 .epi-axis{stroke:var(--line);stroke-width:1}
@@ -249,9 +299,11 @@ img{max-width:100%;display:block}
    ABOUT
    ============================================================ */
 .about-grid{display:grid;grid-template-columns:1.5fr .9fr;gap:clamp(32px,5vw,60px);align-items:start}
+.about-grid > *{min-width:0}
 .lede{font-family:var(--font-display);font-weight:400;font-size:clamp(1.18rem,2vw,1.5rem);
   line-height:1.42;letter-spacing:-.01em;color:var(--ink);margin:0 0 22px}
-.about-body p{color:var(--ink-soft);margin:0 0 16px;max-width:60ch}
+.about-body p{color:var(--ink-soft);margin:0 0 16px;max-width:62ch}
+.about-body .lede{color:var(--ink)}
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
 .tag{font-family:var(--font-mono);font-size:.74rem;color:var(--ink-soft);
   border:1px solid var(--line);border-radius:100px;padding:6px 13px;background:var(--card);
@@ -262,19 +314,20 @@ img{max-width:100%;display:block}
 .glance .g-head{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
   color:var(--ink-faint);padding:14px 18px;border-bottom:1px solid var(--line-soft);background:var(--paper-2)}
 .glance dl{margin:0;padding:6px 18px 14px}
-.glance .row{display:flex;justify-content:space-between;gap:16px;padding:11px 0;
+.glance .row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;
   border-bottom:1px dashed var(--line-soft)}
 .glance .row:last-child{border-bottom:0}
-.glance dt{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-faint)}
-.glance dd{margin:0;font-weight:600;font-size:.92rem;text-align:right;color:var(--ink)}
+.glance dt{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-faint);flex:none}
+.glance dd{margin:0;font-weight:600;font-size:.92rem;text-align:right;color:var(--ink);min-width:0}
 
 /* ============================================================
-   RESEARCH (publication list)
+   RESEARCH (publication list) + TALKS (same list style)
    ============================================================ */
 .pubs{list-style:none;margin:0;padding:0;counter-reset:pub}
 .pub{display:grid;grid-template-columns:auto 1fr;gap:22px;padding:24px 0;
   border-top:1px solid var(--line-soft);position:relative}
 .pub:first-child{border-top:0}
+.pub > *{min-width:0}
 .pub .meta{display:flex;flex-direction:column;gap:6px;min-width:64px}
 .pub .idx{font-family:var(--font-mono);font-size:.74rem;color:var(--accent);font-weight:600}
 .pub .idx::before{content:"["counter(pub,decimal-leading-zero)"]";counter-increment:pub}
@@ -287,13 +340,112 @@ img{max-width:100%;display:block}
 .pub .auth em{color:var(--ink);font-style:italic}
 .pub .topic{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;
   color:var(--ink-faint);border:1px solid var(--line);border-radius:6px;padding:4px 9px;display:inline-block}
+.talks .pub h3{margin-bottom:8px}
+.talks .pub .auth{margin:0}
+.pub .auth b{color:var(--ink);font-weight:600}
+.sub-h{margin:0 0 4px;font-family:var(--font-display);font-weight:500;font-size:1.3rem;letter-spacing:-.01em;line-height:1.25}
+.block-h{margin-top:clamp(44px,6vw,68px)}
 
 /* ============================================================
-   CARD GRIDS  (teaching, apps, writing)
+   CAREER (experience, qualifications, certifications)
+   ============================================================ */
+.career-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(32px,5vw,64px);align-items:start}
+.career-grid > *{min-width:0}
+.tl .pub{padding:16px 0;gap:18px;align-items:center}
+.tl .pub h3{font-size:1.06rem;margin:0 0 4px}
+.tl .pub .auth{margin:0}
+.when{display:block;margin-top:5px;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.02em;color:var(--ink-faint)}
+.proj .pub .meta{min-width:96px}
+.state{display:inline-block;margin-top:7px;font-family:var(--font-mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--primary);background:rgba(12,94,78,.1);border-radius:6px;padding:3px 8px}
+.sub-note{color:var(--ink-soft);font-size:.92rem;max-width:66ch;margin:6px 0 0}
+
+/* ---- logo cells: the official mark of the institution or issuer named beside it ---- */
+.logo{display:flex;align-items:center;justify-content:center;flex:none;
+  width:112px;height:52px;padding:5px 8px;background:#fff;
+  border:1px solid var(--line-soft);border-radius:8px}
+.logo img{width:100%;height:100%;object-fit:contain}
+.tl .logo{height:60px}
+/* organisations with no logo file: plain initials, never an imitation of a logo */
+.logo.badge{background:var(--paper-2);border:1px dashed var(--line);
+  font-family:var(--font-mono);font-size:.76rem;font-weight:600;letter-spacing:.1em;color:var(--primary)}
+
+.cert-groups{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:22px;align-items:start}
+.cert-groups > *{min-width:0}
+.cert{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px 20px 8px}
+.cert .k{display:block;font-family:var(--font-mono);font-size:.67rem;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:6px}
+.cert ul{list-style:none;margin:0;padding:0}
+.cert li{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;padding:11px 0;border-top:1px dashed var(--line-soft)}
+.cert li:first-child{border-top:0}
+.cert li > span:last-child{min-width:0}
+.cert li b{display:block;font-weight:600;font-size:.92rem;line-height:1.35;color:var(--ink)}
+.cert li small{display:block;font-size:.82rem;line-height:1.45;color:var(--ink-soft);margin-top:2px}
+
+.card.award{margin-top:18px;flex-direction:row;align-items:center;gap:18px}
+.award .medal{flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;
+  background:var(--accent-tint);color:var(--accent);font-family:var(--font-display);font-weight:600;font-size:1.05rem}
+.award > div{min-width:0}
+.award h3{margin:2px 0 4px}
+.memb-grid{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:12px 18px}
+.memb-grid > li{min-width:0;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 14px}
+.memb-grid b{display:block;font-weight:600;font-size:.92rem;line-height:1.35}
+.memb-grid small{display:block;margin-top:2px;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;color:var(--ink-faint)}
+
+/* ============================================================
+   EXPERTISE
+   ============================================================ */
+.xp .card{gap:9px}
+.xp .card .k{color:var(--primary)}
+.xp .proof{margin-top:auto;padding-top:12px;border-top:1px dashed var(--line-soft);
+  font-family:var(--font-mono);font-size:.72rem;line-height:1.6;color:var(--ink-faint)}
+
+/* ============================================================
+   DIGITAL & AI FLUENCY CLINIC  (teal band: the one inverted section)
+   ============================================================ */
+.section.clinic{position:relative;isolation:isolate;overflow:hidden;
+  background:var(--primary-deep);color:var(--paper);border-top:0}
+.clinic::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-image:
+    linear-gradient(to right, rgba(244,245,241,.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(244,245,241,.07) 1px, transparent 1px);
+  background-size:34px 34px}
+.clinic + .section{border-top:0}
+.clinic .eyebrow{color:var(--accent-tint)}
+.clinic .eyebrow::before{background:var(--accent-tint)}
+.clinic-grid{display:grid;grid-template-columns:1.35fr .9fr;gap:clamp(32px,5vw,64px);align-items:start}
+.clinic-grid > *{min-width:0}
+.clinic h2{font-family:var(--font-display);font-weight:500;font-size:clamp(1.9rem,4vw,2.7rem);
+  line-height:1.04;letter-spacing:-.018em;margin:0 0 12px;text-wrap:balance}
+.clinic .motto{font-family:var(--font-display);font-style:italic;font-size:clamp(1.2rem,2.2vw,1.55rem);
+  color:var(--accent-tint);margin:0 0 22px}
+.clinic-copy p{color:rgba(244,245,241,.86);max-width:62ch;margin:0 0 16px}
+.clinic-copy .pull{margin:22px 0;padding:4px 0 4px 18px;border-left:2px solid var(--accent-tint)}
+.clinic-copy .pull p{font-family:var(--font-display);font-size:clamp(1.05rem,1.6vw,1.2rem);line-height:1.45;color:var(--paper);margin:0}
+.clinic-copy .mission{color:var(--paper);font-weight:600;margin:26px 0 0}
+.topics{list-style:none;margin:22px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.topics li{font-family:var(--font-mono);font-size:.74rem;color:var(--paper);
+  border:1px solid rgba(244,245,241,.34);border-radius:100px;padding:6px 13px}
+.clinic-card{background:var(--paper);color:var(--ink);border-radius:var(--r);overflow:hidden;
+  box-shadow:0 30px 60px -36px rgba(0,0,0,.6)}
+.clinic-card .g-head{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-faint);padding:14px 20px;border-bottom:1px solid var(--line-soft);background:var(--paper-2)}
+.clinic-card dl{margin:0;padding:4px 20px 10px}
+.clinic-card .row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-bottom:1px dashed var(--line-soft)}
+.clinic-card .row:last-child{border-bottom:0}
+.clinic-card dt{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-faint);flex:none}
+.clinic-card dd{margin:0;font-weight:600;font-size:.92rem;text-align:right;min-width:0}
+.clinic-card .btn{display:flex;justify-content:center;margin:4px 20px 0}
+.clinic-card .fine{margin:14px 20px 20px;text-align:center;font-family:var(--font-mono);font-size:.68rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+
+/* ============================================================
+   CARD GRIDS  (teaching, tools)
    ============================================================ */
 .cards{display:grid;gap:18px}
 .cards.cols-2{grid-template-columns:repeat(2,1fr)}
 .cards.cols-3{grid-template-columns:repeat(3,1fr)}
+.cards > *{min-width:0}
 
 .card{
   background:var(--card);border:1px solid var(--line);border-radius:var(--r);
@@ -310,39 +462,39 @@ a.card:hover{transform:translateY(-3px);border-color:var(--primary);
   letter-spacing:.06em;text-transform:uppercase;color:var(--primary);display:inline-flex;align-items:center;gap:7px}
 .card .go .arw{transition:transform .2s}
 a.card:hover .go .arw{transform:translateX(3px)}
+.card a.go{text-decoration:none;align-self:flex-start}
+.card a.go:hover .arw{transform:translateX(3px)}
 .card .pill{align-self:flex-start;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--accent);background:var(--accent-tint);border-radius:6px;padding:4px 9px}
+  text-transform:uppercase;color:var(--ink-soft);background:var(--paper-2);border-radius:6px;padding:4px 9px}
+.card .pill.live{color:var(--primary);background:rgba(12,94,78,.1)}
 
-/* writing rows */
-.posts{display:grid;gap:0}
-.post{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:start;
-  padding:24px 0;border-top:1px solid var(--line-soft);text-decoration:none;color:inherit;
-  transition:padding-left .2s}
-.post:first-child{border-top:0}
-.post:hover{padding-left:8px}
-.post .pk{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--ink-faint);margin-bottom:9px;display:flex;gap:10px;align-items:center}
-.post .pk .cat{color:var(--primary)}
-.post h3{margin:0 0 6px;font-family:var(--font-display);font-weight:500;font-size:1.3rem;letter-spacing:-.012em;line-height:1.2}
-.post p{margin:0;color:var(--ink-soft);font-size:.94rem;max-width:64ch}
-.post .read{font-family:var(--font-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;
-  color:var(--primary);white-space:nowrap;padding-top:30px;display:inline-flex;gap:6px;align-items:center}
-.post:hover .read .arw{transform:translateX(3px)}
-.read .arw{transition:transform .2s}
+/* the tool that is online now */
+.card.feature{grid-column:1 / -1;border-color:var(--primary);padding:28px 26px 24px;gap:12px}
+.card.feature h3{font-size:clamp(1.4rem,2.6vw,1.75rem)}
+.card.feature p{font-size:.98rem;max-width:68ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--font-mono);font-size:.72rem;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:7px;padding:5px 9px;background:var(--paper)}
+.chip b{color:var(--primary);font-weight:600}
+.workshop{grid-column:1 / -1;margin:16px 0 -4px}
+.workshop h3{margin:0 0 4px;font-family:var(--font-display);font-weight:500;font-size:1.26rem;letter-spacing:-.01em}
+.workshop p{margin:0;color:var(--ink-soft);font-size:.92rem}
 
 /* ============================================================
    CONTACT
    ============================================================ */
 .contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(32px,5vw,64px);align-items:center}
+.contact-grid > *{min-width:0}
 .contact-lede{font-family:var(--font-display);font-weight:400;font-size:clamp(1.5rem,3.4vw,2.3rem);
-  line-height:1.16;letter-spacing:-.02em;margin:0 0 24px}
+  line-height:1.16;letter-spacing:-.02em;margin:0 0 24px;text-wrap:balance}
 .contact-lede em{font-style:italic;color:var(--primary)}
 .contact-info{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:6px 22px}
-.contact-info .row{display:flex;justify-content:space-between;gap:18px;align-items:center;
+.contact-info .row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 18px;align-items:baseline;
   padding:16px 0;border-bottom:1px dashed var(--line-soft)}
 .contact-info .row:last-child{border-bottom:0}
 .contact-info .lbl{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
-.contact-info a,.contact-info span.val{font-weight:600;font-size:.94rem;color:var(--ink);text-decoration:none;text-align:right}
+.contact-info a,.contact-info span.val{font-weight:600;font-size:.94rem;color:var(--ink);text-decoration:none;
+  text-align:right;min-width:0;overflow-wrap:anywhere;margin-left:auto}
 .contact-info a:hover{color:var(--primary)}
 
 /* ============================================================
@@ -352,7 +504,7 @@ a.card:hover .go .arw{transform:translateX(3px)}
 .foot .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-start}
 .foot .f-brand b{font-family:var(--font-display);font-weight:600;font-size:1.05rem;color:var(--ink)}
 .foot .f-brand p{margin:8px 0 0;font-size:.85rem;max-width:34ch}
-.foot nav{display:flex;gap:18px;flex-wrap:wrap}
+.foot nav{display:flex;gap:10px 18px;flex-wrap:wrap}
 .foot nav a{font-size:.86rem;text-decoration:none;color:var(--ink-soft)}
 .foot nav a:hover{color:var(--primary)}
 .foot .colophon{width:100%;border-top:1px dashed var(--line-soft);margin-top:30px;padding-top:18px;
@@ -360,12 +512,12 @@ a.card:hover .go .arw{transform:translateX(3px)}
   font-family:var(--font-mono);font-size:.7rem;letter-spacing:.04em;color:var(--ink-faint)}
 
 /* ============================================================
-   MOTION / REVEAL
+   MOTION / REVEAL  (only when JavaScript runs)
    ============================================================ */
-.reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
-.reveal.in{opacity:1;transform:none}
-[data-stagger] > *{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
-[data-stagger].in > *{opacity:1;transform:none}
+.js .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.js .reveal.in{opacity:1;transform:none}
+.js [data-stagger] > *{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+.js [data-stagger].in > *{opacity:1;transform:none}
 
 /* ============================================================
    RESPONSIVE
@@ -373,10 +525,16 @@ a.card:hover .go .arw{transform:translateX(3px)}
 @media (max-width:920px){
   .hero .wrap{grid-template-columns:1fr;gap:40px}
   .id-card{max-width:380px}
-  .about-grid,.contact-grid{grid-template-columns:1fr;gap:34px}
+  .about-grid,.contact-grid,.career-grid,.clinic-grid{grid-template-columns:1fr;gap:34px}
+  .clinic-card{max-width:460px}
   .cards.cols-3{grid-template-columns:repeat(2,1fr)}
+  .cert-groups{grid-template-columns:1fr}
 }
 @media (max-width:760px){
+  .memb-grid{grid-template-columns:1fr}
+}
+/* nine menu items: switch to the menu button before they crowd the bar */
+@media (max-width:1080px){
   .nav-toggle{display:flex}
   .nav-links{
     position:absolute;top:calc(var(--nav-h) + 1px);left:0;right:0;
@@ -386,19 +544,23 @@ a.card:hover .go .arw{transform:translateX(3px)}
     transform:translateY(-12px);opacity:0;pointer-events:none;transition:transform .22s,opacity .22s;
   }
   .nav-links.open{transform:none;opacity:1;pointer-events:auto}
-  .nav-links a{padding:13px 6px;font-size:1rem;border-radius:8px}
-  .nav-links a + a{border-top:1px solid var(--line-soft)}
+  .nav-links a{display:block;padding:13px 6px;font-size:1rem;border-radius:8px}
+  .nav-links li + li a{border-top:1px solid var(--line-soft)}
 }
 @media (max-width:560px){
   .cards.cols-2,.cards.cols-3{grid-template-columns:1fr}
   .pub{grid-template-columns:1fr;gap:10px}
-  .post{grid-template-columns:1fr}
-  .post .read{padding-top:8px}
+  .tl .pub{grid-template-columns:auto 1fr;gap:14px}
+  .logo{width:88px;height:46px;padding:5px 6px}
+  .tl .logo{height:52px}
+  .cert{padding:18px 16px 6px}
+  .card.award{align-items:flex-start}
   .sec-head{margin-bottom:28px}
+  .card.feature{padding:24px 20px 22px}
 }
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.001ms !important;animation-delay:0s !important;transition:none !important}
-  .reveal,[data-stagger] > *{opacity:1;transform:none}
+  .js .reveal,.js [data-stagger] > *{opacity:1;transform:none}
   .epi-line{stroke-dashoffset:0}.epi-area{opacity:.08}.epi-pt{opacity:1}
 }
 :focus-visible{outline:2.5px solid var(--primary);outline-offset:3px;border-radius:3px}
@@ -413,19 +575,20 @@ a.card:hover .go .arw{transform:translateX(3px)}
 <!-- ============================ NAV ============================ -->
 <header class="nav">
   <div class="wrap">
-    <a class="brand" href="#home" aria-label="Dr. Abhishek Panda — home">
+    <a class="brand" href="#home" aria-label="Dr. Abhishek Panda, home">
       <span class="mono-mark">AP</span>
       <span><b>Abhishek Panda</b><small>MD · Community Medicine</small></span>
     </a>
     <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
     <ul class="nav-links" id="nav-links">
-      <li><a href="#home">Home</a></li>
       <li><a href="#about">About</a></li>
+      <li><a href="#expertise">Expertise</a></li>
+      <li><a href="#clinic">AI Clinic</a></li>
+      <li><a href="#career">Career</a></li>
       <li><a href="#research">Research</a></li>
       <li><a href="#teaching">Teaching</a></li>
       <li><a href="#talks">Talks</a></li>
       <li><a href="#apps" class="tool">#CM-APP</a></li>
-      <li><a href="#writing">Writing</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </div>
@@ -439,26 +602,31 @@ a.card:hover .go .arw{transform:translateX(3px)}
       <span class="hero-eyebrow reveal"><span class="pin"></span>Government Medical College &amp; Hospital · Sundargarh, Odisha</span>
       <h1 class="reveal">Dr. Abhishek<br><em>Panda</em></h1>
       <p class="role reveal">Assistant Professor, Department of Community Medicine</p>
-      <p class="thesis reveal">Community physician, educator, and researcher working where epidemiology meets everyday clinical care — building the evidence, the teaching, and the tools that public health needs in a tribal district.</p>
+      <ul class="headline reveal" aria-label="Highlights">
+        <li>Google &amp; Microsoft Certified AI Educator</li>
+        <li>Fellowship in Digital Health</li>
+        <li>Applied Epidemiology &amp; Evidence Synthesis</li>
+      </ul>
+      <p class="thesis reveal">Community physician and medical educator in a tribal-majority mining district of western Odisha. I teach epidemiology and biostatistics, coordinate national health programmes, and help healthcare professionals move from AI literacy to AI fluency through a free daily clinic and the #CM-APP web tools.</p>
       <div class="cta-row reveal">
-        <a class="btn btn-primary" href="#research">Read the research <span class="arw">→</span></a>
-        <a class="btn btn-ghost" href="#apps">Open tools <span class="arw">→</span></a>
+        <a class="btn btn-primary" href="#clinic">Join the AI Fluency Clinic <span class="arw">→</span></a>
+        <a class="btn btn-ghost" href="#apps">Explore the tools <span class="arw">→</span></a>
       </div>
       <div class="creds reveal">
-        <span class="cred"><span class="dot"></span><b>MBBS</b> SCB Medical College</span>
-        <span class="cred"><span class="dot"></span><b>MD</b> Community Medicine · MKCG</span>
-        <span class="cred"><span class="dot"></span><b>PGDM</b> Applied Epidemiology · NIHFW</span>
+        <span class="cred"><span class="dot"></span><b>MBBS</b> S.C.B. Medical College, Cuttack</span>
+        <span class="cred"><span class="dot"></span><b>MD</b> Community Medicine · M.K.C.G., Berhampur</span>
+        <span class="cred"><span class="dot"></span><b>PG Diploma</b> Applied Epidemiology · NIHFW (pursuing)</span>
+        <span class="cred"><span class="dot"></span><b>PG Diploma</b> AI/ML in Healthcare · CLRI (pursuing)</span>
       </div>
     </div>
 
     <!-- portrait + epi-curve signature -->
     <div class="id-card reveal">
       <div class="portrait">
-        <!-- EDIT: replace this monogram with your photo (see note in <style>) -->
-        <span class="monogram">AP</span>
+        <img src="assets/abhishek-640.jpg" width="640" height="640" alt="Dr. Abhishek Panda" />
       </div>
       <div class="id-figure" aria-hidden="true">
-        <svg viewBox="0 0 320 84" role="img" aria-label="Stylised epidemic curve">
+        <svg viewBox="0 0 320 84">
           <line class="epi-axis" x1="6" y1="70" x2="314" y2="70"/>
           <g class="epi-tick">
             <line x1="40" y1="70" x2="40" y2="74"/><line x1="100" y1="70" x2="100" y2="74"/>
@@ -481,17 +649,22 @@ a.card:hover .go .arw{transform:translateX(3px)}
     <p class="eyebrow reveal">About</p>
     <div class="about-grid">
       <div class="about-body reveal">
-        <p class="lede">I teach and practise community medicine at GMCH Sundargarh — a tribal-majority district in western Odisha where the public-health questions are immediate.</p>
-        <p>Sickle cell disease, vector-borne illness, maternal and child health, and the occupational risks of a mining economy aren't abstractions here; they're the work. My job sits across three tracks — undergraduate teaching under the competency-based (CBME) curriculum, field- and facility-based research, and a growing set of open, web-based tools for medical educators and district programme staff.</p>
-        <p>Most of what I build starts from a real classroom or clinic problem: a statistic students keep misreading, a coding task that slows down residents, a calculation a colleague needs for a dissertation. I'm trained in community medicine (MD) and applied epidemiology, and I care most about making good public-health practice a little more usable on the ground.</p>
-        <div class="tags" aria-label="Focus areas">
-          <span class="tag">Tuberculosis · NTEP</span>
-          <span class="tag">Vector-borne disease</span>
-          <span class="tag">Tribal &amp; rural health</span>
-          <span class="tag">Maternal &amp; child health</span>
-          <span class="tag">Occupational health</span>
+        <p class="lede">I work where community medicine meets digital health. I help healthcare professionals move from AI literacy, knowing that a tool exists, to AI fluency: knowing what a tool can take over in their own work and what they must still check themselves.</p>
+        <p>I trained at S.C.B. Medical College, Cuttack (MBBS) and M.K.C.G. Medical College, Berhampur (MD in Community Medicine). I taught at M.K.C.G. and at Shri Jagannath Medical College, Puri, before joining GMCH Sundargarh in January 2024.</p>
+        <p>Sundargarh is tribal-majority, depends on mining and carries a heavy sickle cell burden. Malaria, filariasis, tuberculosis and maternal and child health fill the daily work. I teach Community Medicine to MBBS students under the CBME curriculum and coordinate the college's work in NTEP, NVBDCP, RMNCAH+N and immunisation. As a resource person and master trainer, I train others in IMNCI, NTEP, NLEP and biomedical waste management. I sit on the Medical Education Unit and the Medical Research Unit, and serve as Nodal Officer for the Ayushman Bharat Digital Mission (ABDM).</p>
+        <p>On Doctors' Day, 1 July 2026, I began a mission to promote digital literacy among current and future healthcare professionals, with a special emphasis on artificial intelligence. Six weeks later, on 15 August, it became a free online clinic that meets every evening. I am a Gemini Certified Educator and a Microsoft Elevate Educator Expert, and have completed AI in healthcare programmes from NBEMS, IIT Madras, Stanford Online and the University of Calgary.</p>
+        <p>The #CM-APP tools on this site come from the same place. Each began with a real classroom or clinic problem, such as a statistic students keep misreading or a calculation a colleague needs for a dissertation.</p>
+        <div class="tags" aria-label="Areas of interest">
+          <span class="tag">AI in healthcare</span>
+          <span class="tag">AI fluency</span>
+          <span class="tag">Digital health · ABDM</span>
+          <span class="tag">Applied epidemiology</span>
+          <span class="tag">Evidence synthesis</span>
+          <span class="tag">Biostatistics</span>
+          <span class="tag">Research methodology</span>
           <span class="tag">Medical education · CBME</span>
-          <span class="tag">Biostatistics &amp; epidemiology</span>
+          <span class="tag">National health programmes</span>
+          <span class="tag">Tribal &amp; rural health</span>
         </div>
       </div>
 
@@ -501,56 +674,347 @@ a.card:hover .go .arw{transform:translateX(3px)}
           <div class="row"><dt>Role</dt><dd>Assistant Professor</dd></div>
           <div class="row"><dt>Department</dt><dd>Community Medicine</dd></div>
           <div class="row"><dt>Institution</dt><dd>GMCH, Sundargarh</dd></div>
-          <div class="row"><dt>District</dt><dd>Sundargarh, Odisha</dd></div>
-          <div class="row"><dt>Training</dt><dd>MD · PGDM (Epi)</dd></div>
+          <div class="row"><dt>Teaching since</dt><dd>2020</dd></div>
+          <div class="row"><dt>Degrees</dt><dd>MBBS · MD</dd></div>
+          <div class="row"><dt>Pursuing</dt><dd>PG Diplomas · NIHFW, CLRI</dd></div>
+          <div class="row"><dt>Certified</dt><dd>Google &amp; Microsoft AI Educator</dd></div>
+          <div class="row"><dt>College roles</dt><dd>MEU · MRU · ABDM</dd></div>
+          <div class="row"><dt>AI Clinic</dt><dd>Daily · 7:30 PM IST</dd></div>
+          <div class="row"><dt>Languages</dt><dd>English · Hindi · Odia</dd></div>
+          <div class="row"><dt>Award</dt><dd>Best Paper, APCRICON 2018</dd></div>
         </dl>
       </aside>
     </div>
   </div>
 </section>
 
+<!-- ============================ EXPERTISE ============================ -->
+<section id="expertise" class="section">
+  <div class="wrap">
+    <p class="eyebrow reveal">Areas of expertise</p>
+    <div class="sec-head reveal"><h2>What I Work On</h2></div>
+    <p class="sec-intro reveal">Most of my recent work and training has gone into digital health and AI. Epidemiology, biostatistics and programme work remain the base it grows from, and they supply most of the problems worth solving.</p>
+    <div class="cards cols-3 xp" data-stagger>
+      <div class="card">
+        <span class="k">01 · Artificial intelligence</span>
+        <h3>AI in Healthcare &amp; AI Fluency</h3>
+        <p>Responsible use of AI tools in clinical work, teaching, research and public health, with the habit of checking what they produce. I teach it to doctors, teachers and students, and every evening in the clinic.</p>
+        <p class="proof">Gemini Certified Educator · Microsoft Elevate Educator Expert · AI in healthcare programmes from NBEMS, IIT Madras, Stanford Online and the University of Calgary</p>
+      </div>
+      <div class="card">
+        <span class="k">02 · Digital health</span>
+        <h3>Digital Health</h3>
+        <p>Nodal Officer for the Ayushman Bharat Digital Mission at GMCH Sundargarh. Digital workflows for data collection and documentation, and single-file web tools that keep working offline.</p>
+        <p class="proof">Fellowship in Digital Health, Medvarsity · PG Diploma in AI/ML in Healthcare, CLRI (pursuing) · Digital Health Specialization, Imperial College London</p>
+      </div>
+      <div class="card">
+        <span class="k">03 · Epidemiology</span>
+        <h3>Applied Epidemiology &amp; Evidence Synthesis</h3>
+        <p>Field surveys and programme evaluation in the district, and systematic reviews and meta-analyses.</p>
+        <p class="proof">PG Diploma in Applied Epidemiology, NIHFW (pursuing) · Advanced Epidemiology Workshop, JIPMER · Post-MDA coverage evaluation surveys</p>
+      </div>
+      <div class="card">
+        <span class="k">04 · Research methods</span>
+        <h3>Biostatistics &amp; Research Methodology</h3>
+        <p>Study design, sample size and analysis for dissertations and manuscripts. I guide MBBS students' short-term research projects and build the statistics tools in the #CM-APP series.</p>
+        <p class="proof">Basic Course in Biomedical Research, ICMR–NIE · Biostatistics in Public Health Specialization, Johns Hopkins University</p>
+      </div>
+      <div class="card">
+        <span class="k">05 · Medical education</span>
+        <h3>Medical Education</h3>
+        <p>Competency-based teaching and assessment, faculty development, and the use of AI in teaching and assessment.</p>
+        <p class="proof">Member, Medical Education Unit · Course coordinator, NMC Basic Course in Medical Education at GMCH Sundargarh · AI for Education, Kennesaw State University</p>
+      </div>
+      <div class="card">
+        <span class="k">06 · Public health practice</span>
+        <h3>Community Medicine &amp; National Health Programmes</h3>
+        <p>Programme coordination for NTEP, NVBDCP, RMNCAH+N and immunisation in a tribal-majority mining district, and training for the staff who deliver these programmes.</p>
+        <p class="proof">Master trainer for IMNCI, NTEP, NLEP and BMWM · UNICEF-funded evaluation of maternal health services at VHSND sites</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ AI FLUENCY CLINIC ============================ -->
+<section id="clinic" class="section clinic">
+  <div class="wrap">
+    <p class="eyebrow reveal">Free · online · every evening since 15 August 2026</p>
+    <div class="clinic-grid">
+      <div class="clinic-copy reveal">
+        <h2>Digital &amp; AI Fluency Clinic for Healthcare Professionals</h2>
+        <p class="motto">Bring a problem. Get a workflow.</p>
+        <p>Each evening we take one or two real digital problems that healthcare professionals face and work through them live on Google Meet. We look at the workflow, find the right digital or AI-assisted solution, demonstrate it and practise it. No lectures on what AI is, and no lists of fifty tools.</p>
+        <blockquote class="pull">
+          <p>Literacy is knowing that a tool exists. Fluency is being able to look at your everyday work and ask: can this be done more efficiently?</p>
+        </blockquote>
+        <p>Most of the problems are old ones. Better use of familiar tools, plus newer capabilities including AI, usually solves them:</p>
+        <ul class="topics" aria-label="Problems the clinic works on">
+          <li>Designing data collection tools</li>
+          <li>Analysing data</li>
+          <li>Searching and synthesising literature</li>
+          <li>Preparing academic and research documents</li>
+          <li>Creating teaching material</li>
+          <li>Reducing repetitive documentation</li>
+          <li>Using AI appropriately</li>
+        </ul>
+        <p class="mission">Less digital burden. Smarter workflows. Better learning. More AI-fluent healthcare professionals.</p>
+      </div>
+
+      <aside class="clinic-card reveal" aria-label="Clinic details">
+        <div class="g-head">Clinic details</div>
+        <dl>
+          <div class="row"><dt>When</dt><dd>Daily, except holidays</dd></div>
+          <div class="row"><dt>Time</dt><dd>7:30–8:30 PM IST</dd></div>
+          <div class="row"><dt>Where</dt><dd>Google Meet</dd></div>
+          <div class="row"><dt>Fee</dt><dd>Free</dd></div>
+          <div class="row"><dt>Open to</dt><dd>Healthcare professionals, educators, researchers, managers and students</dd></div>
+        </dl>
+        <a class="btn btn-primary" href="https://forms.gle/xkDrNrBbvfobqeng9" target="_blank" rel="noopener">Register for the Clinic <span class="arw">→</span></a>
+        <p class="fine">Learn · Apply · Automate · Verify</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CAREER ============================ -->
+<section id="career" class="section">
+  <div class="wrap">
+    <p class="eyebrow reveal">Career &amp; training</p>
+    <div class="sec-head reveal"><h2>Experience &amp; Qualifications</h2></div>
+
+    <div class="career-grid">
+      <div class="reveal">
+        <h3 class="sub-h">Experience</h3>
+        <ol class="pubs tl">
+          <li class="pub">
+            <div class="meta"><span class="logo"><img src="assets/logos/gmch.webp" width="59" height="56" alt="" loading="lazy" /></span></div>
+            <div>
+              <h3>Assistant Professor, Community Medicine</h3>
+              <p class="auth">Government Medical College &amp; Hospital, Sundargarh</p><span class="when">Jan 2024 – present</span>
+            </div>
+          </li>
+          <li class="pub">
+            <div class="meta"><span class="logo"><img src="assets/logos/sjmch.webp" width="49" height="56" alt="" loading="lazy" /></span></div>
+            <div>
+              <h3>Assistant Professor, Community Medicine</h3>
+              <p class="auth">Shri Jagannath Medical College &amp; Hospital, Puri</p><span class="when">Apr 2022 – Jan 2024</span>
+            </div>
+          </li>
+          <li class="pub">
+            <div class="meta"><span class="logo"><img src="assets/logos/sjmch.webp" width="49" height="56" alt="" loading="lazy" /></span></div>
+            <div>
+              <h3>Senior Resident / Tutor, Community Medicine</h3>
+              <p class="auth">Shri Jagannath Medical College &amp; Hospital, Puri</p><span class="when">Mar 2021 – Apr 2022</span>
+            </div>
+          </li>
+          <li class="pub">
+            <div class="meta"><span class="logo"><img src="assets/logos/mkcg.webp" width="51" height="56" alt="" loading="lazy" /></span></div>
+            <div>
+              <h3>Senior Resident / Tutor, Community Medicine</h3>
+              <p class="auth">M.K.C.G. Medical College &amp; Hospital, Berhampur</p><span class="when">Jul 2020 – Mar 2021</span>
+            </div>
+          </li>
+          <li class="pub">
+            <div class="meta"><span class="logo"><img src="assets/logos/mkcg.webp" width="51" height="56" alt="" loading="lazy" /></span></div>
+            <div>
+              <h3>Junior Resident, MD Community Medicine</h3>
+              <p class="auth">M.K.C.G. Medical College &amp; Hospital, Berhampur</p><span class="when">Jun 2017 – Jun 2020</span>
+            </div>
+          </li>
+          <li class="pub">
+            <div class="meta"><span class="logo"><img src="assets/logos/scb.webp" width="56" height="56" alt="" loading="lazy" /></span></div>
+            <div>
+              <h3>House Officer (Internship)</h3>
+              <p class="auth">S.C.B. Medical College &amp; Hospital, Cuttack</p><span class="when">Sep 2014 – Sep 2015</span>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="reveal">
+        <h3 class="sub-h">Qualifications</h3>
+        <ol class="pubs tl">
+          <li class="pub">
+            <div class="meta"><span class="logo"><img src="assets/logos/nihfw.webp" width="56" height="56" alt="" loading="lazy" /></span></div>
+            <div>
+              <h3>PG Diploma in Applied Epidemiology</h3>
+              <p class="auth">National Institute of Health &amp; Family Welfare (NIHFW), New Delhi</p><span class="state">Pursuing</span>
+            </div>
+          </li>
+          <li class="pub">
+            <div class="meta"><span class="logo"><img src="assets/logos/clri.webp" width="150" height="28" alt="" loading="lazy" /></span></div>
+            <div>
+              <h3>PG Diploma in AI/ML in Healthcare</h3>
+              <p class="auth">Clini Launch Research Institute (CLRI)</p><span class="state">Pursuing</span>
+            </div>
+          </li>
+          <li class="pub">
+            <div class="meta"><span class="logo"><img src="assets/logos/medvarsity.webp" width="150" height="36" alt="" loading="lazy" /></span></div>
+            <div>
+              <h3>Fellowship in Digital Health</h3>
+              <p class="auth">Medvarsity</p>
+            </div>
+          </li>
+          <li class="pub">
+            <div class="meta"><span class="logo"><img src="assets/logos/mkcg.webp" width="51" height="56" alt="" loading="lazy" /></span></div>
+            <div>
+              <h3>MD, Community Medicine</h3>
+              <p class="auth">M.K.C.G. Medical College, Berhampur, Odisha</p><span class="when">2020</span>
+            </div>
+          </li>
+          <li class="pub">
+            <div class="meta"><span class="logo"><img src="assets/logos/scb.webp" width="56" height="56" alt="" loading="lazy" /></span></div>
+            <div>
+              <h3>MBBS</h3>
+              <p class="auth">S.C.B. Medical College, Cuttack, Odisha</p><span class="when">2014</span>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <h3 class="sub-h block-h reveal">Certifications &amp; Continuing Professional Development</h3>
+    <p class="sub-note reveal">Course names and issuers only, and not the full list: on Coursera alone there are more than 75 course certificates.</p>
+    <div class="cert-groups" data-stagger>
+      <div class="cert">
+        <span class="k">AI in healthcare</span>
+        <ul>
+          <li><span class="logo"><img src="assets/logos/ucalgary.webp" width="74" height="56" alt="" loading="lazy" /></span><span><b>AI in Medicine: Practical Applications for Healthcare Professionals</b><small>University of Calgary · Calgary Neonatal NeuroCritical Care Program</small></span></li>
+          <li><span class="logo"><img src="assets/logos/nbe.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>AI in Healthcare (Certificate Programme)</b><small>National Board of Examinations in Medical Sciences (NBEMS), MoHFW</small></span></li>
+          <li><span class="logo"><img src="assets/logos/iitm.webp" width="72" height="72" alt="" loading="lazy" /></span><span><b>AI for Clinicians</b><small>Wadhwani School of AI, IIT Madras</small></span></li>
+          <li><span class="logo"><img src="assets/logos/stanford.webp" width="150" height="32" alt="" loading="lazy" /></span><span><b>AI in Healthcare Specialization</b><small>Stanford Online</small></span></li>
+          <li><span class="logo"><img src="assets/logos/cu.webp" width="150" height="29" alt="" loading="lazy" /></span><span><b>AI for Healthcare Systems Specialization</b><small>University of Colorado System</small></span></li>
+          <li><span class="logo"><img src="assets/logos/iitk.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>AI in Healthcare</b><small>EICTA, IIT Kanpur</small></span></li>
+          <li><span class="logo"><img src="assets/logos/mnit.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>AI in Healthcare</b><small>EICTA, MNIT Jaipur</small></span></li>
+          <li><span class="logo"><img src="assets/logos/gcloud.webp" width="69" height="56" alt="" loading="lazy" /></span><span><b>Generative AI for Healthcare</b><small>Google Cloud</small></span></li>
+          <li><span class="logo"><img src="assets/logos/jhu.webp" width="150" height="26" alt="" loading="lazy" /></span><span><b>Introduction to Using Generative AI in Public Health</b><small>Johns Hopkins University</small></span></li>
+        </ul>
+      </div>
+      <div class="cert">
+        <span class="k">Generative AI &amp; productivity</span>
+        <ul>
+          <li><span class="logo"><img src="assets/logos/google.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>Google AI Professional Certificate</b><small>Google</small></span></li>
+          <li><span class="logo"><img src="assets/logos/google.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>Google AI Essentials</b><small>Google</small></span></li>
+          <li><span class="logo"><img src="assets/logos/google.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>Google Prompting Essentials</b><small>Google</small></span></li>
+          <li><span class="logo"><img src="assets/logos/microsoft.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>Microsoft 365 with Generative AI Professional Certificate</b><small>Microsoft</small></span></li>
+          <li><span class="logo"><img src="assets/logos/microsoft.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>Microsoft Copilot: Your Everyday AI Companion</b><small>Microsoft</small></span></li>
+          <li><span class="logo"><img src="assets/logos/microsoft.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>Generative AI Foundations Certificate Program</b><small>Microsoft</small></span></li>
+          <li><span class="logo"><img src="assets/logos/vanderbilt.webp" width="150" height="33" alt="" loading="lazy" /></span><span><b>Generative AI Strategic Leader Specialization</b><small>Vanderbilt University</small></span></li>
+          <li><span class="logo"><img src="assets/logos/anthropic.webp" width="150" height="17" alt="" loading="lazy" /></span><span><b>Claude 101</b><small>Anthropic</small></span></li>
+          <li><span class="logo"><img src="assets/logos/cambridge.webp" width="150" height="32" alt="" loading="lazy" /></span><span><b>Ethical AI: AI essentials for everyone</b><small>University of Cambridge</small></span></li>
+        </ul>
+      </div>
+      <div class="cert">
+        <span class="k">Digital health, epidemiology &amp; research</span>
+        <ul>
+          <li><span class="logo"><img src="assets/logos/imperial.webp" width="150" height="16" alt="" loading="lazy" /></span><span><b>Digital Health Specialization</b><small>Imperial College London</small></span></li>
+          <li><span class="logo"><img src="assets/logos/imperial.webp" width="150" height="16" alt="" loading="lazy" /></span><span><b>Epidemiology for Public Health Specialization</b><small>Imperial College London</small></span></li>
+          <li><span class="logo"><img src="assets/logos/jhu.webp" width="150" height="26" alt="" loading="lazy" /></span><span><b>Epidemiology in Public Health Practice Specialization</b><small>Johns Hopkins University</small></span></li>
+          <li><span class="logo"><img src="assets/logos/jhu.webp" width="150" height="26" alt="" loading="lazy" /></span><span><b>Biostatistics in Public Health Specialization</b><small>Johns Hopkins University</small></span></li>
+          <li><span class="logo"><img src="assets/logos/jhu.webp" width="150" height="26" alt="" loading="lazy" /></span><span><b>Introduction to Systematic Review and Meta-Analysis</b><small>Johns Hopkins University</small></span></li>
+          <li><span class="logo"><img src="assets/logos/nie.webp" width="150" height="50" alt="" loading="lazy" /></span><span><b>Basic Course in Biomedical Research (BCBR)</b><small>ICMR–National Institute of Epidemiology, through SWAYAM–NPTEL</small></span></li>
+          <li><span class="logo"><img src="assets/logos/jipmer.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>Advanced Epidemiology Workshop</b><small>JIPMER International School of Public Health, Puducherry</small></span></li>
+        </ul>
+      </div>
+      <div class="cert">
+        <span class="k">Teaching &amp; medical education</span>
+        <ul>
+          <li><span class="logo"><img src="assets/logos/nmc.webp" width="55" height="56" alt="" loading="lazy" /></span><span><b>Basic Course in Medical Education (BCME)</b><small>National Medical Commission · Regional Centre, S.C.B. Medical College, Cuttack</small></span></li>
+          <li><span class="logo"><img src="assets/logos/google.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>Gemini Certified Educator</b><small>Google for Education</small></span></li>
+          <li><span class="logo"><img src="assets/logos/microsoft.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>Microsoft Elevate Educator Expert</b><small>Microsoft</small></span></li>
+          <li><span class="logo"><img src="assets/logos/ksu.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>AI for Education (Basic, Intermediate &amp; Advanced)</b><small>Kennesaw State University</small></span></li>
+          <li><span class="logo"><img src="assets/logos/openai.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>ChatGPT Foundations for Teachers</b><small>OpenAI</small></span></li>
+          <li><span class="logo"><img src="assets/logos/vanderbilt.webp" width="150" height="33" alt="" loading="lazy" /></span><span><b>Innovative Teaching with ChatGPT</b><small>Vanderbilt University</small></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="sub-h block-h reveal">Award &amp; Memberships</h3>
+    <div class="card award reveal">
+      <span class="medal"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8.6 13.9 7.2 21l4.8-2.6 4.8 2.6-1.4-7.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+      <div>
+        <span class="k">Award</span>
+        <h3>Best Paper Award, APCRICON 2018</h3>
+        <p>20th Annual National Conference of the Association for Prevention and Control of Rabies in India, New Delhi, 7–8 July 2018.</p>
+      </div>
+    </div>
+    <ul class="memb-grid" data-stagger aria-label="Professional memberships">
+      <li><span class="logo"><img src="assets/logos/iapsm.webp" width="56" height="56" alt="" loading="lazy" /></span><span><b>Indian Association of Preventive and Social Medicine</b><small>IAPSM</small></span></li>
+      <li><span class="logo"><img src="assets/logos/ipha.webp" width="55" height="56" alt="" loading="lazy" /></span><span><b>Indian Public Health Association</b><small>IPHA</small></span></li>
+      <li><span class="logo badge">APCRI</span><span><b>Association for Prevention and Control of Rabies in India</b></span></li>
+      <li><span class="logo badge">EFI</span><span><b>Epidemiology Foundation of India</b></span></li>
+      <li><span class="logo badge">ISAI</span><span><b>Indian Society for Adult Immunization</b></span></li>
+      <li><span class="logo"><img src="assets/logos/iame.webp" width="56" height="44" alt="" loading="lazy" /></span><span><b>Interdisciplinary Association of Medical Educationists</b><small>IAME</small></span></li>
+      <li><span class="logo badge">ICAIM</span><span><b>Indian College of Artificial Intelligence in Medicine</b></span></li>
+      <li><span class="logo"><img src="assets/logos/ima.webp" width="150" height="53" alt="" loading="lazy" /></span><span><b>Indian Medical Association</b><small>IMA</small></span></li>
+      <li><span class="logo badge">NMO</span><span><b>National Medicos Organisation</b></span></li>
+      <li><span class="logo badge">OMTA</span><span><b>Odisha Medical Teachers' Association</b></span></li>
+    </ul>
+  </div>
+</section>
+
 <!-- ============================ RESEARCH ============================ -->
 <section id="research" class="section">
   <div class="wrap">
-    <p class="eyebrow reveal">Selected publications</p>
+    <p class="eyebrow reveal">Publications &amp; projects</p>
     <div class="sec-head reveal">
       <h2>Research</h2>
-      <!-- EDIT: link to your full publication list / Google Scholar -->
-      <a class="sec-link" href="#contact">All publications →</a>
+      <!-- When a Google Scholar or ORCID profile is ready, add:
+           <a class="sec-link" href="PROFILE-URL">All publications →</a> -->
     </div>
+    <p class="sec-intro reveal">My research interests are epidemiology, biostatistics, research methodology and evidence synthesis, digital health and AI, and medical education. Field projects follow the district's programmes, from filariasis elimination to maternal health services.</p>
 
-    <!-- EDIT each entry: title link → real DOI/URL -->
+    <h3 class="sub-h reveal">Publications</h3>
+    <!-- To link a title to its article, wrap it: <h3><a href="https://doi.org/...">Title</a></h3> -->
     <ol class="pubs">
       <li class="pub reveal">
-        <div class="meta"><span class="idx"></span><span class="yr">2024</span></div>
+        <div class="meta"><span class="idx"></span><span class="yr">2026</span></div>
         <div>
-          <h3><a href="#">Burden and determinants of hypertension among adults in a tribal block of Sundargarh district, Odisha</a></h3>
-          <p class="auth">Panda A, et al. — <em>Indian Journal of Community Medicine</em></p>
-          <span class="topic">Non-communicable disease</span>
+          <h3>Rational drug utilization in geriatric patients: a systematic review of prescribing practices, polypharmacy, and medication safety</h3>
+          <p class="auth"><b>Panda A</b>, Narmada Reddy P, Mohanty R. <em>CME J Ger Med</em>. 2026;18(7):97–112.</p>
+          <span class="topic">Systematic review</span>
         </div>
       </li>
       <li class="pub reveal">
-        <div class="meta"><span class="idx"></span><span class="yr">2023</span></div>
+        <div class="meta"><span class="idx"></span><span class="yr">2026</span></div>
         <div>
-          <h3><a href="#">Antenatal care utilisation and birth preparedness in rural Odisha: a mixed-methods study</a></h3>
-          <p class="auth">Panda A, Sahoo S, Mishra R — <em>Journal of Family Medicine and Primary Care</em></p>
-          <span class="topic">Maternal &amp; child health</span>
+          <h3>A global perspective on mental health in medical students: evidence from systematic review and meta-analysis</h3>
+          <p class="auth">Kumari T, Singh A, <b>Panda A</b>. <em>Am J Forensic Psychol</em>. 2026;28(1):19–26.</p>
+          <span class="topic">Systematic review &amp; meta-analysis</span>
         </div>
       </li>
       <li class="pub reveal">
-        <div class="meta"><span class="idx"></span><span class="yr">2023</span></div>
+        <div class="meta"><span class="idx"></span><span class="yr">2020</span></div>
         <div>
-          <h3><a href="#">Bridging the classroom and the field: a competency-based approach to teaching community medicine</a></h3>
-          <p class="auth">Panda A — <em>Indian Journal of Public Health</em></p>
-          <span class="topic">Medical education</span>
+          <h3>Comparison of analgesic efficacy between the adjuvants dexamethasone and clonidine on supraclavicular brachial plexus block: a randomised study</h3>
+          <p class="auth">Behera CS, Nayak GK, <b>Panda A</b>. <em>Ann Int Med Den Res</em>. 2020;6(2):AN26–AN30.</p>
+          <span class="topic">Randomised study</span>
         </div>
       </li>
       <li class="pub reveal">
-        <div class="meta"><span class="idx"></span><span class="yr">2022</span></div>
+        <div class="meta"><span class="idx"></span><span class="yr">2026</span></div>
         <div>
-          <h3><a href="#">Health-seeking behaviour for febrile illness in a tribal community of western Odisha</a></h3>
-          <p class="auth">Panda A, Behera D — <em>BMC Public Health</em></p>
-          <span class="topic">Health systems</span>
+          <h3>Comprehensive Lung Disease: Infection, Pathology and Oncology</h3>
+          <p class="auth">Chauhan S, <b>Panda A</b>, Mishra P, Vincent S, Verma N. New Delhi: Professional Publication Services; 2026. 337 p.</p>
+          <span class="topic">Book chapter</span>
+        </div>
+      </li>
+    </ol>
+
+    <h3 class="sub-h block-h reveal">Research Projects</h3>
+    <ol class="pubs talks proj">
+      <li class="pub reveal">
+        <div class="meta"><span class="yr">Ongoing</span></div>
+        <div>
+          <h3>Evaluation of maternal health services at Village Health Sanitation &amp; Nutrition Day (VHSND) sites in the aspirational blocks of Sundargarh district</h3>
+          <p class="auth">UNICEF-funded project</p>
+        </div>
+      </li>
+      <li class="pub reveal">
+        <div class="meta"><span class="yr">2024 · 2025</span></div>
+        <div>
+          <h3>Post-MDA Coverage Evaluation Surveys, Sundargarh and Jharsuguda districts</h3>
+          <p class="auth">Mass Drug Administration for the elimination of lymphatic filariasis, 2024 and 2025 rounds</p>
         </div>
       </li>
     </ol>
@@ -562,26 +1026,37 @@ a.card:hover .go .arw{transform:translateX(3px)}
   <div class="wrap">
     <p class="eyebrow reveal">In the classroom &amp; the field</p>
     <div class="sec-head reveal"><h2>Teaching</h2></div>
-    <div class="cards cols-2" data-stagger>
+    <div class="cards cols-3" data-stagger>
       <div class="card">
-        <span class="k">Phase II &amp; III MBBS</span>
-        <h3>Undergraduate community medicine</h3>
-        <p>Lectures, small-group work, and field postings across epidemiology, biostatistics, and the national health programmes — mapped to competency-based outcomes.</p>
+        <span class="k">Phase I–III MBBS</span>
+        <h3>Undergraduate Community Medicine</h3>
+        <p>Theory and practical classes and clinical postings in Community Medicine under the CBME curriculum, mapped to competencies.</p>
+      </div>
+      <div class="card">
+        <span class="k">In the field</span>
+        <h3>Community-Based Training</h3>
+        <p>Field visits, postings at the rural and urban health training centres, and the Family Adoption Programme.</p>
       </div>
       <div class="card">
         <span class="k">Method</span>
-        <h3>Epidemiology &amp; study design</h3>
-        <p>Measures of association, screening-test evaluation, and reading routine health data — taught with district-grounded, worked examples rather than textbook abstractions.</p>
-      </div>
-      <div class="card">
-        <span class="k">Curriculum</span>
-        <h3>Competency-based education (CBME)</h3>
-        <p>Linking classroom sessions and field experience to defined competencies, alignment matrices, and assessment that actually reflects them.</p>
+        <h3>Epidemiology &amp; Biostatistics</h3>
+        <p>Study design, measures of association, screening test evaluation and reading routine data from HMIS and NFHS, taught with worked examples from Sundargarh.</p>
       </div>
       <div class="card">
         <span class="k">Programmes</span>
-        <h3>National health programmes</h3>
-        <p>RMNCAH+N, NTEP, vector-borne disease control and more — taught from policy down to what it looks like at a sub-centre.</p>
+        <h3>National Health Programmes</h3>
+        <p>Resource person and master trainer for IMNCI, NTEP, NLEP and biomedical waste management. Coordinates the college's work in NTEP, NVBDCP, RMNCAH+N and immunisation.</p>
+      </div>
+      <div class="card">
+        <span class="k">Faculty development &amp; research</span>
+        <h3>Medical Education &amp; Research</h3>
+        <p>Member of the Medical Education and Medical Research Units. Course coordinator and resource faculty for the NMC Basic Course in Medical Education at GMCH Sundargarh in April 2026. Guides MBBS students' short-term research projects during elective postings.</p>
+      </div>
+      <div class="card">
+        <span class="k">Digital health</span>
+        <h3>Digital Health &amp; AI Fluency</h3>
+        <p>Nodal Officer for the Ayushman Bharat Digital Mission. Sessions for doctors, teachers and students on using AI tools in teaching, assessment and research, and on checking their output. Runs the free daily Digital &amp; AI Fluency Clinic for Healthcare Professionals.</p>
+        <a class="go" href="#clinic">About the clinic <span class="arw">→</span></a>
       </div>
     </div>
   </div>
@@ -591,42 +1066,62 @@ a.card:hover .go .arw{transform:translateX(3px)}
 <section id="talks" class="section">
   <div class="wrap">
     <p class="eyebrow reveal">Talks &amp; training</p>
-    <div class="sec-head reveal"><h2>As a resource person</h2></div>
-    <!-- EDIT: update / add your own sessions -->
-    <ol class="pubs">
+    <div class="sec-head reveal"><h2>As a Resource Person</h2></div>
+    <ol class="pubs talks">
       <li class="pub reveal">
         <div class="meta"><span class="yr">2026</span></div>
         <div>
-          <h3 style="margin-bottom:8px">World No Tobacco Day — district observance &amp; awareness competition</h3>
-          <p class="auth">Organiser &amp; speaker — GMCH Sundargarh</p>
+          <h3>Cross-Examining the Machine: Building AI Fluency for FMT Experts</h3>
+          <p class="auth">Invited online lecture · AFMTE Gujarat, Monthly Faculty Lecture Series</p>
         </div>
       </li>
       <li class="pub reveal">
         <div class="meta"><span class="yr">2026</span></div>
         <div>
-          <h3 style="margin-bottom:8px">HPV vaccination — operational planning, multi-stakeholder session</h3>
-          <p class="auth">Resource person — District health programme</p>
+          <h3>World No Tobacco Day: district observance and awareness competition</h3>
+          <p class="auth">Organiser and speaker · GMCH Sundargarh</p>
+        </div>
+      </li>
+      <li class="pub reveal">
+        <div class="meta"><span class="yr">2026</span></div>
+        <div>
+          <h3>Basic Course in Medical Education (NMC)</h3>
+          <p class="auth">Course coordinator and resource faculty · GMCH Sundargarh, April 2026</p>
+        </div>
+      </li>
+      <li class="pub reveal">
+        <div class="meta"><span class="yr">2026</span></div>
+        <div>
+          <h3>HPV vaccination: operational planning, multi-stakeholder session</h3>
+          <p class="auth">Resource person · District health programme</p>
+        </div>
+      </li>
+      <li class="pub reveal">
+        <div class="meta"><span class="yr">2026</span></div>
+        <div>
+          <h3>Heat-related illness: sensitisation for healthcare professionals</h3>
+          <p class="auth">Resource person · Sundargarh district (NPCCHH)</p>
         </div>
       </li>
       <li class="pub reveal">
         <div class="meta"><span class="yr">2025</span></div>
         <div>
-          <h3 style="margin-bottom:8px">CHO refresher training — Leprosy / NLEP module</h3>
-          <p class="auth">Facilitator — Community Health Officers</p>
+          <h3>CHO refresher training: leprosy (NLEP) module</h3>
+          <p class="auth">Facilitator · Community Health Officers</p>
         </div>
       </li>
       <li class="pub reveal">
         <div class="meta"><span class="yr">2025</span></div>
         <div>
-          <h3 style="margin-bottom:8px">Malaria &amp; dengue — sensitisation for private practitioners</h3>
-          <p class="auth">Speaker — Vector-borne disease programme</p>
+          <h3>Malaria and dengue: sensitisation for private practitioners</h3>
+          <p class="auth">Speaker · Vector-borne disease programme</p>
         </div>
       </li>
       <li class="pub reveal">
         <div class="meta"><span class="yr">2025</span></div>
         <div>
-          <h3 style="margin-bottom:8px">Biomedical waste management — staff training</h3>
-          <p class="auth">Facilitator — GMCH Sundargarh</p>
+          <h3>Biomedical waste management: staff training</h3>
+          <p class="auth">Facilitator · GMCH Sundargarh</p>
         </div>
       </li>
     </ol>
@@ -636,90 +1131,62 @@ a.card:hover .go .arw{transform:translateX(3px)}
 <!-- ============================ #CM-APP ============================ -->
 <section id="apps" class="section">
   <div class="wrap">
-    <p class="eyebrow reveal">#CM-APP Series · open tools <span class="muted">— free to use</span></p>
+    <p class="eyebrow reveal"><span>#CM-APP series · open tools · <span class="muted">free to use</span></span></p>
     <div class="sec-head reveal">
-      <h2>Tools I build</h2>
+      <h2>Tools I Build</h2>
     </div>
-    <p class="reveal" style="color:var(--ink-soft);max-width:60ch;margin:-18px 0 36px">
-      A growing set of single-file web tools for medical educators, residents, and district programme staff — each one started from a real teaching or clinic problem.
-    </p>
+    <p class="sec-intro reveal">Single-file web tools for medical students, teachers, residents and programme staff. Each one started from a real teaching or clinic problem.</p>
 
-    <!-- EDIT each href → the live URL once you host the tool -->
     <div class="cards cols-3" data-stagger>
-      <a class="card" href="#">
+      <a class="card feature" href="/imnci/">
+        <span class="pill live">Online now · Child health</span>
+        <h3>IMNCI Case Assistant</h3>
+        <p>Digital IMNCI case recording forms for Medical Officers, for the sick young infant and the sick child. It classifies each case and lists the treatment from the MoHFW IMNCI Chart Booklet (2023), keeps a follow-up register and exports Excel and PDF.</p>
+        <div class="chips">
+          <span class="chip"><b>v1.1</b> October 2026</span>
+          <span class="chip"><b>44</b> booklet classifications</span>
+          <span class="chip"><b>Offline</b> after the first visit</span>
+          <span class="chip"><b>No sign-in</b> cases stay on the device</span>
+        </div>
+        <span class="go">Open the tool <span class="arw">→</span></span>
+      </a>
+
+      <div class="workshop">
+        <h3>In the Workshop</h3>
+        <p>Built, but not on this site yet.</p>
+      </div>
+      <!-- When a tool goes online, change its <div class="card"> to <a class="card" href="/tool-folder/">
+           and add <span class="go">Open the tool <span class="arw">→</span></span> -->
+      <div class="card">
         <span class="pill">Biostatistics</span>
         <h3>Not-Only-p-Value Calculator</h3>
-        <p>A guided 12-test statistical wizard with a full computation engine — for dissertations and manuscripts.</p>
-        <span class="go">Open <span class="arw">→</span></span>
-      </a>
-      <a class="card" href="#">
+        <p>A guided 12-test statistical wizard with a full computation engine, for dissertations and manuscripts.</p>
+      </div>
+      <div class="card">
         <span class="pill">AI tool</span>
         <h3>Biostatistician Chatbot</h3>
-        <p>Reads your Excel or Word file and walks the analysis with you, worksheet by worksheet.</p>
-        <span class="go">Open <span class="arw">→</span></span>
-      </a>
-      <a class="card" href="#">
+        <p>Reads your Excel or Word file and works through the analysis with you, sheet by sheet.</p>
+      </div>
+      <div class="card">
         <span class="pill">Calculator</span>
         <h3>R×C p-Value Calculator</h3>
-        <p>Contingency-table testing, including the Fisher–Freeman–Halton exact test, on mobile.</p>
-        <span class="go">Open <span class="arw">→</span></span>
-      </a>
-      <a class="card" href="#">
+        <p>Contingency-table testing, including the Fisher–Freeman–Halton exact test, built for phones.</p>
+      </div>
+      <div class="card">
         <span class="pill">Reference</span>
         <h3>ICD-10 Coding Assistant</h3>
-        <p>WHO ICD-10 lookup and coding help built for faculty and residents.</p>
-        <span class="go">Open <span class="arw">→</span></span>
-      </a>
-      <a class="card" href="#">
+        <p>WHO ICD-10 (Version 2019) lookup and coding help for faculty and residents.</p>
+      </div>
+      <div class="card">
         <span class="pill">Education</span>
         <h3>PSM Quiz Arena</h3>
-        <p>Gamified, AI-generated MCQ practice across community-medicine topics.</p>
-        <span class="go">Open <span class="arw">→</span></span>
-      </a>
-      <a class="card" href="#">
+        <p>Gamified, AI-generated MCQ practice across community medicine topics.</p>
+      </div>
+      <div class="card">
         <span class="pill">MCH</span>
         <h3>Child–Mother App</h3>
-        <p>The MCP card, digitised: WHO growth curves, the immunisation schedule, and developmental milestones.</p>
-        <span class="go">Open <span class="arw">→</span></span>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ============================ WRITING ============================ -->
-<section id="writing" class="section">
-  <div class="wrap">
-    <p class="eyebrow reveal">From the notebook</p>
-    <div class="sec-head reveal">
-      <h2>Writing</h2>
-      <!-- EDIT: link to your blog index if you add one -->
-      <a class="sec-link" href="#">All posts →</a>
-    </div>
-    <div class="posts">
-      <a class="post reveal" href="#">
-        <div>
-          <div class="pk"><span class="cat">Public health</span><span>·</span><span>27 June 2026</span></div>
-          <h3>How to read routine health data without fooling yourself</h3>
-          <p>Routine health information systems are powerful — and easy to misread. A short guide for students on what these numbers actually mean.</p>
-        </div>
-        <span class="read">Read <span class="arw">→</span></span>
-      </a>
-      <a class="post reveal" href="#">
-        <div>
-          <div class="pk"><span class="cat">Medical education</span><span>·</span><span>19 June 2026</span></div>
-          <h3>Why community medicine belongs in every clinic</h3>
-          <p>A short note for clinicians on why the population perspective matters even in one-on-one care.</p>
-        </div>
-        <span class="read">Read <span class="arw">→</span></span>
-      </a>
-      <a class="post reveal" href="#">
-        <div>
-          <div class="pk"><span class="cat">Research notes</span><span>·</span><span>4 June 2026</span></div>
-          <h3>NCD screening in rural Odisha — what we're learning</h3>
-          <p>Notes from operationalising population-based NCD screening through sub-centres and Health &amp; Wellness Centres in Sundargarh.</p>
-        </div>
-        <span class="read">Read <span class="arw">→</span></span>
-      </a>
+        <p>The MCP card, digitised: WHO growth curves, the immunisation schedule and developmental milestones.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -731,15 +1198,17 @@ a.card:hover .go .arw{transform:translateX(3px)}
     <div class="contact-grid">
       <div class="reveal">
         <p class="contact-lede">Happy to talk research, teaching, or anything in <em>public health</em>.</p>
-        <!-- EDIT: set your real email below (both places) -->
-        <a class="btn btn-primary" href="mailto:you@your-domain.com">Send an email <span class="arw">→</span></a>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="mailto:support@dr-abhishekpanda-cm.app">Send an email <span class="arw">→</span></a>
+          <a class="btn btn-ghost" href="https://wa.me/917008909595" target="_blank" rel="noopener">Message on WhatsApp <span class="arw">→</span></a>
+        </div>
       </div>
       <div class="contact-info reveal">
-        <div class="row"><span class="lbl">Email</span><a href="mailto:you@your-domain.com">you@your-domain.com</a></div>
-        <div class="row"><span class="lbl">Institution</span><span class="val">GMCH, Sundargarh, Odisha</span></div>
-        <!-- EDIT: add your real profile links, or delete rows you don't use -->
-        <div class="row"><span class="lbl">Scholar</span><a href="#">Google Scholar →</a></div>
-        <div class="row"><span class="lbl">ORCID</span><a href="#">orcid.org →</a></div>
+        <div class="row"><span class="lbl">Email</span><a href="mailto:support@dr-abhishekpanda-cm.app">support@dr-abhishekpanda-cm.app</a></div>
+        <div class="row"><span class="lbl">WhatsApp</span><a href="https://wa.me/917008909595" target="_blank" rel="noopener">(+91) 700-890-9595</a></div>
+        <div class="row"><span class="lbl">LinkedIn</span><a href="https://www.linkedin.com/in/dr-abhishekpanda" target="_blank" rel="noopener">in/dr-abhishekpanda</a></div>
+        <div class="row"><span class="lbl">Institution</span><span class="val">GMCH Sundargarh, Odisha</span></div>
+        <!-- To add a Google Scholar or ORCID profile later, copy the LinkedIn row and change the label and link -->
       </div>
     </div>
   </div>
@@ -751,17 +1220,21 @@ a.card:hover .go .arw{transform:translateX(3px)}
   <div class="wrap">
     <div class="f-brand">
       <b>Dr. Abhishek Panda</b>
-      <p>Assistant Professor of Community Medicine, GMCH Sundargarh.</p>
+      <p>Assistant Professor of Community Medicine, GMCH Sundargarh. Google &amp; Microsoft Certified AI Educator.</p>
     </div>
     <nav aria-label="Footer">
       <a href="#about">About</a>
+      <a href="#expertise">Expertise</a>
+      <a href="#clinic">AI Clinic</a>
+      <a href="#career">Career</a>
       <a href="#research">Research</a>
+      <a href="#teaching">Teaching</a>
+      <a href="#talks">Talks</a>
       <a href="#apps">#CM-APP</a>
-      <a href="#writing">Writing</a>
       <a href="#contact">Contact</a>
     </nav>
     <div class="colophon">
-      <span>© 2026 Dr. Abhishek Panda — all views are my own.</span>
+      <span>© 2026 Dr. Abhishek Panda. All views are my own.</span>
       <span>Set in Fraunces &amp; IBM Plex.</span>
     </div>
   </div>
@@ -780,10 +1253,14 @@ links.addEventListener('click', e => {
 });
 
 /* ---- reveal on scroll ---- */
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(en => { if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
-}, { threshold:0.12, rootMargin:'0px 0px -8% 0px' });
-document.querySelectorAll('.reveal,[data-stagger]').forEach(el => io.observe(el));
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => { if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { threshold:0.12, rootMargin:'0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal,[data-stagger]').forEach(el => io.observe(el));
+} else {
+  document.querySelectorAll('.reveal,[data-stagger]').forEach(el => el.classList.add('in'));
+}
 
 /* stagger children of [data-stagger] */
 document.querySelectorAll('[data-stagger]').forEach(group => {
@@ -791,19 +1268,21 @@ document.querySelectorAll('[data-stagger]').forEach(group => {
 });
 
 /* ---- active nav link on scroll (scroll-spy) ---- */
-const navMap = {};
-document.querySelectorAll('.nav-links a').forEach(a => {
-  const id = a.getAttribute('href').slice(1); if(id) navMap[id] = a;
-});
-const spy = new IntersectionObserver((entries) => {
-  entries.forEach(en => {
-    if (en.isIntersecting){
-      Object.values(navMap).forEach(a => a.classList.remove('active'));
-      const a = navMap[en.target.id]; if(a) a.classList.add('active');
-    }
+if ('IntersectionObserver' in window) {
+  const navMap = {};
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    const id = a.getAttribute('href').slice(1); if(id) navMap[id] = a;
   });
-}, { rootMargin:'-45% 0px -50% 0px' });
-document.querySelectorAll('main section[id]').forEach(s => spy.observe(s));
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting){
+        Object.values(navMap).forEach(a => a.classList.remove('active'));
+        const a = navMap[en.target.id]; if(a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin:'-45% 0px -50% 0px' });
+  document.querySelectorAll('main section[id]').forEach(s => spy.observe(s));
+}
 </script>
 </body>
 </html>
