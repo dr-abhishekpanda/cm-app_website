@@ -2,6 +2,33 @@
 
 Newest entry first. Each entry records what changed, how it was checked, and anything left open.
 
+## 2026-11-14 · Phase 2b: Confounding and Standardisation
+
+Branch `feature/research-app-2b`, stacked on Phase 2a.
+
+### Built
+
+- **Engine** (`engine/strat.js`): Mantel-Haenszel estimates for stratified 2 × 2 tables (odds ratio with the Robins-Breslow-Greenland variance; risk or prevalence ratio with the Greenland-Robins variance; risk difference with the Sato-Greenland-Robins variance, Greenland-Robins alongside) and for person-time (rate ratio and rate difference); the Cochran-Mantel-Haenszel test as R's `mantelhaen.test` and the Mantel-Haenszel test for person-time; Breslow-Day with Tarone's correction; inverse-variance tests of homogeneity for ratios and differences; crude against adjusted (the 10% change); direct standardisation with the Fay-Feuer gamma CI and the ratio of two standardised rates; indirect standardisation (SMR) with the exact CI and the exact test.
+- **Meta-analysis** (`engine/meta.js`, `modules/tools/meta.jsx`): Mantel-Haenszel (odds ratio, risk ratio, risk difference) and Peto pooling of 2 × 2 counts, with Q, I² and its CI, subgroups and leave-one-out. A "Pooling method" choice sits beside the model; Peto is offered for odds ratios only, with checks for unbalanced arms and large effects (Greenland and Salvan 1990; Bradburn and colleagues 2007).
+- **Tool** (`modules/tools/stratified.jsx`, Confounding and Standardisation): three tabs. Stratified analysis by design (cohort or trial, case-control, cross-sectional, person-time), from columns of the loaded data or from typed or pasted strata, with a forest plot of the strata against the crude and adjusted estimates, the measures, the tests, checks for confounding and effect modification, and a report sentence. Direct standardisation of one group or two, with the WHO World Standard Population (2000-2025) filled in for five-year groups or the user's own bands. Indirect standardisation with the expected events in each age group.
+- **Shared helpers** (`modules/tools/epishared.jsx`): formatting, checks and level pickers used by the epidemiology tools, moved out of the measures tool.
+- **Code export**: three new kinds (stratified analysis, direct standardisation, SMR), and Mantel-Haenszel or Peto pooling in the meta-analysis script. R uses `mantelhaen.test`, metafor's `rma.mh` and `rma.peto`, epitools' `ageadjust.direct` and `poisson.test`; Python uses statsmodels' `StratifiedTable` and writes the remaining formulas out. Results carry the same names in both languages.
+- **Report sentences** ask for what the app cannot know: an unnamed stratifying variable, population or standard appears as an `[INSERT: ...]` placeholder.
+- **References**: 16 added (Mantel and Haenszel 1959; Cochran 1954; Robins, Breslow and Greenland 1986; Greenland and Robins 1985; Sato, Greenland and Robins 1989; Breslow and Day 1980 and 1987; Tarone 1985; Fay and Feuer 1997; Ulm 1990; Maldonado and Greenland 1993; Greenland 1989; Ahmad and colleagues 2001 for the WHO standard; Yusuf and colleagues 1985; Greenland and Salvan 1990; Bradburn and colleagues 2007), each checked on PubMed or a publisher or library record.
+
+### Checked
+
+| Check | Result |
+|---|---|
+| Engine tests (`npm test`) | 69 of 69 pass. Against R (`mantelhaen.test`, `poisson.test`, epiR 2.0.67, metafor, epitools) and statsmodels 0.15: six sets of 2 × 2 strata across designs, including zero cells, empty margins and single-person strata; two person-time sets; five direct and six indirect standardisations; Mantel-Haenszel and Peto pooling of three study sets (at least 170 numbers compared with metafor: estimate, SE, CI, p, Q, I² and weights, overall and by subgroup) |
+| Code export (`npm run test:code`) | 84 Python scripts (331 checks) and 84 R scripts (325 checks), 0 failed |
+| Browser smoke test | 164 of 164 pass at 360 px and 1280 px, including every tab of the new tool, Mantel-Haenszel and Peto pooling in the meta-analysis tool, and a check that the new result tables fit a phone without scrolling |
+
+### Found on the way
+
+- statsmodels' `test_null_odds(correction=True)` subtracts 0.5 even when the deviation is below 0.5, where R's `mantelhaen.test` does not; the generated Python script writes the CMH test out so it matches R and the app.
+- epiR's `epi.2by2` stops with an error on very sparse strata; for those sets the references come from metafor and `mantelhaen.test` alone.
+
 ## 2026-11-07 · Phase 2a: Frequency, Association and Impact
 
 Branch `feature/research-app-2a`, stacked on the R testing branch. First wave of Phase 2 (epidemiology).

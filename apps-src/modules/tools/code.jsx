@@ -19,11 +19,13 @@ const ROWS = [
   ['Survival', 'survival: survfit, survdiff, coxph', 'lifelines'],
   ['Kappa, Fleiss\' kappa, ICC, alpha', 'psych::cohen.kappa, psych::ICC, psych::alpha; Fleiss\' kappa written out', 'statsmodels inter_rater; pingouin'],
   ['Bland-Altman', 'base R', 'numpy, statsmodels'],
-  ['Meta-analysis', 'metafor::rma (effect sizes written out as in the app)', 'numpy and SciPy (written out as in the app)'],
+  ['Meta-analysis', 'metafor::rma (effect sizes written out as in the app); rma.mh and rma.peto for Mantel-Haenszel and Peto pooling', 'numpy and SciPy (written out as in the app)'],
   ['Proportions and rates', 'binom.test, prop.test (Wilson), poisson.test', 'scipy.stats.binomtest; chi2 quantiles for the exact Poisson CI'],
   ['Risk, prevalence and odds ratios; fractions; NNT', "Base R: Koopman's score CI and Newcombe's CI written out; fisher.test, chisq.test", 'numpy, SciPy (conditional odds ratio, brentq); statsmodels (Newcombe)'],
   ['Rate ratio from person-time', 'poisson.test', 'scipy.stats.binomtest, conditional on the events'],
   ['Matched pairs', 'binom.test, mcnemar.test', 'scipy.stats.binomtest; statsmodels mcnemar'],
+  ['Stratified analysis (Mantel-Haenszel)', "mantelhaen.test; metafor::rma.mh (risk, odds and rate ratios, risk difference, Tarone's test)", 'statsmodels StratifiedTable; Mantel-Haenszel and Greenland-Robins formulas written out'],
+  ['Direct and indirect standardisation', 'epitools::ageadjust.direct; poisson.test', 'SciPy gamma and chi-square quantiles; the exact Poisson p written out'],
 ];
 
 export default function CodeTool() {
@@ -42,7 +44,7 @@ export default function CodeTool() {
       <div class="stack">
         <Callout mark="How it works">
           <p>The script reads your data from <span class="mono">{DATA_FILE}</span>, so keep the two in one folder. Analyses from typed numbers (a table of counts, summary figures, a meta-analysis study table) carry the numbers inside the script.</p>
-          <p>Before every release, each R and Python script is run on the example data and its numbers compared with the app's. The R scripts use base R and a few long-established packages (survival, psych, metafor, car, pROC, afex).</p>
+          <p>Before every release, each R and Python script is run on the example data and its numbers compared with the app's. The R scripts use base R and a few long-established packages (survival, psych, metafor, car, pROC, afex, epitools).</p>
         </Callout>
         <DataPanel compact />
         {ds ? <div class="btn-row"><button type="button" class="btn primary small" onClick={download}>Download the data ({DATA_FILE})</button></div> : null}

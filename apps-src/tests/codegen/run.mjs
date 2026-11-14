@@ -1,6 +1,6 @@
 /* Runs every generated R and Python script on the example data and compares its numbers with the
  * app's engine. Needs Python 3 with numpy, scipy, pandas, statsmodels, pingouin, lifelines and
- * scikit-posthocs, and R with survival, psych, metafor, car, pROC and afex (the R half is skipped
+ * scikit-posthocs, and R with survival, psych, metafor, car, pROC, afex and epitools (the R half is skipped
  * with a note when R is absent).   npm run test:code
  */
 import { mkdtempSync, writeFileSync, mkdirSync } from 'node:fs';
@@ -21,8 +21,9 @@ import { adjust } from '../../engine/multiplicity.js';
 import { buildDesign, ols, logistic } from '../../engine/regression.js';
 import { logRank, cox } from '../../engine/survival.js';
 import { cohenKappa, fleissKappa, icc, blandAltman, cronbach } from '../../engine/agreement.js';
-import { binaryEffect, continuousEffect, proportionEffect, reportedEffect, pool, subgroups } from '../../engine/meta.js';
+import { binaryEffect, continuousEffect, proportionEffect, reportedEffect, pool, subgroups, poolMH, poolPeto, subgroupsMH } from '../../engine/meta.js';
 import { proportion, rate, twoByTwo, personTime, matchedPairs, populationFraction } from '../../engine/epi.js';
+import { mhTables, mhPersonTime, directStandard, dsrRatio, indirectStandard } from '../../engine/strat.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const DS = { A: readDataset(exampleCsv()), T: readDataset(exampleTbCsv()), G: readDataset(exampleAgreementCsv()) };
@@ -156,6 +157,14 @@ const add = (name, data, spec, checks) => cases.push({ name, data, spec, checks 
   const effs = keep.map((r) => binaryEffect(r[1], r[2], r[3], r[4], 'OR'));
   const sg = subgroups(effs.map((e) => e.y), effs.map((e) => e.v), keep.map((r) => r[5]), { method: 'PM', hksj: true });
   void sg;
+  // Mantel-Haenszel and Peto pooling, with subgroups; the zero cells and the double-zero study stay in.
+  const counts = bin.map((r) => r.slice(1, 5)), groupsOf = bin.map((r) => r[5]);
+  for (const [pooling, measure] of [['mh', 'OR'], ['mh', 'RR'], ['mh', 'RD'], ['peto', 'OR']]) {
+    const f = pooling === 'peto' ? poolPeto(counts) : poolMH(counts, measure);
+    const sgm = subgroupsMH(counts, groupsOf, { method: pooling === 'peto' ? 'Peto' : 'MH', measure });
+    add(`meta ${pooling} ${measure}`, null, { kind: 'meta', type: 'binary', measure, studies, model: 'fixed', method: 'DL', hksj: false, subgroups: true, pooling },
+      [['mh', f.y], ['ci_mh[0]', f.ci[0]], ['ci_mh[1]', f.ci[1]], ['Q', f.Q], ['q_between', sgm.Q]]);
+  }
   const cont = [[1.1, 0.9, 60, 0.6, 1.0, 58], [0.8, 1.2, 110, 0.5, 1.1, 105], [1.4, 1.0, 45, 0.7, 0.9, 47], [0.6, 0.8, 150, 0.5, 0.9, 148], [1.2, 1.3, 38, 0.4, 1.2, 40]];
   const ce = cont.map((r) => continuousEffect(...r, 'SMD'));
   const fc = pool(ce.map((e) => e.y), ce.map((e) => e.v), { method: 'PM', hksj: true });
@@ -248,9 +257,85 @@ const add = (name, data, spec, checks) => cases.push({ name, data, spec, checks 
   }
 }
 
+/* ------------------------------------ stratified analysis, standardisation --- */
+{
+  // Strata counted as the tool counts them: the exposed level and the event level against the rest.
+  const strataFrom = (k, e, el, o, ol, sv, time = null) => {
+    const ce = col(k, e), co = col(k, o), cs = col(k, sv), ct = time ? col(k, time) : null, by = new Map();
+    for (let i = 0; i < DS[k].n; i++) {
+      const x = ce.raw[i], y = co.raw[i], st = cs.raw[i], tv = ct ? ct.numbers[i] : 0;
+      if (isMissing(x) || isMissing(y) || isMissing(st) || (ct && (tv === null || !Number.isFinite(tv) || tv < 0))) continue;
+      if (!by.has(st)) by.set(st, ct ? { a: 0, t1: 0, c: 0, t0: 0 } : [[0, 0], [0, 0]]);
+      const cell = by.get(st), ex = x === el, ou = y === ol;
+      if (ct) { if (ex) { cell.t1 += tv; if (ou) cell.a++; } else { cell.t0 += tv; if (ou) cell.c++; } } else cell[ex ? 0 : 1][ou ? 0 : 1]++;
+    }
+    return [...by.entries()].map(([label, v]) => (ct ? { label, ...v } : { label, t: v }));
+  };
+  const twoChecks = (o, design) => {
+    const m = design === 'case-control' ? o.or : o.rr;
+    return [['est', m.est], ['lo', m.ci[0]], ['hi', m.ci[1]], ['p_main', o.cmh.p], ['crude', design === 'case-control' ? o.crude.or.est : o.crude.rr.est],
+      ['tarone', o.bd.chi2Tarone, 1e-7], ...(design === 'case-control' ? [] : [['homog_q', o.homogRR.q]])];
+  };
+  const typed2 = (rows) => rows.map(([label, a, b, c, d]) => ({ label, t: [[a, b], [c, d]] }));
+  const spec2 = (design, rows) => ({ kind: 'mh', design, strata: rows.map(([label, ...vals]) => ({ label, vals })) });
+  for (const [design, rows] of [
+    ['cohort', [['Under 30', 10, 90, 5, 95], ['30 and over', 60, 140, 15, 35]]],
+    ['case-control', [['Under 30', 12, 20, 8, 40], ['30 to 44', 30, 25, 20, 45], ['45 and over', 40, 15, 30, 25]]],
+    ['cross', [['Rural', 30, 70, 20, 80], ['Urban', 45, 55, 35, 65]]],
+    // Sparse: zero cells, a stratum with no outcome at all, and a stratum of one person.
+    ['cohort', [['S1', 0, 10, 2, 8], ['S2', 3, 7, 1, 9], ['S3', 0, 5, 0, 6], ['S4', 4, 6, 2, 8], ['S5', 5, 15, 1, 19], ['S6', 1, 0, 0, 0]]],
+  ]) {
+    const o = mhTables(typed2(rows), { design });
+    add(`Mantel-Haenszel ${design}${rows.length > 4 ? ', sparse' : ''}`, null, spec2(design, rows), twoChecks(o, design));
+  }
+  {
+    const st = strataFrom('A', 'IFA_adherence', 'Poor', 'Anaemia_6_months', 'Yes', 'Parity'), o = mhTables(st, { design: 'cohort' });
+    add('Mantel-Haenszel cohort from data', 'A', { kind: 'mh', design: 'cohort', exposure: 'IFA_adherence', exposed: 'Poor', outcome: 'Anaemia_6_months', event: 'Yes', stratum: 'Parity', time: null, numericE: false, numericO: false, numericS: false },
+      twoChecks(o, 'cohort'));
+  }
+  {
+    const st = strataFrom('A', 'Residence', 'Rural', 'Anaemia_registration', 'Yes', 'Trimester'), o = mhTables(st, { design: 'case-control' });
+    add('Mantel-Haenszel case-control from data, numeric strata', 'A', { kind: 'mh', design: 'case-control', exposure: 'Residence', exposed: 'Rural', outcome: 'Anaemia_registration', event: 'Yes', stratum: 'Trimester', time: null, numericE: false, numericO: false, numericS: true },
+      twoChecks(o, 'case-control'));
+  }
+  const ptChecks = (o) => [['est', o.irr.est], ['lo', o.irr.ci[0]], ['hi', o.irr.ci[1]], ['p_main', o.test.p], ['crude', o.crude.irr.est], ['homog_q', o.homogIRR.q]];
+  {
+    const rows = [['Under 40', 12, 2400, 8, 3100], ['40 to 59', 30, 1800, 22, 2600], ['60 and over', 41, 950, 25, 1100]];
+    const o = mhPersonTime(rows.map(([label, a, t1, c, t0]) => ({ label, a, t1, c, t0 })));
+    add('Mantel-Haenszel person-time', null, spec2('pt', rows), ptChecks(o));
+  }
+  {
+    const st = strataFrom('T', 'HIV', 'Positive', 'Unfavourable_outcome', '1', 'Sex', 'Months'), o = mhPersonTime(st);
+    add('Mantel-Haenszel person-time from data', 'T', { kind: 'mh', design: 'pt', exposure: 'HIV', exposed: 'Positive', outcome: 'Unfavourable_outcome', event: '1', stratum: 'Sex', time: 'Months', numericE: false, numericO: true, numericS: false },
+      ptChecks(o));
+  }
+  // Direct standardisation: one group, two groups, and an age group with no events.
+  const EX = [['0-14', 12, 52000, 26.15, 9, 30000], ['15-29', 18, 48000, 24.62, 12, 31000], ['30-44', 35, 39000, 21.35, 30, 30000], ['45-59', 80, 26000, 15.96, 85, 25000], ['60+', 210, 15000, 11.955, 260, 20000]];
+  const dsrOf = (rows, j = 0) => directStandard(rows.map(([label, ...v]) => ({ label, x: v[j], n: v[j + 1], std: v[2] })));
+  {
+    const d1 = dsrOf(EX);
+    add('direct standardisation', null, { kind: 'dsr', strata: EX.map(([label, ...v]) => ({ label, vals: v.slice(0, 3) })), two: false, per: 100000 },
+      [['dsr', d1.dsr], ['lo', d1.ci[0]], ['hi', d1.ci[1]], ['crude', d1.crude]]);
+    const d2 = dsrOf(EX, 3), rr = dsrRatio(d1, d2);
+    add('direct standardisation, two groups', null, { kind: 'dsr', strata: EX.map(([label, ...v]) => ({ label, vals: v })), two: true, per: 100000 },
+      [['dsr', d1.dsr], ['lo', d1.ci[0]], ['hi', d1.ci[1]], ['ratio', rr.est], ['ratio_lo', rr.ci[0]], ['ratio_hi', rr.ci[1]]]);
+    const Z = [['0-14', 0, 5200, 26.15], ['15-29', 1, 4800, 24.62], ['30-44', 3, 3900, 21.35], ['45-59', 8, 2600, 15.96], ['60+', 21, 1500, 11.955]];
+    const d3 = directStandard(Z.map(([label, x, n, std]) => ({ label, x, n, std })));
+    add('direct standardisation, sparse', null, { kind: 'dsr', strata: Z.map(([label, ...v]) => ({ label, vals: v })), two: false, per: 1000 },
+      [['dsr', d3.dsr], ['lo', d3.ci[0]], ['hi', d3.ci[1]], ['crude', d3.crude]]);
+  }
+  // Indirect standardisation: the tool's example, a small count and none at all.
+  const IN = [['0-14', 52000, 0.3], ['15-29', 48000, 0.4], ['30-44', 39000, 0.9], ['45-59', 26000, 3.0], ['60+', 15000, 13.0]];
+  for (const [rows, observed, per] of [[IN, 380, 1000], [IN.map(([l, n, r]) => [l, n / 50, r]), 3, 1000], [[['All ages', 2400, 120]], 0, 100000]]) {
+    const o = indirectStandard(rows.map(([label, n, r]) => ({ label, n, rate: r / per })), observed);
+    add(`SMR, ${observed} observed`, null, { kind: 'smr', strata: rows.map(([label, ...vals]) => ({ label, vals })), observed, per },
+      [['smr', o.smr], ['lo', o.ci[0]], ['hi', o.ci[1]], ['p_main', o.p], ['expected', o.expected]]);
+  }
+}
+
 /* ------------------------------------------- the same checks in R --- */
 // Each Python check has an R twin; null where the R script reports the number differently.
-const SAME_NAMES = new Set(['freqP', 'freqR', 'epi2x2', 'eptime', 'epmatch']);
+const SAME_NAMES = new Set(['freqP', 'freqR', 'epi2x2', 'eptime', 'epmatch', 'mh', 'dsr', 'smr']);
 function rExpr(spec, e) {
   if (SAME_NAMES.has(spec.kind)) return e;
   const k = spec.kind;
@@ -263,6 +348,7 @@ function rExpr(spec, e) {
     kappa: 'kappa', bias: 'bias', 'loa[0]': 'loa[1]', 'loa[1]': 'loa[2]', 'slope.pvalues[1]': 'summary(lm(diff ~ avg))$coefficients[2, 4]', alpha: 'res$total$raw_alpha',
     'x.mean()': 'mean(x)', q1: `unname(quantile(x, 0.25, type = ${spec.qtype || 6}))`, q3: `unname(quantile(x, 0.75, type = ${spec.qtype || 6}))`, 'sw.pvalue': 'shapiro.test(x)$p.value', 'len(d)': 'nrow(d)',
     re: 'c(res$b)', tau2: 'res$tau2', 'ci_re[0]': 'res$ci.lb', 'ci_re[1]': 'res$ci.ub', Q: 'res$QE', 'pred_int[1]': 'pred_int[2]',
+    mh: 'c(res$b)', 'ci_mh[0]': 'res$ci.lb', 'ci_mh[1]': 'res$ci.ub', q_between: 'between$QE',
     fe: spec.model === 'fixed' ? 'c(res$b)' : null, 'ci_fe[0]': spec.model === 'fixed' ? 'res$ci.lb' : null,
   };
   if (e === 'res.pvalue') return k === 'aov' ? 'summary(fit)[[1]][["Pr(>F)"]][1]' : k === 't2s' || k === 'cq' ? 'res[["p"]]' : 'res$p.value';
