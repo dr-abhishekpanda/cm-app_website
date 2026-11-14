@@ -15,6 +15,7 @@ import MetaTool from './tools/meta.jsx';
 import ResultsTool from './tools/results.jsx';
 import CodeTool from './tools/code.jsx';
 import MeasuresTool from './tools/measures.jsx';
+import StratifiedTool from './tools/stratified.jsx';
 
 export const STAGES = [
   { id: 'plan', label: 'Plan', blurb: 'Frame the question, search the literature, set objectives.' },
@@ -99,7 +100,12 @@ export const MODULES = [
     tool: MeasuresTool,
   },
   { id: 'diagnostic', stage: 'analyse', phase: 2, apps: RE, tag: 'Epidemiology', title: 'Diagnostic Accuracy and ROC', summary: 'Sensitivity, specificity, predictive values at any prevalence, likelihood ratios, ROC curves.' },
-  { id: 'stratified', stage: 'analyse', phase: 2, apps: RE, tag: 'Epidemiology', title: 'Confounding and Standardisation', summary: 'Mantel–Haenszel estimates, effect modification, direct and indirect standardisation.' },
+  {
+    id: 'stratified', stage: 'analyse', status: 'ready', apps: RE, tag: 'Epidemiology', title: 'Confounding and Standardisation',
+    summary: 'Mantel-Haenszel estimates against the crude ones, effect modification across strata, direct and indirect (SMR) standardisation.',
+    keywords: 'confounding confounder effect modification interaction stratified stratification mantel haenszel cmh cochran breslow day tarone woolf homogeneity crude adjusted standardisation standardization age adjusted direct indirect dsr smr standardised mortality ratio who standard population',
+    tool: StratifiedTool,
+  },
   { id: 'vaccines', stage: 'analyse', phase: 2, apps: RE, tag: 'Epidemiology', title: 'Vaccine and Screening Measures', summary: 'Vaccine efficacy and effectiveness, serial and parallel testing.' },
   { id: 'economics', stage: 'analyse', phase: 3, apps: R, tag: 'Workflow', title: 'Health Economics Basics', summary: 'Costing, ICER, DALYs and QALYs.' },
 

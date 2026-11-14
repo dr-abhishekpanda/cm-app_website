@@ -409,7 +409,205 @@ G.alpha = (s) => ({
 
 /* -------------------------------------------------------- meta-analysis --- */
 
+/* -------------------------------------- stratified analysis, standardisation --- */
+// As with the measures, R and Python name their results alike: est, lo, hi, p_main, crude, homog_q or tarone.
+
+G.mh = (s) => {
+  const pt = s.design === 'pt', cc = s.design === 'case-control', cross = s.design === 'cross';
+  const cols = pt ? ['a', 't1', 'c', 't0'] : ['a', 'b', 'c', 'd'];
+  const name = pt ? 'rate ratio' : cc ? 'odds ratio' : cross ? 'prevalence ratio' : 'risk ratio';
+  const typed = !!s.strata;
+  let rData, pData;
+  if (typed) {
+    rData = ['strata <- data.frame(', `  stratum = ${rvec(s.strata.map((x) => x.label))},`,
+      ...cols.map((c, j) => `  ${c} = ${rvec(s.strata.map((x) => x.vals[j]), num)}${j < 3 ? ',' : ')'}`)];
+    pData = ['strata = pd.DataFrame({', `    "stratum": ${pvec(s.strata.map((x) => x.label))},`,
+      ...cols.map((c) => `    "${c}": ${pvec(s.strata.map((x) => x.vals[cols.indexOf(c)]), pnum)},`), '})'];
+  } else {
+    const need = [s.exposure, s.outcome, s.stratum, ...(pt ? [s.time] : [])];
+    rData = [`ok <- ${need.map((c) => `!is.na(${rcol(c)})`).join(' & ')}`,
+      `x <- data.frame(ex = (${rLevel(s.exposure, s.exposed, s.numericE)})[ok], ou = (${rLevel(s.outcome, s.event, s.numericO)})[ok]${pt ? `, tt = ${rcol(s.time)}[ok]` : ''})`,
+      `parts <- split(x, ${rcol(s.stratum)}[ok])   # one data frame for each level of ${pretty(s.stratum)}`,
+      ...(pt
+        ? ['strata <- data.frame(stratum = names(parts),', '  a = sapply(parts, function(g) sum(g$ex & g$ou)), t1 = sapply(parts, function(g) sum(g$tt[g$ex])),',
+          '  c = sapply(parts, function(g) sum(!g$ex & g$ou)), t0 = sapply(parts, function(g) sum(g$tt[!g$ex])))']
+        : ['strata <- data.frame(stratum = names(parts),', '  a = sapply(parts, function(g) sum(g$ex & g$ou)), b = sapply(parts, function(g) sum(g$ex & !g$ou)),',
+          '  c = sapply(parts, function(g) sum(!g$ex & g$ou)), d = sapply(parts, function(g) sum(!g$ex & !g$ou)))'])];
+    pData = [`ok = ${need.map((c) => `${pcol(c)}.notna()`).join(' & ')}`,
+      `x = pd.DataFrame({"ex": ${pLevel(s.exposure, s.exposed, s.numericE, 'ok')}, "ou": ${pLevel(s.outcome, s.event, s.numericO, 'ok')}, "st": d.loc[ok, ${str(s.stratum)}]${pt ? `, "tt": d.loc[ok, ${str(s.time)}]` : ''}})`,
+      'rows = []', `for st, g in x.groupby("st", sort=True):  # one row for each level of ${pretty(s.stratum)}`,
+      pt ? '    rows.append({"stratum": st, "a": int((g.ex & g.ou).sum()), "t1": float(g.tt[g.ex].sum()), "c": int((~g.ex & g.ou).sum()), "t0": float(g.tt[~g.ex].sum())})'
+        : '    rows.append({"stratum": st, "a": int((g.ex & g.ou).sum()), "b": int((g.ex & ~g.ou).sum()), "c": int((~g.ex & g.ou).sum()), "d": int((~g.ex & ~g.ou).sum())})',
+      'strata = pd.DataFrame(rows)'];
+  }
+  const title = `Stratified analysis: Mantel-Haenszel ${name}${s.stratum ? `, ${pretty(s.outcome)} by ${pretty(s.exposure)}, stratified by ${pretty(s.stratum)}` : ''}`;
+  const pyImports = typed ? ['import pandas as pd'] : [];
+  if (pt) {
+    return {
+      title, data: !typed, rPkgs: ['metafor'], pyPkgs: ['pandas'], pyImports,
+      r: ['library(metafor)', ...rData, 'strata <- strata[strata$t1 + strata$t0 > 0, ]   # strata with no person-time say nothing', 'strata',
+        'res <- rma.mh(x1i = a, t1i = t1, x2i = c, t2i = t0, data = strata, measure = "IRR")   # Mantel-Haenszel rate ratio and the Mantel-Haenszel test', 'res',
+        'est <- exp(as.numeric(res$b)); lo <- exp(res$ci.lb); hi <- exp(res$ci.ub); p_main <- res$MHp',
+        'crude <- (sum(strata$a) / sum(strata$t1)) / (sum(strata$c) / sum(strata$t0))',
+        'ok <- strata$a > 0 & strata$c > 0   # homogeneity of the rate ratio: inverse variance on the log scale',
+        'homog <- rma(yi = log((a / t1) / (c / t0)), vi = 1 / a + 1 / c, data = strata[ok, ], method = "FE"); homog_q <- homog$QE',
+        'c(crude = crude, adjusted = est, lower = lo, upper = hi, p = p_main, homogeneity_Q = homog_q, homogeneity_p = homog$QEp)',
+        'rma.mh(x1i = a, t1i = t1, x2i = c, t2i = t0, data = strata, measure = "IRD")   # rate difference with Mantel-Haenszel weights'],
+      py: [...pData, 'strata = strata[strata.t1 + strata.t0 > 0]  # strata with no person-time say nothing', 'print(strata)',
+        'a, t1, c, t0 = (strata[k].to_numpy(float) for k in ["a", "t1", "c", "t0"])', 'T = t1 + t0', 'z = stats.norm.isf(0.025)',
+        'num, den = a * t0 / T, c * t1 / T', 'est = num.sum() / den.sum()  # Mantel-Haenszel rate ratio',
+        'se = np.sqrt(np.sum((a + c) * t1 * t0 / T**2) / (num.sum() * den.sum()))  # Greenland-Robins', 'lo, hi = est * np.exp(-z * se), est * np.exp(z * se)',
+        '# Mantel-Haenszel test for person-time, with a continuity correction of 0.5 when the deviation is at least 0.5',
+        'delta, var = np.sum(a - (a + c) * t1 / T), np.sum((a + c) * t1 * t0 / T**2)', 'chi = (abs(delta) - (0.5 if abs(delta) >= 0.5 else 0))**2 / var',
+        'p_main = stats.chi2.sf(chi, 1)', 'crude = (a.sum() / t1.sum()) / (c.sum() / t0.sum())',
+        'ok = (a > 0) & (c > 0)  # homogeneity of the rate ratio: inverse variance on the log scale', 'y, v = np.log((a / t1) / (c / t0))[ok], (1 / a + 1 / c)[ok]',
+        'w = 1 / v; homog_q = np.sum(w * (y - np.sum(w * y) / np.sum(w))**2)',
+        'w_d = t1 * t0 / T; ird = np.sum(w_d * (a / t1 - c / t0)) / w_d.sum()  # rate difference with Mantel-Haenszel weights',
+        'print(f"crude {crude:.4f}; Mantel-Haenszel {est:.4f} (95% CI {lo:.4f} to {hi:.4f}); MH test p = {p_main:.4g}")',
+        'print(f"homogeneity Q = {homog_q:.3f}, p = {stats.chi2.sf(homog_q, ok.sum() - 1):.4g}; rate difference {ird:.6g} per unit of person-time")'],
+    };
+  }
+  const rCommon = ['library(metafor)', ...rData, 'strata <- strata[with(strata, a + b + c + d) > 0, ]   # strata with no one in them say nothing', 'strata',
+    "tab <- array(t(as.matrix(strata[, c(\"a\", \"c\", \"b\", \"d\")])), dim = c(2, 2, nrow(strata)))   # each stratum's 2 x 2 table",
+    'keep <- apply(tab, 3, sum) > 1', 'cmh <- mantelhaen.test(tab[, , keep, drop = FALSE])   # Cochran-Mantel-Haenszel test; MH odds ratio with the Robins-Breslow-Greenland CI', 'cmh',
+    'p_main <- cmh$p.value', 'res_or <- rma.mh(ai = a, bi = b, ci = c, di = d, data = strata, measure = "OR")',
+    "tarone <- res_or$TA   # Breslow-Day test with Tarone's correction (p in res_or$TAp)"];
+  const pCommon = [...pData, 'strata = strata[strata[["a", "b", "c", "d"]].sum(axis=1) > 0]  # strata with no one in them say nothing', 'print(strata)',
+    'a, b, c, dd = (strata[k].to_numpy(float) for k in ["a", "b", "c", "d"])', 'n1, n0, m1 = a + b, c + dd, a + c', 'n = n1 + n0', 'z = stats.norm.isf(0.025)',
+    "# Cochran-Mantel-Haenszel test, as R's mantelhaen.test (0.5 correction when the deviation is at least 0.5)",
+    'k = n > 1', 'delta = np.sum(a[k] - n1[k] * m1[k] / n[k])', 'var = np.sum(n1[k] * n0[k] * m1[k] * (n[k] - m1[k]) / (n[k]**2 * (n[k] - 1)))',
+    'chi = (abs(delta) - (0.5 if abs(delta) >= 0.5 else 0))**2 / var', 'p_main = stats.chi2.sf(chi, 1)',
+    '# Mantel-Haenszel odds ratio (Robins-Breslow-Greenland CI) and the Breslow-Day test with Tarone\'s correction',
+    'tables = [np.array([[w, x], [y, v]]) for w, x, y, v in zip(a, b, c, dd) if min(w + x, y + v, w + y, x + v) > 0]',
+    'st = StratifiedTable(tables)', 'tarone = st.test_equal_odds(adjust=True).statistic'];
+  const pyImp = [...pyImports, 'from statsmodels.stats.contingency_tables import StratifiedTable'];
+  if (cc) {
+    return {
+      title, data: !typed, rPkgs: ['metafor'], pyPkgs: ['pandas', 'statsmodels'], pyImports: pyImp,
+      r: [...rCommon, 'est <- exp(as.numeric(res_or$b)); lo <- exp(res_or$ci.lb); hi <- exp(res_or$ci.ub)   # Mantel-Haenszel odds ratio',
+        'crude <- (sum(strata$a) * sum(strata$d)) / (sum(strata$b) * sum(strata$c))',
+        'c(crude = crude, adjusted = est, lower = lo, upper = hi, p = p_main, tarone = tarone, tarone_p = res_or$TAp)'],
+      py: [...pCommon, 'est = st.oddsratio_pooled; lo, hi = st.oddsratio_pooled_confint()  # Mantel-Haenszel',
+        'crude = (a.sum() * dd.sum()) / (b.sum() * c.sum())',
+        'print(f"crude {crude:.4f}; Mantel-Haenszel {est:.4f} (95% CI {lo:.4f} to {hi:.4f}); CMH p = {p_main:.4g}; Tarone {tarone:.3f}, p = {stats.chi2.sf(tarone, len(tables) - 1):.4g}")'],
+    };
+  }
+  return {
+    title, data: !typed, rPkgs: ['metafor'], pyPkgs: ['pandas', 'statsmodels'], pyImports: pyImp,
+    r: [...rCommon, `res <- rma.mh(ai = a, bi = b, ci = c, di = d, data = strata, measure = "RR")   # Mantel-Haenszel ${name}, Greenland-Robins variance`, 'res',
+      'est <- exp(as.numeric(res$b)); lo <- exp(res$ci.lb); hi <- exp(res$ci.ub)', 'crude <- (sum(strata$a) / sum(strata$a + strata$b)) / (sum(strata$c) / sum(strata$c + strata$d))',
+      `ok <- strata$a > 0 & strata$c > 0   # homogeneity of the ${name}: inverse variance on the log scale`,
+      'homog <- rma(yi = log((a / (a + b)) / (c / (c + d))), vi = 1 / a - 1 / (a + b) + 1 / c - 1 / (c + d), data = strata[ok, ], method = "FE"); homog_q <- homog$QE',
+      'c(crude = crude, adjusted = est, lower = lo, upper = hi, p = p_main, homogeneity_Q = homog_q, homogeneity_p = homog$QEp)',
+      'rma.mh(ai = a, bi = b, ci = c, di = d, data = strata, measure = "RD")   # risk difference, Sato-Greenland-Robins variance',
+      'exp(as.numeric(res_or$b))   # the Mantel-Haenszel odds ratio, for comparison'],
+    py: [...pCommon, 'num, den = a * n0 / n, c * n1 / n', `est = num.sum() / den.sum()  # Mantel-Haenszel ${name}`,
+      'se = np.sqrt(np.sum((a + c) * n1 * n0 / n**2 - a * c / n) / (num.sum() * den.sum()))  # Greenland-Robins', 'lo, hi = est * np.exp(-z * se), est * np.exp(z * se)',
+      'crude = (a.sum() / n1.sum()) / (c.sum() / n0.sum())',
+      `ok = (a > 0) & (c > 0)  # homogeneity of the ${name}: inverse variance on the log scale`, 'y, v = np.log((a / n1) / (c / n0))[ok], (1 / a - 1 / n1 + 1 / c - 1 / n0)[ok]',
+      'w = 1 / v; homog_q = np.sum(w * (y - np.sum(w * y) / np.sum(w))**2)',
+      'w_d = n1 * n0 / n; rd = np.sum((a * n0 - c * n1) / n) / w_d.sum()  # Mantel-Haenszel risk difference',
+      'Ps = np.sum((n1**2 * c - n0**2 * a + 0.5 * n1 * n0 * (n0 - n1)) / n**2); Qs = np.sum((a * (n0 - c) + c * (n1 - a)) / (2 * n))',
+      'rd_se = np.sqrt((rd * Ps + Qs) / w_d.sum()**2)  # Sato, Greenland and Robins',
+      `print(f"crude {crude:.4f}; Mantel-Haenszel ${name} {est:.4f} (95% CI {lo:.4f} to {hi:.4f}); CMH p = {p_main:.4g}; homogeneity Q = {homog_q:.3f}")`,
+      'print(f"risk difference {rd:.4f} (95% CI {rd - z * rd_se:.4f} to {rd + z * rd_se:.4f}); MH odds ratio {st.oddsratio_pooled:.4f}")'],
+  };
+};
+
+G.dsr = (s) => {
+  const v = (j) => s.strata.map((x) => x.vals[j]);
+  const per = s.per || 100000;
+  return {
+    title: s.two ? 'Direct standardisation: two groups compared' : 'Direct standardisation', data: false, rPkgs: ['epitools'], pyPkgs: ['pandas'], pyImports: ['import pandas as pd', 'from scipy.stats import gamma'],
+    r: ['library(epitools)', 'dat <- data.frame(', `  group = ${rvec(s.strata.map((x) => x.label))},`, `  events = ${rvec(v(0), num)}, pop = ${rvec(v(1), num)}, std = ${rvec(v(2), num)}${s.two ? ',' : ')'}`,
+      ...(s.two ? [`  events2 = ${rvec(v(3), num)}, pop2 = ${rvec(v(4), num)})`] : []),
+      'res <- ageadjust.direct(count = dat$events, pop = dat$pop, stdpop = dat$std)   # gamma CI of Fay and Feuer (1997)', `res * ${per}   # per ${per}`,
+      'dsr <- res[["adj.rate"]]; lo <- res[["lci"]]; hi <- res[["uci"]]; crude <- res[["crude.rate"]]',
+      ...(s.two ? ['res2 <- ageadjust.direct(count = dat$events2, pop = dat$pop2, stdpop = dat$std)', `res2 * ${per}`,
+        'w <- dat$std / sum(dat$std)', 'v1 <- sum(w^2 * dat$events / dat$pop^2); v2 <- sum(w^2 * dat$events2 / dat$pop2^2)',
+        'ratio <- dsr / res2[["adj.rate"]]   # ratio of the standardised rates', 'se <- sqrt(v1 / dsr^2 + v2 / res2[["adj.rate"]]^2)   # delta method on the log scale',
+        'ratio_lo <- ratio * exp(-qnorm(0.975) * se); ratio_hi <- ratio * exp(qnorm(0.975) * se)', 'c(ratio = ratio, lower = ratio_lo, upper = ratio_hi)'] : [])],
+    py: ['dat = pd.DataFrame({', `    "group": ${pvec(s.strata.map((x) => x.label))},`, `    "events": ${pvec(v(0), pnum)}, "pop": ${pvec(v(1), pnum)}, "std": ${pvec(v(2), pnum)},`,
+      ...(s.two ? [`    "events2": ${pvec(v(3), pnum)}, "pop2": ${pvec(v(4), pnum)},`] : []), '})',
+      'def dsr_gamma(x, n, std):', '    w = std / std.sum()', '    dsr, v, wm = np.sum(w * x / n), np.sum(w**2 * x / n**2), np.max(w / n)',
+      '    lo = gamma.ppf(0.025, dsr**2 / v, scale=v / dsr) if dsr > 0 else 0.0  # Fay and Feuer (1997)', '    hi = gamma.ppf(0.975, (dsr + wm)**2 / (v + wm**2), scale=(v + wm**2) / (dsr + wm))',
+      '    return dsr, lo, hi, v', '',
+      'dsr, lo, hi, v1 = dsr_gamma(dat["events"].to_numpy(float), dat["pop"].to_numpy(float), dat["std"].to_numpy(float))', 'crude = dat["events"].sum() / dat["pop"].sum()',
+      `print(f"crude {${per} * crude:.4g}; standardised {${per} * dsr:.4g} ({${per} * lo:.4g} to {${per} * hi:.4g}) per ${per}")`,
+      ...(s.two ? ['dsr2, lo2, hi2, v2 = dsr_gamma(dat["events2"].to_numpy(float), dat["pop2"].to_numpy(float), dat["std"].to_numpy(float))',
+        'ratio = dsr / dsr2; se = np.sqrt(v1 / dsr**2 + v2 / dsr2**2)  # delta method on the log scale',
+        'ratio_lo, ratio_hi = ratio * np.exp(-stats.norm.isf(0.025) * se), ratio * np.exp(stats.norm.isf(0.025) * se)',
+        'print(f"ratio of standardised rates {ratio:.4f} ({ratio_lo:.4f} to {ratio_hi:.4f})")'] : [])],
+  };
+};
+
+G.smr = (s) => {
+  const per = s.per || 1000;
+  return {
+    title: 'Indirect standardisation: standardised mortality (or incidence) ratio', data: false, pyPkgs: ['pandas'], pyImports: ['import pandas as pd', 'from scipy.stats import chi2, poisson'],
+    r: ['dat <- data.frame(', `  group = ${rvec(s.strata.map((x) => x.label))},`, `  pop = ${rvec(s.strata.map((x) => x.vals[0]), num)},`,
+      `  rate = ${rvec(s.strata.map((x) => x.vals[1]), num)} / ${per})   # the standard's rates, per person`,
+      `observed <- ${s.observed}`, 'expected <- sum(dat$pop * dat$rate)',
+      'res <- poisson.test(observed, expected)   # exact CI for the SMR, and the exact test of observed against expected', 'res',
+      'smr <- observed / expected; lo <- res$conf.int[1]; hi <- res$conf.int[2]; p_main <- res$p.value', 'c(observed = observed, expected = expected, smr = smr, lower = lo, upper = hi)'],
+    py: [`pop = np.array(${pvec(s.strata.map((x) => x.vals[0]), pnum)})`, `rate = np.array(${pvec(s.strata.map((x) => x.vals[1]), pnum)}) / ${per}  # the standard's rates, per person`,
+      `observed = ${s.observed}`, 'expected = np.sum(pop * rate)', 'smr = observed / expected',
+      'lo = chi2.ppf(0.025, 2 * observed) / (2 * expected) if observed > 0 else 0.0  # exact (Ulm 1990)', 'hi = chi2.ppf(0.975, 2 * observed + 2) / (2 * expected)',
+      '# Exact two-sided p, as R\'s poisson.test: the chance of counts no more likely than the one observed',
+      'k = np.arange(0, int(4 * max(observed, expected)) + 200)', 'pk = poisson.pmf(k, expected)',
+      'p_main = min(1.0, pk[pk <= poisson.pmf(observed, expected) * (1 + 1e-7)].sum())',
+      'print(f"observed {observed}, expected {expected:.2f}; SMR {smr:.4f} ({lo:.4f} to {hi:.4f}); p = {p_main:.4g}")'],
+  };
+};
+
+/** Mantel-Haenszel or Peto pooling of 2 x 2 counts: metafor's rma.mh / rma.peto in R, written out in Python. */
+function metaMH(s) {
+  const rows = s.studies, peto = s.pooling === 'peto', m = peto ? 'OR' : s.measure, isR = m !== 'RD';
+  const name = peto ? "Peto's odds ratio" : `Mantel-Haenszel ${{ OR: 'odds ratio', RR: 'risk ratio', RD: 'risk difference' }[m]}`;
+  const rData = ['dat <- data.frame(', `  study = ${rvec(rows.map((r) => r.name))},`, ...['e1', 'n1', 'e2', 'n2'].map((c, j) => `  ${c} = ${rvec(rows.map((r) => r.vals[j]), num)},`),
+    ...(s.subgroups ? [`  subgroup = ${rvec(rows.map((r) => r.sub || 'Not given'))},`] : []), '  stringsAsFactors = FALSE)'];
+  const call = (d) => (peto ? `rma.peto(ai = e1, n1i = n1, ci = e2, n2i = n2, data = ${d}` : `rma.mh(ai = e1, n1i = n1, ci = e2, n2i = n2, data = ${d}, measure = ${str(m)}`);
+  const r = ['library(metafor)', ...rData, `res <- ${call('dat')}, slab = study)   # ${name}, fixed effect, from the counts as they are`, 'res',
+    isR ? 'predict(res, transf = exp)   # on the ratio scale' : 'predict(res)', `forest(res${isR ? ', atransf = exp' : ''})`,
+    ...(s.subgroups ? ['# Subgroups pooled the same way, and the test for subgroup differences (as RevMan):',
+      `sub <- lapply(split(dat, dat$subgroup), function(x) ${call('x')}))`,
+      'between <- rma(sapply(sub, function(m) c(m$b)), sei = sapply(sub, function(m) m$se), method = "FE")', 'between$QE; between$QEp   # Q between subgroups and its p'] : [])];
+  const pyPool = (v) => (peto
+    ? [`m = ${v}e1 + ${v}e2; n = ${v}n1 + ${v}n2`, `E = ${v}n1 * m / n; V = ${v}n1 * ${v}n2 * m * (n - m) / (n**2 * (n - 1))  # expected events and hypergeometric variance`,
+      `est = np.sum(${v}e1 - E) / np.sum(V); se = 1 / np.sqrt(np.sum(V))  # Peto: log OR = sum(O - E) / sum(V)`]
+    : m === 'OR' ? [`a, b, c, dd = ${v}e1, ${v}n1 - ${v}e1, ${v}e2, ${v}n2 - ${v}e2; n = ${v}n1 + ${v}n2`,
+      'R, S, P, Qx = a * dd / n, b * c / n, (a + dd) / n, (b + c) / n',
+      'est = np.log(R.sum() / S.sum())  # Mantel-Haenszel log odds ratio',
+      'se = np.sqrt((P * R).sum() / (2 * R.sum()**2) + (P * S + Qx * R).sum() / (2 * R.sum() * S.sum()) + (Qx * S).sum() / (2 * S.sum()**2))  # Robins-Breslow-Greenland']
+      : m === 'RR' ? [`a, c, n1, n2 = ${v}e1, ${v}e2, ${v}n1, ${v}n2; n = n1 + n2`, 'num, den = a * n2 / n, c * n1 / n',
+        'est = np.log(num.sum() / den.sum())  # Mantel-Haenszel log risk ratio', 'se = np.sqrt((((a + c) * n1 * n2 / n**2) - a * c / n).sum() / (num.sum() * den.sum()))  # Greenland-Robins']
+        : [`a, c, n1, n2 = ${v}e1, ${v}e2, ${v}n1, ${v}n2; n = n1 + n2`, 'w = n1 * n2 / n', 'est = ((a * n2 - c * n1) / n).sum() / w.sum()  # Mantel-Haenszel risk difference',
+          'Ps = ((n1**2 * c - n2**2 * a + 0.5 * n1 * n2 * (n2 - n1)) / n**2).sum(); Qs = ((a * (n2 - c) + c * (n1 - a)) / (2 * n)).sum()',
+          'se = np.sqrt((est * Ps + Qs) / w.sum()**2)  # Sato, Greenland and Robins']);
+  const pyQ = peto
+    ? ['ok = V > 0', 'Q = np.sum((e1 - E)[ok]**2 / V[ok]) - np.sum((e1 - E)[ok])**2 / np.sum(V[ok])  # heterogeneity']
+    : ['# Heterogeneity: each study\'s estimate (0.5 added to tables with a zero cell; tables with no events, or only events, in both groups left out), as metafor',
+      'aa, bb, cc, ee = e1.copy(), n1 - e1, e2.copy(), n2 - e2', 'ok = ~(((aa == 0) & (cc == 0)) | ((bb == 0) & (ee == 0)))', 'aa, bb, cc, ee = aa[ok], bb[ok], cc[ok], ee[ok]',
+      'z0 = (aa == 0) | (bb == 0) | (cc == 0) | (ee == 0)', 'aa[z0] += 0.5; bb[z0] += 0.5; cc[z0] += 0.5; ee[z0] += 0.5',
+      ...(m === 'OR' ? ['yi = np.log(aa * ee / (bb * cc)); vi = 1 / aa + 1 / bb + 1 / cc + 1 / ee']
+        : m === 'RR' ? ['yi = np.log((aa / (aa + bb)) / (cc / (cc + ee))); vi = 1 / aa - 1 / (aa + bb) + 1 / cc - 1 / (cc + ee)']
+          : ['p1, p2 = aa / (aa + bb), cc / (cc + ee)', 'yi = p1 - p2; vi = p1 * (1 - p1) / (aa + bb) + p2 * (1 - p2) / (cc + ee)']),
+      'Q = np.sum((yi - mh)**2 / vi)'];
+  const py = ['dat = pd.DataFrame({', `    "study": ${pvec(rows.map((r) => r.name))},`, ...['e1', 'n1', 'e2', 'n2'].map((c, j) => `    "${c}": ${pvec(rows.map((r) => r.vals[j]), pnum)},`),
+    ...(s.subgroups ? [`    "subgroup": ${pvec(rows.map((r) => r.sub || 'Not given'))},`] : []), '})',
+    'e1, n1, e2, n2 = (dat[c].to_numpy(float) for c in ["e1", "n1", "e2", "n2"])', ...pyPool(''), 'mh, se_mh = est, se',
+    'ci_mh = mh + np.array([-1, 1]) * stats.norm.isf(0.025) * se_mh', 'p = 2 * stats.norm.sf(abs(mh / se_mh))',
+    ...(peto ? ['m = e1 + e2; n = n1 + n2; E = n1 * m / n; V = n1 * n2 * m * (n - m) / (n**2 * (n - 1))'] : []), ...pyQ,
+    'k = len(dat); I2 = max(0.0, (Q - (k - 1)) / Q) if Q > 0 else 0.0',
+    `print(f"${name}: {${isR ? 'np.exp(mh)' : 'mh'}:.4f} (95% CI {${isR ? 'np.exp(ci_mh[0])' : 'ci_mh[0]'}:.4f} to {${isR ? 'np.exp(ci_mh[1])' : 'ci_mh[1]'}:.4f}); p = {p:.4g}; Q = {Q:.3f}")`,
+    ...(s.subgroups ? ['# Subgroups pooled the same way, and the test for subgroup differences (as RevMan)', 'ys, ses = [], []', 'for g, x in dat.groupby("subgroup", sort=False):',
+      '    e1, n1, e2, n2 = (x[c].to_numpy(float) for c in ["e1", "n1", "e2", "n2"])', ...pyPool('').map((l) => `    ${l}`), '    ys.append(est); ses.append(se)',
+      'ys, ws = np.array(ys), 1 / np.array(ses)**2', 'q_between = np.sum(ws * (ys - np.sum(ws * ys) / np.sum(ws))**2)', 'print(f"Q between subgroups {q_between:.3f} on {len(ys) - 1} df")'] : [])];
+  return { title: `Meta-analysis: ${name}`, data: false, rPkgs: ['metafor'], pyPkgs: ['pandas'], pyImports: ['import pandas as pd'], r, py };
+}
+
 G.meta = (s) => {
+  if (s.type === 'binary' && (s.pooling === 'mh' || s.pooling === 'peto')) return metaMH(s);
   const rows = s.studies;
   const isR = ['OR', 'RR', 'ratio'].includes(s.measure);
   const cols = { binary: ['e1', 'n1', 'e2', 'n2'], continuous: ['m1', 'sd1', 'n1', 'm2', 'sd2', 'n2'], proportion: ['events', 'total'], reported: ['est', 'lower', 'upper'] }[s.type];
@@ -485,7 +683,6 @@ G.meta = (s) => {
 
 /* ------------------------------------------------------------------ api --- */
 
-/** The script for a spec in 'r' or 'py': { text, filename, packages, usesData }. */
 /* ------------------------------------- frequency, association, impact --- */
 // These scripts name their results the same way in R and Python (est, lo, hi, p_main, ...), so the
 // test harness can read both with the same expressions.
@@ -693,6 +890,7 @@ G.epmatch = (s) => ({
     'print(f"matched odds ratio {est:.4f} (95% CI {lo:.4f} to {hi:.4f}); p = {p_main:.4g}")'],
 });
 
+/** The script for a spec in 'r' or 'py': { text, filename, packages, usesData }. */
 export function scriptFor(spec, lang) {
   const gen = G[spec?.kind];
   if (!gen) return null;

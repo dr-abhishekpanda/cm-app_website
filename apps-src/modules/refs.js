@@ -98,4 +98,22 @@ export const REFS = {
   garwood: { text: 'Garwood F. Fiducial limits for the Poisson distribution. Biometrika. 1936;28(3/4):437-42.', checked: 'scan of the article\'s first page (McGill University course archive), 2026-11-07' },
   jewell: { text: 'Jewell NP. Statistics for epidemiology. Boca Raton: Chapman & Hall/CRC; 2004.', checked: 'library catalogue (BRAC University), 2026-11-07' },
   rothmanME: { text: 'Rothman KJ, Greenland S, Lash TL. Modern epidemiology. 3rd ed. Philadelphia: Wolters Kluwer Health/Lippincott Williams & Wilkins; 2008.', checked: 'library catalogue (BRAC University), 2026-11-07' },
+
+  // Phase 2b: confounding, standardisation, Mantel-Haenszel and Peto pooling.
+  mantelHaenszel: { text: 'Mantel N, Haenszel W. Statistical aspects of the analysis of data from retrospective studies of disease. J Natl Cancer Inst. 1959;22(4):719-48.', doi: '10.1093/jnci/22.4.719', checked: 'PubMed 13655060; DOI from metafor documentation, 2026-11-14' },
+  cochran54: { text: 'Cochran WG. Some methods for strengthening the common chi-square tests. Biometrics. 1954;10(4):417-51.', doi: '10.2307/3001616', checked: 'metafor documentation (rma.mh), 2026-11-14' },
+  rbg86: { text: 'Robins J, Breslow N, Greenland S. Estimators of the Mantel-Haenszel variance consistent in both sparse data and large-strata limiting models. Biometrics. 1986;42(2):311-23.', doi: '10.2307/2531052', checked: 'PubMed 3741973, 2026-11-14' },
+  greenlandRobins85: { text: 'Greenland S, Robins JM. Estimation of a common effect parameter from sparse follow-up data. Biometrics. 1985;41(1):55-68.', doi: '10.2307/2530643', checked: 'PubMed 4005387, 2026-11-14' },
+  satoGR89: { text: 'Sato T, Greenland S, Robins JM. On the variance estimator for the Mantel-Haenszel risk difference. Biometrics. 1989;45(4):1323-4.', checked: 'metafor documentation (rma.mh), 2026-11-14' },
+  breslowDay80: { text: 'Breslow NE, Day NE. Statistical methods in cancer research. Volume I: The analysis of case-control studies. IARC Sci Publ. 1980;(32):5-338.', checked: 'PubMed 7216345, 2026-11-14' },
+  breslowDay87: { text: 'Breslow NE, Day NE. Statistical methods in cancer research. Volume II: The design and analysis of cohort studies. IARC Sci Publ. 1987;(82):1-406.', checked: 'PubMed 3329634, 2026-11-14' },
+  tarone85: { text: 'Tarone RE. On heterogeneity tests based on efficient scores. Biometrika. 1985;72(1):91-5.', doi: '10.1093/biomet/72.1.91', checked: 'metafor documentation (rma.mh), 2026-11-14' },
+  fayFeuer: { text: 'Fay MP, Feuer EJ. Confidence intervals for directly standardized rates: a method based on the gamma distribution. Stat Med. 1997;16(7):791-801.', checked: 'PubMed 9131766, 2026-11-14' },
+  ulm90: { text: 'Ulm K. A simple method to calculate the confidence interval of a standardized mortality ratio (SMR). Am J Epidemiol. 1990;131(2):373-5.', doi: '10.1093/oxfordjournals.aje.a115507', checked: 'PubMed 2296988, 2026-11-14' },
+  maldonadoGreenland: { text: 'Maldonado G, Greenland S. Simulation study of confounder-selection strategies. Am J Epidemiol. 1993;138(11):923-36.', doi: '10.1093/oxfordjournals.aje.a116813', checked: 'PubMed 8256780, 2026-11-14' },
+  greenland89: { text: 'Greenland S. Modeling and variable selection in epidemiologic analysis. Am J Public Health. 1989;79(3):340-9.', doi: '10.2105/ajph.79.3.340', checked: 'PubMed 2916724, 2026-11-14' },
+  whoStandard: { text: 'Ahmad OB, Boschi-Pinto C, Lopez AD, Murray CJL, Lozano R, Inoue M. Age standardization of rates: a new WHO standard. GPE Discussion Paper Series No. 31. Geneva: World Health Organization; 2001. Table 4.', checked: 'WHO PDF (cdn.who.int), Table 4, page 12, 2026-11-14' },
+  yusufPeto: { text: 'Yusuf S, Peto R, Lewis J, Collins R, Sleight P. Beta blockade during and after myocardial infarction: an overview of the randomized trials. Prog Cardiovasc Dis. 1985;27(5):335-71.', doi: '10.1016/s0033-0620(85)80003-7', checked: 'PubMed 2858114, 2026-11-14' },
+  greenlandSalvan: { text: 'Greenland S, Salvan A. Bias in the one-step method for pooling study results. Stat Med. 1990;9(3):247-52.', doi: '10.1002/sim.4780090307', checked: 'PubMed 2343220, 2026-11-14' },
+  bradburn: { text: 'Bradburn MJ, Deeks JJ, Berlin JA, Russell Localio A. Much ado about nothing: a comparison of the performance of meta-analytical methods with rare events. Stat Med. 2007;26(1):53-77.', doi: '10.1002/sim.2528', checked: 'PubMed 16596572, 2026-11-14' },
 };

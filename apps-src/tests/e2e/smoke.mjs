@@ -200,6 +200,11 @@ try {
     check(`${label}: forest plot draws seven studies`, (await page.locator('svg.forest rect.bar').count()) === 7);
     await page.getByRole('button', { name: 'Add subgroups' }).click();
     check(`${label}: subgroup test appears`, (await page.locator('caption', { hasText: 'test for subgroup differences' }).count()) === 1);
+    await page.getByRole('button', { name: 'Mantel-Haenszel', exact: true }).click();
+    check(`${label}: Mantel-Haenszel pooling of the example studies`, (await text(page, '#ma-h')) === 'Pooled odds ratio 0.62' && (await text(page, '.verdict-line')) === '95% CI 0.49 to 0.79; p < 0.001; Mantel-Haenszel, fixed effect', `${await text(page, '#ma-h')} | ${await text(page, '.verdict-line')}`);
+    await page.getByRole('button', { name: 'Peto (odds ratio)', exact: true }).click();
+    check(`${label}: Peto pooling`, (await text(page, '#ma-h')) === 'Pooled odds ratio 0.63' && (await text(page, '.verdict-line')).endsWith('Peto, fixed effect'), await text(page, '.verdict-line'));
+    await page.getByRole('button', { name: 'Inverse variance', exact: true }).click();
     await page.getByRole('button', { name: 'One proportion per study' }).click();
     check(`${label}: pooled proportion on the logit scale`, (await text(page, '#ma-h')) === 'Pooled proportion 43.2%', await text(page, '#ma-h'));
     check(`${label}: no sideways scroll on meta-analysis`, await noSideScroll(page));
@@ -253,6 +258,37 @@ try {
     await page.getByRole('button', { name: 'Type the numbers' }).click();
     check(`${label}: prevalence with the Wilson CI`, (await text(page, '#fqr-h')) === 'Prevalence = 14.2%' && (await text(page, '.verdict-line')) === '95% CI 9.0% to 21.5% (Wilson)', `${await text(page, '#fqr-h')} | ${await text(page, '.verdict-line')}`);
     await shot(page, `${label}-measures-frequency`);
+
+    // Phase 2b: confounding and standardisation (the antenatal example is still loaded).
+    const tablesFit = () => page.evaluate(() => [...document.querySelectorAll('.result-panel .tablewrap')].every((w) => w.scrollWidth <= w.clientWidth + 1));
+    await page.goto(`${base}#/tool/stratified`);
+    await page.getByLabel('Exposure column').selectOption('IFA_adherence');
+    await page.getByLabel('Outcome column').selectOption('Anaemia_6_months');
+    await page.getByLabel('Stratify by (possible confounder)').selectOption('Parity');
+    check(`${label}: MH risk ratio stratified by parity`, (await text(page, '#str-h')) === 'Mantel-Haenszel risk ratio = 1.63' && (await text(page, '.verdict-line')).startsWith('95% CI 1.18 to 2.25; crude 1.64; CMH test p = 0.005'), `${await text(page, '#str-h')} | ${await text(page, '.verdict-line')}`);
+    check(`${label}: forest plot draws the four parity strata`, (await page.locator('svg.forest rect.bar').count()) === 4);
+    await page.getByRole('button', { name: 'R and Python code for this analysis' }).click();
+    check(`${label}: stratified R code uses mantelhaen.test`, (await page.locator('pre.code').textContent()).includes('mantelhaen.test('));
+    await page.getByRole('button', { name: 'A table of strata' }).click();
+    await page.getByRole('button', { name: 'Case-control', exact: true }).click();
+    check(`${label}: MH odds ratio from typed strata`, (await text(page, '#str-h')) === 'Mantel-Haenszel odds ratio = 2.57' && (await text(page, '.verdict-line')).startsWith('95% CI 1.58 to 4.16; crude 2.59; CMH test p < 0.001'), `${await text(page, '#str-h')} | ${await text(page, '.verdict-line')}`);
+    check(`${label}: no sideways scroll on the stratified result`, await noSideScroll(page));
+    check(`${label}: stratified result tables fit their width`, await tablesFit());
+    await shot(page, `${label}-stratified`);
+    await page.getByRole('button', { name: 'Person-time', exact: true }).click();
+    check(`${label}: MH rate ratio`, (await text(page, '#str-h')) === 'Mantel-Haenszel rate ratio = 1.93' && (await text(page, '.verdict-line')).startsWith('95% CI 1.37 to 2.72; crude 1.99; MH test p < 0.001'), `${await text(page, '#str-h')} | ${await text(page, '.verdict-line')}`);
+    await page.getByRole('button', { name: 'Direct standardisation', exact: true }).click();
+    check(`${label}: directly standardised rate`, (await text(page, '#dsr-h')) === 'Standardised rate = 251 per 1,00,000' && (await text(page, '.verdict-line')).startsWith('95% CI 225 to 279 (Fay-Feuer gamma); crude 197'), `${await text(page, '#dsr-h')} | ${await text(page, '.verdict-line')}`);
+    await page.getByRole('button', { name: 'Compare two groups' }).click();
+    check(`${label}: ratio of standardised rates`, (await text(page, '#dsr-h')) === 'Ratio of standardised rates = 1.01' && (await text(page, '.verdict-line')).startsWith('95% CI 0.87 to 1.17 (log scale)'), `${await text(page, '#dsr-h')} | ${await text(page, '.verdict-line')}`);
+    check(`${label}: no sideways scroll on direct standardisation`, await noSideScroll(page));
+    check(`${label}: standardisation tables fit their width`, await tablesFit());
+    await shot(page, `${label}-dsr`);
+    await page.getByRole('button', { name: 'Indirect (SMR)', exact: true }).click();
+    check(`${label}: SMR with the exact CI`, (await text(page, '#isr-h')) === 'SMR = 1.11 (111)' && (await text(page, '.verdict-line')).startsWith('95% CI 1.00 to 1.23 (exact Poisson); exact p = 0.049; observed 380, expected 342.9'), `${await text(page, '#isr-h')} | ${await text(page, '.verdict-line')}`);
+    check(`${label}: no sideways scroll on the SMR`, await noSideScroll(page));
+    check(`${label}: SMR tables fit their width`, await tablesFit());
+    await shot(page, `${label}-smr`);
 
     await page.goto(`${base}#/`);
     await page.getByRole('button', { name: 'Settings' }).click();

@@ -465,7 +465,7 @@ export function ForestPlot(props) {
   return <div class="plotbox" ref={ref}><ForestSvg {...props} width={w} height={30 + props.items.length * 21 + 34} /></div>;
 }
 
-function ForestSvg({ items, axis = 'linear', nullAt = 0, sides, label, fmt = (v) => sig(v, 3), tickFmt = (v) => sig(v, 3), width, height }) {
+function ForestSvg({ items, axis = 'linear', nullAt = 0, sides, label, fmt = (v) => sig(v, 3), tickFmt = (v) => sig(v, 3), width, height, head = 'Study' }) {
   const narrow = width < 600;
   const labelW = Math.round(Math.min(190, width * (narrow ? 0.36 : 0.26)));
   const textW = narrow ? 0 : 200;
@@ -489,7 +489,7 @@ function ForestSvg({ items, axis = 'linear', nullAt = 0, sides, label, fmt = (v)
   return (
     <svg class="plot forest" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label}>
       <title>{label}</title>
-      <text class="tick" x={4} y={14}>Study</text>
+      <text class="tick" x={4} y={14}>{head}</text>
       {!narrow ? <text class="tick" x={width - textW} y={14}>Estimate (95% CI)</text> : null}
       {!narrow ? <text class="tick" x={width - 4} y={14} text-anchor="end">Weight</text> : null}
       {nullAt !== null ? <line class="grid" x1={X(nullAt)} x2={X(nullAt)} y1={pad.t - 6} y2={yAxis} /> : null}
