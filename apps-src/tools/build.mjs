@@ -17,7 +17,7 @@ import { renderIcons } from './icons.mjs';
 
 const SRC = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = resolve(SRC, '..');
-const APPS = ['research-app'];
+const APPS = ['research-app', 'epi-app'];
 
 /* --------------------------------------------- tex`...` -> MathML at build */
 const texPlugin = {

@@ -1202,6 +1202,161 @@ G.epmatch = (s) => ({
 });
 
 /** The script for a spec in 'r' or 'py': { text, filename, packages, usesData }. */
+/* ---------------------------------------------------------- outbreak --- */
+// Dates of onset are read with the strptime format the app detected (engine/outbreak.js dateFormat),
+// as seconds since 1970 in UTC, so the intervals match the app's to the minute.
+const YES = ['yes', 'y', '1', 'true', 'ate', 'eaten', 'consumed'], NO = ['no', 'n', '0', 'false', 'not eaten', 'did not eat'];
+function rOnset(s) {
+  if (s.fmt.includes('%H')) return [`t <- as.numeric(as.POSIXct(${rcol(s.date)}, format = ${str(s.fmt)}, tz = "UTC"))   # onset, seconds since 1970 (UTC)`, 'timed <- !is.na(t)'];
+  const L = [`t <- as.numeric(as.POSIXct(as.Date(${rcol(s.date)}, format = ${str(s.fmt)}), tz = "UTC"))   # date of onset, seconds since 1970 (UTC)`];
+  if (s.time) {
+    L.push(`tm <- trimws(${rcol(s.time)})   # time of onset, HH:MM`,
+      'secs <- ifelse(grepl("^[0-9]{1,2}:[0-9]{2}$", tm), as.numeric(sub(":.*$", "", tm)) * 3600 + as.numeric(sub("^.*:", "", tm)) * 60, NA)',
+      'timed <- !is.na(t) & !is.na(secs); t <- t + ifelse(is.na(secs), 0, secs)');
+  } else L.push('timed <- rep(FALSE, length(t))');
+  return L;
+}
+function pyOnset(s) {
+  const epoch = '- pd.Timestamp("1970-01-01")).dt.total_seconds()';
+  if (s.fmt.includes('%H')) return [`t = (pd.to_datetime(${pcol(s.date)}, format=${str(s.fmt)}, errors="coerce") ${epoch}  # onset, seconds since 1970 (UTC)`, 'timed = t.notna()'];
+  const L = [`t = (pd.to_datetime(${pcol(s.date)}, format=${str(s.fmt)}, errors="coerce") ${epoch}  # date of onset, seconds since 1970`];
+  if (s.time) {
+    L.push(`hm = ${pcol(s.time)}.astype("string").str.strip().str.extract(r"^(\\d{1,2}):(\\d{2})$").astype(float)  # time of onset, HH:MM`,
+      'secs = hm[0] * 3600 + hm[1] * 60', 'timed = t.notna() & secs.notna()', 't = t + secs.fillna(0)');
+  } else L.push('timed = pd.Series(False, index=d.index)');
+  return L;
+}
+const rCase = (s) => [`case <- ${rRule(s.case, s.caseRule, false)}   # a case`, `known <- !is.na(${rcol(s.case)})`];
+const pyCase = (s) => [`case = np.asarray(${pRule(s.case, s.caseRule, false)})  # a case`, `known = np.asarray(${pcol(s.case)}.notna())`];
+const stamp = (ms) => new Date(ms).toISOString().slice(0, 16).replace('T', ' ');
+
+G.epicurve = (s) => {
+  const hourly = s.unit === 'hour', week = s.unit === 'week';
+  const size = s.width * (hourly ? 3600 : week ? 604800 : 86400);
+  const what = `${s.width}-${s.unit} intervals`;
+  const inc = Number.isFinite(s.include) ? s.include / 1000 : null;
+  return {
+    title: `Epidemic curve (${what})`, pyImports: ['import matplotlib', 'matplotlib.use("Agg")', 'import matplotlib.pyplot as plt'], pyPkgs: ['matplotlib'],
+    r: [...rCase(s), ...rOnset(s),
+      `use <- case & !is.na(t)${hourly ? ' & timed' : ''}   # cases with a ${hourly ? 'time' : 'date'} of onset`,
+      `size <- ${size}   # ${what}, in seconds`,
+      `lo <- min(c(t[use]${inc !== null ? `, ${inc}` : ''})); hi <- max(c(t[use]${inc !== null ? `, ${inc}` : ''}))${inc !== null ? `   # ${inc} is the common exposure, ${stamp(s.include)} UTC` : '   # the first and last cases'}`,
+      week ? 'base <- floor((lo - 4 * 86400) / 604800) * 604800 + 4 * 86400   # the Monday before the first case' : 'base <- floor(lo / 86400) * 86400   # midnight before the first case',
+      'origin <- base + floor((lo - base) / size) * size - size   # with one empty interval before the first case',
+      'nb <- floor((hi - origin) / size) + 2   # and one after the last',
+      'counts <- tabulate(floor((t[use] - origin) / size) + 1, nbins = nb)',
+      'starts <- as.POSIXct(origin + (seq_len(nb) - 1) * size, origin = "1970-01-01", tz = "UTC")',
+      'names(counts) <- format(starts, "%Y-%m-%d %H:%M")',
+      'n_cases <- sum(counts); peak_n <- max(counts); n_bins <- nb',
+      'print(counts)',
+      `barplot(counts, space = 0, names.arg = format(starts, ${hourly ? '"%d %b %H:%M"' : '"%d %b"'}), las = 2, cex.names = 0.7, ylab = "Cases", main = "Epidemic curve")`],
+    py: [...pyCase(s), ...pyOnset(s),
+      `use = case & np.asarray(t.notna())${hourly ? ' & np.asarray(timed)' : ''}  # cases with a ${hourly ? 'time' : 'date'} of onset`,
+      'tu = np.asarray(t)[use]',
+      `size = ${size}  # ${what}, in seconds`,
+      inc !== null ? `lo, hi = min(tu.min(), ${inc}), max(tu.max(), ${inc})  # ${inc} is the common exposure, ${stamp(s.include)} UTC` : 'lo, hi = tu.min(), tu.max()  # the first and last cases',
+      week ? 'base = np.floor((lo - 4 * 86400) / 604800) * 604800 + 4 * 86400  # the Monday before the first case' : 'base = np.floor(lo / 86400) * 86400  # midnight before the first case',
+      'origin = base + np.floor((lo - base) / size) * size - size  # with one empty interval before the first case',
+      'nb = int(np.floor((hi - origin) / size)) + 2  # and one after the last',
+      'vals = np.bincount(np.floor((tu - origin) / size).astype(int), minlength=nb)',
+      'starts = pd.to_datetime(origin + np.arange(nb) * size, unit="s")',
+      'counts = dict(zip(starts.strftime("%Y-%m-%d %H:%M"), vals.tolist()))',
+      'n_cases, peak_n, n_bins = int(vals.sum()), int(vals.max()), nb',
+      'print(pd.Series(counts))',
+      `plt.bar(range(nb), vals, width=1.0, align="edge", edgecolor="white"); plt.xticks(range(nb), starts.strftime(${hourly ? '"%d %b %H:%M"' : '"%d %b"'}), rotation=90, fontsize=7)`,
+      'plt.ylabel("Cases"); plt.title("Epidemic curve"); plt.tight_layout(); plt.savefig("epidemic-curve.png", dpi=150)'],
+  };
+};
+
+G.attack = (s) => {
+  const typed = !!s.typed;
+  const rWil = 'wil <- function(x, n) suppressWarnings(prop.test(x, n, correct = FALSE)$conf.int)   # Wilson score interval';
+  const rTail = ['res$ar <- res$cases / res$at_risk', 'ci <- t(mapply(wil, res$cases, res$at_risk)); res$lo <- ci[, 1]; res$hi <- ci[, 2]',
+    'print(transform(res, ar = round(100 * ar, 1), lo = round(100 * lo, 1), hi = round(100 * hi, 1)))',
+    'ar_by <- setNames(res$ar, res$group)', 'X <- sum(res$cases); N <- sum(res$at_risk); ar <- X / N; ar_lo <- wil(X, N)[1]; ar_hi <- wil(X, N)[2]',
+    'round(100 * c(attack_rate = ar, lower = ar_lo, upper = ar_hi), 1)'];
+  const pyTail = ['res["ar"] = res["cases"] / res["at_risk"]',
+    'res["lo"], res["hi"] = proportion_confint(res["cases"], res["at_risk"], alpha=0.05, method="wilson")  # Wilson score interval', 'print(res)',
+    'ar_by = dict(zip(res["group"], res["ar"]))', 'X, N = res["cases"].sum(), res["at_risk"].sum(); ar = X / N', 'ar_lo, ar_hi = proportion_confint(X, N, alpha=0.05, method="wilson")',
+    'print(f"Attack rate {100 * ar:.1f}% (95% CI {100 * ar_lo:.1f}% to {100 * ar_hi:.1f}%)")'];
+  const pyImports = ['from statsmodels.stats.proportion import proportion_confint'];
+  if (typed) {
+    const g = s.typed;
+    return { title: 'Attack rates', data: false, pyImports, pyPkgs: ['statsmodels'],
+      r: [rWil, `res <- data.frame(group = ${rvec(g.map((x) => x.label))}, cases = ${rvec(g.map((x) => x.cases), num)}, at_risk = ${rvec(g.map((x) => x.population), num)})`, ...rTail],
+      py: ['import pandas as pd', `res = pd.DataFrame({"group": ${pvec(g.map((x) => x.label))}, "cases": ${pvec(g.map((x) => x.cases), pnum)}, "at_risk": ${pvec(g.map((x) => x.population), pnum)}})`, ...pyTail] };
+  }
+  return { title: `Attack rates${s.group ? ` by ${pretty(s.group)}` : ''}`, pyImports, pyPkgs: ['statsmodels'],
+    r: [...rCase(s), s.group ? `grp <- as.character(${rcol(s.group)}); ok <- known & !is.na(grp)   # everyone with a known case status and group` : 'grp <- rep("Everyone", nrow(d)); ok <- known',
+      rWil, 'x <- tapply(case[ok], grp[ok], sum); n <- tapply(case[ok], grp[ok], length)',
+      'res <- data.frame(group = names(x), cases = as.vector(x), at_risk = as.vector(n))', ...rTail],
+    py: [...pyCase(s), s.group ? `grp = ${pcol(s.group)}.astype("string"); ok = known & np.asarray(grp.notna())  # everyone with a known case status and group` : 'grp = pd.Series("Everyone", index=d.index); ok = known',
+      'res = pd.DataFrame({"group": np.asarray(grp)[ok], "case": case[ok]}).groupby("group")["case"].agg(cases="sum", at_risk="size").reset_index()', ...pyTail] };
+};
+
+G.foodtable = (s) => {
+  const cc = s.design === 'case-control', typed = !!s.typed;
+  const rItem = cc
+    ? ['  ratio <- (a * dd) / (b * c)   # odds ratio: cases who ate, controls who ate, cases who did not, controls who did not',
+      '  ci <- if (min(a, b, c, dd) < 5) fisher.test(m)$conf.int else ratio * exp(c(-1, 1) * z * sqrt(1 / a + 1 / b + 1 / c + 1 / dd))   # exact, or Woolf']
+    : ['  ratio <- (a / (a + b)) / (c / (c + dd))   # risk ratio: attack rate among those who ate over those who did not',
+      "  ci <- if (min(a, b, c, dd) < 5) koopman_ci(a, a + b, c, c + dd) else ratio * exp(c(-1, 1) * z * sqrt(1 / a - 1 / (a + b) + 1 / c - 1 / (c + dd)))   # Koopman's score, or Katz"];
+  const pyItem = cc
+    ? ['    ratio = (a * dd) / (b * c)  # odds ratio: cases who ate, controls who ate, cases who did not, controls who did not',
+      '    ci = tuple(odds_ratio([[a, b], [c, dd]], kind="conditional").confidence_interval(0.95)) if min(a, b, c, dd) < 5 else ratio * np.exp(np.array([-1, 1]) * z * np.sqrt(1 / a + 1 / b + 1 / c + 1 / dd))  # exact, or Woolf']
+    : ['    ratio = (a / (a + b)) / (c / (c + dd))  # risk ratio: attack rate among those who ate over those who did not',
+      "    ci = koopman_ci(a, a + b, c, c + dd) if min(a, b, c, dd) < 5 else ratio * np.exp(np.array([-1, 1]) * z * np.sqrt(1 / a - 1 / (a + b) + 1 / c - 1 / (c + dd)))  # Koopman's score, or Katz"];
+  const rBody = ['  m <- matrix(c(a, c, b, dd), 2)   # rows: ate, did not; columns: ill (cases), well (controls)', ...rItem,
+    '  e <- suppressWarnings(chisq.test(m, correct = FALSE)$expected)',
+    "  p <- if (min(e) < 5) fisher.test(m)$p.value else chisq.test(m, correct = TRUE)$p.value   # Fisher's exact test when an expected count is below 5, else Yates' chi-square",
+    '  data.frame(item = item, a = a, b = b, c = c, d = dd, ratio = ratio, lo = ci[1], hi = ci[2], p = p, cases_ate = a / (a + c))'];
+  const pyBody = ['    m = np.array([[a, b], [c, dd]])  # rows: ate, did not; columns: ill (cases), well (controls)', ...pyItem,
+    '    e = stats.chi2_contingency(m, correction=False)[3]  # expected counts',
+    "    p = stats.fisher_exact(m)[1] if e.min() < 5 else stats.chi2_contingency(m, correction=True)[1]  # Fisher's exact test when an expected count is below 5, else Yates' chi-square",
+    '    return dict(item=item, a=a, b=b, c=c, d=dd, ratio=ratio, lo=ci[0], hi=ci[1], p=p, cases_ate=a / (a + c))'];
+  const rTail = ['res <- res[order(-res$ratio), ]', 'print(transform(res, ratio = signif(ratio, 3), lo = signif(lo, 3), hi = signif(hi, 3), p = signif(p, 3)), row.names = FALSE)',
+    'ratio <- setNames(res$ratio, res$item); ratio_lo <- setNames(res$lo, res$item); ratio_hi <- setNames(res$hi, res$item); p_value <- setNames(res$p, res$item)'];
+  const pyTail = ['res = pd.DataFrame(rows).sort_values("ratio", ascending=False)', 'print(res.round(4).to_string(index=False))',
+    'ratio, ratio_lo, ratio_hi, p_value = (dict(zip(res["item"], res[k])) for k in ("ratio", "lo", "hi", "p"))'];
+  const pyImports = cc ? ['from scipy.stats.contingency import odds_ratio'] : ['from scipy.optimize import brentq'];
+  const name = cc ? 'odds ratios, cases and controls' : 'attack rates and risk ratios, everyone at the meal';
+  if (typed) {
+    const it = s.typed;
+    return { title: `Food-specific ${name}`, data: false, pyImports,
+      r: ['z <- qnorm(0.975)', ...(cc ? [] : R_KOOPMAN), `items <- ${rvec(it.map((x) => x.name))}`, `cells <- list(${it.map((x) => `c(${x.a}, ${x.b}, ${x.c}, ${x.d})`).join(', ')})   # ${cc ? 'cases who ate, controls who ate, cases who did not, controls who did not' : 'ate and ill, ate and well, did not eat and ill, did not eat and well'}`,
+        'res <- do.call(rbind, lapply(seq_along(items), function(i) {', '  item <- items[i]; a <- cells[[i]][1]; b <- cells[[i]][2]; c <- cells[[i]][3]; dd <- cells[[i]][4]', ...rBody, '}))', ...rTail],
+      py: ['import pandas as pd', ...(cc ? [] : PY_KOOPMAN), 'z = stats.norm.ppf(0.975)', `items = ${pvec(it.map((x) => x.name))}`,
+        `cells = [${it.map((x) => `(${x.a}, ${x.b}, ${x.c}, ${x.d})`).join(', ')}]  # ${cc ? 'cases who ate, controls who ate, cases who did not, controls who did not' : 'ate and ill, ate and well, did not eat and ill, did not eat and well'}`,
+        '', 'def one(item, a, b, c, dd):', ...pyBody, '', 'rows = [one(item, *cl) for item, cl in zip(items, cells)]', ...pyTail] };
+  }
+  return { title: `Food-specific ${name}`, pyImports,
+    r: [...rCase(s), `yes <- function(v) { s <- tolower(trimws(as.character(v))); ifelse(s %in% ${rvec(YES)}, TRUE, ifelse(s %in% ${rvec(NO)}, FALSE, NA)) }   # ate, did not, or not known`,
+      'z <- qnorm(0.975)', ...(cc ? [] : R_KOOPMAN), `items <- ${rvec(s.items)}`,
+      'res <- do.call(rbind, lapply(items, function(item) {', '  ate <- yes(d[[item]]); ok <- known & !is.na(ate)   # people with an answer for this item',
+      '  a <- sum(ate[ok] & case[ok]); b <- sum(ate[ok] & !case[ok]); c <- sum(!ate[ok] & case[ok]); dd <- sum(!ate[ok] & !case[ok])', ...rBody, '}))', ...rTail],
+    py: [...pyCase(s), ...(cc ? [] : PY_KOOPMAN), 'z = stats.norm.ppf(0.975)',
+      `yes = lambda v: v.astype("string").str.strip().str.lower().map(lambda s: True if s in ${pvec(YES)} else False if s in ${pvec(NO)} else None, na_action="ignore")  # ate, did not, or not known`,
+      `items = ${pvec(s.items)}`, '', 'def one(item):', '    ate = yes(d[item]); ok = known & np.asarray(ate.notna())  # people with an answer for this item',
+      '    x = np.asarray(ate.fillna(False), dtype=bool)', '    a, b = int((x & case & ok).sum()), int((x & ~case & ok).sum())', '    c, dd = int((~x & case & ok).sum()), int((~x & ~case & ok).sum())',
+      ...pyBody, '', 'rows = [one(item) for item in items]', ...pyTail] };
+};
+
+G.incubation = (s) => ({
+  title: 'Incubation period from a common exposure',
+  r: [...rCase(s), ...rOnset(s), `exposure <- ${s.exposure / 1000}   # the common exposure, ${stamp(s.exposure)} UTC, in seconds since 1970`,
+    'h <- (t[case & timed] - exposure) / 3600   # hours from exposure to onset, cases with a time of onset',
+    'h <- h[!is.na(h) & h > 0]   # onsets before the exposure are left out', 'n_inc <- length(h)',
+    'med <- median(h); q1 <- unname(quantile(h, 0.25, type = 7)); q3 <- unname(quantile(h, 0.75, type = 7)); h_min <- min(h); h_max <- max(h)',
+    "gm <- exp(mean(log(h))); disp <- exp(sd(log(h)))   # geometric mean and Sartwell's dispersion factor",
+    'round(c(n = n_inc, median = med, q1 = q1, q3 = q3, min = h_min, max = h_max, geometric_mean = gm, dispersion = disp), 2)'],
+  py: [...pyCase(s), ...pyOnset(s), `exposure = ${s.exposure / 1000}  # the common exposure, ${stamp(s.exposure)} UTC, in seconds since 1970`,
+    'h = (np.asarray(t)[case & np.asarray(timed)] - exposure) / 3600  # hours from exposure to onset, cases with a time of onset',
+    'h = h[~np.isnan(h) & (h > 0)]  # onsets before the exposure are left out', 'n_inc = len(h)',
+    'med, q1, q3 = np.percentile(h, [50, 25, 75]); h_min, h_max = h.min(), h.max()',
+    "gm, disp = np.exp(np.log(h).mean()), np.exp(np.log(h).std(ddof=1))  # geometric mean and Sartwell's dispersion factor",
+    'print(f"n {n_inc}; median {med:.2f} h (IQR {q1:.2f} to {q3:.2f}); range {h_min:.2f} to {h_max:.2f}; geometric mean {gm:.2f}; dispersion factor {disp:.3f}")'],
+});
+
 export function scriptFor(spec, lang) {
   const gen = G[spec?.kind];
   if (!gen) return null;

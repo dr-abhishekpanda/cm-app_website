@@ -1,0 +1,187 @@
+ID,Age,Age_group,Sex,Rice,Dal,Mutton_curry,Mixed_veg,Kheer,Curd_raita,Water,Ill,Onset_date,Onset_time
+G001,8,Under 15,Male,Yes,Yes,Yes,No,Yes,No,Yes,Yes,14/03/2026,19:30
+G002,40,15 to 44,Male,Yes,Yes,Yes,Yes,Yes,No,Yes,Yes,14/03/2026,19:45
+G003,52,45 and over,Male,Yes,Yes,Yes,No,Yes,No,Yes,No,,
+G004,34,15 to 44,Male,Yes,Yes,Yes,Yes,No,No,Yes,Yes,14/03/2026,23:30
+G005,14,Under 15,Male,No,No,No,Yes,No,Yes,Yes,No,,
+G006,17,15 to 44,Male,Yes,No,Yes,No,No,No,No,No,,
+G007,25,15 to 44,Male,Yes,Yes,Yes,No,Yes,No,Yes,Yes,14/03/2026,22:15
+G008,41,15 to 44,Female,Yes,No,Yes,Yes,Yes,No,Yes,No,,
+G009,39,15 to 44,Female,Yes,Yes,No,Yes,No,No,Yes,No,,
+G010,13,Under 15,Male,Yes,No,No,No,No,No,Yes,No,,
+G011,56,45 and over,Female,Yes,No,No,Yes,Yes,No,Yes,No,,
+G012,57,45 and over,Male,Yes,Yes,Yes,No,No,No,Yes,Yes,14/03/2026,23:45
+G013,13,Under 15,Female,Yes,Yes,No,Yes,Yes,Yes,Yes,No,,
+G014,25,15 to 44,Female,Yes,No,Yes,Yes,No,No,Yes,No,,
+G015,64,45 and over,Female,Yes,Yes,No,No,No,Yes,Yes,No,,
+G016,24,15 to 44,Male,Yes,Yes,Yes,Yes,Yes,No,Yes,No,,
+G017,63,45 and over,Male,Yes,Yes,No,No,Yes,Yes,Yes,No,,
+G018,52,45 and over,Male,Yes,Yes,No,Yes,Yes,No,No,No,,
+G019,17,15 to 44,Male,Yes,Yes,Yes,Yes,No,No,Yes,Yes,14/03/2026,17:45
+G020,61,45 and over,Female,Yes,Yes,No,Yes,Yes,Yes,Yes,No,,
+G021,60,45 and over,Male,Yes,Yes,No,Yes,Yes,Yes,Yes,No,,
+G022,66,45 and over,Female,Yes,Yes,Yes,No,No,No,Yes,No,,
+G023,36,15 to 44,Male,Yes,Yes,Yes,Yes,No,Yes,Yes,Yes,15/03/2026,07:30
+G024,52,45 and over,Female,Yes,Yes,No,Yes,No,Yes,No,No,,
+G025,71,45 and over,Male,Yes,Yes,Yes,Yes,Yes,Yes,Yes,No,,
+G026,31,15 to 44,Female,Yes,Yes,Yes,Yes,No,No,Yes,No,,
+G027,30,15 to 44,Male,Yes,Yes,Yes,No,Yes,Yes,Yes,Yes,15/03/2026,11:45
+G028,14,Under 15,Male,Yes,Yes,Yes,Yes,No,No,Yes,Yes,15/03/2026,02:45
+G029,42,15 to 44,Female,Yes,No,Yes,Yes,No,Yes,Yes,Yes,15/03/2026,01:45
+G030,20,15 to 44,Male,Yes,Yes,No,Yes,Yes,No,Yes,No,,
+G031,71,45 and over,Female,Yes,Yes,Yes,No,Yes,Yes,Yes,Yes,14/03/2026,23:15
+G032,40,15 to 44,Male,No,Yes,Yes,No,Yes,Yes,Yes,No,,
+G033,24,15 to 44,Male,Yes,Yes,Yes,No,Yes,No,No,No,,
+G034,23,15 to 44,Female,Yes,Yes,No,Yes,Yes,Yes,Yes,No,,
+G035,39,15 to 44,Female,Yes,Yes,Yes,Yes,No,No,Yes,Yes,15/03/2026,01:30
+G036,48,45 and over,Male,Yes,Yes,No,Yes,Yes,No,Yes,Yes,14/03/2026,18:15
+G037,14,Under 15,Male,Yes,Yes,Yes,Yes,No,No,Yes,No,,
+G038,9,Under 15,Male,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,15/03/2026,08:15
+G039,42,15 to 44,Female,Yes,Yes,Yes,Yes,No,Yes,Yes,Yes,14/03/2026,22:30
+G040,40,15 to 44,Male,Yes,Yes,Yes,Yes,Yes,Yes,No,No,,
+G041,51,45 and over,Male,Yes,No,Yes,Yes,No,No,Yes,No,,
+G042,16,15 to 44,Male,Yes,Yes,Yes,No,Yes,No,Yes,Yes,15/03/2026,01:00
+G043,39,15 to 44,Male,Yes,No,Yes,Yes,Yes,No,Yes,No,,
+G044,30,15 to 44,Male,Yes,Yes,No,Yes,Yes,No,Yes,No,,
+G045,64,45 and over,Male,Yes,No,Yes,Yes,Yes,Yes,No,Yes,15/03/2026,02:45
+G046,41,15 to 44,Male,Yes,Yes,No,No,Yes,Yes,Yes,No,,
+G047,22,15 to 44,Male,Yes,No,No,No,Yes,Yes,Yes,No,,
+G048,35,15 to 44,Male,Yes,Yes,Yes,Yes,Yes,No,Yes,No,,
+G049,52,45 and over,Male,Yes,Yes,No,No,Yes,No,Yes,No,,
+G050,22,15 to 44,Female,Yes,Yes,No,No,No,No,Yes,No,,
+G051,71,45 and over,Male,Yes,Yes,No,Yes,Yes,No,Yes,No,,
+G052,16,15 to 44,Male,Yes,Yes,Yes,No,Yes,No,Yes,No,,
+G053,26,15 to 44,Female,Yes,Yes,Yes,No,No,Yes,Yes,Yes,14/03/2026,18:45
+G054,68,45 and over,Male,No,No,Yes,No,Yes,Yes,No,Yes,14/03/2026,20:30
+G055,55,45 and over,Female,Yes,Yes,Yes,No,No,No,No,Yes,14/03/2026,
+G056,30,15 to 44,Male,Yes,Yes,Yes,No,No,No,Yes,Yes,14/03/2026,23:15
+G057,62,45 and over,Male,Yes,Yes,Yes,Yes,Yes,No,Yes,No,,
+G058,59,45 and over,Female,Yes,Yes,No,No,Yes,Yes,Yes,Yes,15/03/2026,03:30
+G059,10,Under 15,Male,Yes,Yes,No,Yes,No,Yes,Yes,No,,
+G060,60,45 and over,Female,Yes,Yes,No,Yes,Yes,Yes,Yes,No,,
+G061,4,Under 15,Male,Yes,Yes,Yes,Yes,Yes,Yes,Yes,No,,
+G062,17,15 to 44,Male,Yes,Yes,Yes,No,No,No,Yes,No,,
+G063,49,45 and over,Female,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,14/03/2026,21:30
+G064,29,15 to 44,Male,Yes,Yes,Yes,Yes,Yes,Yes,Yes,No,,
+G065,7,Under 15,Female,Yes,Yes,Yes,No,No,No,Yes,Yes,15/03/2026,10:45
+G066,71,45 and over,Male,Yes,Yes,No,Yes,Yes,No,No,No,,
+G067,26,15 to 44,Female,Yes,Yes,Yes,No,No,Yes,Yes,Yes,15/03/2026,04:45
+G068,69,45 and over,Female,Yes,Yes,Yes,No,No,Yes,Yes,Yes,14/03/2026,23:45
+G069,13,Under 15,Female,Yes,Yes,Yes,No,No,No,Yes,Yes,15/03/2026,05:45
+G070,53,45 and over,Female,No,Yes,Yes,No,No,No,Yes,Yes,14/03/2026,22:15
+G071,66,45 and over,Female,Yes,No,No,Yes,No,Yes,No,No,,
+G072,33,15 to 44,Male,Yes,Yes,Yes,No,Yes,No,Yes,Yes,15/03/2026,02:15
+G073,54,45 and over,Male,Yes,Yes,Yes,Yes,Yes,No,No,Yes,15/03/2026,03:30
+G074,40,15 to 44,Male,Yes,Yes,No,Yes,No,No,Yes,No,,
+G075,12,Under 15,Female,Yes,Yes,Yes,Yes,Yes,No,Yes,Yes,14/03/2026,19:15
+G076,28,15 to 44,Male,Yes,Yes,Yes,Yes,Yes,No,Yes,No,,
+G077,72,45 and over,Male,Yes,Yes,Yes,No,No,Yes,Yes,Yes,14/03/2026,19:15
+G078,23,15 to 44,Male,Yes,Yes,Yes,No,No,No,Yes,Yes,14/03/2026,22:15
+G079,18,15 to 44,Male,No,Yes,Yes,Yes,No,Yes,Yes,Yes,14/03/2026,21:45
+G080,44,15 to 44,Male,Yes,Yes,Yes,Yes,No,No,Yes,Yes,14/03/2026,
+G081,29,15 to 44,Female,Yes,No,Yes,No,No,No,No,Yes,14/03/2026,19:30
+G082,31,15 to 44,Female,Yes,Yes,No,No,Yes,No,Yes,No,,
+G083,47,45 and over,Female,Yes,Yes,No,No,No,No,No,No,,
+G084,20,15 to 44,Female,Yes,Yes,Yes,Yes,Yes,Yes,No,No,,
+G085,33,15 to 44,Female,Yes,Yes,Yes,Yes,No,Yes,Yes,No,,
+G086,30,15 to 44,Female,Yes,Yes,No,No,No,Yes,Yes,No,,
+G087,50,45 and over,Female,Yes,Yes,Yes,No,Yes,No,No,No,,
+G088,51,45 and over,Male,Yes,No,Yes,No,No,No,Yes,Yes,15/03/2026,10:30
+G089,68,45 and over,Male,Yes,Yes,No,Yes,Yes,Yes,Yes,No,,
+G090,15,15 to 44,Male,Yes,No,No,Yes,Yes,No,No,No,,
+G091,42,15 to 44,Male,Yes,Yes,Yes,Yes,Yes,No,Yes,Yes,14/03/2026,22:15
+G092,36,15 to 44,Male,Yes,Yes,No,No,No,Yes,No,No,,
+G093,69,45 and over,Female,Yes,Yes,Yes,No,Yes,Yes,Yes,No,,
+G094,43,15 to 44,Male,Yes,Yes,Yes,No,No,Yes,Yes,No,,
+G095,72,45 and over,Male,Yes,No,No,Yes,No,No,Yes,No,,
+G096,12,Under 15,Male,Yes,Yes,Yes,No,Yes,No,Yes,No,,
+G097,26,15 to 44,Female,Yes,Yes,Yes,Yes,Yes,No,Yes,No,,
+G098,59,45 and over,Male,Yes,No,Yes,No,Yes,Yes,Yes,Yes,15/03/2026,07:00
+G099,9,Under 15,Female,Yes,Yes,Yes,No,Yes,No,Yes,No,,
+G100,40,15 to 44,Male,Yes,Yes,Yes,Yes,No,Yes,Yes,Yes,14/03/2026,22:00
+G101,22,15 to 44,Female,Yes,Yes,Yes,No,Yes,No,Yes,Yes,15/03/2026,06:30
+G102,29,15 to 44,Male,Yes,Yes,Yes,Yes,No,No,Yes,Yes,14/03/2026,23:15
+G103,23,15 to 44,Male,Yes,No,Yes,No,No,Yes,No,Yes,15/03/2026,03:30
+G104,39,15 to 44,Male,Yes,Yes,Yes,Yes,Yes,Yes,Yes,No,,
+G105,12,Under 15,Female,Yes,Yes,Yes,Yes,Yes,Yes,No,Yes,15/03/2026,01:30
+G106,53,45 and over,Female,Yes,No,Yes,Yes,No,Yes,Yes,No,,
+G107,43,15 to 44,Female,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,15/03/2026,04:15
+G108,39,15 to 44,Male,Yes,Yes,Yes,No,Yes,No,Yes,No,,
+G109,46,45 and over,Male,No,No,Yes,No,No,Yes,No,No,,
+G110,69,45 and over,Male,Yes,Yes,No,No,Yes,No,Yes,No,,
+G111,56,45 and over,Male,Yes,Yes,Yes,Yes,No,Yes,Yes,Yes,14/03/2026,23:15
+G112,63,45 and over,Male,Yes,Yes,No,No,Yes,No,No,No,,
+G113,12,Under 15,Female,Yes,Yes,Yes,No,No,No,No,No,,
+G114,67,45 and over,Male,Yes,Yes,No,Yes,No,No,Yes,No,,
+G115,55,45 and over,Female,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,14/03/2026,22:30
+G116,63,45 and over,Female,Yes,No,Yes,Yes,No,Yes,Yes,Yes,14/03/2026,21:15
+G117,48,45 and over,Female,Yes,No,Yes,Yes,No,No,Yes,No,,
+G118,7,Under 15,Female,Yes,Yes,No,Yes,No,Yes,Yes,No,,
+G119,31,15 to 44,Female,Yes,Yes,Yes,No,No,Yes,Yes,Yes,15/03/2026,00:30
+G120,32,15 to 44,Female,Yes,Yes,No,No,No,No,Yes,No,,
+G121,28,15 to 44,Female,Yes,Yes,No,Yes,Yes,Yes,Yes,No,,
+G122,55,45 and over,Male,Yes,Yes,Yes,No,No,Yes,Yes,Yes,15/03/2026,04:30
+G123,19,15 to 44,Male,Yes,Yes,Yes,Yes,No,No,Yes,Yes,14/03/2026,20:30
+G124,6,Under 15,Female,Yes,No,Yes,No,No,Yes,Yes,Yes,15/03/2026,10:30
+G125,72,45 and over,Male,Yes,Yes,No,Yes,No,No,Yes,No,,
+G126,57,45 and over,Female,Yes,Yes,Yes,Yes,No,Yes,No,No,,
+G127,67,45 and over,Female,Yes,Yes,No,No,Yes,Yes,Yes,No,,
+G128,69,45 and over,Female,Yes,Yes,Yes,No,No,No,Yes,Yes,14/03/2026,19:00
+G129,55,45 and over,Male,No,Yes,No,Yes,No,Yes,Yes,No,,
+G130,50,45 and over,Male,Yes,Yes,No,No,No,Yes,Yes,No,,
+G131,43,15 to 44,Male,Yes,Yes,Yes,Yes,Yes,Yes,Yes,No,,
+G132,21,15 to 44,Female,Yes,Yes,Yes,No,Yes,Yes,Yes,Yes,14/03/2026,22:30
+G133,40,15 to 44,Female,Yes,No,Yes,No,Yes,No,Yes,Yes,15/03/2026,08:00
+G134,69,45 and over,Female,Yes,Yes,Yes,No,Yes,No,No,Yes,14/03/2026,22:00
+G135,39,15 to 44,Male,Yes,No,Yes,No,No,No,Yes,Yes,14/03/2026,19:45
+G136,28,15 to 44,Male,Yes,Yes,No,Yes,Yes,No,No,No,,
+G137,36,15 to 44,Male,Yes,Yes,No,No,No,No,Yes,No,,
+G138,58,45 and over,Female,Yes,Yes,No,No,Yes,Yes,Yes,No,,
+G139,24,15 to 44,Male,Yes,Yes,Yes,Yes,Yes,No,Yes,No,,
+G140,15,15 to 44,Female,Yes,No,No,Yes,Yes,No,Yes,No,,
+G141,4,Under 15,Female,No,Yes,Yes,Yes,Yes,No,Yes,No,,
+G142,37,15 to 44,Female,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,15/03/2026,00:30
+G143,19,15 to 44,Male,Yes,Yes,Yes,Yes,Yes,No,No,Yes,15/03/2026,01:15
+G144,24,15 to 44,Female,Yes,Yes,No,Yes,No,Yes,Yes,No,,
+G145,39,15 to 44,Male,Yes,No,Yes,Yes,No,Yes,No,No,,
+G146,22,15 to 44,Female,Yes,No,No,No,No,No,Yes,No,,
+G147,70,45 and over,Female,Yes,Yes,Yes,Yes,Yes,Yes,No,Yes,15/03/2026,11:45
+G148,20,15 to 44,Female,Yes,Yes,Yes,Yes,No,Yes,No,Yes,14/03/2026,22:00
+G149,60,45 and over,Female,Yes,Yes,Yes,Yes,No,No,Yes,No,,
+G150,9,Under 15,Female,Yes,Yes,No,Yes,Yes,No,Yes,No,,
+G151,46,45 and over,Male,Yes,Yes,Yes,Yes,No,No,Yes,No,,
+G152,11,Under 15,Female,Yes,Yes,Yes,No,Yes,No,Yes,Yes,14/03/2026,21:00
+G153,22,15 to 44,Female,Yes,Yes,No,Yes,No,Yes,Yes,Yes,14/03/2026,21:45
+G154,53,45 and over,Male,Yes,Yes,Yes,No,Yes,No,Yes,Yes,15/03/2026,08:30
+G155,58,45 and over,Male,Yes,Yes,Yes,Yes,No,No,Yes,Yes,14/03/2026,22:00
+G156,69,45 and over,Male,Yes,Yes,Yes,Yes,No,No,Yes,No,,
+G157,66,45 and over,Female,Yes,Yes,Yes,Yes,No,No,Yes,No,,
+G158,68,45 and over,Male,Yes,Yes,Yes,Yes,No,Yes,Yes,No,,
+G159,55,45 and over,Female,Yes,Yes,Yes,No,Yes,No,Yes,No,,
+G160,21,15 to 44,Male,Yes,Yes,Yes,No,No,Yes,Yes,No,,
+G161,51,45 and over,Female,Yes,Yes,Yes,No,No,No,Yes,No,,
+G162,11,Under 15,Male,No,Yes,Yes,No,Yes,No,No,Yes,14/03/2026,19:00
+G163,28,15 to 44,Female,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,15/03/2026,00:30
+G164,52,45 and over,Female,Yes,Yes,Yes,Yes,Yes,Yes,Yes,No,,
+G165,15,15 to 44,Female,Yes,Yes,No,No,Yes,No,Yes,Yes,15/03/2026,01:00
+G166,12,Under 15,Male,Yes,Yes,No,Yes,No,Yes,Yes,No,,
+G167,32,15 to 44,Female,Yes,Yes,No,No,Yes,Yes,Yes,No,,
+G168,30,15 to 44,Male,Yes,Yes,Yes,Yes,No,No,Yes,No,,
+G169,47,45 and over,Male,Yes,Yes,No,Yes,No,No,Yes,Yes,15/03/2026,03:30
+G170,51,45 and over,Male,Yes,Yes,No,No,Yes,No,Yes,No,,
+G171,32,15 to 44,Male,Yes,Yes,No,Yes,Yes,No,Yes,No,,
+G172,34,15 to 44,Female,Yes,No,No,Yes,Yes,No,Yes,No,,
+G173,40,15 to 44,Female,Yes,Yes,Yes,No,Yes,Yes,No,Yes,15/03/2026,00:00
+G174,18,15 to 44,Male,Yes,Yes,No,No,No,Yes,Yes,No,,
+G175,29,15 to 44,Female,Yes,Yes,Yes,No,No,Yes,Yes,No,,
+G176,46,45 and over,Male,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,15/03/2026,01:00
+G177,57,45 and over,Male,Yes,No,No,Yes,Yes,Yes,Yes,No,,
+G178,61,45 and over,Male,Yes,Yes,No,Yes,Yes,No,Yes,No,,
+G179,65,45 and over,Female,Yes,Yes,Yes,Yes,No,No,Yes,No,,
+G180,43,15 to 44,Female,Yes,Yes,No,Yes,Yes,No,Yes,Yes,14/03/2026,20:45
+G181,57,45 and over,Female,Yes,Yes,No,Yes,Yes,Yes,Yes,No,,
+G182,37,15 to 44,Female,Yes,Yes,Yes,No,No,Yes,Yes,Yes,15/03/2026,00:45
+G183,52,45 and over,Female,No,Yes,Yes,No,No,No,Yes,Yes,14/03/2026,20:15
+G184,12,Under 15,Male,Yes,Yes,Yes,No,Yes,Yes,Yes,Yes,15/03/2026,07:15
+G185,31,15 to 44,Male,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,14/03/2026,19:15
+G186,58,45 and over,Male,Yes,Yes,No,Yes,Yes,No,Yes,No,,

@@ -17,6 +17,8 @@ const args = process.argv.slice(2);
 const APP = args.find((a) => !a.startsWith('--')) || 'research-app';
 const shotsAt = args.indexOf('--shots');
 const SHOTS = shotsAt >= 0 ? resolve(args[shotsAt + 1]) : null;
+// Apps other than #RESEARCH-APP have their own checks, in tests/e2e/<app>.mjs, which exit when done.
+if (APP !== 'research-app') await import(`./${APP}.mjs`);
 
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.webmanifest': 'application/manifest+json', '.json': 'application/json' };
 function serve() {

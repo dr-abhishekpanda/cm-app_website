@@ -641,3 +641,85 @@ function FunnelSvg({ y, se, centre, xLabel = 'Effect', scale = 'linear', label, 
     </svg>
   );
 }
+
+/* ------------------------------------------------------- epidemic curve --- */
+
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const two = (x) => String(x).padStart(2, '0');
+/** A day as '14 Mar', and a time as '18:00', from milliseconds read as UTC. */
+export const dayLabel = (t) => { const d = new Date(t); return `${d.getUTCDate()} ${MON[d.getUTCMonth()]}`; };
+export const timeLabel = (t) => { const d = new Date(t); return `${two(d.getUTCHours())}:${two(d.getUTCMinutes())}`; };
+
+/**
+ * Epidemic curve: touching bars for each interval of onset, stacked by group, with optional marks
+ * (a common exposure such as a meal) and a shaded probable period of exposure. curve comes from
+ * engine/outbreak.js epiCurve.
+ */
+export function EpiCurvePlot(props) {
+  const [ref, w] = useWidth();
+  const groups = props.curve.groups;
+  return (
+    <div class="plotbox" ref={ref}>
+      <EpiSvg {...props} width={w} height={Math.round(Math.max(210, Math.min(300, w * 0.62)))} />
+      {groups.length ? <ul class="plotlegend">{groups.map((g, i) => <li><span class="key" style={`background:${SERIES[i % SERIES.length]}`} />{g}</li>)}</ul> : null}
+    </div>
+  );
+}
+
+function EpiSvg({ curve, label, marks = [], band = null, width, height }) {
+  const pad = { l: 40, r: 12, t: 24, b: 46 };
+  const W = width - pad.l - pad.r, H = height - pad.t - pad.b;
+  const { bins, groups, unit } = curve;
+  const t0 = bins[0].start, t1 = bins[bins.length - 1].end;
+  const X = (t) => pad.l + ((t - t0) / (t1 - t0)) * W;
+  const ymax = Math.max(1, ...bins.map((b) => b.count));
+  const yt = niceTicks(0, ymax, 4).filter((t) => Number.isInteger(t) && t >= 0);
+  const top = Math.max(ymax, yt[yt.length - 1] || 1) * 1.04;
+  const Y = (c) => pad.t + H - (c / top) * H;
+  // Label every k-th interval so that labels never collide.
+  const per = unit === 'hour' ? 44 : 40;
+  const k = Math.max(1, Math.ceil(bins.length / Math.max(1, Math.floor(W / per))));
+  const ticks = bins.map((b, i) => ({ t: b.start, i })).filter((x) => x.i % k === 0);
+  let lastDay = null;
+  return (
+    <svg class="plot epicurve" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label}>
+      <title>{label}</title>
+      {band && Number.isFinite(band.from) && Number.isFinite(band.to) ? (
+        <g><rect class="band" x={X(Math.max(t0, band.from))} y={pad.t} width={Math.max(2, X(Math.min(t1, band.to)) - X(Math.max(t0, band.from)))} height={H} />
+          <text class="tick acc" x={X(Math.max(t0, band.from))} y={pad.t - 8}>{band.label}</text></g>
+      ) : null}
+      {yt.map((t) => <g><line class="grid" x1={pad.l} x2={pad.l + W} y1={Y(t)} y2={Y(t)} /><text class="tick" x={pad.l - 6} y={Y(t) + 4} text-anchor="end">{t}</text></g>)}
+      {bins.map((b) => {
+        if (!b.count) return null;
+        const x = X(b.start), w = X(b.end) - X(b.start);
+        if (!groups.length) return <rect class="bar epi" x={x} y={Y(b.count)} width={w} height={pad.t + H - Y(b.count)} />;
+        let base = 0;
+        return groups.map((g, i) => {
+          const v = b.groups[g] || 0;
+          if (!v) return null;
+          const y = Y(base + v), h = Y(base) - Y(base + v);
+          base += v;
+          return <rect class="bar epi" style={`fill:${SERIES[i % SERIES.length]}`} x={x} y={y} width={w} height={h} />;
+        });
+      })}
+      {(() => { const other = bins.map((b) => b.count - groups.reduce((s, g) => s + (b.groups[g] || 0), 0)); return groups.length ? bins.map((b, i) => (other[i] > 0 ? <rect class="bar epi other" x={X(b.start)} y={Y(b.count)} width={X(b.end) - X(b.start)} height={Y(b.count - other[i]) - Y(b.count)} /> : null)) : null; })()}
+      <line class="axis" x1={pad.l} x2={pad.l + W} y1={pad.t + H} y2={pad.t + H} />
+      {ticks.map(({ t }) => {
+        const day = dayLabel(t);
+        const showDay = unit !== 'hour' || day !== lastDay;
+        lastDay = day;
+        return (
+          <g>
+            <line class="axis" x1={X(t)} x2={X(t)} y1={pad.t + H} y2={pad.t + H + 4} />
+            <text class="tick" x={X(t)} y={pad.t + H + 16} text-anchor="middle">{unit === 'hour' ? timeLabel(t) : day}</text>
+            {unit === 'hour' && showDay ? <text class="tick" x={X(t)} y={pad.t + H + 30} text-anchor="middle">{day}</text> : null}
+          </g>
+        );
+      })}
+      {marks.filter((m) => Number.isFinite(m.t) && m.t >= t0 && m.t <= t1).map((m) => (
+        <g><line class="mark" x1={X(m.t)} x2={X(m.t)} y1={pad.t} y2={pad.t + H} /><text class="tick acc" x={X(m.t) + 3} y={pad.t + 10}>{m.label}</text></g>
+      ))}
+      <text class="tick" transform={`translate(11 ${pad.t + H / 2}) rotate(-90)`} text-anchor="middle">Cases</text>
+    </svg>
+  );
+}

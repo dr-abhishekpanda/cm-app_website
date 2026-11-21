@@ -195,6 +195,7 @@ p.err{color:var(--danger);font-size:.86rem;margin:0}
 .table.compact.wrap1 thead th,.table.compact.wrap1 tbody th{white-space:normal}
 .table.compact.wrap1 tbody th{min-width:6em}
 .table.compact td.wrap{white-space:normal;min-width:10em}
+.table.compact td.wn{white-space:normal}
 @media (max-width:480px){ .table.compact.wrap1 th,.table.compact.wrap1 td{padding-left:8px;padding-right:8px} }
 .table.compact thead th{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);font-weight:500;background:var(--paper-2)}
 .table.compact tbody th{font-weight:600;color:var(--ink)}
@@ -308,3 +309,11 @@ h3.dsec{margin-top:4px}
 .handover .t{font-weight:600;grid-column:1}
 .handover .d{grid-column:1;font-size:.88rem;color:var(--ink-soft)}
 .handover svg{grid-column:2;grid-row:1 / span 2;width:16px;height:16px;color:var(--primary)}
+
+/* Epidemic curve */
+.plot .bar.epi{fill:var(--primary);stroke:var(--card);stroke-width:1}
+.plot .bar.epi.other{fill:var(--ink-faint)}
+.plot .band{fill:var(--accent);opacity:.13}
+.plot .tick.acc{fill:var(--accent)}
+.plotlegend{list-style:none;display:flex;flex-wrap:wrap;gap:6px 14px;margin:6px 0 0;padding:0;font-size:.84rem;color:var(--ink-soft)}
+.plotlegend .key{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:6px;vertical-align:-1px}

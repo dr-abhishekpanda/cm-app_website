@@ -15,6 +15,7 @@ export const PRESETS = {
   agreement: { tab: ['kappa', 'fleiss', 'icc', 'ba', 'alpha'] },
   regression: { kind: ['linear', 'logistic'] },
   tests: { tab: ['choose', 'run'] },
+  outbreak: { tab: ['curve', 'attack', 'food', 'incubation'] },
   survival: {},
   'meta-analysis': {},
   describe: {},

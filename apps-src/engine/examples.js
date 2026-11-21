@@ -85,3 +85,35 @@ export function exampleMeaslesCsv() {
   }
   return rows.map((row) => row.join(',')).join('\n');
 }
+
+/**
+ * A simulated food-borne outbreak after a village wedding lunch (not real people): everyone at the
+ * meal, what each ate, whether they fell ill, and the date and time of onset. The lunch was served at
+ * 13:00 on 14 March 2026; dates are day first, as written in India.
+ */
+export function exampleOutbreakCsv() {
+  const r = mulberry32(1403);
+  const foods = [['Rice', 0.96], ['Dal', 0.86], ['Mutton_curry', 0.68], ['Mixed_veg', 0.62], ['Kheer', 0.55], ['Curd_raita', 0.48], ['Water', 0.82]];
+  const rows = [['ID', 'Age', 'Age_group', 'Sex', ...foods.map((f) => f[0]), 'Ill', 'Onset_date', 'Onset_time']];
+  const meal = Date.UTC(2026, 2, 14, 13, 0);
+  const gauss = () => { const u = Math.max(r(), 1e-12), v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+  const two = (x) => String(x).padStart(2, '0');
+  let untimed = 0;
+  for (let i = 1; i <= 186; i++) {
+    const age = 3 + Math.floor(r() * 70);
+    const group = age < 15 ? 'Under 15' : age < 45 ? '15 to 44' : '45 and over';
+    const sex = r() < 0.52 ? 'Male' : 'Female';
+    const ate = foods.map(([, p]) => r() < p);
+    const ill = r() < (ate[2] ? 0.62 : 0.06);
+    let date = '', time = '';
+    if (ill) {
+      const hours = Math.exp(Math.log(11) + Math.log(1.45) * gauss());
+      const d = new Date(meal + Math.round(hours * 4) * 15 * 60000);
+      date = `${two(d.getUTCDate())}/${two(d.getUTCMonth() + 1)}/${d.getUTCFullYear()}`;
+      time = `${two(d.getUTCHours())}:${two(d.getUTCMinutes())}`;
+      if (untimed < 2 && r() < 0.06) { time = ''; untimed += 1; }
+    }
+    rows.push([`G${String(i).padStart(3, '0')}`, age, group, sex, ...ate.map((x) => (x ? 'Yes' : 'No')), ill ? 'Yes' : 'No', date, time]);
+  }
+  return rows.map((row) => row.join(',')).join('\n');
+}
