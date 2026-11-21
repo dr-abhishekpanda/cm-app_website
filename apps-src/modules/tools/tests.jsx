@@ -12,6 +12,7 @@ import { DataTable, Report, Stats, Refs } from '../../ui/results.jsx';
 import { BoxPlot, Histogram, PercentBars, ScatterPlot } from '../../ui/plot.jsx';
 import { CodeExport } from '../../ui/code.jsx';
 import { REFS } from '../refs.js';
+import { pick } from '../presets.js';
 import * as R from './tests/run.js';
 
 const pretty = (s) => String(s).replace(/_/g, ' ');
@@ -789,8 +790,8 @@ function Runner({ testId, setTestId }) {
   );
 }
 
-export default function TestsTool() {
-  const [tab, setTab] = useState('choose');
+export default function TestsTool({ preset }) {
+  const [tab, setTab] = useState(() => pick(preset, 'tests', 'tab', 'choose'));
   const [testId, setTestId] = useState('t2');
   const run = (id) => { setTestId(id); setTab('run'); window.scrollTo(0, 0); };
   return (

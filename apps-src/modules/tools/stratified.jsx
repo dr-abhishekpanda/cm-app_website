@@ -12,6 +12,7 @@ import { DataTable, Report, Stats, Refs, Disclose } from '../../ui/results.jsx';
 import { ForestPlot } from '../../ui/plot.jsx';
 import { CodeExport } from '../../ui/code.jsx';
 import { REFS } from '../refs.js';
+import { pick } from '../presets.js';
 import { pretty, P, cap, isInt, pc, pcCI, pp, rCI, s3, ptx, mrow, MCOLS, guessLevel, other, needData, Checks, LevelPick, PER_RATE, UNITS, RowsTable, readRows, mkRows, newRowId } from './epishared.jsx';
 
 /* -------------------------------------------------- stratified analysis --- */
@@ -31,8 +32,8 @@ const STRATA_COLS = {
 };
 const HEAD = { cohort: ['Risk ratio', 'RR'], 'case-control': ['Odds ratio', 'OR'], cross: ['Prevalence ratio', 'PR'], pt: ['Rate ratio', 'IRR'] };
 
-function StratifiedPanel({ ds }) {
-  const [design, setDesign] = useState('cohort');
+function StratifiedPanel({ ds, preset }) {
+  const [design, setDesign] = useState(() => pick(preset, 'stratified', 'design', 'cohort'));
   const [modeSel, setMode] = useState(null);
   const mode = modeSel ?? (ds ? 'data' : 'typed');
   const [rowsBy, setRowsBy] = useState(() => Object.fromEntries(Object.entries(EX_STRATA).map(([k, v]) => [k, mkRows(v)])));
@@ -389,9 +390,9 @@ function IndirectPanel() {
 
 /* ---------------------------------------------------------------- page --- */
 
-export default function StratifiedTool() {
+export default function StratifiedTool({ preset }) {
   const ds = useDataset();
-  const [tab, setTab] = useState('strat');
+  const [tab, setTab] = useState(() => pick(preset, 'stratified', 'tab', 'strat'));
   return (
     <div>
       <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Analyse' }]} title="Confounding and Standardisation"
@@ -407,7 +408,7 @@ export default function StratifiedTool() {
           <p>Confounding is a bias to remove; effect modification is a finding to report. Several confounders at once need regression.</p>
         </Disclose>
         <div><Seg wide value={tab} onChange={setTab} options={[{ value: 'strat', label: 'Stratified analysis' }, { value: 'direct', label: 'Direct standardisation' }, { value: 'indirect', label: 'Indirect (SMR)' }]} /></div>
-        {tab === 'strat' ? <StratifiedPanel ds={ds} /> : tab === 'direct' ? <DirectPanel /> : <IndirectPanel />}
+        {tab === 'strat' ? <StratifiedPanel ds={ds} preset={preset} /> : tab === 'direct' ? <DirectPanel /> : <IndirectPanel />}
       </div>
     </div>
   );

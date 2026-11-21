@@ -11,6 +11,7 @@ import { DataPanel, useDataset, ColumnSelect, col, exampleMeaslesCsv, exampleCsv
 import { DataTable, Report, Stats, Refs, Disclose } from '../../ui/results.jsx';
 import { CodeExport } from '../../ui/code.jsx';
 import { REFS } from '../refs.js';
+import { pick } from '../presets.js';
 import { pretty, isInt, pc, rCI, mrow, MCOLS, needData, Checks, BinaryFrom, defaultRule, readRule, readBinary } from './epishared.jsx';
 
 /** A VE percentage, with minus infinity spelt out. */
@@ -69,8 +70,8 @@ const RATIO_KINDS = [{ value: 'odds ratio', label: 'Odds ratio' }, { value: 'ris
 const METHOD = { wald: { 'risk ratio': 'Katz', 'odds ratio': 'Woolf', 'rate ratio': 'Wald', 'matched odds ratio': 'Wald' }, score: "Koopman's score", exact: 'exact', midp: 'mid-p', logit: "Farrington's logit" };
 const methodName = (k, name) => (typeof METHOD[k] === 'object' ? METHOD[k][name] : METHOD[k]);
 
-function VePanel({ ds }) {
-  const [design, setDesign] = useState('cohort');
+function VePanel({ ds, preset }) {
+  const [design, setDesign] = useState(() => pick(preset, 'vaccines', 'design', 'cohort'));
   const [modeSel, setMode] = useState(null);
   const canData = DATA_OK.has(design);
   const mode = canData ? modeSel ?? (ds ? 'data' : 'typed') : 'typed';
@@ -385,9 +386,9 @@ function ProgrammePanel() {
 
 /* ---------------------------------------------------------------- page --- */
 
-export default function VaccinesTool() {
+export default function VaccinesTool({ preset }) {
   const ds = useDataset();
-  const [tab, setTab] = useState('ve');
+  const [tab, setTab] = useState(() => pick(preset, 'vaccines', 'tab', 've'));
   return (
     <div>
       <PageHead crumbs={[{ label: 'Tools', href: '#/' }, { label: 'Analyse' }]} title="Vaccines and Screening"
@@ -402,7 +403,7 @@ export default function VaccinesTool() {
           <p>The example measles outbreak has 420 children in six hamlets, with doses of measles-rubella vaccine and measles by the outbreak case definition. It is simulated; the protection built into it is illustrative.</p>
         </Disclose>
         <div><Seg wide value={tab} onChange={setTab} options={[{ value: 've', label: 'Vaccine effectiveness' }, { value: 'programme', label: 'Screening programme' }]} /></div>
-        {tab === 've' ? <VePanel ds={ds} /> : <ProgrammePanel />}
+        {tab === 've' ? <VePanel ds={ds} preset={preset} /> : <ProgrammePanel />}
       </div>
     </div>
   );

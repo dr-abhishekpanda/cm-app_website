@@ -367,6 +367,47 @@ try {
     check(`${label}: programme tables fit their width`, await tablesFit());
     await shot(page, `${label}-programme`);
 
+    // Phase 2e: the study design chooser, its links into other tools, and Back.
+    await page.goto(`${base}#/tool/design-chooser`);
+    await page.waitForSelector('h2#plan-h');
+    const choose = (name) => page.getByRole('button', { name, exact: false }).first().click();
+    await choose('Whether an exposure or risk factor is linked');
+    await page.getByRole('button', { name: 'No', exact: true }).click();
+    await choose('Rare, or it appears years after exposure');
+    await choose('Common: many people have it');
+    check(`${label}: rare outcome, common exposure gives a case-control study`, (await text(page, '#dc-h')) === 'Case-control study', await text(page, '#dc-h'));
+    check(`${label}: answers fold to a summary`, (await page.locator('.q.answered').count()) === 4);
+    check(`${label}: no sideways scroll on the chooser`, await noSideScroll(page));
+    await shot(page, `${label}-design-plan`);
+    await page.getByRole('link', { name: /Odds ratio from a 2 × 2 table/ }).first().click();
+    await page.waitForFunction(() => document.querySelector('h1')?.textContent === 'Frequency, Association and Impact');
+    check(`${label}: the link opens the 2 × 2 table set for a case-control study`, (await page.getByRole('button', { name: 'Case-control', exact: true }).getAttribute('aria-pressed')) === 'true');
+    await page.goBack();
+    await page.waitForSelector('#dc-h');
+    check(`${label}: Back returns to the same answers`, (await text(page, '#dc-h')) === 'Case-control study');
+    await page.getByRole('link', { name: /Sample Size and Power.*Case-control study \(odds ratio\)/ }).first().click();
+    await page.waitForFunction(() => document.querySelector('h1')?.textContent === 'Sample Size and Power');
+    check(`${label}: the sample size link opens the case-control design`, (await page.locator('select').first().inputValue()) === 'cc');
+    await page.goBack();
+    await page.waitForSelector('#dc-h');
+    await page.getByRole('button', { name: 'Change the answer to: How common is the exposure?' }).click();
+    await choose('A particular occupation, drug or local source');
+    await choose('Yes: the records cover the follow-up');
+    check(`${label}: both rare, with records, gives a retrospective cohort`, (await text(page, '#dc-h')) === 'Retrospective cohort study', await text(page, '#dc-h'));
+    await page.getByRole('button', { name: "Name a study's design" }).click();
+    await choose('How common something is, or what causes or changes it');
+    await choose('Yes: they decided who received it');
+    await choose('At random, with a comparison group');
+    await page.getByRole('button', { name: /^Groups/ }).click();
+    await choose('No: each cluster stayed in its arm');
+    check(`${label}: a randomised cluster design is named`, (await text(page, '#dn-h')) === 'Cluster randomised trial', await text(page, '#dn-h'));
+    check(`${label}: the tree lights the randomised branch`, (await page.locator('.dtree g.on').evaluateAll((g) => g.map((x) => x.dataset.node).join(','))) === 'assign,exp,rct');
+    check(`${label}: no sideways scroll on the named design`, await noSideScroll(page));
+    await shot(page, `${label}-design-name`);
+    await page.getByRole('button', { name: 'All designs', exact: true }).click();
+    await page.getByRole('button', { name: 'Test-negative design', exact: true }).click();
+    check(`${label}: every design listed, and one opens`, (await page.locator('#all-h ~ .stack-tight .disclose').count()) === 27 && (await text(page, '.disclose.open .verdict-line')).startsWith('Test-positive cases'));
+
     await page.goto(`${base}#/`);
     await page.getByRole('button', { name: 'Settings' }).click();
     await page.getByRole('button', { name: 'Dark', exact: true }).click();

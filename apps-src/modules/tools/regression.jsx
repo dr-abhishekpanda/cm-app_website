@@ -12,6 +12,7 @@ import { DataTable, Report, Stats, Refs } from '../../ui/results.jsx';
 import { CodeExport } from '../../ui/code.jsx';
 import { ScatterPlot, QQPlot, LinePlot } from '../../ui/plot.jsx';
 import { REFS } from '../refs.js';
+import { pick } from '../presets.js';
 
 const pretty = (s) => String(s).replace(/_/g, ' ');
 const P = (p) => pValue(p).report;
@@ -177,9 +178,9 @@ function LogisticResult({ des, outcome, event, code }) {
 
 /* ---------------------------------------------------------------- page ---- */
 
-export default function RegressionTool() {
+export default function RegressionTool({ preset }) {
   const ds = useDataset();
-  const [kind, setKind] = useState('linear');
+  const [kind, setKind] = useState(() => pick(preset, 'regression', 'kind', 'linear'));
   const [outcome, setOutcome] = useState(null);
   const [event, setEvent] = useState(null);
   const [chosen, setChosen] = useState({});

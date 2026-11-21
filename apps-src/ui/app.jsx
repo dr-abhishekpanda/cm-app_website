@@ -12,7 +12,7 @@ function View({ config, stages, modules, route }) {
     case 'learn': return <LearnIndex config={config} stages={stages} modules={modules} />;
     case 'practice': return <PracticeIndex config={config} stages={stages} modules={modules} />;
     case 'about': return <About config={config} />;
-    case 'tool': { const m = find(route.id, 'tool'); return m ? <m.tool config={config} /> : <NotFound />; }
+    case 'tool': { const m = find(route.id, 'tool'); return m ? <m.tool key={route.key} config={config} preset={route.query} modules={modules} /> : <NotFound />; }
     case 'lesson': { const m = find(route.id, 'lesson'); return m ? <m.lesson config={config} /> : <NotFound />; }
     case 'drill': { const m = find(route.id, 'practice'); return m ? <m.practice config={config} /> : <NotFound />; }
     default: return <NotFound />;

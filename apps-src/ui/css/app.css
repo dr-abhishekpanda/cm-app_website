@@ -268,3 +268,43 @@ h2.qhead .small{font-weight:400;color:var(--ink-faint)}
 .card .pill{font-family:var(--font-body);font-size:.78rem;letter-spacing:0;text-transform:none}
 .card .go{font-family:var(--font-body);font-size:.9rem;letter-spacing:0;text-transform:none}
 .field > label{font-family:var(--font-body);font-size:.92rem;font-weight:600;letter-spacing:0;text-transform:none;color:var(--ink)}
+
+/* Study design chooser: questions with sentence-length options, the design tree, tool links */
+fieldset.q{border:0;margin:0;padding:0;min-width:0}
+fieldset.q legend{font-weight:600;color:var(--ink);padding:0;margin-bottom:8px}
+fieldset.q .qhint{margin:-4px 0 8px}
+.choices{display:grid;gap:6px}
+.choices button{font:inherit;text-align:left;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:var(--r-sm);padding:10px 12px 10px 38px;position:relative;cursor:pointer;min-height:44px;line-height:1.35}
+.choices button::before{content:"";position:absolute;left:13px;top:13px;width:14px;height:14px;border-radius:50%;border:1.5px solid var(--ink-faint);background:var(--card);box-sizing:border-box}
+.choices button[aria-pressed="true"]{border-color:var(--primary);background:var(--paper-2)}
+.choices button[aria-pressed="true"]::before{border-color:var(--primary);background:radial-gradient(circle,var(--primary) 0 3.5px,var(--card) 4px)}
+.choices button:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.choices .t{display:block}
+.choices .h{display:block;font-size:.84rem;color:var(--ink-soft);margin-top:2px}
+.q.answered{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line-soft)}
+.q.answered p{margin:0;flex:1;min-width:0}
+.q.answered .ql{display:block;font-size:.86rem;color:var(--ink-soft)}
+.q.answered .qv{display:block;font-weight:600;color:var(--ink)}
+.q.answered .btn{flex:none}
+.stack-tight{display:grid;gap:8px}
+.dtree{margin:0}
+.dtree svg{width:100%;max-width:360px;height:auto;display:block;overflow:visible}
+.dtree path{fill:none;stroke:var(--line);stroke-width:1.5}
+.dtree path.on{stroke:var(--primary);stroke-width:2.2}
+.dtree circle{fill:var(--card);stroke:var(--ink-faint);stroke-width:1.5}
+.dtree g.on circle{fill:var(--primary);stroke:var(--primary)}
+.dtree text{font-family:var(--font-body);font-size:13.5px;fill:var(--ink-faint)}
+.dtree g.on text{fill:var(--ink);font-weight:600}
+.dtree figcaption{margin-top:6px}
+.dcard h3,h3.dsec{font-size:1.02rem;margin:14px 0 4px}
+h3.dsec{margin-top:4px}
+.dcard > h3:first-child{margin-top:0}
+.dcard p,.dcard ul{margin:0 0 4px}
+.dcard .example{margin-top:8px}
+.why ul{margin:0}
+.handovers{list-style:none;padding:0;margin:4px 0 6px;display:grid;gap:6px}
+.handover{display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--card);text-decoration:none;color:var(--ink)}
+.handover:hover{border-color:var(--primary)}
+.handover .t{font-weight:600;grid-column:1}
+.handover .d{grid-column:1;font-size:.88rem;color:var(--ink-soft)}
+.handover svg{grid-column:2;grid-row:1 / span 2;width:16px;height:16px;color:var(--primary)}
