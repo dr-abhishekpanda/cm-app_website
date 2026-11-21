@@ -324,7 +324,16 @@ try {
     check(`${label}: Hanley and McNeil ratings give AUC 0.89`, (await text(page, '#roc-h')) === 'AUC = 0.89' && (await text(page, '.verdict-line')) === '95% CI 0.83 to 0.95 (DeLong); 51 with the condition, 58 without', `${await text(page, '#roc-h')} | ${await text(page, '.verdict-line')}`);
     await page.getByRole('button', { name: 'Predictive values for this cut-off' }).click();
     check(`${label}: a cut-off carried to the accuracy tab`, (await text(page, '#dg-h')) === 'Sensitivity 86.3%, specificity 77.6%', await text(page, '#dg-h'));
-    await page.getByRole('button', { name: 'Compare two curves', exact: true }).click();
+    await page.getByRole('button', { name: 'Compare tests', exact: true }).click();
+    await page.getByLabel('First test', { exact: true }).selectOption('Pallor_MO1');
+    await page.getByLabel('Second test', { exact: true }).selectOption('Hb_HemoCue');
+    await page.getByLabel('Second test positive when Hb HemoCue is').selectOption('<');
+    await page.getByLabel('Cut-off for Hb HemoCue').fill('11');
+    await anaemiaRef();
+    check(`${label}: pallor and HemoCue on the same children`, (await text(page, '#tt-h')) === 'Sensitivity 81.7% and 91.5%; specificity 96.6% and 96.6%' && (await text(page, '.verdict-line')) === 'Differences −9.9 points (95% CI −20.5 to 0.5; exact p = 0.092) and 0.0 points (95% CI −14.1 to 14.1; exact p > 0.999)', `${await text(page, '#tt-h')} | ${await text(page, '.verdict-line')}`);
+    check(`${label}: two-test tables fit their width`, await tablesFit());
+    await shot(page, `${label}-two-tests`);
+    await page.getByRole('button', { name: 'Two markers, same people', exact: true }).click();
     await page.getByLabel('First marker', { exact: true }).selectOption('Hb_HemoCue');
     await page.getByLabel('Second marker', { exact: true }).selectOption('Pallor_MO1');
     await anaemiaRef();
@@ -333,6 +342,30 @@ try {
     check(`${label}: no sideways scroll on the comparison`, await noSideScroll(page));
     check(`${label}: comparison tables fit their width`, await tablesFit());
     await shot(page, `${label}-roc-compare`);
+
+    // Phase 2d: vaccine effectiveness and screening programmes.
+    await page.goto(`${base}#/tool/vaccines`);
+    await page.getByRole('button', { name: 'Replace or view' }).click();
+    await page.getByRole('button', { name: 'Load example measles outbreak' }).click();
+    await page.getByLabel('Vaccination column').selectOption('MR_doses');
+    await page.getByLabel('Outcome column').selectOption('Measles');
+    check(`${label}: VE in the measles outbreak, any dose`, (await text(page, '#ve-h')) === 'VE = 92.6%' && (await text(page, '.verdict-line')) === '95% CI 84.8% to 96.4% (from the risk ratio, Katz)', `${await text(page, '#ve-h')} | ${await text(page, '.verdict-line')}`);
+    await page.getByRole('group', { name: 'Vaccinated values', exact: true }).getByLabel('1', { exact: true }).uncheck();
+    check(`${label}: VE of two doses against none`, (await text(page, '#ve-h')) === 'VE = 97.5%' && (await text(page, '.verdict-line')) === "95% CI 90.6% to 99.3% (from the risk ratio, Koopman's score)", `${await text(page, '#ve-h')} | ${await text(page, '.verdict-line')}`);
+    check(`${label}: no sideways scroll on VE`, await noSideScroll(page));
+    check(`${label}: VE tables fit their width`, await tablesFit());
+    await shot(page, `${label}-vaccine`);
+    await page.getByRole('button', { name: 'R and Python code for this analysis' }).click();
+    check(`${label}: VE R code counts doses from the data`, (await page.locator('pre.code').textContent()).includes('grp <- ifelse(d[["MR_doses"]] %in% c(2), 1, ifelse(d[["MR_doses"]] %in% c(0), 0, NA))'));
+    await page.getByLabel('Study design').selectOption('screening');
+    await page.getByRole('button', { name: 'Counts', exact: true }).click();
+    await page.getByLabel('Coverage in the population, %').fill('85');
+    check(`${label}: screening method`, (await text(page, '#ve-h')) === 'VE = 92.4%' && (await text(page, '.verdict-line')) === "95% CI 86.9% to 95.6% (Farrington's logit)", `${await text(page, '#ve-h')} | ${await text(page, '.verdict-line')}`);
+    await page.getByRole('button', { name: 'Screening programme', exact: true }).click();
+    check(`${label}: two tests in series`, (await text(page, '#sy-h')) === 'Finds 171 of 200 cases' && (await text(page, '.verdict-line')) === 'Net sensitivity 85.5%, specificity 99.9%; positive predictive value 94.6%', `${await text(page, '#sy-h')} | ${await text(page, '.verdict-line')}`);
+    check(`${label}: no sideways scroll on the programme`, await noSideScroll(page));
+    check(`${label}: programme tables fit their width`, await tablesFit());
+    await shot(page, `${label}-programme`);
 
     await page.goto(`${base}#/`);
     await page.getByRole('button', { name: 'Settings' }).click();

@@ -2,6 +2,36 @@
 
 Newest entry first. Each entry records what changed, how it was checked, and anything left open.
 
+## 2026-11-21 · Phase 2d: Vaccines and Screening
+
+Branch `feature/research-app-2d`, stacked on Phase 2c.
+
+### Built
+
+- **Engine** (`engine/vaccine.js`): vaccine effectiveness as 1 minus the ratio each design estimates (risk ratio in a cohort or outbreak, rate ratio with person-time, odds ratio in a case-control or test-negative study, the matched odds ratio in matched pairs), each with the association tool's intervals carried across; the screening method of Orenstein and colleagues (1985) with Farrington's (1993) logit interval, or the exact one when fewer than 5 cases were vaccinated or unvaccinated; a published ratio read as VE.
+- **Engine** (`engine/diag.js`): two binary tests on the same people, with the paired difference in sensitivity and in specificity by Newcombe's (1998) method 10 and McNemar's test (exact below 25 disagreements); series and parallel accuracy counted directly, with Gardner's conditional covariances and their possible range; combined accuracy from the product rules, with covariances if known; the yield of a screening programme (cases found and missed, false positives, predictive values, people screened and second tests per case found, cost per case found).
+- **Tool** (`modules/tools/vaccines.jsx`, Vaccines and Screening), two tabs:
+  - *Vaccine effectiveness*: seven designs; from columns of the data or typed counts; the user ticks which values of the vaccination column count as vaccinated and which as the comparison group, so two doses can be compared with none, leaving out one; coverage for the screening method entered or taken from the data; checks on equal exposure, the assumptions of the test-negative design, control selection, small cells, negative VE and the need to adjust for confounders.
+  - *Screening programme*: one test, two in series or two in parallel, for a stated population and prevalence (its source asked for in the report sentence); the strategies compared side by side; optional covariances for tests that err together; checks on series against parallel testing, predictive values at low prevalence, and lead-time and length bias.
+- **Tool** (Diagnostic Accuracy and ROC): the third tab is now *Compare tests*, opening on two binary tests given to the same people (each test with Wilson intervals, the paired differences, McNemar's test, both tests together counted in series and in parallel).
+- **Example data**: a simulated measles outbreak (420 children in six hamlets, with doses of measles-rubella vaccine and whether the card was seen), labelled as simulated and not real children.
+- **Code export**: two new kinds (vaccine effectiveness, two tests on the same people). R uses `poisson.test`, `binom.test`, `fisher.test`, `mcnemar.test` and `glm` with an offset for the screening method; Python uses SciPy with the same intervals written out. A vaccination column read from the data keeps the user's choice of values.
+- **References**: 8 added (Orenstein and colleagues 1985; Farrington 1993; Jackson and Nelson 2013; Sullivan, Tchetgen Tchetgen and Cowling 2016; Newcombe 1998 on paired data; Gardner and colleagues 2000; Cebul, Hershey and Williams 1982; Macaskill and colleagues 2002), each checked on PubMed. Orenstein and colleagues has no DOI, so the reference list links to its full text in PubMed Central.
+
+### Checked
+
+| Check | Result |
+|---|---|
+| Engine tests (`npm test`) | 79 of 79 pass. VE against R 4.3.3 (epiR 2.0.67 `epi.2by2` for Katz and Woolf intervals, `poisson.test` and `binom.test` for the exact person-time and matched-pair intervals); the screening method against `glm` with logit coverage as an offset, and Clopper-Pearson limits; Newcombe's method 10 against the 18 rows of his Table III; two tests read from the screening-camp data agree with the accuracy tool, and counted series and parallel accuracy equal the formulas with the conditional covariances; combined tests and programme yield worked by hand |
+| Code export (`npm run test:code`) | 111 Python scripts (536 checks) and 111 R scripts (530 checks), 0 failed |
+| Browser smoke test | 220 of 220 pass at 360 px and 1280 px, including VE in the measles example for any dose and for two doses against none, the screening method, two tests in series, and two tests on the same children; the new tables fit a phone |
+
+### Found on the way
+
+- R's `glm` at its default convergence tolerance gives the screening-method limits to about 1 in a million; the reference generator tightens it, and the generated R script sets `epsilon = 1e-12`.
+- Newcombe's Table III prints 0.8736 for the row (1, 97, 1, 1); the engine's 0.87367 rounds to 0.8737. Every row is held to one unit in the fourth decimal.
+- PropCIs, the R package with Newcombe's paired interval, is not available on this machine (CRAN cannot be reached), so his published table is the reference instead.
+
 ## 2026-11-21 · Phase 2c: Diagnostic Accuracy and ROC
 
 Branch `feature/research-app-2c`, stacked on Phase 2b.

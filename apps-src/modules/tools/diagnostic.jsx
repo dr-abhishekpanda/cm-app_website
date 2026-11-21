@@ -2,7 +2,7 @@
  * likelihood ratios, predictive values at any prevalence), ROC curves with their cut-offs, and two ROC
  * curves compared. From columns of the loaded data or typed counts. */
 import { useState } from 'preact/hooks';
-import { testAccuracy, atPrevalence, classifyValue, countTable, rocAnalysis, rocCutoffs, rocPaired, rocUnpaired, compareAucSummary, expandGrouped, autoDirection } from '../../engine/diag.js';
+import { testAccuracy, atPrevalence, classifyValue, countTable, rocAnalysis, rocCutoffs, rocPaired, rocUnpaired, compareAucSummary, expandGrouped, autoDirection, compareBinaryTests } from '../../engine/diag.js';
 import { isMissing } from '../../engine/data.js';
 import { fixed, count, sig, ratio, parseNumber } from '../../engine/format.js';
 import { PageHead, Seg, Callout, AtLevel, NumberField, TextField, SelectField } from '../../ui/core.jsx';
@@ -11,57 +11,7 @@ import { DataTable, Report, Stats, Refs, Disclose } from '../../ui/results.jsx';
 import { RocPlot, ProportionCurves } from '../../ui/plot.jsx';
 import { CodeExport } from '../../ui/code.jsx';
 import { REFS } from '../refs.js';
-import { pretty, P, isInt, pc, pcCI, rCI, mrow, MCOLS, guessLevel, needData, Checks, RowsTable, readRows, mkRows } from './epishared.jsx';
-
-/* ------------------------------------------------ reading columns as tests --- */
-
-const OPS = [{ value: '<', label: 'Below' }, { value: '<=', label: 'At or below' }, { value: '>=', label: 'At or above' }, { value: '>', label: 'Above' }];
-const SYM = { '<': '<', '<=': '≤', '>=': '≥', '>': '>' };
-const NEGATIVE = /^(no|none|nil|normal|negative|neg|absent|never|non[- ]?reactive|0|false)\b/i;
-const num = (v) => (Number.isInteger(v) ? count(v) : sig(v, 6));
-
-/** Numeric columns with more than two values are read with a cut-off; others by their values. */
-const usesCut = (c) => c.numeric && c.levels.length > 2;
-function defaultRule(c) {
-  if (usesCut(c)) {
-    const xs = c.numbers.filter((v) => v !== null && Number.isFinite(v)).sort((a, b) => a - b);
-    return { kind: 'cut', op: '>=', text: xs.length ? String(xs[Math.floor(xs.length / 2)]) : '' };
-  }
-  if (c.levels.length === 2) return { kind: 'levels', positive: [guessLevel(c.levels)] };
-  const pos = c.levels.filter((l) => !NEGATIVE.test(String(l).trim()));
-  return { kind: 'levels', positive: pos.length && pos.length < c.levels.length ? pos : [c.levels[c.levels.length - 1]] };
-}
-/** The rule with its number read, or an error. */
-function readRule(r) {
-  if (r.kind === 'levels') return r.positive.length ? { rule: r } : { error: 'Tick at least one value that counts as positive.' };
-  const v = parseNumber(r.text);
-  return Number.isFinite(v) ? { rule: { kind: 'cut', op: r.op, value: v, text: r.text } } : { error: 'Enter the cut-off as a number.' };
-}
-const ruleText = (r) => (r.kind === 'cut' ? `${SYM[r.op]} ${r.text}` : r.positive.join(' or '));
-const readBinary = (c, rule) => c.raw.map((raw, i) => (isMissing(raw) ? null : classifyValue(raw, c.numbers?.[i] ?? null, rule)));
-
-/** A column read as positive or negative: tick the values that count, or give a cut-off for numbers. */
-function BinaryFrom({ ds, label, value, onChange, rule, onRule, exclude = [], what }) {
-  const c = col(ds, value);
-  const r = c ? rule ?? defaultRule(c) : null;
-  const toggle = (l) => onRule({ ...r, positive: r.positive.includes(l) ? r.positive.filter((x) => x !== l) : [...r.positive, l] });
-  return (
-    <div class="stack" style="gap:10px">
-      <ColumnSelect ds={ds} label={label} value={value} onChange={(v) => { onChange(v); onRule(null); }} kind="any" exclude={exclude} />
-      {c && r.kind === 'cut' ? (
-        <div class="fields">
-          <SelectField label={`${what} when ${pretty(value)} is`} value={r.op} onChange={(op) => onRule({ ...r, op })} options={OPS} />
-          <NumberField label={`Cut-off for ${pretty(value)}`} value={r.text} onInput={(text) => onRule({ ...r, text })} />
-        </div>
-      ) : c ? (
-        <div>
-          <span class="label">{`${what}: the values that count`}</span>
-          <div class="varpick" role="group" aria-label={`${what}: values of ${pretty(value)}`}>{c.levels.map((l) => <label><input type="checkbox" checked={r.positive.includes(l)} onChange={() => toggle(l)} />{l}</label>)}</div>
-        </div>
-      ) : null}
-    </div>
-  );
-}
+import { pretty, P, isInt, pc, pcCI, rCI, mrow, MCOLS, needData, Checks, RowsTable, readRows, mkRows, BinaryFrom, defaultRule, readRule, ruleText, readBinary, NEGATIVE, num } from './epishared.jsx';
 
 /* --------------------------------------------------------- marker columns --- */
 
@@ -427,13 +377,16 @@ function RocResult({ res, ord, auto, skipped, spec, marker, refLabel, cond, targ
 
 /* ----------------------------------------------------- two curves compared --- */
 
+const KINDS = [{ value: 'binary', label: 'Two tests, same people' }, { value: 'paired', label: 'Two markers, same people' }, { value: 'unpaired', label: 'One marker, two groups' }, { value: 'summary', label: 'Two published AUCs' }];
+
 function ComparePanel({ ds }) {
-  const [kind, setKind] = useState('paired');
+  const [kind, setKind] = useState('binary');
   const [ma, setMa] = useState(null), [oa, setOa] = useState(null), [da, setDa] = useState('auto');
   const [mb, setMb] = useState(null), [ob, setOb] = useState(null), [db, setDb] = useState('auto');
   const [rc, setRc] = useState(null), [rRule, setRRule] = useState(null), [gc, setGc] = useState(null);
   const [sum, setSum] = useState({ a1: '0.85', l1: '0.80', h1: '0.90', a2: '0.75', l2: '0.68', h2: '0.82', n1: '', n2: '' });
   const [cond, setCond] = useState('');
+  if (kind === 'binary') return <TwoTestsPanel ds={ds} kindSeg={<Seg label="Compare" value={kind} onChange={setKind} options={KINDS} />} />;
 
   let out = null, err = null, spec = null, labels = null;
   if (kind === 'summary') {
@@ -493,17 +446,17 @@ function ComparePanel({ ds }) {
     <>
       <section class="panel stack" aria-labelledby="cm-h">
         <h2 id="cm-h">Two ROC curves compared</h2>
-        <Seg label="Compare" value={kind} onChange={setKind} options={[{ value: 'paired', label: 'Two markers, same people' }, { value: 'unpaired', label: 'One marker, two groups' }, { value: 'summary', label: 'Two published AUCs' }]} />
+        <Seg label="Compare" value={kind} onChange={setKind} options={KINDS} />
         {kind === 'summary' ? (
           <>
             <div class="fields">
-              <TextField label="First study (for the sentence)" value={sum.n1} onInput={setS('n1')} placeholder="Rao 2021, Odisha" />
+              <TextField label="First study (for the sentence)" value={sum.n1} onInput={setS('n1')} placeholder="Author, year" />
               <NumberField label="AUC, first study" value={sum.a1} onInput={setS('a1')} />
               <NumberField label="Lower 95% limit, first" value={sum.l1} onInput={setS('l1')} />
               <NumberField label="Upper 95% limit, first" value={sum.h1} onInput={setS('h1')} />
             </div>
             <div class="fields">
-              <TextField label="Second study (for the sentence)" value={sum.n2} onInput={setS('n2')} placeholder="Sen 2023, Bihar" />
+              <TextField label="Second study (for the sentence)" value={sum.n2} onInput={setS('n2')} placeholder="Author, year" />
               <NumberField label="AUC, second study" value={sum.a2} onInput={setS('a2')} />
               <NumberField label="Lower 95% limit, second" value={sum.l2} onInput={setS('l2')} />
               <NumberField label="Upper 95% limit, second" value={sum.h2} onInput={setS('h2')} />
@@ -565,6 +518,129 @@ function CompareResult({ out, labels, spec, cond }) {
   );
 }
 
+/* ------------------------------------------------- two tests, same people --- */
+
+// Illustrative counts: rows first test positive or negative, columns second test positive or negative.
+const EX_TWO = { pos: [['70', '12'], ['6', '12']], neg: [['4', '14'], ['6', '176']] };
+const ppts = (d) => fixed(100 * d, 1);
+const pptsCI = (ci) => `${fixed(100 * ci[0], 1)} to ${fixed(100 * ci[1], 1)}`;
+
+function TwoTestsPanel({ ds, kindSeg }) {
+  const [modeSel, setMode] = useState(null);
+  const mode = modeSel ?? (ds ? 'data' : 'typed');
+  const [cells, setCells] = useState(EX_TWO);
+  const [ac, setAc] = useState(null), [aRule, setARule] = useState(null), [bc, setBc] = useState(null), [bRule, setBRule] = useState(null);
+  const [rc, setRc] = useState(null), [rRule, setRRule] = useState(null);
+  const [names, setNames] = useState({ a: '', b: '', cond: '' });
+  let pos = null, neg = null, err = null, skipped = 0, spec = null, la = names.a.trim(), lb = names.b.trim(), refLabel = '';
+  if (mode === 'data' && ds) {
+    const ca = col(ds, ac), cb = col(ds, bc), cr = col(ds, rc);
+    if (ca && cb && cr) {
+      const A = readRule(aRule ?? defaultRule(ca)), B = readRule(bRule ?? defaultRule(cb)), Rr = readRule(rRule ?? defaultRule(cr));
+      if (new Set([ac, bc, rc]).size < 3) err = 'Pick three different columns: two tests and the reference standard.';
+      else if (A.error || B.error || Rr.error) err = A.error || B.error || Rr.error;
+      else {
+        const ta = readBinary(ca, A.rule), tb = readBinary(cb, B.rule), d = readBinary(cr, Rr.rule);
+        pos = [0, 0, 0, 0]; neg = [0, 0, 0, 0];
+        d.forEach((dd, i) => { if (dd === null || ta[i] === null || tb[i] === null) { skipped++; return; } (dd ? pos : neg)[ta[i] && tb[i] ? 0 : ta[i] ? 1 : tb[i] ? 2 : 3]++; });
+        const words = (c, r) => `${pretty(c)} ${r.kind === 'cut' ? ruleText(r) : `(${ruleText(r)})`}`;
+        la = la || words(ac, A.rule); lb = lb || words(bc, B.rule); refLabel = words(rc, Rr.rule);
+        spec = { kind: 'tests2', a: ac, aRule: A.rule, numericA: ca.numeric, b: bc, bRule: B.rule, numericB: cb.numeric, ref: rc, refRule: Rr.rule, numericR: cr.numeric };
+      }
+    }
+  } else if (mode === 'typed') {
+    const v = { pos: cells.pos.map((r) => r.map(parseNumber)), neg: cells.neg.map((r) => r.map(parseNumber)) };
+    if (![...v.pos.flat(), ...v.neg.flat()].every(isInt)) err = 'Enter whole-number counts in all eight cells (0 is allowed).';
+    else { pos = [...v.pos[0], ...v.pos[1]]; neg = [...v.neg[0], ...v.neg[1]]; spec = { kind: 'tests2', pos, neg }; }
+  }
+  let res = null;
+  if (pos && !err) {
+    if (!pos.some((x) => x > 0) || !neg.some((x) => x > 0)) err = 'The reference standard must find some people with the condition and some without.';
+    else res = compareBinaryTests(pos, neg);
+  }
+  const setCell = (g, i, j, val) => setCells({ ...cells, [g]: cells[g].map((r, x) => (x === i ? r.map((cv, y) => (y === j ? val : cv)) : r)) });
+  const entry = (g, title) => (
+    <div class="tablewrap">
+      <table class="table compact entry">
+        <caption>{title}</caption>
+        <thead><tr><th scope="col">First test</th><th scope="col">Second positive</th><th scope="col">Second negative</th></tr></thead>
+        <tbody>{['Positive', 'Negative'].map((rl, i) => (
+          <tr><th scope="row">{rl}</th>{[0, 1].map((j) => <td><input inputMode="numeric" aria-label={`${title}: first test ${rl.toLowerCase()}, second ${j ? 'negative' : 'positive'}`} value={cells[g][i][j]} onInput={(ev) => setCell(g, i, j, ev.currentTarget.value)} /></td>)}</tr>
+        ))}</tbody>
+      </table>
+    </div>
+  );
+  return (
+    <>
+      <section class="panel stack" aria-labelledby="t2-h">
+        <h2 id="t2-h">Two tests on the same people</h2>
+        {kindSeg}
+        <Seg label="Enter" value={mode} onChange={setMode} options={[{ value: 'data', label: 'Columns from your data', disabled: !ds, title: ds ? '' : 'Load data at the top first' }, { value: 'typed', label: 'Counts' }]} />
+        {mode === 'data' ? (ds ? (
+          <div class="stack">
+            <BinaryFrom ds={ds} label="First test" value={ac} onChange={setAc} rule={aRule} onRule={setARule} exclude={[bc, rc].filter(Boolean)} what="First test positive" />
+            <BinaryFrom ds={ds} label="Second test" value={bc} onChange={setBc} rule={bRule} onRule={setBRule} exclude={[ac, rc].filter(Boolean)} what="Second test positive" />
+            <BinaryFrom ds={ds} label="Reference standard" value={rc} onChange={setRc} rule={rRule} onRule={setRRule} exclude={[ac, bc].filter(Boolean)} what="Condition present" />
+          </div>
+        ) : needData) : (
+          <>
+            {entry('pos', 'People with the condition')}
+            {entry('neg', 'People without the condition')}
+            <p class="small">Illustrative numbers: replace them with yours. Every person had both tests and the reference standard.</p>
+          </>
+        )}
+        <div class="fields">
+          <TextField label="First test (for the sentence)" value={names.a} onInput={(v) => setNames({ ...names, a: v })} placeholder="rapid diagnostic test" />
+          <TextField label="Second test (for the sentence)" value={names.b} onInput={(v) => setNames({ ...names, b: v })} placeholder="microscopy" />
+          <TextField label="Condition (for the sentence)" value={names.cond} onInput={(v) => setNames({ ...names, cond: v })} placeholder="malaria" />
+        </div>
+      </section>
+      {err ? <Callout kind="warn" mark="Check"><p>{err}</p></Callout> : null}
+      {res ? <TwoTestsResult res={res} la={la || '[INSERT: first test]'} lb={lb || '[INSERT: second test]'} refLabel={refLabel} cond={names.cond.trim() || '[INSERT: condition]'} skipped={skipped} spec={spec} /> : null}
+    </>
+  );
+}
+
+function TwoTestsResult({ res, la, lb, refLabel, cond, skipped, spec }) {
+  const { se, sp, seA, seB, spA, spB } = res;
+  const mcP = (d) => `${d.exact ? 'exact' : 'χ²'} ${P(d.p)}`;
+  const split = (seA.est - seB.est) * (spA.est - spB.est) < 0;
+  const say = `In ${count(res.n1)} people with ${cond} and ${count(res.n0)} without${refLabel ? ` (${refLabel})` : ''}, all given both tests, the sensitivity of ${la} was ${pc(seA.est)} (95% CI ${pcCI(seA.wilson)}) against ${pc(seB.est)} (95% CI ${pcCI(seB.wilson)}) for ${lb}, a difference of ${ppts(se.diff)} percentage points (95% CI ${pptsCI(se.ci)}; McNemar ${mcP(se)}); specificities were ${pc(spA.est)} and ${pc(spB.est)}, a difference of ${ppts(sp.diff)} points (95% CI ${pptsCI(sp.ci)}; McNemar ${mcP(sp)}).`;
+  return (
+    <section class="panel stack result-panel" aria-labelledby="tt-h">
+      <div><h2 id="tt-h" style="margin-bottom:6px">Sensitivity {pc(seA.est)} and {pc(seB.est)}; specificity {pc(spA.est)} and {pc(spB.est)}</h2>
+        <p class="verdict-line mono">Differences {ppts(se.diff)} points (95% CI {pptsCI(se.ci)}; {mcP(se)}) and {ppts(sp.diff)} points (95% CI {pptsCI(sp.ci)}; {mcP(sp)})</p></div>
+      <Stats items={[['Disagreements, with the condition', `${count(se.f)} and ${count(se.g)}`], ['Disagreements, without', `${count(sp.f)} and ${count(sp.g)}`],
+        ['Covariance, with the condition', fixed(res.covSe, 3)], ['Covariance, without', fixed(res.covSp, 3)], skipped ? ['Left out (missing)', count(skipped)] : null]} />
+      <DataTable wrap caption="Each test" columns={MCOLS} numeric={[1]} rows={[
+        mrow(`Sensitivity, ${la}`, 'Wilson', pc(seA.est), pcCI(seA.wilson), true), mrow(`Sensitivity, ${lb}`, 'Wilson', pc(seB.est), pcCI(seB.wilson), true),
+        mrow(`Specificity, ${la}`, 'Wilson', pc(spA.est), pcCI(spA.wilson), true), mrow(`Specificity, ${lb}`, 'Wilson', pc(spB.est), pcCI(spB.wilson), true),
+      ]} />
+      <DataTable wrap caption="Paired differences (first minus second, percentage points)" columns={MCOLS} numeric={[1]} rows={[
+        mrow('Sensitivity', 'Newcombe, paired', ppts(se.diff), pptsCI(se.ci), true), mrow('McNemar test, with the condition', se.exact ? 'exact' : 'χ², corrected', P(se.p), null),
+        mrow('Specificity', 'Newcombe, paired', ppts(sp.diff), pptsCI(sp.ci), true), mrow('McNemar test, without the condition', sp.exact ? 'exact' : 'χ², corrected', P(sp.p), null),
+      ]} />
+      <DataTable wrap caption="Both tests together, counted" columns={MCOLS} numeric={[1]} rows={[
+        mrow('In series (positive if both are): sensitivity', 'Wilson', pc(res.serialSe.est), pcCI(res.serialSe.wilson)),
+        mrow('In series: specificity', 'Wilson', pc(res.serialSp.est), pcCI(res.serialSp.wilson)),
+        mrow('In parallel (positive if either is): sensitivity', 'Wilson', pc(res.parallelSe.est), pcCI(res.parallelSe.wilson)),
+        mrow('In parallel: specificity', 'Wilson', pc(res.parallelSp.est), pcCI(res.parallelSp.wilson)),
+      ]} />
+      <Checks items={[
+        split ? { text: 'Neither test is better on both counts: one finds more of the condition, the other gives fewer false alarms. Weigh them by their likelihood ratios and by what each kind of error costs where the test will be used (Macaskill and colleagues 2002).' } : null,
+        se.exact || sp.exact ? { text: 'Fewer than 25 people disagreed between the tests in a group, so McNemar\'s test is exact there.' } : null,
+        res.covSe > 0.005 || res.covSp > 0.005 ? { text: 'The covariances are positive: the tests tend to err on the same people, so combining them gains less than if they erred independently. The series and parallel figures above are counted from these people, so they already allow for it; the Screening programme tab of Vaccines and Screening can carry them into planning (Gardner and colleagues 2000).' } : null,
+        { text: 'A paired comparison needs every person to have both tests and the same reference standard; testing only those positive on one test with the reference biases the comparison (verification bias; STARD 2015).' },
+        skipped ? { text: `${count(skipped)} people without both tests and the reference standard were left out.` } : null,
+      ]} />
+      <Report text={say} />
+      {spec ? <CodeExport spec={spec} /> : null}
+      <AtLevel min="advanced"><p class="small">With e both positive, f first only, g second only and h neither, the difference is (f − g)/n; Newcombe's method 10 combines the Wilson limits of the two proportions with their correlation φ (continuity-corrected when positive). McNemar's test uses the f + g disagreements: exact binomial below 25, otherwise χ² with Edwards' correction. Specificity is compared the same way with "negative" as the outcome.</p></AtLevel>
+      <div class="prose"><h3 class="sub">References</h3><Refs refs={REFS} ids={['newcombePaired', 'mcnemar', 'wilson', 'gardner', 'macaskill', 'stard']} /></div>
+    </section>
+  );
+}
+
 /* ---------------------------------------------------------------- page --- */
 
 export default function DiagnosticTool() {
@@ -582,11 +658,11 @@ export default function DiagnosticTool() {
           <ul>
             <li><strong>A test against a reference standard</strong>: a positive or negative test (a rapid test, a sign, a score above a cut-off) checked against the best available way of finding the condition.</li>
             <li><strong>ROC curve</strong>: a marker measured on a scale (haemoglobin, a questionnaire score, an ordered grade), to see how well it separates people with and without the condition at every cut-off, and which cut-off to use.</li>
-            <li><strong>Two ROC curves compared</strong>: two markers on the same people, one marker in two groups, or two published AUCs.</li>
+            <li><strong>Compare tests</strong>: two positive-or-negative tests done on the same people against one reference standard; or ROC curves: two markers on the same people, one marker in two groups, or two published AUCs.</li>
           </ul>
           <p>The example screening-camp data have haemoglobin by a venous laboratory method (the reference: anaemia below 11 g/dL in children 6 to 59 months), by HemoCue, and palmar pallor graded by three medical officers.</p>
         </Disclose>
-        <div><Seg wide value={tab} onChange={setTab} options={[{ value: 'test', label: 'Test against a reference' }, { value: 'roc', label: 'ROC curve' }, { value: 'compare', label: 'Compare two curves' }]} /></div>
+        <div><Seg wide value={tab} onChange={setTab} options={[{ value: 'test', label: 'Test against a reference' }, { value: 'roc', label: 'ROC curve' }, { value: 'compare', label: 'Compare tests' }]} /></div>
         {tab === 'test' ? <TestPanel key={seed?.id ?? 'start'} ds={ds} seed={seed} /> : tab === 'roc' ? <RocPanel ds={ds} onExamine={examine} /> : <ComparePanel ds={ds} />}
       </div>
     </div>

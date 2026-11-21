@@ -9,7 +9,7 @@ import { join, dirname } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { scriptFor, DATA_FILE, datasetCsv } from '../../engine/codegen.js';
-import { exampleCsv, exampleTbCsv, exampleAgreementCsv } from '../../engine/examples.js';
+import { exampleCsv, exampleTbCsv, exampleAgreementCsv, exampleMeaslesCsv } from '../../engine/examples.js';
 import { readDataset, splitBy, completeRows, crossTab, isMissing } from '../../engine/data.js';
 import { mean, quantile, sortNum, shapiroWilk } from '../../engine/describe.js';
 import { tTwoSample, tTwoSampleSummary, tOneSample, tPaired, anova, welchAnova, rmAnova } from '../../engine/compare.js';
@@ -24,10 +24,11 @@ import { cohenKappa, fleissKappa, icc, blandAltman, cronbach } from '../../engin
 import { binaryEffect, continuousEffect, proportionEffect, reportedEffect, pool, subgroups, poolMH, poolPeto, subgroupsMH } from '../../engine/meta.js';
 import { proportion, rate, twoByTwo, personTime, matchedPairs, populationFraction } from '../../engine/epi.js';
 import { mhTables, mhPersonTime, directStandard, dsrRatio, indirectStandard } from '../../engine/strat.js';
-import { testAccuracy, atPrevalence, classifyValue, countTable, rocAnalysis, rocCutoffs, rocPaired, rocUnpaired, expandGrouped } from '../../engine/diag.js';
+import { testAccuracy, atPrevalence, classifyValue, countTable, rocAnalysis, rocCutoffs, rocPaired, rocUnpaired, expandGrouped, compareBinaryTests } from '../../engine/diag.js';
+import { vaccineEffectiveness, screeningMethod } from '../../engine/vaccine.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const DS = { A: readDataset(exampleCsv()), T: readDataset(exampleTbCsv()), G: readDataset(exampleAgreementCsv()) };
+const DS = { A: readDataset(exampleCsv()), T: readDataset(exampleTbCsv()), G: readDataset(exampleAgreementCsv()), M: readDataset(exampleMeaslesCsv()) };
 const col = (k, n) => DS[k].columns.find((c) => c.name === n);
 const nums = (k, n) => col(k, n).numbers.filter((v) => v !== null && Number.isFinite(v));
 const by = (k, y, g, lv) => { const sp = splitBy(col(k, y), col(k, g)); return sp.groups[sp.labels.indexOf(lv)]; };
@@ -396,9 +397,64 @@ const add = (name, data, spec, checks) => cases.push({ name, data, spec, checks 
   }
 }
 
+/* -------------------------------------------------- vaccines, two tests --- */
+{
+  const veChecks = (ve, tol) => [['ve', ve.est], ['ve_lo', ve.ci[0], tol], ['ve_hi', ve.ci[1], tol]];
+  // Fisher's exact limits from R's fisher.test are found by uniroot at its default tolerance.
+  const fisherTol = (design, small) => ((design === 'case-control' || design === 'tnd') && small ? 2e-3 : 1e-9);
+  for (const [design, t] of [['cohort', [[9, 342], [24, 45]]], ['cohort', [[3, 197], [20, 80]]], ['case-control', [[40, 210], [95, 155]]], ['case-control', [[4, 60], [12, 40]]], ['tnd', [[120, 480], [160, 440]]]]) {
+    const o = vaccineEffectiveness({ table: t }, { design }), small = Math.min(...t.flat()) < 5;
+    add(`VE ${design} ${t.flat().join('/')}`, null, { kind: 've', design, table: t }, veChecks(o.ve, fisherTol(design, small)));
+  }
+  { const o = vaccineEffectiveness({ a: 10, t1: 5000, c: 40, t0: 4000 }, { design: 'pt' }); add('VE person-time', null, { kind: 've', design: 'pt', a: 10, t1: 5000, c: 40, t0: 4000 }, veChecks(o.ve)); }
+  { const o = vaccineEffectiveness({ e: 20, f: 8, g: 25, h: 47 }, { design: 'matched' }); add('VE matched pairs', null, { kind: 've', design: 'matched', e: 20, f: 8, g: 25, h: 47 }, veChecks(o.ve)); }
+  for (const [x, n, cov] of [[18, 60, 0.85], [3, 25, 0.7]]) {
+    const o = screeningMethod(x, n, cov);
+    add(`VE screening method ${x}/${n} at ${cov}`, null, { kind: 've', design: 'screening', x, n, coverage: cov }, [['ve', o.est], ['ve_lo', o.ci[0]], ['ve_hi', o.ci[1]]]);
+  }
+  // From data, counted as the tool counts: vaccinated and unvaccinated values; other values left out.
+  const groupsOf = (k, name, vacc, unvacc) => col(k, name).raw.map((raw) => (isMissing(raw) ? null : vacc.includes(raw) ? 1 : unvacc.includes(raw) ? 0 : null));
+  const outcomeOf = (k, name, rule) => { const c = col(k, name); return c.raw.map((raw, i) => (isMissing(raw) ? null : classifyValue(raw, c.numbers?.[i] ?? null, rule))); };
+  const YES = { kind: 'levels', positive: ['Yes'] };
+  for (const [vacc, unvacc, design] of [[['1', '2'], ['0'], 'cohort'], [['2'], ['0'], 'cohort'], [['1', '2'], ['0'], 'case-control']]) {
+    const g = groupsOf('M', 'MR_doses', vacc, unvacc), y = outcomeOf('M', 'Measles', YES), t = [[0, 0], [0, 0]];
+    g.forEach((v, i) => { if (v !== null && y[i] !== null) t[v ? 0 : 1][y[i] ? 0 : 1]++; });
+    const o = vaccineEffectiveness({ table: t }, { design });
+    add(`VE from data, ${design}, doses ${vacc.join('+')} against ${unvacc.join('+')}`, 'M', { kind: 've', design, vacc: 'MR_doses', groups: { vacc, unvacc }, numericV: true, outcome: 'Measles', outcomeRule: YES, numericO: false, time: null },
+      veChecks(o.ve, fisherTol(design, Math.min(...t.flat()) < 5)));
+  }
+  {
+    const g = groupsOf('M', 'MR_doses', ['1', '2'], ['0']), y = outcomeOf('M', 'Measles', YES);
+    let x = 0, n = 0, va = 0, ua = 0;
+    g.forEach((v, i) => { if (v !== null) { if (v) va++; else ua++; } if (v !== null && y[i]) { n++; if (v) x++; } });
+    const o = screeningMethod(x, n, va / (va + ua));
+    add('VE from data, screening method, coverage from the data', 'M', { kind: 've', design: 'screening', vacc: 'MR_doses', groups: { vacc: ['1', '2'], unvacc: ['0'] }, numericV: true, outcome: 'Measles', outcomeRule: YES, numericO: false, time: null, coverage: va / (va + ua), coverageFrom: 'data' },
+      [['ve', o.est], ['ve_lo', o.ci[0]], ['ve_hi', o.ci[1]]]);
+  }
+  {
+    const g = groupsOf('T', 'HIV', ['Negative'], ['Positive']), y = outcomeOf('T', 'Unfavourable_outcome', { kind: 'levels', positive: ['1'] }), tm = col('T', 'Months').numbers;
+    let a = 0, c = 0, t1 = 0, t0 = 0;
+    g.forEach((v, i) => { if (v === null || y[i] === null || tm[i] === null || tm[i] < 0) return; if (v) { t1 += tm[i]; if (y[i]) a++; } else { t0 += tm[i]; if (y[i]) c++; } });
+    const o = vaccineEffectiveness({ a, t1, c, t0 }, { design: 'pt' });
+    add('VE from data, person-time', 'T', { kind: 've', design: 'pt', vacc: 'HIV', groups: { vacc: ['Negative'], unvacc: ['Positive'] }, numericV: false, outcome: 'Unfavourable_outcome', outcomeRule: { kind: 'levels', positive: ['1'] }, numericO: true, time: 'Months' }, veChecks(o.ve));
+  }
+  // Two tests on the same people.
+  const t2Checks = (o) => [['se_a', o.seA.est], ['se_b', o.seB.est], ['sp_a', o.spA.est], ['sp_b', o.spB.est], ['se_diff', o.se.diff], ['se_lo', o.se.ci[0]], ['se_hi', o.se.ci[1]],
+    ['sp_diff', o.sp.diff], ['sp_lo', o.sp.ci[0]], ['sp_hi', o.sp.ci[1]], ['se_p', o.se.p], ['sp_p', o.sp.p]];
+  {
+    const pos = [70, 12, 6, 12], neg = [4, 14, 6, 176];
+    add('two tests on the same people, typed', null, { kind: 'tests2', pos, neg }, t2Checks(compareBinaryTests(pos, neg)));
+    const ANAEMIA = { kind: 'cut', op: '<', value: 11, text: '11' }, PALLOR = { kind: 'levels', positive: ['Some pallor', 'Severe pallor'] };
+    const d = outcomeOf('G', 'Hb_lab', ANAEMIA), ta = outcomeOf('G', 'Pallor_MO1', PALLOR), tb = outcomeOf('G', 'Hb_HemoCue', ANAEMIA);
+    const p2 = [0, 0, 0, 0], n2 = [0, 0, 0, 0];
+    d.forEach((dd, i) => { if (dd === null || ta[i] === null || tb[i] === null) return; (dd ? p2 : n2)[ta[i] && tb[i] ? 0 : ta[i] ? 1 : tb[i] ? 2 : 3]++; });
+    add('two tests on the same people, from data', 'G', { kind: 'tests2', a: 'Pallor_MO1', aRule: PALLOR, numericA: false, b: 'Hb_HemoCue', bRule: ANAEMIA, numericB: true, ref: 'Hb_lab', refRule: ANAEMIA, numericR: true }, t2Checks(compareBinaryTests(p2, n2)));
+  }
+}
+
 /* ------------------------------------------- the same checks in R --- */
 // Each Python check has an R twin; null where the R script reports the number differently.
-const SAME_NAMES = new Set(['freqP', 'freqR', 'epi2x2', 'eptime', 'epmatch', 'mh', 'dsr', 'smr', 'diag', 'roc', 'roc2']);
+const SAME_NAMES = new Set(['freqP', 'freqR', 'epi2x2', 'eptime', 'epmatch', 'mh', 'dsr', 'smr', 'diag', 'roc', 'roc2', 've', 'tests2']);
 function rExpr(spec, e) {
   if (SAME_NAMES.has(spec.kind)) return e;
   const k = spec.kind;

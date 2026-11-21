@@ -28,6 +28,8 @@ const ROWS = [
   ['Direct and indirect standardisation', 'epitools::ageadjust.direct; poisson.test', 'SciPy gamma and chi-square quantiles; the exact Poisson p written out'],
   ['Diagnostic accuracy', "prop.test (Wilson); Simel's log and Koopman's score intervals for likelihood ratios written out; epiR::epi.tests when installed", 'statsmodels proportion_confint; the same intervals written out'],
   ['ROC curves, cut-offs, two curves compared', 'pROC: roc, ci.auc, coords, roc.test', "scikit-learn roc_auc_score and roc_curve; DeLong's variance and tests written out"],
+  ['Two tests on the same people', "binom.test, mcnemar.test; Newcombe's paired interval written out", "scipy.stats.binomtest; Newcombe's paired interval written out"],
+  ['Vaccine effectiveness', 'poisson.test, binom.test, fisher.test; glm with an offset for the screening method', 'scipy.stats binomtest and odds_ratio; the same intervals written out'],
 ];
 
 export default function CodeTool() {

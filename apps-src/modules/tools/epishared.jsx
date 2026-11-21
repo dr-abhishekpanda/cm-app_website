@@ -1,9 +1,11 @@
 /* Formatting and small components shared by the epidemiology tools (measures; stratified analysis and
- * standardisation; diagnostic accuracy), so the same numbers read the same way on every page. */
+ * standardisation; diagnostic accuracy; vaccines and screening), so the same numbers read the same way
+ * on every page. */
 import { useState } from 'preact/hooks';
 import { isMissing, parseDelimited } from '../../engine/data.js';
 import { fixed, pValue, count, sig, sci, ratio, parseNumber } from '../../engine/format.js';
-import { Callout, SelectField } from '../../ui/core.jsx';
+import { Callout, SelectField, NumberField } from '../../ui/core.jsx';
+import { classifyValue } from '../../engine/diag.js';
 import { ColumnSelect, col } from '../../ui/data.jsx';
 import { Disclose } from '../../ui/results.jsx';
 
@@ -140,4 +142,54 @@ export function readRows(rows, { integer = [], positive = [] } = {}) {
     out.push({ label: name, x });
   }
   return { rows: out };
+}
+
+/* ------------------------------------------------ reading columns as tests --- */
+
+export const OPS = [{ value: '<', label: 'Below' }, { value: '<=', label: 'At or below' }, { value: '>=', label: 'At or above' }, { value: '>', label: 'Above' }];
+export const SYM = { '<': '<', '<=': '≤', '>=': '≥', '>': '>' };
+export const NEGATIVE = /^(no|none|nil|normal|negative|neg|absent|never|non[- ]?reactive|0|false)\b/i;
+export const num = (v) => (Number.isInteger(v) ? count(v) : sig(v, 6));
+
+/** Numeric columns with more than two values are read with a cut-off; others by their values. */
+export const usesCut = (c) => c.numeric && c.levels.length > 2;
+export function defaultRule(c) {
+  if (usesCut(c)) {
+    const xs = c.numbers.filter((v) => v !== null && Number.isFinite(v)).sort((a, b) => a - b);
+    return { kind: 'cut', op: '>=', text: xs.length ? String(xs[Math.floor(xs.length / 2)]) : '' };
+  }
+  if (c.levels.length === 2) return { kind: 'levels', positive: [guessLevel(c.levels)] };
+  const pos = c.levels.filter((l) => !NEGATIVE.test(String(l).trim()));
+  return { kind: 'levels', positive: pos.length && pos.length < c.levels.length ? pos : [c.levels[c.levels.length - 1]] };
+}
+/** The rule with its number read, or an error. */
+export function readRule(r) {
+  if (r.kind === 'levels') return r.positive.length ? { rule: r } : { error: 'Tick at least one value that counts as positive.' };
+  const v = parseNumber(r.text);
+  return Number.isFinite(v) ? { rule: { kind: 'cut', op: r.op, value: v, text: r.text } } : { error: 'Enter the cut-off as a number.' };
+}
+export const ruleText = (r) => (r.kind === 'cut' ? `${SYM[r.op]} ${r.text}` : r.positive.join(' or '));
+export const readBinary = (c, rule) => c.raw.map((raw, i) => (isMissing(raw) ? null : classifyValue(raw, c.numbers?.[i] ?? null, rule)));
+
+/** A column read as positive or negative: tick the values that count, or give a cut-off for numbers. */
+export function BinaryFrom({ ds, label, value, onChange, rule, onRule, exclude = [], what }) {
+  const c = col(ds, value);
+  const r = c ? rule ?? defaultRule(c) : null;
+  const toggle = (l) => onRule({ ...r, positive: r.positive.includes(l) ? r.positive.filter((x) => x !== l) : [...r.positive, l] });
+  return (
+    <div class="stack" style="gap:10px">
+      <ColumnSelect ds={ds} label={label} value={value} onChange={(v) => { onChange(v); onRule(null); }} kind="any" exclude={exclude} />
+      {c && r.kind === 'cut' ? (
+        <div class="fields">
+          <SelectField label={`${what} when ${pretty(value)} is`} value={r.op} onChange={(op) => onRule({ ...r, op })} options={OPS} />
+          <NumberField label={`Cut-off for ${pretty(value)}`} value={r.text} onInput={(text) => onRule({ ...r, text })} />
+        </div>
+      ) : c ? (
+        <div>
+          <span class="label">{`${what}: the values that count`}</span>
+          <div class="varpick" role="group" aria-label={`${what}: values of ${pretty(value)}`}>{c.levels.map((l) => <label><input type="checkbox" checked={r.positive.includes(l)} onChange={() => toggle(l)} />{l}</label>)}</div>
+        </div>
+      ) : null}
+    </div>
+  );
 }

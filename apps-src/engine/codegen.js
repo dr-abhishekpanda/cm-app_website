@@ -727,6 +727,150 @@ G.roc2 = (s) => {
   };
 };
 
+/* -------------------------------------------------- vaccines, two tests --- */
+// R and Python name their results alike: ve, ve_lo, ve_hi; se_a, se_b, sp_a, sp_b, se_diff, se_lo, se_hi,
+// sp_diff, sp_lo, sp_hi, se_p, sp_p.
+
+const R_KOOPMAN = ['koopman_ci <- function(x1, n1, x2, n2) {   # score CI for the ratio (x1 / n1) / (x2 / n2)', '  f <- function(l) {',
+  '    phi <- exp(l); B <- phi * (n1 + x2) + x1 + n2; C <- x1 + x2', '    p2 <- 2 * C / (B + sqrt(max(0, B^2 - 4 * phi * (n1 + n2) * C))); p1 <- phi * p2',
+  '    (x1 / n1 - phi * x2 / n2)^2 / (p1 * (1 - p1) / n1 + phi^2 * p2 * (1 - p2) / n2) - z^2', '  }',
+  '  s <- if (x1 > 0 && x2 > 0) log((x1 / n1) / (x2 / n2)) else log(((x1 + 0.5) / (n1 + 1)) / ((x2 + 0.5) / (n2 + 1)))',
+  '  c(if (x1 == 0) 0 else exp(uniroot(f, c(s - 30, s), tol = 1e-12)$root), if (x2 == 0) Inf else exp(uniroot(f, c(s, s + 30), tol = 1e-12)$root))', '}'];
+const PY_KOOPMAN = ['', '', 'def koopman_ci(x1, n1, x2, n2):  # score CI for the ratio (x1 / n1) / (x2 / n2)', '    def f(l):',
+  '        phi = np.exp(l)', '        B, C = phi * (n1 + x2) + x1 + n2, x1 + x2', '        p2 = 2 * C / (B + np.sqrt(max(0.0, B * B - 4 * phi * (n1 + n2) * C)))', '        p1 = phi * p2',
+  '        return (x1 / n1 - phi * x2 / n2) ** 2 / (p1 * (1 - p1) / n1 + phi ** 2 * p2 * (1 - p2) / n2) - z ** 2',
+  '    s = np.log((x1 / n1) / (x2 / n2)) if x1 > 0 and x2 > 0 else np.log(((x1 + 0.5) / (n1 + 1)) / ((x2 + 0.5) / (n2 + 1)))',
+  '    return (0.0 if x1 == 0 else np.exp(brentq(f, s - 30, s, xtol=1e-12)), np.inf if x2 == 0 else np.exp(brentq(f, s, s + 30, xtol=1e-12)))', '', ''];
+
+G.ve = (s) => {
+  const data = !!s.vacc, D = s.design;
+  const title = `Vaccine effectiveness (${{ cohort: 'cohort or outbreak', pt: 'person-time', 'case-control': 'case-control', tnd: 'test-negative design', matched: 'matched pairs', screening: 'screening method' }[D]})`;
+  const vlit = (xs) => rvec(xs, (v) => rlit(v, s.numericV)), vplit = (xs) => pvec(xs, (v) => plit(v, s.numericV));
+  const rCount = data ? [
+    `grp <- ifelse(${rcol(s.vacc)} %in% ${vlit(s.groups.vacc)}, 1, ifelse(${rcol(s.vacc)} %in% ${vlit(s.groups.unvacc)}, 0, NA))   # 1 vaccinated, 0 unvaccinated; other values left out`,
+    `case <- ${rRule(s.outcome, s.outcomeRule, s.numericO)}   # ${D === 'tnd' ? 'tested positive' : 'a case'}`,
+    `ok <- !is.na(grp) & !is.na(${rcol(s.outcome)})${s.time ? ` & !is.na(${rcol(s.time)}) & ${rcol(s.time)} >= 0` : ''}`,
+    'vc <- sum(grp[ok] == 1 & case[ok]); uc <- sum(grp[ok] == 0 & case[ok])',
+    ...(D === 'pt' ? [`tv <- sum(${rcol(s.time)}[ok][grp[ok] == 1]); tu <- sum(${rcol(s.time)}[ok][grp[ok] == 0])   # person-time`]
+      : D === 'screening' ? [] : ['vn <- sum(grp[ok] == 1 & !case[ok]); un <- sum(grp[ok] == 0 & !case[ok])'])] : [];
+  const pCount = data ? [
+    `grp = np.where(${pcol(s.vacc)}.isin(${vplit(s.groups.vacc)}), 1.0, np.where(${pcol(s.vacc)}.isin(${vplit(s.groups.unvacc)}), 0.0, np.nan))  # 1 vaccinated, 0 unvaccinated`,
+    `case = np.asarray(${pRule(s.outcome, s.outcomeRule, s.numericO)})  # ${D === 'tnd' ? 'tested positive' : 'a case'}`,
+    `ok = ~np.isnan(grp) & np.asarray(${pcol(s.outcome)}.notna())${s.time ? ` & np.asarray(${pcol(s.time)}.notna() & (${pcol(s.time)} >= 0))` : ''}`,
+    'vc, uc = int(((grp == 1) & case & ok).sum()), int(((grp == 0) & case & ok).sum())',
+    ...(D === 'pt' ? [`tt = np.asarray(${pcol(s.time)}, dtype=float)`, 'tv, tu = tt[ok & (grp == 1)].sum(), tt[ok & (grp == 0)].sum()  # person-time']
+      : D === 'screening' ? [] : ['vn, un = int(((grp == 1) & ~case & ok).sum()), int(((grp == 0) & ~case & ok).sum())'])] : [];
+  const veR = ['ve <- 1 - ratio; ve_lo <- 1 - ci[2]; ve_hi <- 1 - ci[1]', 'round(100 * c(VE = ve, lower = ve_lo, upper = ve_hi), 1)'];
+  const veP = ['ve, ve_lo, ve_hi = 1 - ratio, 1 - ci[1], 1 - ci[0]', 'print(f"VE {100 * ve:.1f}% (95% CI {100 * ve_lo:.1f}% to {100 * ve_hi:.1f}%)")'];
+  const base = { title, data, pyPkgs: [], pyImports: ['from scipy.optimize import brentq'] };
+  if (D === 'cohort') {
+    return { ...base,
+      r: [...(data ? rCount : [`vc <- ${s.table[0][0]}; vn <- ${s.table[0][1]}; uc <- ${s.table[1][0]}; un <- ${s.table[1][1]}   # vaccinated cases and non-cases; unvaccinated cases and non-cases`]),
+        'z <- qnorm(0.975)', "small <- min(vc, vn, uc, un) < 5   # the app reports Koopman's score interval when a cell is below 5", ...R_KOOPMAN,
+        'ratio <- (vc / (vc + vn)) / (uc / (uc + un))   # risk ratio: attack rate vaccinated over unvaccinated',
+        'ci <- if (small) koopman_ci(vc, vc + vn, uc, uc + un) else ratio * exp(c(-1, 1) * z * sqrt(1 / vc - 1 / (vc + vn) + 1 / uc - 1 / (uc + un)))   # Katz otherwise', ...veR],
+      py: [...(data ? pCount : [`vc, vn, uc, un = ${s.table[0][0]}, ${s.table[0][1]}, ${s.table[1][0]}, ${s.table[1][1]}  # vaccinated cases and non-cases; unvaccinated cases and non-cases`]),
+        'z = stats.norm.ppf(0.975)', "small = min(vc, vn, uc, un) < 5  # the app reports Koopman's score interval when a cell is below 5", ...PY_KOOPMAN,
+        'ratio = (vc / (vc + vn)) / (uc / (uc + un))  # risk ratio: attack rate vaccinated over unvaccinated',
+        'ci = koopman_ci(vc, vc + vn, uc, uc + un) if small else ratio * np.exp(np.array([-1, 1]) * z * np.sqrt(1 / vc - 1 / (vc + vn) + 1 / uc - 1 / (uc + un)))  # Katz otherwise', ...veP] };
+  }
+  if (D === 'case-control' || D === 'tnd') {
+    const who = D === 'tnd' ? 'test-positives and test-negatives' : 'cases and controls';
+    return { ...base, pyImports: ['from scipy.stats.contingency import odds_ratio'],
+      r: [...(data ? rCount : [`vc <- ${s.table[0][0]}; vn <- ${s.table[0][1]}; uc <- ${s.table[1][0]}; un <- ${s.table[1][1]}   # vaccinated ${who}; unvaccinated ${who}`]),
+        'z <- qnorm(0.975)', 'small <- min(vc, vn, uc, un) < 5   # the app reports the exact interval when a cell is below 5',
+        'ratio <- (vc * un) / (vn * uc)   # odds ratio',
+        'ci <- if (small) fisher.test(matrix(c(vc, uc, vn, un), 2))$conf.int else ratio * exp(c(-1, 1) * z * sqrt(1 / vc + 1 / vn + 1 / uc + 1 / un))   # exact, or Woolf', ...veR],
+      py: [...(data ? pCount : [`vc, vn, uc, un = ${s.table[0][0]}, ${s.table[0][1]}, ${s.table[1][0]}, ${s.table[1][1]}  # vaccinated ${who}; unvaccinated ${who}`]),
+        'z = stats.norm.ppf(0.975)', 'small = min(vc, vn, uc, un) < 5  # the app reports the exact interval when a cell is below 5',
+        'ratio = (vc * un) / (vn * uc)  # odds ratio',
+        'ci = tuple(odds_ratio([[vc, vn], [uc, un]], kind="conditional").confidence_interval(0.95)) if small else ratio * np.exp(np.array([-1, 1]) * z * np.sqrt(1 / vc + 1 / vn + 1 / uc + 1 / un))  # exact, or Woolf', ...veP] };
+  }
+  if (D === 'pt') {
+    return { ...base, pyImports: ['from scipy.stats import binomtest'],
+      r: [...(data ? rCount : [`vc <- ${s.a}; tv <- ${num(s.t1)}; uc <- ${s.c}; tu <- ${num(s.t0)}   # cases and person-time, vaccinated and unvaccinated`]),
+        'ratio <- (vc / tv) / (uc / tu)   # rate ratio', 'ci <- poisson.test(c(vc, uc), c(tv, tu))$conf.int   # exact, conditional on the total number of cases', ...veR],
+      py: [...(data ? pCount : [`vc, tv, uc, tu = ${s.a}, ${pnum(s.t1)}, ${s.c}, ${pnum(s.t0)}  # cases and person-time, vaccinated and unvaccinated`]),
+        'ratio = (vc / tv) / (uc / tu)  # rate ratio', 'lo_p, hi_p = binomtest(vc, vc + uc).proportion_ci(confidence_level=0.95, method="exact")  # share of cases among the vaccinated',
+        'ci = [(q / (1 - q)) * (tu / tv) if q < 1 else np.inf for q in (lo_p, hi_p)]  # exact, conditional on the total number of cases', ...veP] };
+  }
+  if (D === 'matched') {
+    return { ...base, pyImports: ['from scipy.stats import binomtest'],
+      r: [`e <- ${s.e}; f <- ${s.f}; g <- ${s.g}; h <- ${s.h}   # pairs: both vaccinated; case only; control only; neither`,
+        'ratio <- f / g   # matched odds ratio', 'b <- binom.test(f, f + g)$conf.int; ci <- b / (1 - b)   # exact, conditional on the discordant pairs', ...veR],
+      py: [`e, f, g, h = ${s.e}, ${s.f}, ${s.g}, ${s.h}  # pairs: both vaccinated; case only; control only; neither`,
+        'ratio = f / g  # matched odds ratio', 'b = binomtest(f, f + g).proportion_ci(confidence_level=0.95, method="exact")',
+        'ci = [q / (1 - q) if q < 1 else np.inf for q in (b.low, b.high)]  # exact, conditional on the discordant pairs', ...veP] };
+  }
+  // Screening method.
+  const covR = data && s.coverageFrom === 'data' ? 'ppv <- mean(grp == 1, na.rm = TRUE)   # coverage among everyone in these data' : `ppv <- ${s.coverage}   # coverage in the population the cases came from, entered in the app`;
+  const covP = data && s.coverageFrom === 'data' ? 'ppv = np.nanmean(grp)  # coverage among everyone in these data' : `ppv = ${s.coverage}  # coverage in the population the cases came from, entered in the app`;
+  return { ...base, pyImports: ['from scipy.stats import binomtest'],
+    r: [...(data ? [...rCount, 'x <- vc; n <- vc + uc   # cases vaccinated, all cases'] : [`x <- ${s.x}; n <- ${s.n}   # cases vaccinated, all cases`]), covR,
+      'fit <- glm(cbind(x, n - x) ~ 1, family = binomial, offset = qlogis(ppv), control = glm.control(epsilon = 1e-12))   # Farrington: the intercept is log(1 - VE)',
+      've <- 1 - exp(as.numeric(coef(fit)))',
+      'if (min(x, n - x) < 5) {   # the app reports the exact interval when fewer than 5 cases were vaccinated, or unvaccinated',
+      '  cp <- binom.test(x, n)$conf.int; lim <- 1 - (cp / (1 - cp)) * ((1 - ppv) / ppv)', '} else lim <- 1 - exp(as.numeric(confint.default(fit)))',
+      've_lo <- min(lim); ve_hi <- max(lim)', 'round(100 * c(VE = ve, lower = ve_lo, upper = ve_hi), 1)'],
+    py: [...(data ? [...pCount, 'x, n = vc, vc + uc  # cases vaccinated, all cases'] : [`x, n = ${s.x}, ${s.n}  # cases vaccinated, all cases`]), covP,
+      'to_ve = lambda q: 1 - (q / (1 - q)) * ((1 - ppv) / ppv) if q < 1 else -np.inf  # VE from the proportion of cases vaccinated',
+      've = to_ve(x / n)', 'z = stats.norm.ppf(0.975)',
+      'if min(x, n - x) < 5:  # the app reports the exact interval when fewer than 5 cases were vaccinated, or unvaccinated',
+      '    b = binomtest(x, n).proportion_ci(confidence_level=0.95, method="exact")', '    ve_lo, ve_hi = to_ve(b.high), to_ve(b.low)',
+      'else:  # logit scale: the Wald interval of the logistic model with logit(ppv) as an offset',
+      '    L, se = np.log(x / (n - x)), np.sqrt(1 / x + 1 / (n - x))', '    ve_lo, ve_hi = to_ve(1 / (1 + np.exp(-(L + z * se)))), to_ve(1 / (1 + np.exp(-(L - z * se))))',
+      'print(f"VE {100 * ve:.1f}% (95% CI {100 * ve_lo:.1f}% to {100 * ve_hi:.1f}%)")'] };
+};
+
+G.tests2 = (s) => {
+  const data = !!s.a;
+  const rData = data
+    ? [`ok <- !is.na(${rcol(s.a)}) & !is.na(${rcol(s.b)}) & !is.na(${rcol(s.ref)})   # everyone with both tests and the reference standard`,
+      `ta <- (${rRule(s.a, s.aRule, s.numericA)})[ok]; tb <- (${rRule(s.b, s.bRule, s.numericB)})[ok]   # first and second test positive`,
+      `cond <- (${rRule(s.ref, s.refRule, s.numericR)})[ok]   # condition present by the reference standard`,
+      'cells <- function(k) c(sum(k & ta & tb), sum(k & ta & !tb), sum(k & !ta & tb), sum(k & !ta & !tb))   # both, first only, second only, neither',
+      'pos <- cells(cond); neg <- cells(!cond)']
+    : [`pos <- c(${s.pos.join(', ')})   # with the condition: both positive, first only, second only, neither`, `neg <- c(${s.neg.join(', ')})   # without the condition, the same`];
+  const pData = data
+    ? [`ok = ${pcol(s.a)}.notna() & ${pcol(s.b)}.notna() & ${pcol(s.ref)}.notna()  # everyone with both tests and the reference standard`,
+      `ta, tb = np.asarray(${pRule(s.a, s.aRule, s.numericA)}[ok]), np.asarray(${pRule(s.b, s.bRule, s.numericB)}[ok])  # first and second test positive`,
+      `cond = np.asarray(${pRule(s.ref, s.refRule, s.numericR)}[ok])  # condition present by the reference standard`,
+      'cells = lambda k: [int((k & ta & tb).sum()), int((k & ta & ~tb).sum()), int((k & ~ta & tb).sum()), int((k & ~ta & ~tb).sum())]', 'pos, neg = cells(cond), cells(~cond)']
+    : [`pos = [${s.pos.join(', ')}]  # with the condition: both positive, first only, second only, neither`, `neg = [${s.neg.join(', ')}]  # without the condition, the same`];
+  return {
+    title: data ? `Two tests on the same people: ${ruleWords(s.a, s.aRule)} and ${ruleWords(s.b, s.bRule)} against ${ruleWords(s.ref, s.refRule)}` : 'Two tests on the same people', data, pyImports: ['from scipy.stats import binomtest'],
+    r: [...rData, 'z <- qnorm(0.975)',
+      'wilson <- function(x, n) { p <- x / n; (p + z^2 / (2 * n) + c(-1, 1) * z * sqrt(p * (1 - p) / n + z^2 / (4 * n^2))) / (1 + z^2 / n) }',
+      'newcombe10 <- function(e, f, g, h) {   # Newcombe (1998) method 10: (e + f)/n - (e + g)/n',
+      '  n <- e + f + g + h; p1 <- (e + f) / n; p2 <- (e + g) / n; w1 <- wilson(e + f, n); w2 <- wilson(e + g, n)',
+      '  num <- e * h - f * g; if (num > 0) num <- max(num - n / 2, 0)   # continuity-corrected correlation',
+      '  den <- sqrt((e + f) * (g + h) * (e + g) * (f + h)); phi <- if (den > 0) num / den else 0',
+      '  dl1 <- p1 - w1[1]; du1 <- w1[2] - p1; dl2 <- p2 - w2[1]; du2 <- w2[2] - p2',
+      '  c(p1 - p2, p1 - p2 - sqrt(dl1^2 - 2 * phi * dl1 * du2 + du2^2), p1 - p2 + sqrt(du1^2 - 2 * phi * du1 * dl2 + dl2^2))', '}',
+      'mcnemar_p <- function(f, g) if (f + g == 0) 1 else if (f + g < 25) binom.test(f, f + g)$p.value else mcnemar.test(matrix(c(0, g, f, 0), 2))$p.value   # exact below 25 disagreements',
+      'se_a <- (pos[1] + pos[2]) / sum(pos); se_b <- (pos[1] + pos[3]) / sum(pos)', 'sp_a <- (neg[3] + neg[4]) / sum(neg); sp_b <- (neg[2] + neg[4]) / sum(neg)',
+      'se <- newcombe10(pos[1], pos[2], pos[3], pos[4]); se_diff <- se[1]; se_lo <- se[2]; se_hi <- se[3]; se_p <- mcnemar_p(pos[2], pos[3])',
+      'sp <- newcombe10(neg[4], neg[3], neg[2], neg[1]); sp_diff <- sp[1]; sp_lo <- sp[2]; sp_hi <- sp[3]; sp_p <- mcnemar_p(neg[3], neg[2])   # "negative" as the outcome',
+      'round(rbind(sensitivity = c(first = se_a, second = se_b, difference = se_diff, lower = se_lo, upper = se_hi, p = se_p),',
+      '            specificity = c(first = sp_a, second = sp_b, difference = sp_diff, lower = sp_lo, upper = sp_hi, p = sp_p)), 4)'],
+    py: [...pData, 'z = stats.norm.ppf(0.975)', '', '',
+      'def wilson(x, n):', '    p = x / n', '    c, h = p + z * z / (2 * n), z * np.sqrt(p * (1 - p) / n + z * z / (4 * n * n))', '    return (c - h) / (1 + z * z / n), (c + h) / (1 + z * z / n)', '', '',
+      'def newcombe10(e, f, g, h):  # Newcombe (1998) method 10: (e + f)/n - (e + g)/n',
+      '    n = e + f + g + h; p1, p2 = (e + f) / n, (e + g) / n', '    (l1, u1), (l2, u2) = wilson(e + f, n), wilson(e + g, n)',
+      '    num = e * h - f * g', '    if num > 0:', '        num = max(num - n / 2, 0)  # continuity-corrected correlation',
+      '    den = np.sqrt((e + f) * (g + h) * (e + g) * (f + h)); phi = num / den if den > 0 else 0.0',
+      '    dl1, du1, dl2, du2 = p1 - l1, u1 - p1, p2 - l2, u2 - p2',
+      '    return p1 - p2, p1 - p2 - np.sqrt(dl1 ** 2 - 2 * phi * dl1 * du2 + du2 ** 2), p1 - p2 + np.sqrt(du1 ** 2 - 2 * phi * du1 * dl2 + dl2 ** 2)', '', '',
+      'def mcnemar_p(f, g):  # exact below 25 disagreements, otherwise chi-square with Edwards\' correction',
+      '    if f + g == 0:', '        return 1.0', '    if f + g < 25:', '        return binomtest(f, f + g).pvalue', '    return stats.chi2.sf((abs(f - g) - 1) ** 2 / (f + g), 1)', '', '',
+      'se_a, se_b = (pos[0] + pos[1]) / sum(pos), (pos[0] + pos[2]) / sum(pos)', 'sp_a, sp_b = (neg[2] + neg[3]) / sum(neg), (neg[1] + neg[3]) / sum(neg)',
+      'se_diff, se_lo, se_hi = newcombe10(*pos); se_p = mcnemar_p(pos[1], pos[2])',
+      'sp_diff, sp_lo, sp_hi = newcombe10(neg[3], neg[2], neg[1], neg[0]); sp_p = mcnemar_p(neg[2], neg[1])  # "negative" as the outcome',
+      'print(f"sensitivity {se_a:.4f} and {se_b:.4f}: difference {se_diff:.4f} ({se_lo:.4f} to {se_hi:.4f}), McNemar p = {se_p:.4g}")',
+      'print(f"specificity {sp_a:.4f} and {sp_b:.4f}: difference {sp_diff:.4f} ({sp_lo:.4f} to {sp_hi:.4f}), McNemar p = {sp_p:.4g}")'],
+  };
+};
+
 /** Mantel-Haenszel or Peto pooling of 2 x 2 counts: metafor's rma.mh / rma.peto in R, written out in Python. */
 function metaMH(s) {
   const rows = s.studies, peto = s.pooling === 'peto', m = peto ? 'OR' : s.measure, isR = m !== 'RD';
