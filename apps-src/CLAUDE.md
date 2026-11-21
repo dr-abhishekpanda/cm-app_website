@@ -39,6 +39,8 @@ The build writes `../<app-path>/`: `index.html` (one file, fonts and formulas in
 | `tools/` | Build (`build.mjs`, `fonts.mjs`, `icons.mjs`), icon outliner, reference generators. |
 | `tests/` | `engine/` unit tests, `ref/` reference JSON, `e2e/` browser smoke test. |
 
+A tool can be opened ready for a design from its address, such as `#/tool/measures?tab=two&design=case-control`. `modules/presets.js` lists the keys and values each tool accepts; tools read them with `pick()` and fall back to their usual start for anything else. The design chooser's links are checked against that list in `tests/engine/designs.test.mjs`.
+
 ## Rules
 
 1. **Engine first.** A new calculation gets reference values from an independent implementation (SciPy, statsmodels, R output, or a worked example in a named textbook) and a test before any UI uses it. Regenerate references only to add cases, never to make a failing test pass.

@@ -11,6 +11,7 @@ import { DataTable, Report, Stats, Refs, Disclose } from '../../ui/results.jsx';
 import { RocPlot, ProportionCurves } from '../../ui/plot.jsx';
 import { CodeExport } from '../../ui/code.jsx';
 import { REFS } from '../refs.js';
+import { pick as fromPreset } from '../presets.js';
 import { pretty, P, isInt, pc, pcCI, rCI, mrow, MCOLS, needData, Checks, RowsTable, readRows, mkRows, BinaryFrom, defaultRule, readRule, ruleText, readBinary, NEGATIVE, num } from './epishared.jsx';
 
 /* --------------------------------------------------------- marker columns --- */
@@ -73,8 +74,8 @@ function lrWords(lr, positive) {
   return x >= 10 ? 'a large, often conclusive shift' : x >= 5 ? 'a moderate shift' : x >= 2 ? 'a small shift' : 'a slight, rarely useful shift';
 }
 
-function TestPanel({ ds, seed }) {
-  const [design, setDesign] = useState('cross');
+function TestPanel({ ds, seed, preset }) {
+  const [design, setDesign] = useState(() => fromPreset(preset, 'diagnostic', 'design', 'cross'));
   const [modeSel, setMode] = useState(seed ? 'typed' : null);
   const mode = modeSel ?? (ds ? 'data' : 'typed');
   const [cells, setCells] = useState(seed ? [[String(seed.tp), String(seed.fp)], [String(seed.fn), String(seed.tn)]] : EX_TABLE);
@@ -379,8 +380,8 @@ function RocResult({ res, ord, auto, skipped, spec, marker, refLabel, cond, targ
 
 const KINDS = [{ value: 'binary', label: 'Two tests, same people' }, { value: 'paired', label: 'Two markers, same people' }, { value: 'unpaired', label: 'One marker, two groups' }, { value: 'summary', label: 'Two published AUCs' }];
 
-function ComparePanel({ ds }) {
-  const [kind, setKind] = useState('binary');
+function ComparePanel({ ds, preset }) {
+  const [kind, setKind] = useState(() => fromPreset(preset, 'diagnostic', 'kind', 'binary'));
   const [ma, setMa] = useState(null), [oa, setOa] = useState(null), [da, setDa] = useState('auto');
   const [mb, setMb] = useState(null), [ob, setOb] = useState(null), [db, setDb] = useState('auto');
   const [rc, setRc] = useState(null), [rRule, setRRule] = useState(null), [gc, setGc] = useState(null);
@@ -643,9 +644,9 @@ function TwoTestsResult({ res, la, lb, refLabel, cond, skipped, spec }) {
 
 /* ---------------------------------------------------------------- page --- */
 
-export default function DiagnosticTool() {
+export default function DiagnosticTool({ preset }) {
   const ds = useDataset();
-  const [tab, setTab] = useState('test');
+  const [tab, setTab] = useState(() => fromPreset(preset, 'diagnostic', 'tab', 'test'));
   const [seed, setSeed] = useState(null);
   const examine = (s) => { setSeed({ ...s, id: Date.now() }); setTab('test'); };
   return (
@@ -663,7 +664,7 @@ export default function DiagnosticTool() {
           <p>The example screening-camp data have haemoglobin by a venous laboratory method (the reference: anaemia below 11 g/dL in children 6 to 59 months), by HemoCue, and palmar pallor graded by three medical officers.</p>
         </Disclose>
         <div><Seg wide value={tab} onChange={setTab} options={[{ value: 'test', label: 'Test against a reference' }, { value: 'roc', label: 'ROC curve' }, { value: 'compare', label: 'Compare tests' }]} /></div>
-        {tab === 'test' ? <TestPanel key={seed?.id ?? 'start'} ds={ds} seed={seed} /> : tab === 'roc' ? <RocPanel ds={ds} onExamine={examine} /> : <ComparePanel ds={ds} />}
+        {tab === 'test' ? <TestPanel key={seed?.id ?? 'start'} ds={ds} seed={seed} preset={seed ? null : preset} /> : tab === 'roc' ? <RocPanel ds={ds} onExamine={examine} /> : <ComparePanel ds={ds} preset={preset} />}
       </div>
     </div>
   );

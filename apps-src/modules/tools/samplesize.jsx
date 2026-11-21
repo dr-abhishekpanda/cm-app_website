@@ -9,6 +9,7 @@ import { Report, Stats, Refs } from '../../ui/results.jsx';
 import { LinePlot } from '../../ui/plot.jsx';
 import { tex, texd } from '../../ui/tex.js';
 import { REFS } from '../refs.js';
+import { pick } from '../presets.js';
 
 const num = (s) => parseNumber(s);
 const pc = (s) => parseNumber(s) / 100;
@@ -241,8 +242,8 @@ function Field({ spec, value, onInput }) {
   return <NumberField label={label} value={value} onInput={(v) => onInput(key, v)} hint={hint || undefined} />;
 }
 
-export default function SampleSizeTool() {
-  const [id, setId] = useState('prop');
+export default function SampleSizeTool({ preset }) {
+  const [id, setId] = useState(() => pick(preset, 'sample-size', 'design', 'prop'));
   const design = byId[id];
   const [vals, setVals] = useState(() => Object.fromEntries(DESIGNS.map((d) => [d.id, Object.fromEntries(d.fields.map((f) => [f[0], f[2] ?? '']))])));
   const [conf, setConf] = useState('95');
@@ -253,7 +254,7 @@ export default function SampleSizeTool() {
   const [ratioS, setRatio] = useState('1');
   const [ccOn, setCc] = useState(true);
   const [nrS, setNr] = useState('10');
-  const [cluster, setCluster] = useState('none');
+  const [cluster, setCluster] = useState(() => pick(preset, 'sample-size', 'cluster', 'none'));
   const [deS, setDe] = useState('2');
   const [mS, setM] = useState('20');
   const [iccS, setIcc] = useState('0.05');

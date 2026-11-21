@@ -16,6 +16,7 @@ import { DataTable, Report, Stats, Refs, Disclose } from '../../ui/results.jsx';
 import { PercentBars } from '../../ui/plot.jsx';
 import { CodeExport } from '../../ui/code.jsx';
 import { REFS } from '../refs.js';
+import { pick } from '../presets.js';
 
 /** The NNT and its CI in words: benefit or harm by the sign and the kind of outcome. */
 function nntWords(nnt, harmfulOutcome) {
@@ -37,8 +38,8 @@ const MEASURES = [
   { value: 'case fatality', label: 'Case fatality' }, { value: 'coverage', label: 'Coverage' }, { value: 'proportion', label: 'Other proportion' },
 ];
 
-function FrequencyPanel({ ds }) {
-  const [kind, setKind] = useState('prop');
+function FrequencyPanel({ ds, preset }) {
+  const [kind, setKind] = useState(() => pick(preset, 'measures', 'kind', 'prop'));
   const [modeSel, setMode] = useState(null);
   const mode = modeSel ?? (ds ? 'data' : 'typed');
   const [what, setWhat] = useState('prevalence');
@@ -162,8 +163,8 @@ const DESIGNS = [{ value: 'cohort', label: 'Cohort or trial' }, { value: 'case-c
 const EXAMPLE = { cohort: [['40', '60'], ['20', '80']], 'case-control': [['45', '30'], ['55', '120']], cross: [['60', '140'], ['30', '170']] };
 const METHOD_NAME = { wald: 'Wald', score: 'score (Koopman)', exact: 'exact', midp: 'mid-p exact', newcombe: 'Newcombe' };
 
-function TwoByTwoPanel({ ds }) {
-  const [design, setDesign] = useState('cohort');
+function TwoByTwoPanel({ ds, preset }) {
+  const [design, setDesign] = useState(() => pick(preset, 'measures', 'design', 'cohort'));
   const [modeSel, setMode] = useState(null);
   const mode = modeSel ?? (ds ? 'data' : 'typed');
   const [cells, setCells] = useState(EXAMPLE);
@@ -658,9 +659,9 @@ function ImpactPanel() {
 
 /* ---------------------------------------------------------------- page --- */
 
-export default function MeasuresTool() {
+export default function MeasuresTool({ preset }) {
   const ds = useDataset();
-  const [tab, setTab] = useState('two');
+  const [tab, setTab] = useState(() => pick(preset, 'measures', 'tab', 'two'));
   const Body = { freq: FrequencyPanel, two: TwoByTwoPanel, pt: PersonTimePanel, matched: MatchedPanel, impact: ImpactPanel }[tab];
   return (
     <div>
@@ -682,7 +683,7 @@ export default function MeasuresTool() {
           { value: 'freq', label: 'Proportion or rate' }, { value: 'two', label: 'Two groups (2 × 2)' }, { value: 'pt', label: 'Person-time' },
           { value: 'matched', label: 'Matched pairs' }, { value: 'impact', label: 'Population impact' },
         ]} /></div>
-        <Body ds={ds} />
+        <Body ds={ds} preset={preset} />
       </div>
     </div>
   );

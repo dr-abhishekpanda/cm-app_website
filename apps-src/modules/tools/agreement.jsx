@@ -11,6 +11,7 @@ import { DataTable, Report, Stats, Refs, Disclose } from '../../ui/results.jsx';
 import { BlandAltmanPlot } from '../../ui/plot.jsx';
 import { CodeExport } from '../../ui/code.jsx';
 import { REFS } from '../refs.js';
+import { pick } from '../presets.js';
 
 const pretty = (s) => String(s).replace(/_/g, ' ');
 const P = (p) => pValue(p).report;
@@ -472,9 +473,9 @@ function AlphaPanel({ ds }) {
 
 /* ---------------------------------------------------------------- page --- */
 
-export default function AgreementTool() {
+export default function AgreementTool({ preset }) {
   const ds = useDataset();
-  const [tab, setTab] = useState('kappa');
+  const [tab, setTab] = useState(() => pick(preset, 'agreement', 'tab', 'kappa'));
   const Body = { kappa: KappaPanel, fleiss: FleissPanel, icc: ICCPanel, ba: BAPanel, alpha: AlphaPanel }[tab];
   return (
     <div>

@@ -14,15 +14,22 @@ export const store = {
 };
 
 /* ------------------------------------------------------------- routing --- */
-// Hash routes: #/ (tools home), #/learn, #/practice, #/tool/<id>, #/learn/<id>, #/practice/<id>, #/about
+// Hash routes: #/ (tools home), #/learn, #/practice, #/tool/<id>, #/learn/<id>, #/practice/<id>, #/about.
+// A tool's address may carry a preset after '?', such as #/tool/measures?tab=two&design=case-control;
+// modules/presets.js lists the values each tool accepts.
 export function parseRoute(hash) {
   const h = (hash || '').replace(/^#/, '') || '/';
-  const parts = h.split('?')[0].split('/').filter(Boolean);
+  const [path, qs] = h.split('?');
+  const parts = path.split('/').filter(Boolean);
   if (parts.length === 0) return { view: 'tools' };
   const [a, b] = parts;
   if (a === 'learn') return b ? { view: 'lesson', id: b } : { view: 'learn' };
   if (a === 'practice') return b ? { view: 'drill', id: b } : { view: 'practice' };
-  if (a === 'tool' && b) return { view: 'tool', id: b };
+  if (a === 'tool' && b) {
+    const query = {};
+    try { for (const [k, v] of new URLSearchParams(qs || '')) query[k] = v; } catch { /* a malformed address opens the tool as usual */ }
+    return { view: 'tool', id: b, query, key: h };
+  }
   if (a === 'about') return { view: 'about' };
   if (a === 'settings') return { view: 'settings' };
   return { view: 'notfound' };

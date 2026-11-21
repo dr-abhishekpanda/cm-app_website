@@ -2,6 +2,30 @@
 
 Newest entry first. Each entry records what changed, how it was checked, and anything left open.
 
+## 2026-11-21 · Phase 2e: Study Design Chooser
+
+Branch `feature/research-app-2e`, stacked on Phase 2d.
+
+### Built
+
+- **Engine** (`engine/designs.js`): two question flows and their rules. *Name a study's design* follows the classification of Grimes and Schulz (2002): who assigned the exposure, whether allocation was random, whether there was a comparison group, and the direction of inquiry, then the finer distinctions (individuals or clusters, crossover, stepped roll-out, prospective or retrospective, how controls were chosen). Tests, agreement, prediction, reviews and qualitative studies are asked about first. *Plan my study* starts from what the study must find out and weighs how common the outcome and exposure are, fixed or brief exposures, existing records, and whether and to whom the intervention can be allocated at random.
+- **Catalogue** (`modules/designs.js`): 27 designs, each with how participants are chosen, what it can answer, the measures it gives and cannot give, its main threats, an example where a well-known one exists, the reporting guideline, and a protocol sentence with `[INSERT: ...]` placeholders.
+- **Tool** (`modules/tools/designs.jsx`, Study Design Chooser), three tabs: *Plan my study* (the design with the reasons for it and the designs worth considering instead), *Name a study's design* (with the Grimes and Schulz tree drawn and the path so far highlighted), and *All designs*. Answered questions fold to a summary with a Change button. The answers live in the address, so Back from a linked tool returns to them.
+- **Links into the tools**: a tool can now be opened ready for a design from its address (`#/tool/measures?tab=two&design=case-control`). Frequency, Association and Impact, Sample Size and Power, Diagnostic Accuracy and ROC, Vaccines and Screening, Confounding and Standardisation, Agreement and Reliability, Regression, and Choose and Run a Test read these presets; `modules/presets.js` lists the values each accepts. Each design card links to the tools that analyse it and to the matching sample size design (with the cluster adjustment switched on: a design effect for cluster sampling, cluster size and ICC for cluster trials), and says plainly where the app cannot yet analyse the design properly.
+- **References**: 29 added, each checked on PubMed: Grimes and Schulz (2002, three papers) and Schulz and Grimes (2002); STROBE 2007; CONSORT 2025 and the CONSORT extensions for cluster (2012), crossover (2019), non-inferiority (2012) and stepped-wedge (2018) trials; TREND 2004; RECORD 2015; GRRAS 2011; TRIPOD+AI 2024; PRISMA 2020; CARE 2013; COREQ 2007; SRQR 2014; Hemming and colleagues (2015) on stepped-wedge trials; Bernal and colleagues (2017) on interrupted time series; Maclure (1991); Morgenstern (1995); Rutjes and colleagues (2005); Riley and colleagues (2020); and the examples (the Medical Research Council's 1948 streptomycin trial, Doll and Hill 1950 and 1954, Bang and colleagues 1999, Tripathy and colleagues 2010). STARD 2015 was already listed. A PubMed search found no newer CONSORT extension for cluster, crossover, non-inferiority or stepped-wedge trials, and no newer STROBE, STARD, PRISMA or CARE.
+
+### Checked
+
+| Check | Result |
+|---|---|
+| Engine tests (`npm test`) | 85 of 85 pass. New: the naming flow gives the expected design and tree path for 26 answer sets covering every branch of Grimes and Schulz (2002); the planning rules give the expected design for 30 answer sets; every complete path through both flows (walked exhaustively) ends in a design in the catalogue, and all 27 designs can be reached; every link, preset value, sample size design and reference in the catalogue exists; the text has no banned words, curly quotes or American spellings |
+| Code export (`npm run test:code`) | 111 Python scripts (536 checks) and 111 R scripts (530 checks), 0 failed; no generator changed in this wave |
+| Browser smoke test | 242 of 242 pass at 360 px and 1280 px, including a planned case-control study whose links open the 2 × 2 table set for case-control and the case-control sample size, Back returning to the same answers, a changed answer giving a retrospective cohort, a cluster randomised trial named with the tree's randomised branch lit, and all 27 designs listed |
+
+### Found on the way
+
+- A design chooser is only as good as its exits: several designs need analyses this app does not have yet (mixed models for clustered and stepped-wedge trials, segmented regression for interrupted time series, regression for prevalence ratios, conditional logistic regression for matched sets, sample sizes for prediction models, kappa and the ICC). Their cards say so instead of linking to an analysis that would understate the uncertainty.
+
 ## 2026-11-21 · Phase 2d: Vaccines and Screening
 
 Branch `feature/research-app-2d`, stacked on Phase 2c.

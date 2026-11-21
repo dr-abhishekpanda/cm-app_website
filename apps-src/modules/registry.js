@@ -18,6 +18,7 @@ import MeasuresTool from './tools/measures.jsx';
 import StratifiedTool from './tools/stratified.jsx';
 import DiagnosticTool from './tools/diagnostic.jsx';
 import VaccinesTool from './tools/vaccines.jsx';
+import DesignTool from './tools/designs.jsx';
 
 export const STAGES = [
   { id: 'plan', label: 'Plan', blurb: 'Frame the question, search the literature, set objectives.' },
@@ -48,7 +49,12 @@ export const MODULES = [
   { id: 'literature', stage: 'plan', phase: 3, apps: R, tag: 'Workflow', title: 'Literature Search and References', summary: 'PubMed search builder with MeSH, live hit counts when online, RIS export and Vancouver style.' },
   { id: 'objectives', stage: 'plan', phase: 3, apps: R, tag: 'Workflow', title: 'Objectives, Hypotheses and Variables', summary: 'SMART objectives, null and alternative hypotheses, outcome and exposure definitions.' },
 
-  { id: 'design-chooser', stage: 'design', phase: 2, apps: ['research', 'epi', 'cm-epi-bio'], tag: 'Epidemiology', title: 'Study Design Chooser', summary: 'Three questions about how participants were selected decide the design and the right measures.' },
+  {
+    id: 'design-chooser', stage: 'design', status: 'ready', apps: RE, tag: 'Epidemiology', title: 'Study Design Chooser',
+    summary: 'Plan a new study or name the design of one already done; each design with its measures, threats, sample size, analysis and reporting guideline.',
+    keywords: 'study design choose design which design research design classification experimental observational analytical descriptive randomised controlled trial rct cluster stepped wedge crossover non inferiority quasi experimental before after interrupted time series cohort prospective retrospective case control matched nested case crossover test negative screening method cross sectional survey prevalence study ecological case report case series diagnostic accuracy two gate reliability agreement prediction model systematic review meta-analysis narrative review qualitative strobe consort stard prisma care grras tripod coreq srqr trend record grimes schulz',
+    tool: DesignTool,
+  },
   { id: 'sampling', stage: 'design', phase: 3, apps: R, tag: 'Workflow', title: 'Sampling and Randomisation', summary: 'Probability and non-probability sampling, cluster and PPS selection, randomisation lists.' },
   {
     id: 'sample-size', stage: 'design', status: 'ready', apps: ALL, tag: 'Statistics', title: 'Sample Size and Power',
