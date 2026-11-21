@@ -2,6 +2,38 @@
 
 Newest entry first. Each entry records what changed, how it was checked, and anything left open.
 
+## 2026-11-21 · Phase 2c: Diagnostic Accuracy and ROC
+
+Branch `feature/research-app-2c`, stacked on Phase 2b.
+
+### Built
+
+- **Engine** (`engine/diag.js`): a binary test against a reference standard (sensitivity, specificity, likelihood ratios, diagnostic odds ratio, Youden's J; in one-sample designs also the prevalence, predictive values and accuracy); predictive values and post-test probabilities at any prevalence; columns read as tests (the values that count as positive, or a cut-off); empirical ROC curves with the AUC, DeLong's variance and CI, and every operating point; cut-offs by Youden's J, closest to the top-left corner, and target sensitivity or specificity; two curves compared on the same people or in independent groups; two published AUCs compared; pROC's automatic direction.
+- **Tool** (`modules/tools/diagnostic.jsx`, Diagnostic Accuracy and ROC), three tabs:
+  - *Test against a reference*: by how people were recruited (one sample, or with and without the condition separately); from columns of the data or a typed table; predictive values at the prevalence where the test will be used, with its source asked for in the report sentence; predictive values plotted across prevalence; checks for small cells, estimates of 100%, the likelihood-ratio bands of Jaeschke and colleagues (1994), and spectrum and verification bias (STARD 2015, QUADAS-2). This fixes the earlier build's predictive values at the sample prevalence only.
+  - *ROC curve*: a numeric marker or ordered categories (the order set by the user, starting from a guess that puts none, mild and severe in that order), or counts by category, with Hanley and McNeil's CT ratings as the example; a table of cut-offs; one cut-off in detail; "Predictive values for this cut-off" carries its counts to the first tab; every cut-off listed.
+  - *Compare two curves*: two markers on the same people (DeLong's paired test), one marker in two groups, or two published AUCs.
+- **Plots** (`ui/plot.jsx`): ROC curves on a square plot with the chance diagonal and marked cut-offs; curves of proportions against prevalence with interval bands.
+- **Example data**: the screening-camp example now serves diagnostic accuracy too, with laboratory haemoglobin below 11 g/dL as the reference standard and HemoCue and graded pallor as the index tests.
+- **Shared**: the typed-rows table moved to `modules/tools/epishared.jsx`, used by stratified analysis and the ROC counts.
+- **Code export**: three new kinds (accuracy, ROC, two curves compared). R uses `prop.test`, pROC, and epiR's `epi.tests` when it is installed; Python uses statsmodels and scikit-learn with DeLong's variance written out. The script checker now compares infinite results, such as a likelihood ratio when no one without the condition tests positive.
+- **References**: 17 added (Altman and Bland 1994, three papers; Deeks and Altman 2004; Simel, Samsa and Matchar 1991; Mercaldo, Lau and Zhou 2007; Youden 1950; Glas and colleagues 2003; Fagan 1975; Jaeschke, Guyatt and Sackett 1994; STARD 2015; QUADAS-2 2011; Ransohoff and Feinstein 1978; Leeflang and colleagues 2013; Perkins and Schisterman 2006; Ewald 2006; Robin and colleagues 2011 for pROC), each checked on PubMed.
+
+### Checked
+
+| Check | Result |
+|---|---|
+| Engine tests (`npm test`) | 74 of 74 pass. Against R 4.3.3 (`prop.test`, `binom.test`, epiR 2.0.67 `epi.tests`, pROC 1.18.5) and Python (statsmodels 0.15 score statistic for Koopman's interval, SciPy 1.18 exact odds-ratio interval, scikit-learn 1.9 AUC): eight 2 × 2 tables, zero cells included; seven ROC sets, among them Hanley and McNeil's ratings (AUC 0.893, as published), perfect separation and a marker pointing the wrong way; paired and unpaired comparisons; the logit interval of Mercaldo and colleagues checked from its formula |
+| Code export (`npm run test:code`) | 95 Python scripts (470 checks) and 95 R scripts (464 checks), 0 failed |
+| Browser smoke test | 198 of 198 pass at 360 px and 1280 px, including the three tabs on the screening-camp data, the handover of a cut-off to the accuracy tab, and checks that the new tables fit a phone |
+
+### Found on the way
+
+- pROC's test for two independent curves is not a z test: it refers D to Student's t with Satterthwaite-type degrees of freedom. The engine follows pROC.
+- pROC warns when two paired curves point in opposite directions. The generated R script negates a marker whose lower values mean the condition, which gives the same results without the warning.
+- R's `fisher.test` upper limits for large odds ratios were 0.4% and 3% out against SciPy (it solves on 1/OR with `uniroot` at the default tolerance); SciPy is the reference for exact limits.
+- epiR's `epi.tests` accepts only 2 to 4 digits.
+
 ## 2026-11-14 · Phase 2b: Confounding and Standardisation
 
 Branch `feature/research-app-2b`, stacked on Phase 2a.

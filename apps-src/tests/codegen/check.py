@@ -23,7 +23,7 @@ for case in manifest:
         for e in case["exprs"]:
             v = eval(e, ns)
             v = float(v)
-            vals.append(v if math.isfinite(v) else None)
+            vals.append(v if math.isfinite(v) else "inf" if v > 0 else "-inf" if v < 0 else None)  # JSON has no infinity
         out.append({"values": vals})
     except Exception:
         out.append({"error": traceback.format_exc()})

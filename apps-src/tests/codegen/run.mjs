@@ -1,7 +1,7 @@
 /* Runs every generated R and Python script on the example data and compares its numbers with the
- * app's engine. Needs Python 3 with numpy, scipy, pandas, statsmodels, pingouin, lifelines and
- * scikit-posthocs, and R with survival, psych, metafor, car, pROC, afex and epitools (the R half is skipped
- * with a note when R is absent).   npm run test:code
+ * app's engine. Needs Python 3 with numpy, scipy, pandas, statsmodels, pingouin, lifelines,
+ * scikit-posthocs and scikit-learn, and R with survival, psych, metafor, car, pROC, afex and epitools
+ * (the R half is skipped with a note when R is absent).   npm run test:code
  */
 import { mkdtempSync, writeFileSync, mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -24,6 +24,7 @@ import { cohenKappa, fleissKappa, icc, blandAltman, cronbach } from '../../engin
 import { binaryEffect, continuousEffect, proportionEffect, reportedEffect, pool, subgroups, poolMH, poolPeto, subgroupsMH } from '../../engine/meta.js';
 import { proportion, rate, twoByTwo, personTime, matchedPairs, populationFraction } from '../../engine/epi.js';
 import { mhTables, mhPersonTime, directStandard, dsrRatio, indirectStandard } from '../../engine/strat.js';
+import { testAccuracy, atPrevalence, classifyValue, countTable, rocAnalysis, rocCutoffs, rocPaired, rocUnpaired, expandGrouped } from '../../engine/diag.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const DS = { A: readDataset(exampleCsv()), T: readDataset(exampleTbCsv()), G: readDataset(exampleAgreementCsv()) };
@@ -333,9 +334,71 @@ const add = (name, data, spec, checks) => cases.push({ name, data, spec, checks 
   }
 }
 
+/* ------------------------------------------------- diagnostic accuracy, ROC --- */
+{
+  // Columns read as the tool reads them: positive by a rule; markers as numbers or category places.
+  const binary = (k, name, rule) => { const c = col(k, name); return c.raw.map((raw, i) => (isMissing(raw) ? null : classifyValue(raw, c.numbers?.[i] ?? null, rule))); };
+  const markerOf = (k, name, order) => { const c = col(k, name); return order ? c.raw.map((raw) => (isMissing(raw) ? null : order.indexOf(raw) + 1 || null)) : c.numbers.map((v) => (v === null || !Number.isFinite(v) ? null : v)); };
+  const diagChecks = (o, p) => {
+    const pick = (r) => r[r.auto];
+    const out = [['se', o.se.est], ['se_lo', o.se.wilson[0]], ['se_hi', o.se.wilson[1]], ['sp', o.sp.est], ['sp_lo', o.sp.wilson[0]], ['sp_hi', o.sp.wilson[1]],
+      ['lr_pos', o.lrPos.est], ['lr_pos_lo', pick(o.lrPos)[0]], ['lr_pos_hi', pick(o.lrPos)[1]], ['lr_neg', o.lrNeg.est], ['lr_neg_lo', pick(o.lrNeg)[0]], ['lr_neg_hi', pick(o.lrNeg)[1]],
+      ['youden', o.youden.est]];
+    if (p !== null) { const a = atPrevalence(o, p); out.push(['ppv', a.ppv.est], ['ppv_lo', a.ppv.ci[0]], ['ppv_hi', a.ppv.ci[1]], ['npv', a.npv.est], ['npv_lo', a.npv.ci[0]], ['npv_hi', a.npv.ci[1]]); }
+    else if (o.ppv) out.push(['ppv', o.ppv.est], ['ppv_lo', o.ppv.wilson[0]], ['ppv_hi', o.ppv.wilson[1]], ['npv', o.npv.est], ['npv_lo', o.npv.wilson[0]], ['npv_hi', o.npv.wilson[1]]);
+    return out;
+  };
+  for (const [t, design, p] of [[[90, 30, 10, 170], 'cross', 0.2], [[90, 30, 10, 170], 'cross', null], [[9, 3, 1, 27], 'case-control', 0.05], [[20, 0, 3, 47], 'cross', null]]) {
+    const o = testAccuracy({ tp: t[0], fp: t[1], fn: t[2], tn: t[3] }, { design });
+    add(`diagnostic accuracy ${t.join('/')}, ${design}${p === null ? '' : `, prevalence ${p}`}`, null, { kind: 'diag', design, table: t, ...(p === null ? {} : { prevalence: p }) }, diagChecks(o, p));
+  }
+  const ANAEMIA = { kind: 'cut', op: '<', value: 11, text: '11' };
+  const PALLOR = { kind: 'levels', positive: ['Some pallor', 'Severe pallor'] };
+  {
+    const k = countTable(binary('G', 'Pallor_MO1', PALLOR), binary('G', 'Hb_lab', ANAEMIA)), o = testAccuracy(k);
+    add('diagnostic accuracy from data: pallor against laboratory anaemia', 'G', { kind: 'diag', design: 'cross', test: 'Pallor_MO1', testRule: PALLOR, numericT: false, ref: 'Hb_lab', refRule: ANAEMIA, numericR: true, prevalence: 0.4 }, diagChecks(o, 0.4));
+    const H = { kind: 'cut', op: '<=', value: 11.2, text: '11.2' };
+    const k2 = countTable(binary('G', 'Hb_HemoCue', H), binary('G', 'Hb_lab', ANAEMIA)), o2 = testAccuracy(k2);
+    add('diagnostic accuracy from data: HemoCue cut-off', 'G', { kind: 'diag', design: 'cross', test: 'Hb_HemoCue', testRule: H, numericT: true, ref: 'Hb_lab', refRule: ANAEMIA, numericR: true }, diagChecks(o2, null));
+  }
+  const rocChecks = (r) => { const c = rocCutoffs(r).youden[0]; return [['auc', r.auc], ['lo', r.ci[0]], ['hi', r.ci[1]], ['youden_se', c.se], ['youden_sp', c.sp]]; };
+  {
+    const y = binary('G', 'Hb_lab', ANAEMIA), x = markerOf('G', 'Hb_HemoCue');
+    const ok = y.map((v, i) => v !== null && x[i] !== null);
+    const r = rocAnalysis(y.filter((_, i) => ok[i]), x.filter((_, i) => ok[i]), { higher: false });
+    add('ROC from data: HemoCue, lower values mean anaemia', 'G', { kind: 'roc', marker: 'Hb_HemoCue', numericM: true, order: null, higher: false, ref: 'Hb_lab', refRule: ANAEMIA, numericR: true }, rocChecks(r));
+    const ORD = ['No pallor', 'Some pallor', 'Severe pallor'], xp = markerOf('G', 'Pallor_MO1', ORD);
+    const ok2 = y.map((v, i) => v !== null && xp[i] !== null);
+    const r2 = rocAnalysis(y.filter((_, i) => ok2[i]), xp.filter((_, i) => ok2[i]), { higher: true });
+    add('ROC from data: ordered pallor grades', 'G', { kind: 'roc', marker: 'Pallor_MO1', numericM: false, order: ORD, higher: true, ref: 'Hb_lab', refRule: ANAEMIA, numericR: true }, rocChecks(r2));
+    // Two markers on the same people.
+    const ok3 = y.map((v, i) => v !== null && x[i] !== null && xp[i] !== null);
+    const f = (a) => a.filter((_, i) => ok3[i]);
+    const o3 = rocPaired(f(y), f(x), f(xp), { higherA: false, higherB: true });
+    add('two ROC curves, paired: HemoCue and pallor', 'G', { kind: 'roc2', paired: true, a: 'Hb_HemoCue', numericA: true, orderA: null, higherA: false, b: 'Pallor_MO1', numericB: false, orderB: ORD, higherB: true, ref: 'Hb_lab', refRule: ANAEMIA, numericR: true },
+      [['auc_a', o3.A.auc], ['auc_b', o3.B.auc], ['diff', o3.diff], ['p_main', o3.p], ['lo', o3.ci[0]], ['hi', o3.ci[1]]]);
+  }
+  {
+    // Hanley and McNeil (1982): CT ratings, lowest category first.
+    const H = [['1 Definitely normal', 3, 33], ['2 Probably normal', 2, 6], ['3 Questionable', 2, 6], ['4 Probably abnormal', 11, 11], ['5 Definitely abnormal', 33, 2]];
+    const g = expandGrouped(H.map(([, cases, controls]) => ({ cases, controls })));
+    add('ROC from counts by category (Hanley and McNeil)', null, { kind: 'roc', grouped: H.map(([label, cases, controls]) => ({ label, cases, controls })), higher: true }, rocChecks(rocAnalysis(g.y, g.x, { higher: true })));
+  }
+  {
+    // One marker in two independent groups: haemoglobin at registration for anaemia at six months, by residence.
+    const RULE = { kind: 'levels', positive: ['Yes'] };
+    const y = binary('A', 'Anaemia_6_months', RULE), x = markerOf('A', 'Hb_registration'), gc = col('A', 'Residence');
+    const [g1, g2] = gc.levels;
+    const part = (lev) => { const yy = [], xx = []; y.forEach((v, i) => { if (v !== null && x[i] !== null && !isMissing(gc.raw[i]) && gc.raw[i] === lev) { yy.push(v); xx.push(x[i]); } }); return rocAnalysis(yy, xx, { higher: false }); };
+    const o = rocUnpaired(part(g1), part(g2));
+    add('two ROC curves, unpaired: by residence', 'A', { kind: 'roc2', paired: false, a: 'Hb_registration', numericA: true, orderA: null, higherA: false, group: 'Residence', groups: [g1, g2], numericG: false, ref: 'Anaemia_6_months', refRule: RULE, numericR: false },
+      [['auc_a', o.A.auc], ['auc_b', o.B.auc], ['diff', o.diff], ['p_main', o.p]]);
+  }
+}
+
 /* ------------------------------------------- the same checks in R --- */
 // Each Python check has an R twin; null where the R script reports the number differently.
-const SAME_NAMES = new Set(['freqP', 'freqR', 'epi2x2', 'eptime', 'epmatch', 'mh', 'dsr', 'smr']);
+const SAME_NAMES = new Set(['freqP', 'freqR', 'epi2x2', 'eptime', 'epmatch', 'mh', 'dsr', 'smr', 'diag', 'roc', 'roc2']);
 function rExpr(spec, e) {
   if (SAME_NAMES.has(spec.kind)) return e;
   const k = spec.kind;
@@ -397,7 +460,14 @@ const out = spawnSync('python3', ['-I', join(here, 'check.py'), join(root, 'mani
 if (out.status !== 0) { console.error(out.stderr); process.exit(1); }
 const got = JSON.parse(out.stdout.trim().split('\n').pop());
 let bad = 0, n = 0, nr = 0;
-const close = (v, want, rel, abs) => typeof v === 'number' && Number.isFinite(v) && Math.abs(v - want) <= abs + rel * Math.abs(want);
+// Infinite results (a likelihood ratio when no one without the condition tests positive) come back as
+// "inf" from Python and "Inf" from R.
+const inf = (v) => (v === 'inf' || v === 'Inf' ? Infinity : v === '-inf' || v === '-Inf' ? -Infinity : v);
+const close = (v, want, rel, abs) => {
+  const x = inf(v);
+  if (!Number.isFinite(want)) return x === want;
+  return typeof x === 'number' && Number.isFinite(x) && Math.abs(x - want) <= abs + rel * Math.abs(want);
+};
 cases.forEach((c, i) => {
   const r = got[i];
   if (r.error) { bad++; console.log(`FAIL python ${c.name}: ${r.error.split('\n').slice(-3).join(' | ')}`); return; }
@@ -416,7 +486,7 @@ if (hasR) {
     const lines = (o.stdout || '').split('\n');
     const err = lines.find((l) => l.startsWith('ERROR:'));
     if (o.status !== 0 || err) { bad++; console.log(`FAIL R ${c.name}: ${err || (o.stderr || '').split('\n').slice(-4).join(' | ')}`); return; }
-    const vals = lines.filter((l) => l.startsWith('VAL ')).map((l) => Number(l.slice(4).trim()));
+    const vals = lines.filter((l) => l.startsWith('VAL ')).map((l) => { const t = l.slice(4).trim(); return /^-?Inf$/.test(t) ? inf(t) : Number(t); });
     c.rchecks.forEach(([expr, want, rel, abs], j) => {
       nr++;
       if (!close(vals[j], want, rel, abs)) { bad++; console.log(`FAIL R ${c.name}: ${expr} = ${vals[j]}, app ${want}`); }

@@ -16,6 +16,7 @@ import ResultsTool from './tools/results.jsx';
 import CodeTool from './tools/code.jsx';
 import MeasuresTool from './tools/measures.jsx';
 import StratifiedTool from './tools/stratified.jsx';
+import DiagnosticTool from './tools/diagnostic.jsx';
 
 export const STAGES = [
   { id: 'plan', label: 'Plan', blurb: 'Frame the question, search the literature, set objectives.' },
@@ -99,7 +100,12 @@ export const MODULES = [
     keywords: 'prevalence incidence risk rate attack rate case fatality person time person years relative risk risk ratio odds ratio prevalence ratio rate ratio risk difference attributable risk ar% par par% population attributable fraction preventable prevented fraction number needed to treat nnt nnh cohort case control cross sectional matched pairs mcnemar levin miettinen 2x2 two by two',
     tool: MeasuresTool,
   },
-  { id: 'diagnostic', stage: 'analyse', phase: 2, apps: RE, tag: 'Epidemiology', title: 'Diagnostic Accuracy and ROC', summary: 'Sensitivity, specificity, predictive values at any prevalence, likelihood ratios, ROC curves.' },
+  {
+    id: 'diagnostic', stage: 'analyse', status: 'ready', apps: RE, tag: 'Epidemiology', title: 'Diagnostic Accuracy and ROC',
+    summary: 'Sensitivity, specificity and likelihood ratios against a reference standard, predictive values at any prevalence, ROC curves and cut-offs, two curves compared.',
+    keywords: 'diagnostic accuracy screening test sensitivity specificity predictive value ppv npv likelihood ratio lr post test pre test probability bayes fagan nomogram youden diagnostic odds ratio dor roc receiver operating characteristic auc area under the curve c statistic delong cut off cutoff threshold reference standard gold standard index test stard quadas spectrum bias verification bias',
+    tool: DiagnosticTool,
+  },
   {
     id: 'stratified', stage: 'analyse', status: 'ready', apps: RE, tag: 'Epidemiology', title: 'Confounding and Standardisation',
     summary: 'Mantel-Haenszel estimates against the crude ones, effect modification across strata, direct and indirect (SMR) standardisation.',

@@ -290,6 +290,50 @@ try {
     check(`${label}: SMR tables fit their width`, await tablesFit());
     await shot(page, `${label}-smr`);
 
+    // Phase 2c: diagnostic accuracy and ROC, on the screening-camp example (laboratory Hb below 11 g/dL as the reference).
+    await page.goto(`${base}#/tool/diagnostic`);
+    await page.getByRole('button', { name: 'Replace or view' }).click();
+    await page.getByRole('button', { name: 'Load example screening-camp data' }).click();
+    const anaemiaRef = async () => {
+      await page.getByLabel('Reference standard', { exact: true }).selectOption('Hb_lab');
+      await page.getByLabel('Condition present when Hb lab is').selectOption('<');
+      await page.getByLabel('Cut-off for Hb lab').fill('11');
+    };
+    await page.getByLabel('Test being evaluated (index test)').selectOption('Pallor_MO1');
+    await anaemiaRef();
+    check(`${label}: pallor against laboratory anaemia`, (await text(page, '#dg-h')) === 'Sensitivity 81.7%, specificity 96.6%' && (await text(page, '.verdict-line')) === '95% CI 71.2% to 89.0% and 82.8% to 99.4% (Wilson); LR+ 23.7, LR− 0.19', `${await text(page, '#dg-h')} | ${await text(page, '.verdict-line')}`);
+    await page.getByLabel('Prevalence where the test will be used, % (optional)').fill('40');
+    const sentence = await text(page, '.report');
+    check(`${label}: predictive values at a prevalence of 40%`, sentence.includes('the positive predictive value would be 94.0% (95% CI 75.9% to 98.9%) and the negative predictive value 88.8% (95% CI 83.3% to 93.0%)') && sentence.includes('[INSERT: source of the prevalence]'), sentence.slice(-220));
+    check(`${label}: predictive values plotted against prevalence`, (await page.locator('svg.plot path[stroke-width="2"]').count()) === 2);
+    check(`${label}: no sideways scroll on the accuracy result`, await noSideScroll(page));
+    check(`${label}: accuracy tables fit their width`, await tablesFit());
+    await shot(page, `${label}-diagnostic`);
+    await page.getByRole('button', { name: 'R and Python code for this analysis' }).click();
+    check(`${label}: accuracy R code carries Koopman's interval`, (await page.locator('pre.code').textContent()).includes('koopman_ci <- function(x1, n1, x2, n2)'));
+    await page.getByRole('button', { name: 'ROC curve', exact: true }).click();
+    await page.getByLabel('Marker', { exact: true }).selectOption('Hb_HemoCue');
+    await anaemiaRef();
+    check(`${label}: ROC of HemoCue for anaemia`, (await text(page, '#roc-h')) === 'AUC = 0.99' && (await text(page, '.verdict-line')) === '95% CI 0.97 to 1.00 (DeLong); 71 with the condition, 29 without', `${await text(page, '#roc-h')} | ${await text(page, '.verdict-line')}`);
+    check(`${label}: Youden's cut-off read the right way round`, (await page.locator('.restable').first().innerText()).includes('≤ 11.2'));
+    check(`${label}: ROC curve drawn`, (await page.locator('svg.plot path.roc').count()) === 1);
+    check(`${label}: no sideways scroll on the ROC result`, await noSideScroll(page));
+    check(`${label}: ROC tables fit their width`, await tablesFit());
+    await shot(page, `${label}-roc`);
+    await page.getByRole('button', { name: 'Counts by category' }).click();
+    check(`${label}: Hanley and McNeil ratings give AUC 0.89`, (await text(page, '#roc-h')) === 'AUC = 0.89' && (await text(page, '.verdict-line')) === '95% CI 0.83 to 0.95 (DeLong); 51 with the condition, 58 without', `${await text(page, '#roc-h')} | ${await text(page, '.verdict-line')}`);
+    await page.getByRole('button', { name: 'Predictive values for this cut-off' }).click();
+    check(`${label}: a cut-off carried to the accuracy tab`, (await text(page, '#dg-h')) === 'Sensitivity 86.3%, specificity 77.6%', await text(page, '#dg-h'));
+    await page.getByRole('button', { name: 'Compare two curves', exact: true }).click();
+    await page.getByLabel('First marker', { exact: true }).selectOption('Hb_HemoCue');
+    await page.getByLabel('Second marker', { exact: true }).selectOption('Pallor_MO1');
+    await anaemiaRef();
+    check(`${label}: HemoCue against pallor, paired DeLong test`, (await text(page, '#cmp-h')) === 'Difference in AUC = 0.09' && (await text(page, '.verdict-line')) === "95% CI 0.03 to 0.15; DeLong's test for paired curves, z = 3.15, p = 0.002", `${await text(page, '#cmp-h')} | ${await text(page, '.verdict-line')}`);
+    check(`${label}: two ROC curves drawn`, (await page.locator('svg.plot path.roc').count()) === 2);
+    check(`${label}: no sideways scroll on the comparison`, await noSideScroll(page));
+    check(`${label}: comparison tables fit their width`, await tablesFit());
+    await shot(page, `${label}-roc-compare`);
+
     await page.goto(`${base}#/`);
     await page.getByRole('button', { name: 'Settings' }).click();
     await page.getByRole('button', { name: 'Dark', exact: true }).click();
