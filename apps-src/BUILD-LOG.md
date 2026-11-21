@@ -2,6 +2,33 @@
 
 Newest entry first. Each entry records what changed, how it was checked, and anything left open.
 
+## 2026-11-21 · Phase 2f: Outbreak Toolkit (#EPI-APP)
+
+Branch `feature/research-app-2f`, stacked on Phase 2e. This completes Phase 2.
+
+### Built
+
+- **Engine** (`engine/outbreak.js`): dates and times of onset read day first (or month first when asked), from ISO dates, month names and spreadsheet day numbers, with 24-hour or am/pm times, all as UTC; the epidemic curve by hours, days or Monday-start weeks, stacked by group, with the interval suggested as about a quarter of the average incubation period (CDC); the probable period of exposure counted back from the first case, the peak and the last case (CDC); attack rates with Wilson intervals; food-specific attack-rate tables for a cohort of everyone at the meal or for cases and controls, ranked by the risk or odds ratio, with the share of cases who ate each item; the incubation period from a common exposure, with Sartwell's geometric mean and dispersion factor.
+- **Tool** (`modules/tools/outbreak.jsx`, Outbreak Investigation), in #EPI-APP and (from Phase 7) #CM-APP, not #RESEARCH-APP: a line-list panel (case column, date and time of onset, date order, the common exposure, the case definition, and the dates that did not read), then four tabs: *Epidemic curve* (from the line list or from typed counts by date; the shaded probable period of exposure and the exposure itself drawn on the curve), *Attack rates* (from everyone at risk in the line list, or cases with typed numbers at risk and their source), *Food-specific* (from Yes/No columns or typed counts), and *Incubation period*. Each gives checks, a report sentence and the references.
+- **Plot**: an epidemic curve with touching bars, stacking by group, a mark for the exposure and the shaded probable period of exposure, labelled to fit a phone.
+- **#EPI-APP scaffold** (`apps/epi-app/`): config, the E icon and its home page; the build now writes `/epi-app/` as well. It lists the epidemiology tools, the design chooser, sample size and the outbreak toolkit.
+- **Example data**: a simulated wedding-lunch outbreak (186 guests, 76 cases, seven food items, onsets day first with times, two cases without a time), labelled as simulated and not real people.
+- **Code export**: four new kinds (epidemic curve, attack rates, food-specific table, incubation period), offered only when R and Python can read the dates exactly as the app does.
+- **References**: 5 added: Reingold (1998) and Sartwell (1950), checked on PubMed; WHO's guidelines for foodborne disease outbreaks (2008), checked on the WHO publications page; CDC's Quick Learns on the epi curve and on the period of exposure, checked on the CDC website.
+
+### Checked
+
+| Check | Result |
+|---|---|
+| Engine tests (`npm test`) | 89 of 89 pass. New: dates and times in 15 forms, with impossible dates refused; the 3-hour and daily curves against R's `cut()` on POSIXct times, interval by interval; Monday-start weeks; CDC's example of one-day intervals for a 3 to 4 day incubation period; the probable period of exposure worked by hand; the incubation period, attack rates and the food-specific table against R (quantile type 7, `prop.test`, epiR 2.0.67 `epi.2by2`, `chisq.test`, `fisher.test`) |
+| Code export (`npm run test:code`) | 121 Python scripts (634 checks) and 121 R scripts (628 checks), 0 failed |
+| Browser smoke tests | #EPI-APP 44 of 44 at 360 px and 1280 px (home, every outbreak tab on the example and on typed counts, the probable period of exposure, tables that fit a phone, a preset link into the design chooser and the 2 × 2 table, dark theme, offline); #RESEARCH-APP 242 of 242 |
+
+### Found on the way
+
+- The script checker caught two generator faults before release: a regular expression for times that lost its backslashes inside a JavaScript template string, and Koopman's interval in R needing `z` defined before it.
+- Every app still bundles every module, so #RESEARCH-APP carries the outbreak code without listing it (about 1.15 MB in all). One bundle per app is planned for Phase 6, with code export headers that name the app.
+
 ## 2026-11-21 · Phase 2e: Study Design Chooser
 
 Branch `feature/research-app-2e`, stacked on Phase 2d.

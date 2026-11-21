@@ -5,7 +5,7 @@ One source tree builds five offline web apps for dr-abhishekpanda-cm.app. Each a
 | App | Site path | Phase |
 |---|---|---|
 | #RESEARCH-APP | /research-app/ | Built first; ships in waves from Phase 0 |
-| #EPI-APP | /epi-app/ | Phase 6, derived from the shared modules |
+| #EPI-APP | /epi-app/ | Scaffolded in Phase 2f for the outbreak toolkit; completed in Phase 6 |
 | #BIOSTATS-APP | /biostats-app/ | Phase 6, derived from the shared modules |
 | #CM-EPI-BIO-APP | /cm-app/cm-epi-bio/ | Phase 7 |
 | #CM-APP | /cm-app/ | Phase 7, the full toolkit hub |
@@ -22,8 +22,8 @@ Run from `apps-src/`.
 | Engine tests (SciPy, statsmodels, mpmath and R references) | `npm test` |
 | Run every generated R and Python script against the app (needs R with survival, psych, metafor, car, pROC, afex, epitools, and Python with SciPy, statsmodels, pingouin, lifelines, scikit-posthocs, scikit-learn; R is skipped with a note if absent) | `npm run test:code` |
 | Build one app, or all | `npm run build -- research-app` / `npm run build` |
-| Smoke test a built app | `npm run e2e -- research-app` (add `--shots <dir>` for screenshots) |
-| Regenerate reference values | `python3 -I tools/refgen/engine_ref.py` (needs scipy, mpmath); for the epidemiology measures `Rscript --vanilla tools/refgen/epi_ref.R` (needs R with epiR, epitools) and `python3 -I tools/refgen/epi_ref.py` (needs statsmodels); for stratified analysis and standardisation `Rscript --vanilla tools/refgen/strat_ref.R` and `python3 -I tools/refgen/strat_ref.py`; for Mantel-Haenszel and Peto meta-analysis `Rscript --vanilla tools/refgen/meta_mh_ref.R` (needs metafor); for diagnostic accuracy and ROC `node tools/refgen/diag_input.mjs`, then `Rscript --vanilla tools/refgen/diag_ref.R` (needs epiR, pROC) and `python3 -I tools/refgen/diag_ref.py` (needs statsmodels, scikit-learn); for vaccine effectiveness `Rscript --vanilla tools/refgen/vaccine_ref.R` (needs epiR) |
+| Smoke test a built app | `npm run e2e -- research-app` or `npm run e2e -- epi-app` (add `--shots <dir>` for screenshots; each app other than #RESEARCH-APP has its checks in `tests/e2e/<app>.mjs`) |
+| Regenerate reference values | `python3 -I tools/refgen/engine_ref.py` (needs scipy, mpmath); for the epidemiology measures `Rscript --vanilla tools/refgen/epi_ref.R` (needs R with epiR, epitools) and `python3 -I tools/refgen/epi_ref.py` (needs statsmodels); for stratified analysis and standardisation `Rscript --vanilla tools/refgen/strat_ref.R` and `python3 -I tools/refgen/strat_ref.py`; for Mantel-Haenszel and Peto meta-analysis `Rscript --vanilla tools/refgen/meta_mh_ref.R` (needs metafor); for diagnostic accuracy and ROC `node tools/refgen/diag_input.mjs`, then `Rscript --vanilla tools/refgen/diag_ref.R` (needs epiR, pROC) and `python3 -I tools/refgen/diag_ref.py` (needs statsmodels, scikit-learn); for vaccine effectiveness `Rscript --vanilla tools/refgen/vaccine_ref.R` (needs epiR); for the outbreak tools `node tools/refgen/outbreak_input.mjs`, then `Rscript --vanilla tools/refgen/outbreak_ref.R` (needs epiR) |
 | Draw a new app icon | `python3 -I tools/outline_icon.py E apps/epi-app/icon.svg` (needs fonttools, brotli) |
 
 The build writes `../<app-path>/`: `index.html` (one file, fonts and formulas inside), `sw.js`, `manifest.webmanifest`, `icon.svg` and four PNG icons. It also adds a `no-cache` rule for the app to the root `_headers`. The e2e test and the PNG icons use the Playwright installed on the machine; Playwright is deliberately not a dependency here.

@@ -9,7 +9,7 @@ import { join, dirname } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { scriptFor, DATA_FILE, datasetCsv } from '../../engine/codegen.js';
-import { exampleCsv, exampleTbCsv, exampleAgreementCsv, exampleMeaslesCsv } from '../../engine/examples.js';
+import { exampleCsv, exampleTbCsv, exampleAgreementCsv, exampleMeaslesCsv, exampleOutbreakCsv } from '../../engine/examples.js';
 import { readDataset, splitBy, completeRows, crossTab, isMissing } from '../../engine/data.js';
 import { mean, quantile, sortNum, shapiroWilk } from '../../engine/describe.js';
 import { tTwoSample, tTwoSampleSummary, tOneSample, tPaired, anova, welchAnova, rmAnova } from '../../engine/compare.js';
@@ -26,9 +26,10 @@ import { proportion, rate, twoByTwo, personTime, matchedPairs, populationFractio
 import { mhTables, mhPersonTime, directStandard, dsrRatio, indirectStandard } from '../../engine/strat.js';
 import { testAccuracy, atPrevalence, classifyValue, countTable, rocAnalysis, rocCutoffs, rocPaired, rocUnpaired, expandGrouped, compareBinaryTests } from '../../engine/diag.js';
 import { vaccineEffectiveness, screeningMethod } from '../../engine/vaccine.js';
+import { parseDateTime, epiCurve, attackRates, foodTable, foodCounts, readYesNo, incubation } from '../../engine/outbreak.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const DS = { A: readDataset(exampleCsv()), T: readDataset(exampleTbCsv()), G: readDataset(exampleAgreementCsv()), M: readDataset(exampleMeaslesCsv()) };
+const DS = { A: readDataset(exampleCsv()), T: readDataset(exampleTbCsv()), G: readDataset(exampleAgreementCsv()), M: readDataset(exampleMeaslesCsv()), O: readDataset(exampleOutbreakCsv()) };
 const col = (k, n) => DS[k].columns.find((c) => c.name === n);
 const nums = (k, n) => col(k, n).numbers.filter((v) => v !== null && Number.isFinite(v));
 const by = (k, y, g, lv) => { const sp = splitBy(col(k, y), col(k, g)); return sp.groups[sp.labels.indexOf(lv)]; };
@@ -454,7 +455,7 @@ const add = (name, data, spec, checks) => cases.push({ name, data, spec, checks 
 
 /* ------------------------------------------- the same checks in R --- */
 // Each Python check has an R twin; null where the R script reports the number differently.
-const SAME_NAMES = new Set(['freqP', 'freqR', 'epi2x2', 'eptime', 'epmatch', 'mh', 'dsr', 'smr', 'diag', 'roc', 'roc2', 've', 'tests2']);
+const SAME_NAMES = new Set(['freqP', 'freqR', 'epi2x2', 'eptime', 'epmatch', 'mh', 'dsr', 'smr', 'diag', 'roc', 'roc2', 've', 'tests2', 'epicurve', 'attack', 'foodtable', 'incubation']);
 function rExpr(spec, e) {
   if (SAME_NAMES.has(spec.kind)) return e;
   const k = spec.kind;
@@ -484,6 +485,50 @@ function rExpr(spec, e) {
 const fisherLimits = (spec, e) => spec.kind === 'epi2x2' && spec.design === 'case-control' && (e === 'lo' || e === 'hi');
 const rTol = (spec, e, rel) => (spec.kind === 'meta' && spec.method !== 'DL' && spec.model !== 'fixed' ? Math.max(rel, 5e-4)
   : spec.kind === 'surv' ? Math.max(rel, 1e-6) : fisherLimits(spec, e) ? Math.max(rel, 2e-3) : rel);
+
+/* Outbreak: the wedding-lunch example (Phase 2f). */
+{
+  const ill = col('O', 'Ill').raw.map((v) => (isMissing(v) ? null : v === 'Yes'));
+  const dc = col('O', 'Onset_date'), tc = col('O', 'Onset_time');
+  const events = [];
+  ill.forEach((y, i) => { if (y) { const p = parseDateTime(dc.raw[i], isMissing(tc.raw[i]) ? '' : tc.raw[i]); if (p) events.push(p); } });
+  const meal = Date.UTC(2026, 2, 14, 13, 0);
+  const base = { date: 'Onset_date', time: 'Onset_time', fmt: '%d/%m/%Y', case: 'Ill', caseRule: { kind: 'levels', positive: ['Yes'] } };
+  const label = (t) => new Date(t).toISOString().slice(0, 16).replace('T', ' ');
+  for (const [unit, width, include] of [['hour', 3, meal], ['hour', 6, null], ['day', 1, meal]]) {
+    const cv = epiCurve(events, { unit, width, include: include ? [include] : [] });
+    add(`epidemic curve, ${width}-${unit}`, 'O', { kind: 'epicurve', ...base, unit, width, include },
+      [['n_cases', cv.n], ['peak_n', cv.peak[0].count], ['n_bins', cv.bins.length], ...cv.bins.filter((b) => b.count).map((b) => [`counts["${label(b.start)}"]`, b.count])]);
+  }
+  const inc = incubation(events.filter((e) => e.timed).map((e) => ({ exposure: meal, onset: e.t })));
+  add('incubation period', 'O', { kind: 'incubation', ...base, exposure: meal },
+    [['n_inc', inc.n], ['med', inc.median], ['q1', inc.q1], ['q3', inc.q3], ['h_min', inc.min], ['h_max', inc.max], ['gm', inc.geoMean], ['disp', inc.dispersion]]);
+  for (const group of ['Age_group', null]) {
+    const g = group ? col('O', group).raw : null, tally = new Map();
+    ill.forEach((y, i) => { if (y == null) return; const k = g ? g[i] : 'Everyone'; const t = tally.get(k) ?? { cases: 0, population: 0 }; t.population += 1; if (y) t.cases += 1; tally.set(k, t); });
+    const res = attackRates([...tally].map(([label, t]) => ({ label, ...t })));
+    add(`attack rates${group ? ` by ${group}` : ''}`, 'O', { kind: 'attack', case: 'Ill', caseRule: base.caseRule, group },
+      [['ar', res.total.ar], ['ar_lo', res.total.ci[0]], ['ar_hi', res.total.ci[1]], ...res.rows.map((r) => [`ar_by["${r.label}"]`, r.ar])]);
+  }
+  {
+    const typed = [{ label: 'Badapada', cases: 12, population: 410 }, { label: 'Kusumdihi', cases: 3, population: 260 }, { label: 'Sargipali', cases: 0, population: 95 }];
+    const res = attackRates(typed);
+    add('attack rates, typed', null, { kind: 'attack', typed }, [['ar', res.total.ar], ['ar_lo', res.total.ci[0]], ['ar_hi', res.total.ci[1]], ...res.rows.map((r) => [`ar_by["${r.label}"]`, r.ar])]);
+  }
+  const items = ['Rice', 'Dal', 'Mutton_curry', 'Mixed_veg', 'Kheer', 'Curd_raita', 'Water'];
+  const counts = foodCounts(ill, items.map((name) => ({ name, ate: col('O', name).raw.map(readYesNo) })));
+  const ft = foodTable(counts);
+  add('food-specific attack rates', 'O', { kind: 'foodtable', case: 'Ill', caseRule: base.caseRule, items, design: 'cohort' },
+    ft.rows.flatMap((r) => [[`ratio["${r.name}"]`, r.ratio], [`ratio_lo["${r.name}"]`, r.ci[0]], [`ratio_hi["${r.name}"]`, r.ci[1]], [`p_value["${r.name}"]`, r.test.p]]));
+  for (const design of ['cohort', 'case-control']) {
+    const typed = [{ name: 'Chicken biryani', a: 30, b: 20, c: 10, d: 40 }, { name: 'Raita', a: 4, b: 10, c: 36, d: 50 }, { name: 'Ice cream', a: 22, b: 25, c: 18, d: 35 }];
+    const t2 = foodTable(typed, { design });
+    // R's fisher.test finds large exact odds-ratio limits at uniroot's default tolerance.
+    const tol = (r) => (design === 'case-control' && Math.min(r.a, r.b, r.c, r.d) < 5 ? 2e-3 : 1e-9);
+    add(`food-specific table, typed, ${design}`, null, { kind: 'foodtable', typed, design },
+      t2.rows.flatMap((r) => [[`ratio["${r.name}"]`, r.ratio], [`ratio_lo["${r.name}"]`, r.ci[0], tol(r)], [`ratio_hi["${r.name}"]`, r.ci[1], tol(r)], [`p_value["${r.name}"]`, r.test.p]]));
+  }
+}
 
 /* -------------------------------------------------------------- run --- */
 const root = mkdtempSync(join(tmpdir(), 'codegen-'));

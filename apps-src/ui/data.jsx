@@ -17,13 +17,14 @@ export function useDataset() {
 
 /* --------------------------------------------------------- example data --- */
 
-export { exampleCsv, exampleTbCsv, exampleAgreementCsv, exampleMeaslesCsv } from '../engine/examples.js';
+export { exampleCsv, exampleTbCsv, exampleAgreementCsv, exampleMeaslesCsv, exampleOutbreakCsv } from '../engine/examples.js';
 
 const SOURCE_LABELS = {
   example: 'example data (simulated, not real patients)',
   'example-tb': 'example TB cohort (simulated, not real patients)',
   'example-agree': 'example screening-camp data (simulated, not real children)',
   'example-measles': 'example measles outbreak (simulated, not real children)',
+  'example-outbreak': 'example wedding-lunch outbreak (simulated, not real people)',
 };
 
 /* ------------------------------------------------------------ the panel --- */
