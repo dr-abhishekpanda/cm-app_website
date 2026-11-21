@@ -4,7 +4,7 @@
  * standardisation (SMR) with the exact CI and test. From the loaded data or typed (or pasted) strata. */
 import { useState } from 'preact/hooks';
 import { mhTables, mhPersonTime, confoundingChange, directStandard, dsrRatio, indirectStandard } from '../../engine/strat.js';
-import { isMissing, parseDelimited } from '../../engine/data.js';
+import { isMissing } from '../../engine/data.js';
 import { fixed, pValue, count, sig, ratio, parseNumber } from '../../engine/format.js';
 import { PageHead, Seg, Callout, AtLevel, NumberField, TextField, SelectField } from '../../ui/core.jsx';
 import { DataPanel, useDataset, ColumnSelect, col, exampleCsv, exampleTbCsv } from '../../ui/data.jsx';
@@ -12,65 +12,7 @@ import { DataTable, Report, Stats, Refs, Disclose } from '../../ui/results.jsx';
 import { ForestPlot } from '../../ui/plot.jsx';
 import { CodeExport } from '../../ui/code.jsx';
 import { REFS } from '../refs.js';
-import { pretty, P, cap, isInt, pc, pcCI, pp, rCI, s3, ptx, mrow, MCOLS, guessLevel, other, needData, Checks, LevelPick, PER_RATE, UNITS, readPasted } from './epishared.jsx';
-
-let rowId = 0;
-const mkRows = (rows) => rows.map(([label, ...vals]) => ({ id: ++rowId, label, vals: vals.map(String) }));
-const blank = (n) => ({ id: ++rowId, label: '', vals: Array(n).fill('') });
-
-/* -------------------------------------------- a table of typed strata --- */
-
-/** Typed rows: a label and numbers in fixed columns, with add, remove, paste and clear. */
-function RowsTable({ cols, rows, setRows, what = 'stratum', numeric = 'decimal' }) {
-  const [paste, setPaste] = useState(''), [msg, setMsg] = useState('');
-  const set = (id, patch) => setRows(rows.map((r) => (r.id === id ? { ...r, ...patch } : r)));
-  const use = () => {
-    const got = readPasted(paste, cols.length, parseDelimited, parseNumber);
-    if (!got.length) { setMsg(`No rows read. Each row needs the ${what} name and then ${cols.length} numbers, in the order of the table.`); return; }
-    setMsg(''); setRows(got.map((g) => ({ id: ++rowId, ...g }))); setPaste('');
-  };
-  return (
-    <>
-      <div class="tablewrap">
-        <table class="table compact entry">
-          <thead><tr><th scope="col">{cap(what)}</th>{cols.map((c) => <th scope="col">{c}</th>)}<th scope="col"><span class="vh">Remove</span></th></tr></thead>
-          <tbody>{rows.map((r, i) => (
-            <tr>
-              <td><input class="name" aria-label={`${cap(what)} ${i + 1} name`} value={r.label} onInput={(e) => set(r.id, { label: e.currentTarget.value })} /></td>
-              {cols.map((c, j) => <td><input inputMode={numeric} aria-label={`${r.label || `${cap(what)} ${i + 1}`}: ${c}`} value={r.vals[j]} onInput={(e) => set(r.id, { vals: r.vals.map((v, q) => (q === j ? e.currentTarget.value : v)) })} /></td>)}
-              <td class="rm"><button type="button" class="btn ghost small" aria-label={`Remove ${r.label || `${what} ${i + 1}`}`} onClick={() => setRows(rows.length > 1 ? rows.filter((x) => x.id !== r.id) : [blank(cols.length)])}>{'×'}</button></td>
-            </tr>
-          ))}</tbody>
-        </table>
-      </div>
-      <div class="btn-row">
-        <button type="button" class="btn ghost small" onClick={() => setRows([...rows, blank(cols.length)])}>Add {/^[aeiou]/i.test(what) ? 'an' : 'a'} {what}</button>
-        <button type="button" class="btn ghost small" onClick={() => setRows([blank(cols.length), blank(cols.length)])}>Clear</button>
-      </div>
-      <Disclose title="Paste rows from Excel or Google Sheets">
-        <p class="small">One {what} per row: its name, then the {cols.length} numbers in the order of the table. A header row is skipped.</p>
-        <textarea class="paste" rows={4} value={paste} onInput={(e) => setPaste(e.currentTarget.value)} aria-label={`Paste ${what} rows`} spellcheck={false} />
-        {msg ? <p class="err" role="alert">{msg}</p> : null}
-        <div class="btn-row"><button type="button" class="btn primary small" disabled={!paste.trim()} onClick={use}>Use these rows</button></div>
-      </Disclose>
-    </>
-  );
-}
-
-/** The filled rows as numbers, or an error naming the first row that does not read. */
-function readRows(rows, { integer = [], positive = [] } = {}) {
-  const out = [];
-  for (const [i, r] of rows.entries()) {
-    if (!r.label.trim() && r.vals.every((v) => !String(v).trim())) continue;
-    const name = r.label.trim() || `Row ${i + 1}`;
-    const x = r.vals.map((v) => parseNumber(v));
-    if (x.some((v) => !Number.isFinite(v) || v < 0)) return { error: `${name}: fill in every number (0 or more).` };
-    if (integer.some((j) => !Number.isInteger(x[j]))) return { error: `${name}: counts must be whole numbers.` };
-    if (positive.some((j) => !(x[j] > 0))) return { error: `${name}: population and person-time must be above zero.` };
-    out.push({ label: name, x });
-  }
-  return { rows: out };
-}
+import { pretty, P, cap, isInt, pc, pcCI, pp, rCI, s3, ptx, mrow, MCOLS, guessLevel, other, needData, Checks, LevelPick, PER_RATE, UNITS, RowsTable, readRows, mkRows, newRowId } from './epishared.jsx';
 
 /* -------------------------------------------------- stratified analysis --- */
 
@@ -301,7 +243,7 @@ function DirectPanel() {
     const bands = whoBands(c);
     setRows(bands.map((b, i) => {
       const old = rows.find((r) => r.label.trim() === b.label) ?? (rows.length === bands.length ? rows[i] : null);
-      return { id: ++rowId, label: b.label, vals: [old?.vals[0] ?? '', old?.vals[1] ?? '', String(b.w), old?.vals[3] ?? '', old?.vals[4] ?? ''] };
+      return { id: newRowId(), label: b.label, vals: [old?.vals[0] ?? '', old?.vals[1] ?? '', String(b.w), old?.vals[3] ?? '', old?.vals[4] ?? ''] };
     }));
     setWhoUsed(true);
   };

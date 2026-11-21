@@ -26,6 +26,8 @@ const ROWS = [
   ['Matched pairs', 'binom.test, mcnemar.test', 'scipy.stats.binomtest; statsmodels mcnemar'],
   ['Stratified analysis (Mantel-Haenszel)', "mantelhaen.test; metafor::rma.mh (risk, odds and rate ratios, risk difference, Tarone's test)", 'statsmodels StratifiedTable; Mantel-Haenszel and Greenland-Robins formulas written out'],
   ['Direct and indirect standardisation', 'epitools::ageadjust.direct; poisson.test', 'SciPy gamma and chi-square quantiles; the exact Poisson p written out'],
+  ['Diagnostic accuracy', "prop.test (Wilson); Simel's log and Koopman's score intervals for likelihood ratios written out; epiR::epi.tests when installed", 'statsmodels proportion_confint; the same intervals written out'],
+  ['ROC curves, cut-offs, two curves compared', 'pROC: roc, ci.auc, coords, roc.test', "scikit-learn roc_auc_score and roc_curve; DeLong's variance and tests written out"],
 ];
 
 export default function CodeTool() {

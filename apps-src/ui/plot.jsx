@@ -402,6 +402,87 @@ function KMSvg({ series, label, unit = '', band, width, height }) {
   );
 }
 
+/* ------------------------------------------------- diagnostic accuracy --- */
+
+/**
+ * ROC curves: each { label, path: [[fpr, tpr], ...] } from (0, 0) to (1, 1); marks [{ fpr, tpr, label, i }]
+ * name chosen operating points on curve i. The chance diagonal is dashed. The plot area is square.
+ */
+export function RocPlot(props) {
+  const [ref, w] = useWidth();
+  return <div class="plotbox" ref={ref}><RocSvg {...props} width={w} /></div>;
+}
+
+function RocSvg({ curves, marks = [], label, width }) {
+  const pad = { l: 46, r: 12, t: 12, b: 42 };
+  const side = Math.max(160, Math.min(width - pad.l - pad.r, 340));
+  const legend = curves.length > 1 ? 18 * curves.length + 6 : 0;
+  const height = pad.t + side + pad.b + legend;
+  const X = (v) => pad.l + v * side, Y = (v) => pad.t + side - v * side;
+  const ticks = [0, 0.25, 0.5, 0.75, 1];
+  return (
+    <svg class="plot" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label}>
+      <title>{label}</title>
+      {ticks.map((t) => <g>
+        <line class="grid" x1={X(0)} x2={X(1)} y1={Y(t)} y2={Y(t)} /><line class="grid" x1={X(t)} x2={X(t)} y1={Y(0)} y2={Y(1)} />
+        <text class="tick" x={X(0) - 6} y={Y(t) + 4} text-anchor="end">{`${Math.round(t * 100)}%`}</text>
+        <text class="tick" x={X(t)} y={Y(0) + 16} text-anchor="middle">{`${Math.round(t * 100)}%`}</text>
+      </g>)}
+      <line class="ref" x1={X(0)} y1={Y(0)} x2={X(1)} y2={Y(1)} />
+      <line class="axis" x1={X(0)} x2={X(1)} y1={Y(0)} y2={Y(0)} /><line class="axis" x1={X(0)} x2={X(0)} y1={Y(0)} y2={Y(1)} />
+      {curves.map((c, i) => <path d={c.path.map(([x, y], k) => `${k ? 'L' : 'M'}${X(x).toFixed(1)},${Y(y).toFixed(1)}`).join('')} fill="none" stroke={seriesColour(i)} stroke-width="2" class={`roc roc${i}`} />)}
+      {marks.map((m) => <g>
+        <circle cx={X(m.fpr)} cy={Y(m.tpr)} r="4.5" fill={seriesColour(m.i || 0)} stroke="var(--card)" stroke-width="1.5" />
+        {m.label ? <text class="lab" x={X(m.fpr) + (m.fpr > 0.6 ? -8 : 8)} y={Y(m.tpr) + (m.tpr > 0.9 ? 16 : -8)} text-anchor={m.fpr > 0.6 ? 'end' : 'start'}>{m.label}</text> : null}
+      </g>)}
+      <text class="lab" x={X(0.5)} y={pad.t + side + 34} text-anchor="middle">1 − specificity</text>
+      <text class="lab" x={12} y={Y(0.5)} text-anchor="middle" transform={`rotate(-90 12 ${Y(0.5)})`}>Sensitivity</text>
+      {curves.length > 1 ? curves.map((c, i) => <g>
+        <line x1={X(0)} x2={X(0) + 22} y1={pad.t + side + pad.b + 10 + 18 * i} y2={pad.t + side + pad.b + 10 + 18 * i} stroke={seriesColour(i)} stroke-width="2.5" />
+        <text class="lab" x={X(0) + 30} y={pad.t + side + pad.b + 14 + 18 * i}>{c.label}</text>
+      </g>) : null}
+    </svg>
+  );
+}
+
+/**
+ * Curves against a proportion on [0, 1] (predictive values against prevalence): series
+ * [{ label, ys, lo?, hi? }] over xs, an optional marked x, percentages on both axes.
+ */
+export function ProportionCurves(props) {
+  const [ref, w] = useWidth();
+  return <div class="plotbox" ref={ref}><PropCurvesSvg {...props} width={w} height={heightFor(w, 250) + 16 * props.series.length + 22} /></div>;
+}
+
+function PropCurvesSvg({ xs, series, mark, label, xLabel, width, height }) {
+  const pad = { l: 46, r: 14, t: 22, b: 48 + 16 * series.length };
+  const W = width - pad.l - pad.r, H = height - pad.t - pad.b;
+  const X = (v) => pad.l + v * W, Y = (v) => pad.t + H - Math.max(0, Math.min(1, v)) * H;
+  const line = (ys) => xs.map((x, k) => `${k ? 'L' : 'M'}${X(x).toFixed(1)},${Y(ys[k]).toFixed(1)}`).join('');
+  const band = (lo, hi) => `${line(hi)}${[...xs].reverse().map((x, k) => `L${X(x).toFixed(1)},${Y(lo[xs.length - 1 - k]).toFixed(1)}`).join('')}Z`;
+  const ticks = [0, 0.25, 0.5, 0.75, 1];
+  return (
+    <svg class="plot" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label}>
+      <title>{label}</title>
+      {ticks.map((t) => <g>
+        <line class="grid" x1={X(0)} x2={X(1)} y1={Y(t)} y2={Y(t)} />
+        <text class="tick" x={X(0) - 6} y={Y(t) + 4} text-anchor="end">{`${Math.round(t * 100)}%`}</text>
+        <text class="tick" x={X(t)} y={Y(0) + 16} text-anchor="middle">{`${Math.round(t * 100)}%`}</text>
+      </g>)}
+      {series.map((s, i) => (s.lo && s.hi ? <path d={band(s.lo, s.hi)} fill={seriesColour(i)} opacity="0.14" stroke="none" /> : null))}
+      {series.map((s, i) => <path d={line(s.ys)} fill="none" stroke={seriesColour(i)} stroke-width="2" />)}
+      {mark ? <g><line class="mark" x1={X(mark.x)} x2={X(mark.x)} y1={Y(1)} y2={Y(0)} />
+        <text class="lab" x={X(mark.x)} y={pad.t - 6} text-anchor={mark.x > 0.85 ? 'end' : mark.x < 0.15 ? 'start' : 'middle'}>{mark.label}</text></g> : null}
+      <line class="axis" x1={X(0)} x2={X(1)} y1={Y(0)} y2={Y(0)} />
+      <text class="lab" x={X(0.5)} y={pad.t + H + 34} text-anchor="middle">{xLabel}</text>
+      {series.map((s, i) => <g>
+        <line x1={X(0)} x2={X(0) + 22} y1={pad.t + H + 50 + 16 * i} y2={pad.t + H + 50 + 16 * i} stroke={seriesColour(i)} stroke-width="2.5" />
+        <text class="lab" x={X(0) + 28} y={pad.t + H + 54 + 16 * i}>{s.label}</text>
+      </g>)}
+    </svg>
+  );
+}
+
 /* --------------------------------------------- agreement and synthesis --- */
 
 /** Bland-Altman plot: difference against mean, with bias and limits of agreement. */

@@ -560,6 +560,173 @@ G.smr = (s) => {
   };
 };
 
+/* ------------------------------------------------- diagnostic accuracy, ROC --- */
+// R and Python name their results alike, so the app can check both: se, sp, lr_pos, lr_neg (each with _lo, _hi),
+// youden, ppv, npv; auc, lo, hi, youden_se, youden_sp; auc_a, auc_b, diff, p_main.
+
+/** "Positive" by a rule on a column: values that count, or a cut-off. */
+const rRule = (c, rule, numeric) => (rule.kind === 'cut' ? `${rcol(c)} ${rule.op} ${num(rule.value)}` : `${rcol(c)} %in% ${rvec(rule.positive, (v) => rlit(v, numeric))}`);
+const pRule = (c, rule, numeric) => (rule.kind === 'cut' ? `(${pcol(c)} ${rule.op} ${pnum(rule.value)})` : `${pcol(c)}.isin(${pvec(rule.positive, (v) => plit(v, numeric))})`);
+/** A marker as numbers: the column, or each category's place in the order set in the app (1 = lowest). */
+const rMarker = (c, numeric, order) => (numeric ? rcol(c) : `as.numeric(factor(${rcol(c)}, levels = ${rvec(order)}))`);
+const pMarker = (c, numeric, order) => (numeric ? pcol(c) : `${pcol(c)}.map({${order.map((l, i) => `${str(l)}: ${i + 1}`).join(', ')}})`);
+const ruleWords = (c, rule) => (rule.kind === 'cut' ? `${pretty(c)} ${rule.op} ${rule.value}` : `${pretty(c)} (${rule.positive.join(' or ')})`);
+
+/** DeLong's structural components, written out in Python for the ROC scripts. */
+const PY_DELONG = ['', '', "def components(y, s):  # DeLong's structural components; ties count a half",
+  '    pos, neg = s[y == 1], s[y == 0]',
+  '    v10 = np.array([np.mean(neg < x) + 0.5 * np.mean(neg == x) for x in pos])  # share of controls below each case',
+  '    v01 = np.array([np.mean(pos > x) + 0.5 * np.mean(pos == x) for x in neg])  # share of cases above each control',
+  '    return v10, v01', '', ''];
+
+G.diag = (s) => {
+  const typed = !!s.table, p = Number.isFinite(s.prevalence) ? s.prevalence : null, cross = s.design !== 'case-control';
+  const title = typed ? 'Diagnostic accuracy: a test against a reference standard' : `Diagnostic accuracy: ${ruleWords(s.test, s.testRule)} against ${ruleWords(s.ref, s.refRule)}`;
+  const rData = typed ? [`tp <- ${s.table[0]}; fp <- ${s.table[1]}; fn <- ${s.table[2]}; tn <- ${s.table[3]}   # test positive or negative, by the condition present or absent`]
+    : [`ok <- !is.na(${rcol(s.test)}) & !is.na(${rcol(s.ref)})`, `test <- (${rRule(s.test, s.testRule, s.numericT)})[ok]   # test positive`,
+      `cond <- (${rRule(s.ref, s.refRule, s.numericR)})[ok]   # condition present by the reference standard`,
+      'tp <- sum(test & cond); fp <- sum(test & !cond); fn <- sum(!test & cond); tn <- sum(!test & !cond)'];
+  const pData = typed ? [`tp, fp, fn, tn = ${s.table.join(', ')}  # test positive or negative, by the condition present or absent`]
+    : [`ok = ${pcol(s.test)}.notna() & ${pcol(s.ref)}.notna()`, `test = ${pRule(s.test, s.testRule, s.numericT)}[ok]  # test positive`,
+      `cond = ${pRule(s.ref, s.refRule, s.numericR)}[ok]  # condition present by the reference standard`,
+      'tp, fp, fn, tn = int((test & cond).sum()), int((test & ~cond).sum()), int((~test & cond).sum()), int((~test & ~cond).sum())'];
+  const rPv = p !== null
+    ? [`p <- ${p}   # prevalence (pre-test probability) where the test will be used, entered in the app`,
+      "post <- function(lr) ifelse(is.infinite(lr), 1, (p / (1 - p) * lr) / (1 + p / (1 - p) * lr))   # Bayes' theorem in odds form",
+      'ppv <- post(lr_pos); ppv_lo <- post(lr_pos_lo); ppv_hi <- post(lr_pos_hi)   # the likelihood ratio\'s interval carried through',
+      'npv <- 1 - post(lr_neg); npv_lo <- 1 - post(lr_neg_hi); npv_hi <- 1 - post(lr_neg_lo)']
+    : cross ? ['ppv <- tp / (tp + fp); ci <- prop.test(tp, tp + fp, correct = FALSE)$conf.int; ppv_lo <- ci[1]; ppv_hi <- ci[2]   # in this sample (Wilson)',
+      'npv <- tn / (tn + fn); ci <- prop.test(tn, tn + fn, correct = FALSE)$conf.int; npv_lo <- ci[1]; npv_hi <- ci[2]'] : [];
+  const pPv = p !== null
+    ? [`p = ${p}  # prevalence (pre-test probability) where the test will be used, entered in the app`, '', '',
+      "def post(lr):  # Bayes' theorem in odds form", '    return 1.0 if np.isinf(lr) else (p / (1 - p) * lr) / (1 + p / (1 - p) * lr)', '', '',
+      "ppv, ppv_lo, ppv_hi = post(lr_pos), post(lr_pos_lo), post(lr_pos_hi)  # the likelihood ratio's interval carried through",
+      'npv, npv_lo, npv_hi = 1 - post(lr_neg), 1 - post(lr_neg_hi), 1 - post(lr_neg_lo)']
+    : cross ? ['ppv = tp / (tp + fp); ppv_lo, ppv_hi = proportion_confint(tp, tp + fp, method="wilson")  # in this sample',
+      'npv = tn / (tn + fn); npv_lo, npv_hi = proportion_confint(tn, tn + fn, method="wilson")'] : [];
+  const pvRows = rPv.length ? [', c(ppv, ppv_lo, ppv_hi), c(npv, npv_lo, npv_hi)', ', "PPV", "NPV"'] : ['', ''];
+  return {
+    title, data: !typed, pyPkgs: ['statsmodels'], pyImports: ['from scipy.optimize import brentq', 'from statsmodels.stats.proportion import proportion_confint'],
+    r: [...rData, 'z <- qnorm(0.975)', 'n1 <- tp + fn; n0 <- fp + tn', 'se <- tp / n1; sp <- tn / n0',
+      'ci <- prop.test(tp, n1, correct = FALSE)$conf.int; se_lo <- ci[1]; se_hi <- ci[2]   # Wilson',
+      'ci <- prop.test(tn, n0, correct = FALSE)$conf.int; sp_lo <- ci[1]; sp_hi <- ci[2]',
+      "small <- min(tp, fp, fn, tn) < 5   # the app uses Koopman's score interval for the likelihood ratios when a cell is below 5",
+      'koopman_ci <- function(x1, n1, x2, n2) {   # score CI for the ratio (x1 / n1) / (x2 / n2)', '  f <- function(l) {',
+      '    phi <- exp(l); B <- phi * (n1 + x2) + x1 + n2; C <- x1 + x2',
+      '    p2 <- 2 * C / (B + sqrt(max(0, B^2 - 4 * phi * (n1 + n2) * C))); p1 <- phi * p2',
+      '    (x1 / n1 - phi * x2 / n2)^2 / (p1 * (1 - p1) / n1 + phi^2 * p2 * (1 - p2) / n2) - z^2', '  }',
+      '  s <- if (x1 > 0 && x2 > 0) log((x1 / n1) / (x2 / n2)) else log(((x1 + 0.5) / (n1 + 1)) / ((x2 + 0.5) / (n2 + 1)))',
+      '  c(if (x1 == 0) 0 else exp(uniroot(f, c(s - 30, s), tol = 1e-12)$root), if (x2 == 0) Inf else exp(uniroot(f, c(s, s + 30), tol = 1e-12)$root))', '}',
+      'log_ci <- function(x1, n1, x2, n2) ((x1 / n1) / (x2 / n2)) * exp(c(-1, 1) * z * sqrt(1 / x1 - 1 / n1 + 1 / x2 - 1 / n2))   # Simel',
+      'lr_pos <- se / (1 - sp); lr_neg <- (1 - se) / sp',
+      'ci <- if (small) koopman_ci(tp, n1, fp, n0) else log_ci(tp, n1, fp, n0); lr_pos_lo <- ci[1]; lr_pos_hi <- ci[2]',
+      'ci <- if (small) koopman_ci(fn, n1, tn, n0) else log_ci(fn, n1, tn, n0); lr_neg_lo <- ci[1]; lr_neg_hi <- ci[2]',
+      "youden <- se + sp - 1   # Youden's J", ...rPv,
+      `out <- rbind(c(se, se_lo, se_hi), c(sp, sp_lo, sp_hi), c(lr_pos, lr_pos_lo, lr_pos_hi), c(lr_neg, lr_neg_lo, lr_neg_hi)${pvRows[0]})`,
+      `dimnames(out) <- list(c("Sensitivity", "Specificity", "LR+", "LR-"${pvRows[1]}), c("estimate", "lower", "upper"))`, 'round(out, 4)', 'youden',
+      "if (requireNamespace(\"epiR\", quietly = TRUE)) print(epiR::epi.tests(as.table(matrix(c(tp, fp, fn, tn), nrow = 2, byrow = TRUE)), method = \"wilson\"))   # the same measures from epiR"],
+    py: [...pData, 'z = stats.norm.ppf(0.975)', 'n1, n0 = tp + fn, fp + tn', 'se, sp = tp / n1, tn / n0',
+      'se_lo, se_hi = proportion_confint(tp, n1, method="wilson")', 'sp_lo, sp_hi = proportion_confint(tn, n0, method="wilson")',
+      "small = min(tp, fp, fn, tn) < 5  # the app uses Koopman's score interval for the likelihood ratios when a cell is below 5", '', '',
+      'def koopman_ci(x1, n1, x2, n2):  # score CI for the ratio (x1 / n1) / (x2 / n2)', '    def f(l):',
+      '        phi = np.exp(l)', '        B, C = phi * (n1 + x2) + x1 + n2, x1 + x2',
+      '        p2 = 2 * C / (B + np.sqrt(max(0.0, B * B - 4 * phi * (n1 + n2) * C)))', '        p1 = phi * p2',
+      '        return (x1 / n1 - phi * x2 / n2) ** 2 / (p1 * (1 - p1) / n1 + phi ** 2 * p2 * (1 - p2) / n2) - z ** 2',
+      '    s = np.log((x1 / n1) / (x2 / n2)) if x1 > 0 and x2 > 0 else np.log(((x1 + 0.5) / (n1 + 1)) / ((x2 + 0.5) / (n2 + 1)))',
+      '    return (0.0 if x1 == 0 else np.exp(brentq(f, s - 30, s, xtol=1e-12)), np.inf if x2 == 0 else np.exp(brentq(f, s, s + 30, xtol=1e-12)))', '', '',
+      'def log_ci(x1, n1, x2, n2):  # Simel', '    est, h = (x1 / n1) / (x2 / n2), z * np.sqrt(1 / x1 - 1 / n1 + 1 / x2 - 1 / n2)',
+      '    return est * np.exp(-h), est * np.exp(h)', '', '',
+      'lr_pos = se / (1 - sp) if sp < 1 else np.inf', 'lr_neg = (1 - se) / sp',
+      'lr_pos_lo, lr_pos_hi = koopman_ci(tp, n1, fp, n0) if small else log_ci(tp, n1, fp, n0)',
+      'lr_neg_lo, lr_neg_hi = koopman_ci(fn, n1, tn, n0) if small else log_ci(fn, n1, tn, n0)',
+      "youden = se + sp - 1  # Youden's J", ...pPv,
+      'print(f"sensitivity {se:.4f} ({se_lo:.4f} to {se_hi:.4f}); specificity {sp:.4f} ({sp_lo:.4f} to {sp_hi:.4f}); Youden\'s J {youden:.4f}")',
+      'print(f"LR+ {lr_pos:.4f} ({lr_pos_lo:.4f} to {lr_pos_hi:.4f}); LR- {lr_neg:.4f} ({lr_neg_lo:.4f} to {lr_neg_hi:.4f})")',
+      ...(pPv.length ? ['print(f"PPV {ppv:.4f} ({ppv_lo:.4f} to {ppv_hi:.4f}); NPV {npv:.4f} ({npv_lo:.4f} to {npv_hi:.4f})")'] : [])],
+  };
+};
+
+G.roc = (s) => {
+  const grouped = !!s.grouped, dir = s.higher ? '<' : '>';
+  const title = grouped ? 'ROC curve from counts by category' : `ROC curve: ${pretty(s.marker)} against ${ruleWords(s.ref, s.refRule)}`;
+  const rData = grouped
+    ? ['counts <- data.frame(', `  category = ${rvec(s.grouped.map((g) => g.label))},`, `  with = ${rvec(s.grouped.map((g) => g.cases), num)}, without = ${rvec(s.grouped.map((g) => g.controls), num)})   # lowest category first`,
+      'counts', 'k <- seq_len(nrow(counts))', 'marker <- c(rep(k, counts$with), rep(k, counts$without))', 'cond <- c(rep(TRUE, sum(counts$with)), rep(FALSE, sum(counts$without)))']
+    : [`ok <- !is.na(${rcol(s.marker)}) & !is.na(${rcol(s.ref)})`,
+      `marker <- ${rMarker(s.marker, s.numericM, s.order)}[ok]${s.numericM ? '' : '   # the order set in the app, lowest first'}`,
+      `cond <- (${rRule(s.ref, s.refRule, s.numericR)})[ok]   # condition present by the reference standard`];
+  const pData = grouped
+    ? [`labels = ${pvec(s.grouped.map((g) => g.label))}  # lowest category first`, `with_c = np.array(${pvec(s.grouped.map((g) => g.cases), pnum)})`, `without_c = np.array(${pvec(s.grouped.map((g) => g.controls), pnum)})`,
+      'k = np.arange(1, len(labels) + 1)', 'x = np.concatenate([np.repeat(k, with_c), np.repeat(k, without_c)]).astype(float)', 'y = np.concatenate([np.ones(with_c.sum()), np.zeros(without_c.sum())]).astype(int)']
+    : [`ok = ${pcol(s.marker)}.notna() & ${pcol(s.ref)}.notna()`,
+      `x = np.asarray(${pMarker(s.marker, s.numericM, s.order)}[ok], dtype=float)${s.numericM ? '' : '  # the order set in the app, lowest first'}`,
+      `y = np.asarray(${pRule(s.ref, s.refRule, s.numericR)}[ok], dtype=int)  # condition present by the reference standard`];
+  return {
+    title, data: !grouped, rPkgs: ['pROC'], pyPkgs: ['scikit-learn'], pyImports: ['from sklearn.metrics import roc_auc_score, roc_curve'],
+    r: ['library(pROC)', ...rData,
+      `r <- roc(cond, marker, levels = c(FALSE, TRUE), direction = "${dir}")   # "${dir}": ${s.higher ? 'higher' : 'lower'} values mean the condition`, 'r',
+      'auc <- as.numeric(auc(r)); ci <- ci.auc(r, method = "delong"); lo <- ci[1]; hi <- ci[3]   # DeLong',
+      'best <- coords(r, "best", best.method = "youden", ret = c("threshold", "sensitivity", "specificity"), transpose = FALSE)',
+      'best   # pROC puts the threshold midway between two observed values; the app names the observed value on the positive side',
+      'youden_se <- best$sensitivity[1]; youden_sp <- best$specificity[1]',
+      'coords(r, "best", best.method = "closest.topleft", ret = c("threshold", "sensitivity", "specificity"), transpose = FALSE)',
+      'coords(r, "all", ret = c("threshold", "sensitivity", "specificity"), transpose = FALSE)   # every cut-off',
+      '# plot(r, print.auc = TRUE, legacy.axes = TRUE)   # draw the curve'],
+    py: [...pData, `s = ${s.higher ? 'x' : '-x'}  # ${s.higher ? 'higher' : 'lower'} values mean the condition`, 'z = stats.norm.ppf(0.975)',
+      'auc = roc_auc_score(y, s)', ...PY_DELONG,
+      'v10, v01 = components(y, s)', 'var = v10.var(ddof=1) / len(v10) + v01.var(ddof=1) / len(v01)  # DeLong',
+      'lo, hi = max(0.0, auc - z * np.sqrt(var)), min(1.0, auc + z * np.sqrt(var))',
+      'fpr, tpr, thr = roc_curve(y, s, drop_intermediate=False)', 'j = tpr - fpr  # Youden\'s J at each cut-off',
+      `best = np.flatnonzero(j >= j.max() - 1e-12); k = best[${s.higher ? '-1' : '0'}]  # the lowest cut-off among ties, as the app`,
+      `youden_se, youden_sp, youden_cut = tpr[k], 1 - fpr[k], ${s.higher ? 'thr[k]' : '-thr[k]'}`,
+      'print(f"AUC {auc:.4f} (95% CI {lo:.4f} to {hi:.4f}, DeLong); Youden\'s cut-off {youden_cut:g}: sensitivity {youden_se:.4f}, specificity {youden_sp:.4f}")'],
+  };
+};
+
+G.roc2 = (s) => {
+  const rRef = `(${rRule(s.ref, s.refRule, s.numericR)})[ok]`, pRef = `np.asarray(${pRule(s.ref, s.refRule, s.numericR)}[ok], dtype=int)`;
+  if (s.paired) {
+    const rA = `${rMarker(s.a, s.numericA, s.orderA)}[ok]${s.higherA ? '' : ' * -1'}`, rB = `${rMarker(s.b, s.numericB, s.orderB)}[ok]${s.higherB ? '' : ' * -1'}`;
+    const pA = `${s.higherA ? '' : '-'}np.asarray(${pMarker(s.a, s.numericA, s.orderA)}[ok], dtype=float)`, pB = `${s.higherB ? '' : '-'}np.asarray(${pMarker(s.b, s.numericB, s.orderB)}[ok], dtype=float)`;
+    return {
+      title: `Two ROC curves, same people: ${pretty(s.a)} and ${pretty(s.b)}`, data: true, rPkgs: ['pROC'],
+      r: ['library(pROC)', `ok <- !is.na(${rcol(s.a)}) & !is.na(${rcol(s.b)}) & !is.na(${rcol(s.ref)})   # the same people for both curves`,
+        `a <- ${rA}${s.higherA ? '' : '   # lower values mean the condition: negated so both curves point the same way'}`,
+        `b <- ${rB}${s.higherB ? '' : '   # lower values mean the condition: negated so both curves point the same way'}`,
+        `cond <- ${rRef}   # condition present by the reference standard`,
+        'ra <- roc(cond, a, levels = c(FALSE, TRUE), direction = "<"); rb <- roc(cond, b, levels = c(FALSE, TRUE), direction = "<")',
+        "test <- roc.test(ra, rb, method = \"delong\", paired = TRUE)   # DeLong's test for two correlated curves", 'test',
+        'auc_a <- as.numeric(auc(ra)); auc_b <- as.numeric(auc(rb)); diff <- auc_a - auc_b',
+        'p_main <- test$p.value; lo <- test$conf.int[1]; hi <- test$conf.int[2]'],
+      py: [`ok = ${pcol(s.a)}.notna() & ${pcol(s.b)}.notna() & ${pcol(s.ref)}.notna()  # the same people for both curves`,
+        `a = ${pA}${s.higherA ? '' : '  # lower values mean the condition: negated'}`, `b = ${pB}${s.higherB ? '' : '  # lower values mean the condition: negated'}`,
+        `y = ${pRef}  # condition present by the reference standard`, 'z = stats.norm.ppf(0.975)', ...PY_DELONG,
+        'a10, a01 = components(y, a); b10, b01 = components(y, b)', 'auc_a, auc_b = a10.mean(), b10.mean()',
+        'S = np.cov(np.vstack([a10, b10])) / len(a10) + np.cov(np.vstack([a01, b01])) / len(a01)  # DeLong covariance of the two AUCs',
+        'diff = auc_a - auc_b', 'se = np.sqrt(S[0, 0] + S[1, 1] - 2 * S[0, 1])', 'p_main = 2 * stats.norm.sf(abs(diff / se))',
+        'lo, hi = diff - z * se, diff + z * se',
+        'print(f"AUC {auc_a:.4f} and {auc_b:.4f}; difference {diff:.4f} (95% CI {lo:.4f} to {hi:.4f}); z = {diff / se:.3f}, p = {p_main:.4g}")'],
+    };
+  }
+  const [g1, g2] = s.groups;
+  return {
+    title: `One ROC curve in two groups: ${pretty(s.a)} by ${pretty(s.group)}`, data: true, rPkgs: ['pROC'],
+    r: ['library(pROC)', `ok <- !is.na(${rcol(s.a)}) & !is.na(${rcol(s.ref)}) & !is.na(${rcol(s.group)})`,
+      `marker <- ${rMarker(s.a, s.numericA, s.orderA)}[ok]`, `cond <- ${rRef}   # condition present by the reference standard`, `g <- ${rcol(s.group)}[ok]`,
+      `r1 <- roc(cond[g == ${rlit(g1, s.numericG)}], marker[g == ${rlit(g1, s.numericG)}], levels = c(FALSE, TRUE), direction = "${s.higherA ? '<' : '>'}")`,
+      `r2 <- roc(cond[g == ${rlit(g2, s.numericG)}], marker[g == ${rlit(g2, s.numericG)}], levels = c(FALSE, TRUE), direction = "${s.higherA ? '<' : '>'}")`,
+      "test <- roc.test(r1, r2, method = \"delong\", paired = FALSE)   # independent curves: D on Satterthwaite-type degrees of freedom, as the app", 'test',
+      'auc_a <- as.numeric(auc(r1)); auc_b <- as.numeric(auc(r2)); diff <- auc_a - auc_b; p_main <- test$p.value'],
+    py: [`ok = ${pcol(s.a)}.notna() & ${pcol(s.ref)}.notna() & ${pcol(s.group)}.notna()`,
+      `x = ${s.higherA ? '' : '-'}np.asarray(${pMarker(s.a, s.numericA, s.orderA)}[ok], dtype=float)`, `y = ${pRef}`, `g = np.asarray(${pcol(s.group)}[ok])`,
+      ...PY_DELONG, 'res = []', `for lev in (${plit(g1, s.numericG)}, ${plit(g2, s.numericG)}):`,
+      '    v10, v01 = components(y[g == lev], x[g == lev])', '    res.append((v10.mean(), v10.var(ddof=1) / len(v10) + v01.var(ddof=1) / len(v01), len(v10) + len(v01)))',
+      '(auc_a, var_a, n_a), (auc_b, var_b, n_b) = res', 'diff = auc_a - auc_b', 'D = diff / np.sqrt(var_a + var_b)',
+      'df = (var_a + var_b) ** 2 / (var_a ** 2 / (n_a - 1) + var_b ** 2 / (n_b - 1))  # Satterthwaite-type, as pROC',
+      'p_main = 2 * stats.t.sf(abs(D), df)', 'print(f"AUC {auc_a:.4f} and {auc_b:.4f}; difference {diff:.4f}; D = {D:.3f} on {df:.1f} df, p = {p_main:.4g}")'],
+  };
+};
+
 /** Mantel-Haenszel or Peto pooling of 2 x 2 counts: metafor's rma.mh / rma.peto in R, written out in Python. */
 function metaMH(s) {
   const rows = s.studies, peto = s.pooling === 'peto', m = peto ? 'OR' : s.measure, isR = m !== 'RD';
