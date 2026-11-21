@@ -15,6 +15,7 @@ import { normal, studentT } from './dist.js';
 import { rank } from './describe.js';
 import { wilson, clopperPearson } from './proportions.js';
 import { riskRatioScore, twoByTwo } from './epi.js';
+import { mcnemar } from './tables.js';
 
 const zOf = (conf) => normal.isf((1 - conf) / 2);
 const sum = (a) => a.reduce((s, v) => s + v, 0);
@@ -273,4 +274,93 @@ export function expandGrouped(rows) {
     for (let i = 0; i < controls; i++) { y.push(false); x.push(k + 1); }
   });
   return { y, x };
+}
+
+/* ------------------------------------------------- two tests, same people --- */
+
+/**
+ * Two proportions from the same people: e positive on both, f on the first only, g on the second only,
+ * h on neither; p1 = (e + f)/n, p2 = (e + g)/n. The difference p1 - p2 with Newcombe's (1998) method 10
+ * (Wilson limits for each proportion combined with the correlation, continuity-corrected), and
+ * McNemar's test on the discordant pairs: exact when they number fewer than 25.
+ */
+export function pairedDifference(e, f, g, h, { conf = 0.95 } = {}) {
+  const n = e + f + g + h;
+  const p1 = (e + f) / n, p2 = (e + g) / n, diff = (f - g) / n;
+  const [l2, u2] = wilson(e + f, n, conf), [l3, u3] = wilson(e + g, n, conf);
+  const dl2 = p1 - l2, du2 = u2 - p1, dl3 = p2 - l3, du3 = u3 - p2;
+  const den = Math.sqrt((e + f) * (g + h) * (e + g) * (f + h));
+  let num = e * h - f * g;
+  if (num > 0) num = Math.max(num - n / 2, 0);
+  const phi = den > 0 ? num / den : 0;
+  const ci = [diff - Math.sqrt(dl2 * dl2 - 2 * phi * dl2 * du3 + du3 * du3), diff + Math.sqrt(du2 * du2 - 2 * phi * du2 * dl3 + dl3 * dl3)];
+  const mc = mcnemar(f, g);
+  const exact = f + g < 25;
+  return { e, f, g, h, n, p1, p2, diff, ci, phi, conf, mcnemar: mc, exact, p: exact ? mc.pExact : mc.p };
+}
+
+/**
+ * Two binary tests on the same people against one reference standard. pos: [both positive, first only,
+ * second only, neither] among people with the condition; neg: the same among people without it.
+ * Sensitivities and specificities of each test (Wilson), their paired differences (Newcombe's method 10;
+ * McNemar), the two tests combined in series (positive only if both are) and in parallel (positive if
+ * either is), counted directly, and the conditional covariances of Gardner and colleagues (2000).
+ */
+export function compareBinaryTests(pos, neg, { conf = 0.95 } = {}) {
+  const [e1, f1, g1, h1] = pos, [e0, f0, g0, h0] = neg;
+  const n1 = e1 + f1 + g1 + h1, n0 = e0 + f0 + g0 + h0;
+  const prop = (x, n) => ({ est: x / n, x, n, wilson: wilson(x, n, conf) });
+  const out = { n1, n0, conf, pos, neg };
+  if (n1 > 0) {
+    out.se = pairedDifference(e1, f1, g1, h1, { conf });
+    out.seA = prop(e1 + f1, n1); out.seB = prop(e1 + g1, n1);
+    out.serialSe = prop(e1, n1); out.parallelSe = prop(e1 + f1 + g1, n1);
+    out.covSe = e1 / n1 - out.seA.est * out.seB.est;
+  }
+  if (n0 > 0) {
+    // Specificity is the proportion testing negative: count "negative" as the outcome.
+    out.sp = pairedDifference(h0, g0, f0, e0, { conf });
+    out.spA = prop(g0 + h0, n0); out.spB = prop(f0 + h0, n0);
+    out.serialSp = prop(n0 - e0, n0); out.parallelSp = prop(h0, n0);
+    out.covSp = h0 / n0 - out.spA.est * out.spB.est;
+  }
+  return out;
+}
+
+/* ------------------------------------------------------ screening programmes --- */
+
+/** The range a conditional covariance between two tests with accuracies a and b can take. */
+export const covarianceRange = (a, b) => [Math.max(0, a + b - 1) - a * b, Math.min(a, b) - a * b];
+
+/**
+ * Two tests combined, from their sensitivities and specificities and, if known, the conditional
+ * covariances between them (0 when the tests err independently; Gardner and colleagues 2000).
+ * Serial: positive only if both are positive. Parallel: positive if either is.
+ */
+export function combineTests({ se1, sp1, se2, sp2, covSe = 0, covSp = 0 }) {
+  return {
+    serial: { se: se1 * se2 + covSe, sp: 1 - (1 - sp1) * (1 - sp2) - covSp },
+    parallel: { se: 1 - (1 - se1) * (1 - se2) - covSe, sp: sp1 * sp2 + covSp },
+  };
+}
+
+/**
+ * What a screening programme finds in a population of N with prevalence prev: expected true and false
+ * positives and negatives, predictive values, people screened and positives per case found, tests done
+ * and their cost. strategy 'single' (test 1 only), 'serial' (test 2 only for those positive on test 1)
+ * or 'parallel' (both tests for everyone).
+ */
+export function screeningYield({ N, prev, se1, sp1, se2 = null, sp2 = null, covSe = 0, covSp = 0, strategy = 'single', cost1 = 0, cost2 = 0 }) {
+  const net = strategy === 'single' ? { se: se1, sp: sp1 } : combineTests({ se1, sp1, se2, sp2, covSe, covSp })[strategy];
+  const D = N * prev, H = N - D;
+  const tp = D * net.se, fn = D - tp, fp = H * (1 - net.sp), tn = H - fp;
+  const positives = tp + fp;
+  const second = strategy === 'serial' ? D * se1 + H * (1 - sp1) : strategy === 'parallel' ? N : 0;
+  const cost = N * cost1 + second * cost2;
+  return {
+    N, prev, strategy, net, D, H, tp, fp, fn, tn, positives,
+    ppv: positives > 0 ? tp / positives : NaN, npv: tn + fn > 0 ? tn / (tn + fn) : NaN,
+    screenedPerCase: tp > 0 ? N / tp : Infinity, positivesPerCase: tp > 0 ? positives / tp : Infinity,
+    tests: [N, second], cost, costPerCase: tp > 0 ? cost / tp : Infinity,
+  };
 }

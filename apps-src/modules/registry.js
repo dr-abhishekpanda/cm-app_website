@@ -17,6 +17,7 @@ import CodeTool from './tools/code.jsx';
 import MeasuresTool from './tools/measures.jsx';
 import StratifiedTool from './tools/stratified.jsx';
 import DiagnosticTool from './tools/diagnostic.jsx';
+import VaccinesTool from './tools/vaccines.jsx';
 
 export const STAGES = [
   { id: 'plan', label: 'Plan', blurb: 'Frame the question, search the literature, set objectives.' },
@@ -112,7 +113,12 @@ export const MODULES = [
     keywords: 'confounding confounder effect modification interaction stratified stratification mantel haenszel cmh cochran breslow day tarone woolf homogeneity crude adjusted standardisation standardization age adjusted direct indirect dsr smr standardised mortality ratio who standard population',
     tool: StratifiedTool,
   },
-  { id: 'vaccines', stage: 'analyse', phase: 2, apps: RE, tag: 'Epidemiology', title: 'Vaccine and Screening Measures', summary: 'Vaccine efficacy and effectiveness, serial and parallel testing.' },
+  {
+    id: 'vaccines', stage: 'analyse', status: 'ready', apps: RE, tag: 'Epidemiology', title: 'Vaccines and Screening',
+    summary: 'Vaccine efficacy and effectiveness by design, the screening method and published ratios; what a screening programme finds with one test, or two in series or in parallel.',
+    keywords: 'vaccine efficacy effectiveness ve attack rate outbreak cohort case control test negative tnd matched screening method farrington orenstein proportion of cases vaccinated coverage ppv pcv hazard ratio odds ratio screening programme yield serial parallel sequential simultaneous testing net sensitivity specificity number screened cost per case',
+    tool: VaccinesTool,
+  },
   { id: 'economics', stage: 'analyse', phase: 3, apps: R, tag: 'Workflow', title: 'Health Economics Basics', summary: 'Costing, ICER, DALYs and QALYs.' },
 
   { id: 'srma', stage: 'synthesise', phase: 3, apps: R, tag: 'Workflow', title: 'Systematic Review Workflow', summary: 'Protocol, search, screening, extraction, risk of bias, GRADE and the PRISMA flow diagram.' },

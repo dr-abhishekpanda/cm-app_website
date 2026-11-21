@@ -74,7 +74,7 @@ export function Refs({ ids, refs }) {
       {ids.map((id) => {
         const r = refs[id];
         if (!r) return null;
-        return <li>{r.text}{r.doi ? <> doi:<a href={`https://doi.org/${r.doi}`} rel="noopener" target="_blank">{r.doi}</a></> : null}</li>;
+        return <li>{r.text}{r.doi ? <> doi:<a href={`https://doi.org/${r.doi}`} rel="noopener" target="_blank">{r.doi}</a></> : r.url ? <> <a href={r.url} rel="noopener" target="_blank">Full text</a></> : null}</li>;
       })}
     </ul>
   );

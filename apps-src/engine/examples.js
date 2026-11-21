@@ -66,3 +66,22 @@ export function exampleAgreementCsv() {
   }
   return rows.map((row) => row.join(',')).join('\n');
 }
+
+/** A simulated measles outbreak investigation in six hamlets of a tribal block: 420 children aged
+ * 9 months to 10 years; doses of measles-rubella vaccine by card or recall (a second dose only from
+ * 16 months), and measles by the outbreak case definition. The protection built in is illustrative
+ * (about 85% for one dose and 95% for two), not an estimate for any vaccine. Not real children. */
+export function exampleMeaslesCsv() {
+  const r = mulberry32(1958);
+  const hamlets = [['Badapada', 0.42], ['Kusumdihi', 0.36], ['Jharuapada', 0.3], ['Khuntapada', 0.26], ['Patharpali', 0.22], ['Sargipali', 0.18]];
+  const rows = [['ID', 'Hamlet', 'Age_months', 'Sex', 'MR_doses', 'Card_seen', 'Measles']];
+  for (let i = 1; i <= 420; i++) {
+    const [hamlet, attack] = hamlets[Math.floor(r() * hamlets.length)];
+    const age = 9 + Math.floor(r() * 112);
+    const u = r();
+    const doses = age < 16 ? (u < 0.34 ? 0 : 1) : u < 0.16 ? 0 : u < 0.44 ? 1 : 2;
+    const risk = attack * (doses === 0 ? 1 : doses === 1 ? 0.15 : 0.05) * (age < 24 ? 1.15 : 1);
+    rows.push([`M${String(i).padStart(3, '0')}`, hamlet, age, r() < 0.51 ? 'Male' : 'Female', doses, doses > 0 && r() < 0.7 ? 'Yes' : 'No', r() < risk ? 'Yes' : 'No']);
+  }
+  return rows.map((row) => row.join(',')).join('\n');
+}
