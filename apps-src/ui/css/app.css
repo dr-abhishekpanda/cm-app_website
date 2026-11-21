@@ -317,3 +317,10 @@ h3.dsec{margin-top:4px}
 .plot .tick.acc{fill:var(--accent)}
 .plotlegend{list-style:none;display:flex;flex-wrap:wrap;gap:6px 14px;margin:6px 0 0;padding:0;font-size:.84rem;color:var(--ink-soft)}
 .plotlegend .key{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+
+/* Planning tools */
+.rq{font-family:var(--font-display);font-size:clamp(1.1rem,2.4vw,1.3rem);line-height:1.45;margin:0;color:var(--ink)}
+.objrow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start}
+.objrow textarea,.field textarea{width:100%;padding:10px 12px;border-radius:var(--r-sm);border:1.5px solid var(--line);background:var(--card);font:inherit;color:var(--ink);box-sizing:border-box}
+.varcard{border:1px solid var(--line);border-radius:var(--r-sm);padding:12px;margin:0;display:grid;gap:10px;min-width:0}
+.varcard legend{font-weight:600;padding:0 6px}

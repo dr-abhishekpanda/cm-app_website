@@ -7,6 +7,7 @@
 import { useState, useEffect } from 'preact/hooks';
 import { PageHead, Seg, Icon } from '../../ui/core.jsx';
 import { Report, Refs, Disclose } from '../../ui/results.jsx';
+import { usePlan } from '../../ui/plan.jsx';
 import { REFS } from '../refs.js';
 import { toolHref } from '../presets.js';
 import { NAME_Q, nameQuestions, nameDesign, treePath, TREE, PLAN_Q, planQuestions, planDesign } from '../../engine/designs.js';
@@ -135,8 +136,9 @@ function DesignBody({ d, extra = [], cluster = null, modules }) {
 const refsOf = (d) => [...new Set([...d.refs, ...(d.report?.refs || []), ...(d.example?.ref ? [d.example.ref] : [])])];
 
 /** A design as a result: heading, why, the card, the protocol sentence, alternatives, references. */
-function DesignResult({ rec, modules, headingId }) {
+function DesignResult({ rec, modules, headingId, plan }) {
   const d = designById[rec.id];
+  const inPlan = plan && plan.value.design?.id === rec.id && (plan.value.design?.variant || null) === (rec.variant || null);
   return (
     <section class="panel stack result-panel" aria-labelledby={headingId} aria-live="polite">
       <div>
@@ -146,6 +148,12 @@ function DesignResult({ rec, modules, headingId }) {
       {rec.why?.length ? <div class="why"><h3 class="dsec">Why this design</h3><ul>{rec.why.map((w) => <li>{w}</li>)}</ul></div> : null}
       <DesignBody d={d} extra={rec.extra} cluster={rec.cluster} modules={modules} />
       <Report label="For your protocol" text={protocolText(d, rec.variant)} />
+      {plan ? (
+        <div class="btn-row">
+          <button type="button" class="btn primary small" disabled={inPlan} onClick={() => plan.update({ design: { id: rec.id, variant: rec.variant || null } })}>{inPlan ? 'In your study plan' : 'Use this design in my study plan'}</button>
+          {inPlan ? <a class="small" href="#/tool/question?tab=title">Draft the title</a> : null}
+        </div>
+      ) : null}
       {rec.alts?.length ? (
         <div class="stack-tight">
           <h3 class="dsec">Also consider</h3>
@@ -170,7 +178,7 @@ function DesignResult({ rec, modules, headingId }) {
 
 /* ------------------------------------------------------------ tabs --- */
 
-function PlanPanel({ answers, setAnswers, modules }) {
+function PlanPanel({ answers, setAnswers, modules, plan }) {
   const keys = planQuestions(answers);
   const set = (k, v) => { const next = { ...answers, [k]: v }; setAnswers(prune(next, planQuestions(next))); };
   const rec = planDesign(answers);
@@ -182,12 +190,12 @@ function PlanPanel({ answers, setAnswers, modules }) {
         {keys.map((k) => <Question key={k} q={PLAN_Q[k]} value={answers[k]} onChange={(v) => set(k, v)} />)}
         {keys.length > 1 ? <div><button type="button" class="btn ghost small" onClick={() => setAnswers({})}>Start again</button></div> : null}
       </section>
-      {rec ? <DesignResult rec={rec} modules={modules} headingId="dc-h" /> : null}
+      {rec ? <DesignResult rec={rec} modules={modules} headingId="dc-h" plan={plan} /> : null}
     </>
   );
 }
 
-function NamePanel({ answers, setAnswers, modules }) {
+function NamePanel({ answers, setAnswers, modules, plan }) {
   const keys = nameQuestions(answers);
   const set = (k, v) => { const next = { ...answers, [k]: v }; setAnswers(prune(next, nameQuestions(next))); };
   const found = nameDesign(answers);
@@ -200,7 +208,7 @@ function NamePanel({ answers, setAnswers, modules }) {
         {answers.aim === 'effect' ? <DesignTree path={treePath(answers)} /> : null}
         {keys.length > 1 ? <div><button type="button" class="btn ghost small" onClick={() => setAnswers({})}>Start again</button></div> : null}
       </section>
-      {found ? <DesignResult rec={found} modules={modules} headingId="dn-h" /> : null}
+      {found ? <DesignResult rec={found} modules={modules} headingId="dn-h" plan={plan} /> : null}
     </>
   );
 }
@@ -230,20 +238,23 @@ function AllPanel({ modules, open }) {
 
 /* ------------------------------------------------------------ page --- */
 
-export default function DesignTool({ preset, modules = [] }) {
+export default function DesignTool({ preset, modules = [], config }) {
+  const [planValue, planUpdate] = usePlan(config?.id);
+  // Only #RESEARCH-APP has the planning tools that read the study plan.
+  const plan = modules.some((m) => m.id === 'question' && m.status === 'ready') ? { value: planValue, update: planUpdate } : null;
   const [tab, setTab] = useState(() => (TABS.some((t) => t.value === preset?.tab) ? preset.tab : 'plan'));
-  const [plan, setPlan] = useState(() => { const a = readAnswers(preset, PLAN_Q); return prune(a, planQuestions(a)); });
+  const [planA, setPlan] = useState(() => { const a = readAnswers(preset, PLAN_Q); return prune(a, planQuestions(a)); });
   const [name, setName] = useState(() => { const a = readAnswers(preset, NAME_Q); return prune(a, nameQuestions(a)); });
   const open = preset?.open && designById[preset.open] ? preset.open : null;
 
   // Keep the answers in the address without adding history entries, so Back from a linked tool returns here.
   useEffect(() => {
     try {
-      const q = Object.entries({ tab, ...plan, ...name }).map(([k, v]) => `${k}=${encodeURIComponent(v)}`).join('&');
+      const q = Object.entries({ tab, ...planA, ...name }).map(([k, v]) => `${k}=${encodeURIComponent(v)}`).join('&');
       const url = `#/tool/design-chooser?${q}`;
       if (location.hash !== url) history.replaceState(history.state, '', url);
     } catch { /* the address is a convenience; the tool works without it */ }
-  }, [tab, JSON.stringify(plan), JSON.stringify(name)]);
+  }, [tab, JSON.stringify(planA), JSON.stringify(name)]);
 
   return (
     <div>
@@ -255,8 +266,8 @@ export default function DesignTool({ preset, modules = [] }) {
           <p>Planning weighs how common the outcome and the exposure are, whether the intervention can be allocated at random and to whom, and what records already exist. The reasons are shown with each recommendation, with the designs worth considering instead.</p>
         </Disclose>
         <div><Seg wide value={tab} onChange={setTab} options={TABS} /></div>
-        {tab === 'plan' ? <PlanPanel answers={plan} setAnswers={setPlan} modules={modules} />
-          : tab === 'name' ? <NamePanel answers={name} setAnswers={setName} modules={modules} />
+        {tab === 'plan' ? <PlanPanel answers={planA} setAnswers={setPlan} modules={modules} plan={plan} />
+          : tab === 'name' ? <NamePanel answers={name} setAnswers={setName} modules={modules} plan={plan} />
             : <AllPanel modules={modules} open={open} />}
       </div>
     </div>

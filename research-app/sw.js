@@ -1,7 +1,7 @@
-/* research-app service worker (build f132507f68). Pages come from the network first, so updates reach
+/* research-app service worker (build f77a4ff929). Pages come from the network first, so updates reach
  * users as soon as they are online; when the network fails or hangs for SLOW_MS, the saved copy opens.
  * Saved responses are never redirects (Safari refuses a redirected response for a page load). */
-const CACHE = 'research-app-f132507f68';
+const CACHE = 'research-app-f77a4ff929';
 const ROOT = new URL('./', self.location).href;
 const ASSETS = ["./","./manifest.webmanifest","./icon.svg","./icon-192.png","./icon-512.png","./icon-maskable-512.png","./apple-touch-icon.png"];
 const SLOW_MS = 4000;

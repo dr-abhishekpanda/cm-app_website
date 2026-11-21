@@ -1,7 +1,7 @@
-/* epi-app service worker (build 3d0fc77c4e). Pages come from the network first, so updates reach
+/* epi-app service worker (build 890f9daffc). Pages come from the network first, so updates reach
  * users as soon as they are online; when the network fails or hangs for SLOW_MS, the saved copy opens.
  * Saved responses are never redirects (Safari refuses a redirected response for a page load). */
-const CACHE = 'epi-app-3d0fc77c4e';
+const CACHE = 'epi-app-890f9daffc';
 const ROOT = new URL('./', self.location).href;
 const ASSETS = ["./","./manifest.webmanifest","./icon.svg","./icon-192.png","./icon-512.png","./icon-maskable-512.png","./apple-touch-icon.png"];
 const SLOW_MS = 4000;

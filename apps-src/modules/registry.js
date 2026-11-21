@@ -20,6 +20,8 @@ import DiagnosticTool from './tools/diagnostic.jsx';
 import VaccinesTool from './tools/vaccines.jsx';
 import DesignTool from './tools/designs.jsx';
 import OutbreakTool from './tools/outbreak.jsx';
+import QuestionTool from './tools/question.jsx';
+import ObjectivesTool from './tools/objectives.jsx';
 
 export const STAGES = [
   { id: 'plan', label: 'Plan', blurb: 'Frame the question, search the literature, set objectives.' },
@@ -46,9 +48,19 @@ export const MODULES = [
   },
 
   // -------------------------------------------------------------- planned
-  { id: 'question', stage: 'plan', phase: 3, apps: R, tag: 'Workflow', title: 'Research Question Builder', summary: 'FINER check, PICO, PECO and SPIDER frames, and a title that matches the design.' },
+  {
+    id: 'question', stage: 'plan', status: 'ready', apps: R, tag: 'Workflow', title: 'Research Question Builder',
+    summary: 'PICO, PECO, test accuracy, CoCoPop and SPIDER frames, the FINER check, and a title that names the design.',
+    keywords: 'research question pico picot peco spider cocopop finer feasible interesting novel ethical relevant title framing population intervention comparison outcome exposure synopsis thesis topic',
+    tool: QuestionTool,
+  },
   { id: 'literature', stage: 'plan', phase: 3, apps: R, tag: 'Workflow', title: 'Literature Search and References', summary: 'PubMed search builder with MeSH, live hit counts when online, RIS export and Vancouver style.' },
-  { id: 'objectives', stage: 'plan', phase: 3, apps: R, tag: 'Workflow', title: 'Objectives, Hypotheses and Variables', summary: 'SMART objectives, null and alternative hypotheses, outcome and exposure definitions.' },
+  {
+    id: 'objectives', stage: 'plan', status: 'ready', apps: R, tag: 'Workflow', title: 'Objectives, Hypotheses and Variables',
+    summary: 'Primary and secondary objectives, null and alternative hypotheses, and the list of variables with their definitions, from your question.',
+    keywords: 'objectives primary secondary aim hypothesis null alternative h0 h1 one sided two sided non inferiority variables outcome exposure confounder effect modifier operational definition codebook',
+    tool: ObjectivesTool,
+  },
 
   {
     id: 'design-chooser', stage: 'design', status: 'ready', apps: RE, tag: 'Epidemiology', title: 'Study Design Chooser',

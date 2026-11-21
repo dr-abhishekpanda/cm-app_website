@@ -16,6 +16,8 @@ export const PRESETS = {
   regression: { kind: ['linear', 'logistic'] },
   tests: { tab: ['choose', 'run'] },
   outbreak: { tab: ['curve', 'attack', 'food', 'incubation'] },
+  question: { tab: ['frame', 'finer', 'title'] },
+  objectives: { tab: ['objectives', 'hypotheses', 'variables'] },
   survival: {},
   'meta-analysis': {},
   describe: {},

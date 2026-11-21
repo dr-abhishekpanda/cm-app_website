@@ -2,6 +2,25 @@
 
 Newest entry first. Each entry records what changed, how it was checked, and anything left open.
 
+## 2026-11-21 · Phase 3a: Research Question, Objectives and Variables
+
+Branch `feature/research-app-3a`, stacked on Phase 2f.
+
+### Built
+
+- **Engine** (`engine/question.js`): the research question as a sentence from five frames (PICO(T) for interventions, PECO for exposures, population, index test, reference standard and target condition for test accuracy, CoCoPop for prevalence and incidence, SPIDER for qualitative questions); titles that name the design, as STROBE and CONSORT ask in item 1a; primary and secondary objectives; null and alternative hypotheses (two-sided, or one-sided for non-inferiority), or a note when the study estimates rather than tests; the starting list of variables with their roles; the FINER checks. Blank parts stay as `[INSERT: ...]` placeholders.
+- **Tools**: *Research Question Builder* (frame the question with Indian examples, the FINER check with advice for each weak point, and title options with word counts) and *Objectives, Hypotheses and Variables* (editable objectives, hypotheses with links to the matching sample size, and variable cards with role, type, unit, operational definition, how and when measured; the list copies as a table or downloads as CSV).
+- **Study plan** (`ui/plan.jsx`): the question, the design, the objectives, the hypotheses and the variables, shared by the planning tools and kept in the browser's own storage. The design chooser gains "Use this design in my study plan"; the title then names that design.
+- **References**: 6 added, each checked on PubMed: Farrugia and colleagues (2010) on questions, hypotheses, objectives and FINER; Richardson and colleagues (1995) for PICO; Morgan and colleagues (2018) for PECO; Campbell and colleagues (2015) on test accuracy questions; Munn and colleagues (2015) for CoCoPop; Cooke, Smith and Booth (2012) for SPIDER.
+
+### Checked
+
+| Check | Result |
+|---|---|
+| Engine tests (`npm test`) | 92 of 92 pass. New: the question each frame builds from its example, word for word; placeholders for blank parts; titles with the right article and the place as typed; objectives and hypotheses by frame; variable roles; FINER gaps; every frame leads to a design-chooser goal and checked references |
+| Code export (`npm run test:code`) | No generator changed in this wave; the last run (Phase 2f) passed with 0 failures |
+| Browser smoke tests | #RESEARCH-APP 258 of 258 (new: a CoCoPop question, its goal carried into the design chooser, the design saved to the plan and named in the title, the objective and variables drafted from the question, the variable table fitting a phone); #EPI-APP 44 of 44 |
+
 ## 2026-11-21 · Phase 2f: Outbreak Toolkit (#EPI-APP)
 
 Branch `feature/research-app-2f`, stacked on Phase 2e. This completes Phase 2.
