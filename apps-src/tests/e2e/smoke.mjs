@@ -410,6 +410,32 @@ try {
     await page.getByRole('button', { name: 'Test-negative design', exact: true }).click();
     check(`${label}: every design listed, and one opens`, (await page.locator('#all-h ~ .stack-tight .disclose').count()) === 27 && (await text(page, '.disclose.open .verdict-line')).startsWith('Test-positive cases'));
 
+    // Phase 3a: the research question, the design carried into the study plan, the title and the objectives.
+    await page.goto(`${base}#/tool/question`);
+    await page.waitForSelector('#rq-h');
+    await page.getByLabel('What kind of question?').selectOption('cocopop');
+    await page.getByRole('button', { name: 'Fill in the example' }).click();
+    check(`${label}: CoCoPop builds the question`, (await text(page, '.rq')) === 'What is the prevalence of sickle cell trait and disease by HPLC among children aged 1 to 14 years in tribal villages of Sundargarh district in 2026?', await text(page, '.rq'));
+    check(`${label}: no sideways scroll on the question builder`, await noSideScroll(page));
+    await shot(page, `${label}-question`);
+    await page.getByRole('link', { name: /Study Design Chooser/ }).first().click();
+    await page.waitForSelector('#plan-h');
+    await page.getByRole('button', { name: /^No: describing how common it is/ }).click();
+    await page.getByRole('button', { name: /^No: individuals from a list/ }).click();
+    check(`${label}: the question's goal carries into the chooser`, (await text(page, '#dc-h')) === 'Cross-sectional survey', await text(page, '#dc-h'));
+    await page.getByRole('button', { name: 'Use this design in my study plan' }).click();
+    await page.goto(`${base}#/tool/question?tab=title`);
+    await page.waitForSelector('#tr-h');
+    check(`${label}: the title names the design from the plan`, (await text(page, '.result-panel .say')) === 'Prevalence of sickle cell trait and disease by HPLC among children aged 1 to 14 years in tribal villages of Sundargarh district in 2026: a cross-sectional survey', await text(page, '.result-panel .say'));
+    await page.goto(`${base}#/tool/objectives`);
+    await page.waitForSelector('#ob-h');
+    check(`${label}: the primary objective follows the question`, (await page.locator('#ob-primary').inputValue()) === 'To estimate the prevalence of sickle cell trait and disease by HPLC among children aged 1 to 14 years in tribal villages of Sundargarh district in 2026.');
+    await page.getByRole('button', { name: 'Variables', exact: true }).click();
+    check(`${label}: variables start from the question`, (await page.locator('fieldset.varcard').count()) === 3);
+    check(`${label}: no sideways scroll on the variables`, await noSideScroll(page));
+    check(`${label}: the variable table fits its width`, await tablesFit());
+    await shot(page, `${label}-variables`);
+
     await page.goto(`${base}#/`);
     await page.getByRole('button', { name: 'Settings' }).click();
     await page.getByRole('button', { name: 'Dark', exact: true }).click();
