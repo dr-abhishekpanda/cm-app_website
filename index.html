@@ -646,6 +646,12 @@ a.card:hover .go .arw{transform:translateX(3px)}
 
     <!-- EDIT each href → the live URL once you host the tool -->
     <div class="cards cols-3" data-stagger>
+      <a class="card" href="/assistant/">
+        <span class="pill">AI tool</span>
+        <h3>Clinic Assistant</h3>
+        <p>Checked notes and AI answers for the Digital &amp; AI Fluency Clinic. Installs on your phone; the notes work offline.</p>
+        <span class="go">Open <span class="arw">→</span></span>
+      </a>
       <a class="card" href="#">
         <span class="pill">Biostatistics</span>
         <h3>Not-Only-p-Value Calculator</h3>
@@ -805,5 +811,7 @@ const spy = new IntersectionObserver((entries) => {
 }, { rootMargin:'-45% 0px -50% 0px' });
 document.querySelectorAll('main section[id]').forEach(s => spy.observe(s));
 </script>
+<!-- Clinic Assistant: the "Ask the Clinic Assistant" chat button (assistant/widget.js) -->
+<script type="module" src="/assistant/widget.js"></script>
 </body>
 </html>

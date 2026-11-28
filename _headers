@@ -1,4 +1,8 @@
 # Cloudflare Pages response headers.
+# Clinic Assistant: browsers re-check these files on every visit, so new notes and fixes reach users
+# on their next online visit (the app keeps its own offline copy through assistant/sw.js).
+/assistant/*
+  Cache-Control: no-cache
 # IMNCI Case Assistant: browsers re-check these files on every visit, so an update reaches users
 # on their next online visit (the app keeps its own offline copy through imnci/sw.js).
 /imnci/*
