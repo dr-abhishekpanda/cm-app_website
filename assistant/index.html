@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Clinic Assistant · Digital &amp; AI Fluency Clinic</title>
+<meta name="description" content="Checked notes and AI answers for the Digital & AI Fluency Clinic for Healthcare Professionals. Install it on your phone; the notes work offline. #CM-APP">
+<meta name="theme-color" content="#0C5E4E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Clinic AI">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="/brand/ews.css">
+<link rel="stylesheet" href="assistant.css">
+<script>
+  // Apply the saved theme before the page paints.
+  try { var t = JSON.parse(localStorage.getItem('cma:theme') || '"system"'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
+</head>
+<body>
+<div class="app">
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="top"><div class="in">
+    <a class="brand" href="./" aria-label="Clinic Assistant home"><span class="mark" aria-hidden="true">C</span><span class="nm">CLINIC ASSISTANT</span></a>
+    <span class="sp"></span>
+    <span class="net" id="net" role="status">Checking</span>
+    <button class="icon-btn" id="open-settings" type="button" aria-label="Settings" aria-haspopup="dialog">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+    </button>
+  </div></header>
+
+  <main class="page" id="main" tabindex="-1">
+    <div class="seg" role="tablist" aria-label="Views">
+      <button role="tab" id="tab-ask" aria-controls="view-ask" aria-selected="true" type="button">Ask</button>
+      <button role="tab" id="tab-notes" aria-controls="view-notes" aria-selected="false" type="button" tabindex="-1">Notes</button>
+    </div>
+
+    <section id="view-ask" role="tabpanel" aria-labelledby="tab-ask">
+      <h1 class="pg-title">Ask the <em>Clinic</em></h1>
+      <p class="lede">Checked notes from the Digital &amp; AI Fluency Clinic open even without internet. Clinic members also get AI answers written from these notes.</p>
+      <form class="ask" id="ask-form" novalidate>
+        <label class="vh" for="q">Your question</label>
+        <textarea id="q" rows="2" maxlength="2000" enterkeyhint="send" placeholder="For example: how do I disclose AI use in a manuscript?"></textarea>
+        <div class="ask-row">
+          <p class="ask-hint" id="ask-hint">Loading the notes...</p>
+          <button class="btn primary" type="submit">Ask <span class="arw" aria-hidden="true">→</span></button>
+        </div>
+        <p class="form-error" id="form-error" role="alert" hidden></p>
+      </form>
+      <div class="chips" id="chips" aria-label="Suggested questions"></div>
+      <div class="banner" id="install-banner" hidden>
+        <p id="install-text">Install the Clinic Assistant on this phone, so the notes open from your home screen even without internet.</p>
+        <button class="btn primary small" type="button" id="install-btn">Install</button>
+        <button class="btn ghost small" type="button" id="install-later">Not now</button>
+      </div>
+      <div class="thread" id="thread"></div>
+      <p class="vh" aria-live="polite" id="live"></p>
+    </section>
+
+    <section id="view-notes" role="tabpanel" aria-labelledby="tab-notes" hidden>
+      <h1 class="pg-title">Clinic <em>notes</em></h1>
+      <p class="lede">Every note is checked by Dr. Abhishek Panda and saved on this device for offline use. To share a link to one note, use the <a href="notes/">notes page</a>.</p>
+      <div class="field notes-filter">
+        <label for="filter">Find a note</label>
+        <input id="filter" type="search" autocomplete="off" placeholder="For example: disclosure, NotebookLM, access code">
+      </div>
+      <p class="count" id="notes-count"></p>
+      <div class="notes-list" id="notes-list"></div>
+    </section>
+  </main>
+
+  <footer class="foot"><div class="in">
+    <div class="credit">
+      <p>&copy; Dr Abhishek Panda, Asst. Professor in Community Medicine</p>
+      <p>Govt. Medical College &amp; Hospital, Sundaragada, Odisha</p>
+      <p><span class="nw">Email: <a href="mailto:support@dr-abhishekpanda-cm.app">support@dr-abhishekpanda-cm.app</a>;</span>
+         <span class="nw">WhatsApp: <a href="https://wa.me/917008909595" rel="noopener" target="_blank">(+91) 700-890-9595</a></span></p>
+    </div>
+    <div class="build">
+      <span>Clinic Assistant v1.0 · #CM-APP</span>
+      <span id="foot-notes">Notes: loading</span>
+      <span>Notes work offline · <a href="privacy/">Privacy notice</a></span>
+    </div>
+  </div></footer>
+</div>
+
+<dialog class="sheet" id="settings" aria-labelledby="settings-title">
+  <div class="sh-head">
+    <h2 id="settings-title">Settings</h2>
+    <button class="icon-btn" type="button" id="close-settings" aria-label="Close settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="sh-body">
+    <section>
+      <h3>Clinic access code</h3>
+      <p>AI answers in this app are for Clinic members. The notes work for everyone, even offline. The website chat on dr-abhishekpanda-cm.app uses the same code.</p>
+      <form class="code-row" id="code-form" novalidate>
+        <label class="vh" for="code">Access code</label>
+        <input id="code" type="password" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCD-1234" maxlength="64">
+        <button class="btn primary small" type="submit">Save code</button>
+      </form>
+      <p class="msg" id="code-msg" role="status"></p>
+      <p><button class="linkish" type="button" id="show-code">Show code</button> · <button class="linkish" type="button" id="remove-code">Remove code</button> · <button class="linkish" type="button" data-act="note" data-note="access-codes">How to get a code</button></p>
+    </section>
+    <section>
+      <h3>Appearance</h3>
+      <div class="seg" role="radiogroup" aria-label="Theme" id="theme-seg">
+        <button type="button" role="radio" data-theme="system">Phone setting</button>
+        <button type="button" role="radio" data-theme="light">Light</button>
+        <button type="button" role="radio" data-theme="dark">Dark</button>
+      </div>
+    </section>
+    <section>
+      <h3>Install on this device</h3>
+      <p id="install-help">Checking...</p>
+      <button class="btn ghost small" type="button" id="install-btn-2" hidden>Install the app</button>
+    </section>
+    <section>
+      <h3>Your questions</h3>
+      <p>Your questions and answers are kept only on this device. A question leaves the device only when you ask for an AI answer.</p>
+      <button class="btn ghost small" type="button" id="clear-history">Clear my questions</button>
+      <p class="msg" id="clear-msg" role="status"></p>
+    </section>
+    <section>
+      <h3>About</h3>
+      <p id="about-text">Clinic Assistant v1.0, part of the #CM-APP series by Dr. Abhishek Panda.</p>
+      <p><button class="btn ghost small" type="button" id="check-update">Check for updates</button> <a class="linkish" href="privacy/">Privacy notice</a></p>
+      <p class="msg" id="update-msg" role="status"></p>
+    </section>
+  </div>
+</dialog>
+
+<div class="toast" id="update-toast" role="status" hidden>
+  <span>A new version of the Clinic Assistant is ready.</span>
+  <button class="btn small" type="button" id="reload-btn">Reload</button>
+</div>
+
+<script type="module">
+import { loadKB } from './lib/kb-core.js';
+import { renderMarkdown, escapeHtml } from './lib/markdown.js';
+import { findIdentifiers, identifierMessage } from './lib/guard.js';
+
+const API = '/api/assistant/';
+const $ = (id) => document.getElementById(id);
+
+/* Storage: keys start with the app id ("cma:"); the website chat reads the same code and device id. */
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('cma:' + k); return v === null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { try { localStorage.setItem('cma:' + k, JSON.stringify(v)); } catch { /* storage full or blocked */ } },
+  del(k) { try { localStorage.removeItem('cma:' + k); } catch { /* blocked */ } },
+};
+
+const state = {
+  kb: null, online: false, server: null, remaining: null, busy: false, reg: null,
+  code: store.get('code', ''),
+  device: store.get('device', ''),
+  history: store.get('history', []),
+};
+if (!/^[A-Za-z0-9_-]{8,64}$/.test(state.device)) {
+  state.device = (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2)).replace(/[^A-Za-z0-9-]/g, '');
+  store.set('device', state.device);
+}
+// A question that was being answered when the app closed is asked again later.
+for (const it of state.history) if (it.status === 'loading' || it.status === 'new') it.status = state.code ? 'queued' : 'nocode';
+
+const SUGGESTIONS = [
+  'How do I set up ChatGPT safely?',
+  'Can I share patient details with an AI tool?',
+  'How do I disclose AI use in a manuscript?',
+  'How do I get a Clinic access code?',
+];
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+function fmtDate(iso) {
+  const m = String(iso || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return m ? `${+m[3]} ${MONTHS[+m[2] - 1]} ${m[1]}` : String(iso || '');
+}
+function fmtTime(ts) {
+  const d = new Date(ts);
+  return `${d.getDate()} ${MONTHS[d.getMonth()]}, ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+}
+const saveHistory = () => store.set('history', state.history.slice(0, 30));
+
+/* ------------------------------------------------------------ notes ------ */
+async function loadNotes() {
+  try {
+    const res = await fetch('kb/clinic-kb.md', { cache: 'no-cache' });
+    if (!res.ok) throw new Error(String(res.status));
+    state.kb = loadKB(await res.text());
+    const n = state.kb.kb.entries.length;
+    $('foot-notes').textContent = `${n} notes, updated ${fmtDate(state.kb.kb.meta.updated)}`;
+    $('about-text').textContent = `Clinic Assistant v1.0, part of the #CM-APP series by Dr. Abhishek Panda. ${n} checked notes, last updated ${fmtDate(state.kb.kb.meta.updated)}.`;
+    renderNotesList();
+    renderThread();
+    if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+  } catch {
+    $('foot-notes').textContent = 'Notes not downloaded yet';
+  }
+  updateHint();
+}
+
+function noteHTML(e, { open = false, label = '' } = {}) {
+  const pill = label ? `<span class="pill ${label === 'Best match' ? 'teal' : 'ink'}">${label}</span>` : '';
+  const meta = [e.updated ? `Updated ${fmtDate(e.updated)}` : '', e.source ? `Source: ${escapeHtml(e.source)}` : ''].filter(Boolean).join(' · ');
+  return `<details class="hit" data-note="${escapeHtml(e.id)}"${open ? ' open' : ''}>
+    <summary><span><span class="ti">${escapeHtml(e.title)}</span>${e.snippet ? `<span class="sn">${escapeHtml(e.snippet)}</span>` : ''}</span>${pill}</summary>
+    <div class="body"><div class="md">${renderMarkdown(e.body)}</div>${meta ? `<p class="note-meta">${meta}</p>` : ''}</div>
+  </details>`;
+}
+
+function renderNotesList() {
+  if (!state.kb) return;
+  const q = $('filter').value.trim();
+  const all = state.kb.kb.entries;
+  let list = all;
+  if (q) {
+    list = state.kb.search(q, { limit: 40 });
+    if (!list.length) {
+      const lq = q.toLowerCase();
+      list = all.filter((e) => (e.title + ' ' + e.tags.join(' ') + ' ' + e.text).toLowerCase().includes(lq));
+    }
+  }
+  $('notes-count').textContent = q ? `${list.length} of ${all.length} notes` : `${all.length} notes`;
+  $('notes-list').innerHTML = list.length ? list.map((e) => noteHTML(e)).join('') : '<p class="empty">No note matches. Try fewer or different words.</p>';
+}
+
+function openNote(id) {
+  showView('notes');
+  $('filter').value = '';
+  renderNotesList();
+  const el = $('notes-list').querySelector(`[data-note="${CSS.escape(id)}"]`);
+  if (el) { el.open = true; el.scrollIntoView({ block: 'start' }); el.querySelector('summary').focus({ preventScroll: true }); }
+}
+
+/* ------------------------------------------------------------ network ---- */
+function setNet(on) {
+  state.online = on;
+  const el = $('net');
+  el.className = 'net ' + (on ? 'on' : 'off');
+  el.textContent = on ? 'Online' : 'Offline';
+}
+
+async function checkServer() {
+  if (!navigator.onLine) { setNet(false); updateHint(); return; }
+  try {
+    const ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), 6000);
+    const res = await fetch(API + 'status', { cache: 'no-store', signal: ctl.signal });
+    clearTimeout(timer);
+    state.server = res.ok ? await res.json() : null;
+    setNet(Boolean(state.server));
+  } catch {
+    state.server = null;
+    setNet(false);
+  }
+  updateHint();
+}
+
+function updateHint() {
+  const h = $('ask-hint');
+  if (!state.kb) { h.textContent = navigator.onLine ? 'Loading the notes...' : 'The notes have not been downloaded yet. Connect to the internet once.'; return; }
+  if (!state.online) { h.textContent = 'Offline: you will see the checked notes. Questions for AI answers wait until you are back online.'; return; }
+  if (state.server && !state.server.ai) { h.textContent = 'AI answers are not switched on yet. The checked notes work.'; return; }
+  if (!state.code) { h.innerHTML = 'Notes are open to all. AI answers need a Clinic access code. <button type="button" data-act="code">Enter code</button>'; return; }
+  h.textContent = state.remaining === null ? 'AI answers are on.' : `AI answers are on. ${state.remaining} left today.`;
+}
+
+/* ------------------------------------------------------------ asking ----- */
+function showError(msg) { const e = $('form-error'); e.textContent = msg; e.hidden = !msg; }
+
+async function ask(text) {
+  const q = String(text || '').trim();
+  if (!q) { showError('Type a question first.'); return; }
+  const found = findIdentifiers(q);
+  if (found.length) { showError(identifierMessage(found)); return; }
+  showError('');
+  const item = { id: 'q' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), q, ts: Date.now(), status: 'new', answer: '', sources: [] };
+  if (!state.code) item.status = 'nocode';
+  else if (!state.online) item.status = navigator.onLine ? 'error' : 'queued';
+  else if (state.server && !state.server.ai) item.status = 'off';
+  if (item.status === 'error') item.message = 'Could not reach the assistant just now. The checked notes are below.';
+  state.history.unshift(item);
+  state.history = state.history.slice(0, 30);
+  saveHistory();
+  $('q').value = '';
+  autosize();
+  renderThread();
+  if (item.status === 'new') await getAnswer(item);
+  else $('live').textContent = 'Checked notes shown.';
+}
+
+async function readStream(res, onEvent) {
+  const reader = res.body.getReader();
+  const dec = new TextDecoder();
+  let buf = '';
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buf += dec.decode(value, { stream: true });
+    let cut;
+    while ((cut = buf.indexOf('\n\n')) >= 0) {
+      const block = buf.slice(0, cut);
+      buf = buf.slice(cut + 2);
+      const ev = (block.match(/^event: (.+)$/m) || [])[1];
+      const data = (block.match(/^data: (.+)$/m) || [])[1];
+      if (ev && data) { try { onEvent(ev, JSON.parse(data)); } catch { /* skip a broken event */ } }
+    }
+  }
+}
+
+async function getAnswer(item) {
+  item.status = 'loading';
+  item.answer = '';
+  item.message = '';
+  updateItem(item);
+  let res;
+  try {
+    res = await fetch(API + 'chat', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ channel: 'pwa', stream: true, code: state.code, device: state.device, messages: [{ role: 'user', content: item.q }] }),
+    });
+  } catch {
+    if (!navigator.onLine) { item.status = 'queued'; setNet(false); }
+    else { item.status = 'error'; item.message = 'Could not reach the assistant. Check your connection and try again.'; }
+    saveHistory(); updateItem(item); updateHint();
+    return;
+  }
+  if (!res.ok) {
+    let j = {};
+    try { j = await res.json(); } catch { /* not JSON */ }
+    item.status = { code_required: 'nocode', invalid_code: 'badcode', limit: 'limit', not_configured: 'off' }[j.error] || 'error';
+    item.message = j.message || 'Something went wrong. Please try again.';
+    if (j.error === 'limit') state.remaining = 0;
+    saveHistory(); updateItem(item); updateHint();
+    $('live').textContent = item.message;
+    return;
+  }
+  try {
+    await readStream(res, (ev, data) => {
+      if (ev === 'meta') {
+        item.sources = data.sources || [];
+        item.answered = data.answered !== false;
+        if (typeof data.remaining === 'number') state.remaining = data.remaining;
+      } else if (ev === 'delta') {
+        item.answer += data.t;
+        scheduleUpdate(item);
+      } else if (ev === 'error') {
+        item.status = 'error';
+        item.message = data.message;
+      } else if (ev === 'done' && item.status === 'loading') {
+        item.status = 'done';
+      }
+    });
+  } catch { /* connection dropped: keep what arrived */ }
+  if (item.status === 'loading') {
+    item.status = item.answer ? 'done' : 'error';
+    if (!item.answer) item.message = 'The answer was cut off. Please try again.';
+  }
+  saveHistory(); updateItem(item); updateHint();
+  $('live').textContent = item.status === 'done' ? 'Answer ready.' : (item.message || '');
+}
+
+async function processQueue() {
+  if (state.busy || !state.online || !state.code || (state.server && !state.server.ai)) return;
+  state.busy = true;
+  try {
+    for (const item of state.history.slice().reverse()) if (item.status === 'queued') await getAnswer(item);
+  } finally { state.busy = false; }
+}
+
+async function sendFeedback(item, rating) {
+  item.fb = rating;
+  saveHistory(); updateItem(item);
+  try {
+    await fetch(API + 'feedback', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ rating, question: item.q, answer: item.answer, sources: (item.sources || []).map((s) => s.id), channel: 'pwa' }),
+    });
+  } catch { /* offline: the rating stays on the device */ }
+  $('live').textContent = rating === 'down' ? 'Thank you. Dr. Panda reviews answers marked Not right.' : 'Thank you.';
+}
+
+/* ------------------------------------------------------------ thread ----- */
+function notice(text, action = '', err = false) {
+  return `<div class="notice${err ? ' err' : ''}"><p>${escapeHtml(text)}</p>${action}</div>`;
+}
+
+function aiHTML(item) {
+  const codeBtn = '<button class="btn ghost small" type="button" data-act="code">Enter access code</button>';
+  switch (item.status) {
+    case 'loading':
+      return `<section class="ai${item.answer ? '' : ' wait'}"><h3>AI answer from the notes</h3><div class="md">${item.answer ? renderMarkdown(item.answer) : '<p class="empty dots">Writing</p>'}</div></section>`;
+    case 'done': {
+      if (item.answered === false) return notice(item.answer);
+      const src = (item.sources || []).length
+        ? `<span class="sources">Matching notes: ${item.sources.map((s) => `<button type="button" data-act="note" data-note="${escapeHtml(s.id)}">${escapeHtml(s.title)}</button>`).join('; ')}</span>` : '';
+      const fb = `<span class="fb" role="group" aria-label="Was this answer right?">
+        <button type="button" data-act="fb" data-r="up" data-id="${item.id}" aria-pressed="${item.fb === 'up'}">Helpful</button>
+        <button type="button" data-act="fb" data-r="down" data-id="${item.id}" aria-pressed="${item.fb === 'down'}">Not right</button></span>`;
+      return `<section class="ai"><h3>AI answer from the notes</h3><div class="md">${renderMarkdown(item.answer)}</div><p class="ai-meta">${src}${fb}</p></section>`;
+    }
+    case 'queued':
+      return notice('You are offline, so the checked notes are shown below. Your question is saved: the AI answer will appear here when you are back online with this app open.');
+    case 'nocode':
+      return notice('AI answers are for Clinic members with an access code. The checked notes are below.', codeBtn);
+    case 'badcode':
+      return notice(item.message || 'That access code is not valid.', '<button class="btn ghost small" type="button" data-act="code">Change access code</button>', true);
+    case 'limit':
+      return notice(item.message || 'The daily limit has been reached.');
+    case 'off':
+      return notice('AI answers are not switched on yet. The checked notes are below.');
+    case 'error':
+      return notice(item.message || 'Something went wrong.', `<button class="btn ghost small" type="button" data-act="retry" data-id="${item.id}">Try again</button>`, true);
+    default:
+      return '';
+  }
+}
+
+function hitsHTML(item) {
+  if (!state.kb) return '';
+  const hits = state.kb.search(item.q, { limit: 3, minConfidence: 'medium', relative: 0.5 });
+  if (!hits.length) return '<h3>Checked notes</h3><p class="empty">No checked note matches this question yet. <button class="linkish" type="button" data-act="browse">Browse all notes</button></p>';
+  const openFirst = !['done', 'loading'].includes(item.status);
+  return '<h3>Checked notes</h3>' + hits.map((h, i) => noteHTML(h, { open: openFirst && i === 0, label: i === 0 && h.confidence === 'high' ? 'Best match' : 'Related' })).join('');
+}
+
+function itemHTML(item) {
+  return `<article class="qa" id="${item.id}" aria-busy="${item.status === 'loading'}">
+    <h2 class="qa-q">${escapeHtml(item.q)}</h2>
+    <p class="qa-time">${fmtTime(item.ts)}</p>
+    <div class="ai-slot">${aiHTML(item)}</div>
+    <div class="hits">${hitsHTML(item)}</div>
+  </article>`;
+}
+
+function renderThread() {
+  $('thread').innerHTML = state.history.map(itemHTML).join('');
+}
+
+function updateItem(item) {
+  const el = $(item.id);
+  if (!el) return renderThread();
+  el.setAttribute('aria-busy', String(item.status === 'loading'));
+  el.querySelector('.ai-slot').innerHTML = aiHTML(item);
+}
+
+let frame = 0;
+function scheduleUpdate(item) {
+  if (frame) return;
+  frame = requestAnimationFrame(() => { frame = 0; updateItem(item); });
+}
+
+/* ------------------------------------------------------------ views ------ */
+function showView(name) {
+  const ask = name !== 'notes';
+  $('view-ask').hidden = !ask;
+  $('view-notes').hidden = ask;
+  $('tab-ask').setAttribute('aria-selected', String(ask));
+  $('tab-notes').setAttribute('aria-selected', String(!ask));
+  $('tab-ask').tabIndex = ask ? 0 : -1;
+  $('tab-notes').tabIndex = ask ? -1 : 0;
+  if (location.hash !== (ask ? '' : '#notes')) history.replaceState(null, '', ask ? location.pathname : '#notes');
+}
+
+/* ------------------------------------------------------------ settings --- */
+const sheet = $('settings');
+function openSettings(focusCode) {
+  $('code').value = state.code;
+  $('code-msg').textContent = state.code ? 'A code is saved on this device.' : '';
+  $('code-msg').className = 'msg';
+  updateThemeButtons();
+  updateInstallUI();
+  if (typeof sheet.showModal === 'function') sheet.showModal(); else sheet.setAttribute('open', '');
+  if (focusCode) $('code').focus();
+}
+function closeSettings() { if (sheet.open) sheet.close(); }
+
+async function saveCode(raw) {
+  const code = String(raw || '').trim().toUpperCase().replace(/\s+/g, '');
+  const msg = $('code-msg');
+  if (code.length < 4) { msg.textContent = 'Type the code you were given.'; msg.className = 'msg bad'; return; }
+  if (!navigator.onLine) {
+    state.code = code; store.set('code', code);
+    msg.textContent = 'Saved. It will be checked the next time you are online.'; msg.className = 'msg ok';
+    updateHint(); return;
+  }
+  msg.textContent = 'Checking...'; msg.className = 'msg';
+  try {
+    const res = await fetch(API + 'verify', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ code }) });
+    const j = await res.json().catch(() => ({}));
+    if (!res.ok) { msg.textContent = j.message || 'That code could not be checked.'; msg.className = 'msg bad'; return; }
+    state.code = code; store.set('code', code);
+    msg.textContent = 'Code saved. AI answers are on.'; msg.className = 'msg ok';
+    // The last few questions asked without a code now get their AI answers.
+    state.history.filter((it) => it.status === 'nocode' || it.status === 'badcode').slice(0, 3).forEach((it) => { it.status = 'queued'; });
+    saveHistory(); renderThread(); updateHint();
+    processQueue();
+  } catch {
+    msg.textContent = 'Could not reach the server. Try again when you are online.'; msg.className = 'msg bad';
+  }
+}
+
+function applyTheme(t) {
+  if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+  else document.documentElement.removeAttribute('data-theme');
+  store.set('theme', t);
+  updateThemeButtons();
+}
+function updateThemeButtons() {
+  const t = store.get('theme', 'system');
+  for (const b of $('theme-seg').querySelectorAll('button')) b.setAttribute('aria-checked', String(b.dataset.theme === t)), b.setAttribute('aria-selected', String(b.dataset.theme === t));
+}
+
+/* ------------------------------------------------------------ install ---- */
+let installEvt = null;
+const standalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+function updateInstallUI() {
+  const can = Boolean(installEvt);
+  const iosHint = isIOS && !standalone();
+  $('install-banner').hidden = standalone() || store.get('installLater', false) || !(can || iosHint);
+  $('install-btn').hidden = !can;
+  if (!can && iosHint) $('install-text').textContent = 'On iPhone or iPad: tap the Share button in Safari, then "Add to Home Screen", so the notes open even without internet.';
+  $('install-btn-2').hidden = !can;
+  $('install-help').textContent = standalone()
+    ? 'The Clinic Assistant is installed on this device.'
+    : can ? 'Install it so the notes open from your home screen, even offline.'
+      : isIOS ? 'In Safari, tap the Share button, then "Add to Home Screen".'
+        : 'In Chrome, open the menu (three dots) and choose "Install app" or "Add to Home screen".';
+}
+async function install() {
+  if (!installEvt) return;
+  installEvt.prompt();
+  try { await installEvt.userChoice; } catch { /* dismissed */ }
+  installEvt = null;
+  updateInstallUI();
+}
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); installEvt = e; updateInstallUI(); });
+window.addEventListener('appinstalled', () => { installEvt = null; updateInstallUI(); });
+
+/* ------------------------------------------------------------ wiring ----- */
+function autosize() {
+  const t = $('q');
+  t.style.height = 'auto';
+  t.style.height = Math.min(t.scrollHeight, 200) + 'px';
+}
+
+$('chips').innerHTML = SUGGESTIONS.map((s) => `<button class="chip" type="button" data-act="ask" data-q="${escapeHtml(s)}">${escapeHtml(s)}</button>`).join('');
+$('ask-form').addEventListener('submit', (e) => { e.preventDefault(); ask($('q').value); });
+$('q').addEventListener('input', () => { autosize(); if (!$('form-error').hidden) showError(''); });
+$('q').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); ask($('q').value); }
+});
+$('filter').addEventListener('input', renderNotesList);
+$('tab-ask').addEventListener('click', () => showView('ask'));
+$('tab-notes').addEventListener('click', () => showView('notes'));
+for (const tab of [$('tab-ask'), $('tab-notes')]) {
+  tab.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+      const next = tab.id === 'tab-ask' ? 'notes' : 'ask';
+      showView(next);
+      $('tab-' + next).focus();
+    }
+  });
+}
+$('open-settings').addEventListener('click', () => openSettings(false));
+$('close-settings').addEventListener('click', closeSettings);
+sheet.addEventListener('click', (e) => { if (e.target === sheet) closeSettings(); });
+$('code-form').addEventListener('submit', (e) => { e.preventDefault(); saveCode($('code').value); });
+$('show-code').addEventListener('click', () => {
+  const input = $('code');
+  input.type = input.type === 'password' ? 'text' : 'password';
+  $('show-code').textContent = input.type === 'password' ? 'Show code' : 'Hide code';
+});
+$('remove-code').addEventListener('click', () => {
+  state.code = ''; store.del('code'); $('code').value = '';
+  $('code-msg').textContent = 'Code removed from this device.'; $('code-msg').className = 'msg';
+  updateHint();
+});
+$('theme-seg').addEventListener('click', (e) => { const b = e.target.closest('button[data-theme]'); if (b) applyTheme(b.dataset.theme); });
+$('install-btn').addEventListener('click', install);
+$('install-btn-2').addEventListener('click', install);
+$('install-later').addEventListener('click', () => { store.set('installLater', true); updateInstallUI(); });
+$('clear-history').addEventListener('click', () => {
+  state.history = []; saveHistory(); renderThread();
+  $('clear-msg').textContent = 'Your questions were cleared from this device.';
+});
+$('check-update').addEventListener('click', async () => {
+  const m = $('update-msg');
+  if (!state.reg) { m.textContent = 'Updates arrive automatically when you open the app online.'; return; }
+  m.textContent = 'Checking...';
+  try { await state.reg.update(); m.textContent = 'You have the latest version. New notes download by themselves when you are online.'; }
+  catch { m.textContent = 'Could not check now. Try again when you are online.'; }
+});
+$('reload-btn').addEventListener('click', () => location.reload());
+
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-act]');
+  if (!b) return;
+  const act = b.dataset.act;
+  if (act === 'ask') { $('q').value = b.dataset.q; ask(b.dataset.q); }
+  else if (act === 'code') openSettings(true);
+  else if (act === 'browse') { showView('notes'); $('filter').focus(); }
+  else if (act === 'note') { closeSettings(); openNote(b.dataset.note); }
+  else if (act === 'retry' || act === 'fb') {
+    const item = state.history.find((it) => it.id === b.dataset.id);
+    if (!item) return;
+    if (act === 'retry') { if (state.online) getAnswer(item); else { item.status = 'queued'; saveHistory(); updateItem(item); } }
+    else sendFeedback(item, b.dataset.r);
+  }
+});
+
+window.addEventListener('online', () => checkServer().then(processQueue));
+window.addEventListener('offline', () => { setNet(false); updateHint(); });
+window.addEventListener('hashchange', () => showView(location.hash === '#notes' ? 'notes' : 'ask'));
+
+if ('serviceWorker' in navigator) {
+  const hadController = Boolean(navigator.serviceWorker.controller);
+  navigator.serviceWorker.register('sw.js').then((reg) => { state.reg = reg; }).catch(() => { /* private mode or unsupported */ });
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadController) $('update-toast').hidden = false; });
+}
+
+if (location.hash === '#notes') showView('notes');
+setNet(navigator.onLine);
+updateInstallUI();
+renderThread();
+loadNotes().then(checkServer).then(processQueue);
+</script>
+</body>
+</html>

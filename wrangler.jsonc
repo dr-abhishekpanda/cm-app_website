@@ -5,10 +5,42 @@
   "observability": {
     "enabled": true
   },
+  // The site is the repository's static files. worker/index.js adds only the Clinic Assistant's
+  // server routes (/api/assistant/* and /assistant/notes/); every other request is served as before.
+  "main": "worker/index.js",
   "assets": {
-    "directory": "."
+    "directory": ".",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*", "/assistant/notes*"]
   },
   "compatibility_flags": [
     "nodejs_compat"
-  ]
+  ],
+  // The Clinic Assistant's notes and instructions are Markdown files, bundled into the Worker as text.
+  "rules": [
+    { "type": "Text", "globs": ["**/*.md"], "fallthrough": true }
+  ],
+  // Clinic Assistant storage (usage counts, Telegram sign-ins, feedback). Cloudflare creates it on the
+  // first deploy from the migration below; there is no ID to copy and nothing to set up by hand.
+  "durable_objects": {
+    "bindings": [
+      { "name": "ASSISTANT_STORE", "class_name": "AssistantStore" }
+    ]
+  },
+  "migrations": [
+    { "tag": "clinic-assistant-v1", "new_sqlite_classes": ["AssistantStore"] }
+  ],
+  // Clinic Assistant settings you may change. Secrets (ANTHROPIC_API_KEY, ASSISTANT_CODES, ADMIN_KEY,
+  // TELEGRAM_BOT_TOKEN) are set in the Cloudflare dashboard, never here. See docs/clinic-assistant/README.md.
+  "vars": {
+    "MODEL_GENERAL": "claude-haiku-5-5",
+    "MODEL_GROUNDED": "claude-haiku-5-5",
+    "WEBSITE_OPEN": "true",
+    "OPEN_DAILY_PER_DEVICE": "15",
+    "OPEN_DAILY_PER_IP": "60",
+    "OPEN_DAILY_TOTAL": "300",
+    "MEMBER_DAILY_PER_USER": "40",
+    "MEMBER_DAILY_TOTAL": "2000",
+    "KEEP_DAYS": "60"
+  }
 }

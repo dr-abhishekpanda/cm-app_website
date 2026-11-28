@@ -1,3 +1,16 @@
 # Files Cloudflare does not upload (same format as .gitignore).
 # apps-src holds the shared source, tests and notes; only the built app folders are served.
 apps-src
+# worker holds the Clinic Assistant's server code (bundled into the Worker, not served as files);
+# docs holds set-up guides.
+worker
+docs
+# Repository and tool files are never public pages. Wrangler uploads everything in the assets
+# folder that is not listed here, including the .git folder of the build checkout.
+.git
+.github
+.wrangler
+.dev.vars*
+.gitignore
+wrangler.jsonc
+node_modules
